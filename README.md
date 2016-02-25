@@ -22,4 +22,5 @@
       );
       
   ```
-3. Download latest database dump from Acquia (Cloud > Databases > View all backups) and import it.
+3. Download drush aliases from Acquia. (https://docs.acquia.com/cloud/drush-aliases)
+4. Run ```drush sql-sync @iucnwildlifed8.environment @self -y``` (Replace 'environment' with 'dev', 'test' or 'prod')

@@ -29,7 +29,9 @@ class ElisConsumerCourtDecisionsSource extends JSONSource {
    *   The number of available source records.
    */
   public function _count($url) {
-    return count($this->reader->getSourceFields($url));
+    $data = $this->reader->getSourceData($url);
+    $item = $data->current();
+    return $item['numberResultsFound'];
   }
 
 }

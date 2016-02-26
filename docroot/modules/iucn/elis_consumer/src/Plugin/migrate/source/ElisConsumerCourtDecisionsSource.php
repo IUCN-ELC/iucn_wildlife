@@ -151,7 +151,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       $xml = simplexml_load_string($data);
       $docs = [];
       foreach ($xml->document as $doc) {
-        $docs[(string) $doc->{$this->identifier}] = $this->getItem($doc);
+        $docs[(string) $doc->{$this->identifier}] = (array)$this->getItem($doc);
       }
       $json = json_encode($xml->attributes());
       // The TRUE setting means decode the response into an associative array.
@@ -171,8 +171,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-    var_dump($row);
-    die;
   }
 
 

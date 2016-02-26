@@ -98,9 +98,7 @@ class BeerNode extends SqlBase {
     if ($value = $row->getSourceProperty('countries')) {
       $row->setSourceProperty('countries', explode('|', $value));
     }
-    $ret = parent::prepareRow($row);
-    var_dump($row);
-    return $ret;
+    return parent::prepareRow($row);
   }
 
 }

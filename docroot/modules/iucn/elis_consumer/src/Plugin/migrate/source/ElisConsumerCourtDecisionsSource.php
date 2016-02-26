@@ -79,6 +79,21 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return reset($unpack);
   }
 
+  public function get_date_period($format = 'Y', $interval = '1 year') {
+    $return = array();
+    $begin = new \DateTime($this->start_date);
+    $end = new \DateTime();
+
+    $interval = \DateInterval::createFromDateString($interval);
+    $period = new \DatePeriod($begin, $interval, $end);
+
+    foreach ($period as $p) {
+      $return[] = $p->format($format);
+    }
+
+    return $return;
+  }
+
   public function count($refresh = FALSE) {
     $data = $this->getSourceData($this->path);
     $results = $data['@attributes']['numberResultsFound'];

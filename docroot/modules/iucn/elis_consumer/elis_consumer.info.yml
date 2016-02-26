@@ -4,5 +4,6 @@ description: 'Consume external web services from ELIS.'
 package: elis_consumer
 dependencies:
   - migrate
+  - migrate_source_json
 core: '8.x'
 project: 'elis_consumer'

@@ -21,7 +21,7 @@ use GuzzleHttp\Exception\RequestException;
  */
 class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   /**
-   * The path to the JSON source.
+   * The path to the XML source.
    *
    * @var string
    */

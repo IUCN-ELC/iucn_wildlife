@@ -1,0 +1,8 @@
+type: module
+name: 'ELIS Consumer'
+description: 'Consume external web services from ELIS.'
+package: elis_consumer
+dependencies:
+  - migrate
+core: '8.x'
+project: 'elis_consumer'

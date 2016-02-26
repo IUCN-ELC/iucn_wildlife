@@ -170,8 +170,8 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function prepareRow(Row $row) {
-    parent::prepareRow($row);
+    // @ToDo: prepare all fields
+    return parent::prepareRow($row);
   }
-
 
 }

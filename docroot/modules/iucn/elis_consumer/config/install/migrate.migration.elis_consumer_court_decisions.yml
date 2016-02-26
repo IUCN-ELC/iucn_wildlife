@@ -33,4 +33,3 @@ process:
     plugin: default_value
     default_value: court_decision
   title: titleOfText
-  field_abstract: abstract

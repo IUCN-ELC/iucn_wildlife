@@ -20,18 +20,21 @@ use GuzzleHttp\Exception\RequestException;
  * )
  */
 class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
+
   /**
    * The path to the XML source.
    *
    * @var string
    */
   protected $path = '';
+
   /**
    * The field name that is a unique identifier.
    *
    * @var string
    */
   protected $identifier = '';
+
   /**
    * An array of source fields.
    *
@@ -43,14 +46,21 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
    * The HTTP client.
    */
   protected $client;
+
   /**
    * Date of the first query.
    */
   protected $start_date = '1981-01';
+
   /**
    * Default query string.
    */
   protected $spage_query_default_string = 'ES:I AND STAT:C';
+
+  /**
+   * The dates of all queries.
+   */
+  protected $date_period = array();
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
@@ -72,6 +82,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     }
 
     $this->client = \Drupal::httpClient();
+    $this->date_period = $this->get_date_period();
   }
 
   public function hexadecimally_encode_string($str) {
@@ -171,8 +182,14 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function getSourceData($url) {
-    // @ToDo: Replace SPAGE_QUERY_FIRST and SPAGE_QUERY_VALUE within url
-    $url = 'www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=45533a4920414e4420535441543a43&spage_first=0';
+    $query = $this->spage_query_default_string;
+    $spage_query = $this->hexadecimally_encode_string($query);
+    $spage_first = 0;
+    $url = str_replace(
+      array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),
+      array($spage_query,$spage_first),
+      $url
+    );
     try {
       $response = $this->getResponse($url);
       $data = trim(utf8_encode($response->getBody()));

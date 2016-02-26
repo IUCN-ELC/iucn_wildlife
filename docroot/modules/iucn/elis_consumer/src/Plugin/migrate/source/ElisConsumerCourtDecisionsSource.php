@@ -68,7 +68,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
   public function count($refresh = FALSE) {
     $data = $this->getSourceData($this->path);
-    $results = reset($data)['numberResultsFound'];
+    $results = $data['@attributes']['numberResultsFound'];
     return $results;
   }
 
@@ -106,6 +106,42 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     }
   }
 
+  public function getItem($data) {
+    $ob = new \stdClass();
+    $parties = array();
+    $abstract = '';
+    foreach ($data as $field_name => $value) {
+      if ($field_name == 'abstract') {
+        $abstract .= (string) $value . PHP_EOL;
+        continue;
+      }
+      elseif ($field_name == 'party') {
+        $parties[] = $value;
+        continue;
+      }
+      elseif (property_exists($ob, $field_name)) {
+        if (is_array($ob->{$field_name})) {
+          $ob->{$field_name}[] = (string)$value;
+        }
+        else {
+          $ob->{$field_name} = array($ob->{$field_name}, (string) $value);
+        }
+      }
+      else {
+        if ($field_name == 'titleOfText') {
+          $ob->titleOfText_original = (string) $value;
+        }
+        $ob->{$field_name} = (string) $value;
+      }
+    }
+    $ob->abstract = $abstract;
+    $ob->parties = $parties;
+    if (property_exists($ob, 'obsolete')) {
+      $ob->obsolete = (int) $ob->obsolete;
+    }
+    return $ob;
+  }
+
   public function getSourceData($url) {
     // @ToDo: Replace SPAGE_QUERY_FIRST and SPAGE_QUERY_VALUE within url
     $url = 'www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=45533a4920414e4420535441543a43&spage_first=0';
@@ -113,9 +149,14 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       $response = $this->getResponse($url);
       $data = trim(utf8_encode($response->getBody()));
       $xml = simplexml_load_string($data);
-      $json = json_encode($xml);
+      $docs = [];
+      foreach ($xml->document as $doc) {
+        $docs[(string) $doc->{$this->identifier}] = $this->getItem($doc);
+      }
+      $json = json_encode($xml->attributes());
       // The TRUE setting means decode the response into an associative array.
       $array = json_decode($json, TRUE);
+      $array['documents'] = $docs;
       return $array;
     } catch (RequestException $e) {
       throw new MigrateException($e->getMessage(), $e->getCode(), $e);
@@ -124,9 +165,15 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
   protected function initializeIterator() {
     $data = $this->getSourceData($this->path);
-    $documents = next($data);
-    $iterator = new \ArrayIterator($documents);
+    $iterator = new \ArrayIterator($data['documents']);
     return $iterator;
   }
+
+  public function prepareRow(Row $row) {
+    parent::prepareRow($row);
+    var_dump($row);
+    die;
+  }
+
 
 }

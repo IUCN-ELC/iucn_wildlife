@@ -6,6 +6,7 @@ source:
   path: 'http://www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE'
   headers:
     Accept: 'application/json'
+  readerClass: 'Drupal\elis_consumer\Plugin\migrate\ElisJSONReader'
   identifier: id
   identifierDepth: 0
   fields:

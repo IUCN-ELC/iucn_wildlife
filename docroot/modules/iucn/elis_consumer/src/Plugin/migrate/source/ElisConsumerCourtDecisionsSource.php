@@ -43,6 +43,14 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
    * The HTTP client.
    */
   protected $client;
+  /**
+   * Date of the first query.
+   */
+  protected $start_date = '1981-01';
+  /**
+   * Default query string.
+   */
+  protected $spage_query_default_string = 'ES:I AND STAT:C';
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
@@ -64,6 +72,11 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     }
 
     $this->client = \Drupal::httpClient();
+  }
+
+  public function hexadecimally_encode_string($str) {
+    $unpack = unpack('H*', $str);
+    return reset($unpack);
   }
 
   public function count($refresh = FALSE) {

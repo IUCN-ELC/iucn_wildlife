@@ -1,4 +1,4 @@
 id: elis
 label: Elis Imports
 description: Import data from ELIS web service.
-source_type: JSON
+source_type: XML

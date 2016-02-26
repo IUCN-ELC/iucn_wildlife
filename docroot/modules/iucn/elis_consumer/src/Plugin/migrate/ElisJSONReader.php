@@ -21,7 +21,8 @@ class ElisJSONReader extends JSONReader {
    * @throws \Drupal\migrate\MigrateException
    */
   public function getSourceData($url) {
-    $url = 'http://www.ecolex.org/elis_isis3w.php?database=tre&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=45533a4920414e4420535441543a43&spage_first=0';
+    // @ToDo: Replace SPAGE_QUERY_FIRST and SPAGE_QUERY_VALUE within url
+    $url = 'www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=45533a4920414e4420535441543a43&spage_first=0';
     try {
       $response = $this->client->getResponse($url);
       $data = trim(utf8_encode($response->getBody()));

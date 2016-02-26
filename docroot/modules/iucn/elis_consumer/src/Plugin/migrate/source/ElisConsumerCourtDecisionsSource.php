@@ -21,4 +21,15 @@ class ElisConsumerCourtDecisionsSource extends JSONSource {
   public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration, array $namespaces = array()) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $namespaces);
   }
+
+  /**
+   * Return a count of all available source records.
+   *
+   * @return int
+   *   The number of available source records.
+   */
+  public function _count($url) {
+    return count($this->reader->getSourceFields($url));
+  }
+
 }

@@ -8,7 +8,7 @@ source:
     Accept: 'application/json'
   readerClass: 'Drupal\elis_consumer\Plugin\migrate\ElisJSONReader'
   identifier: id
-  identifierDepth: 0
+  identifierDepth: 1
   fields:
     - id
     - id2

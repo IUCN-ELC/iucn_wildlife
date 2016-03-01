@@ -188,7 +188,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
   public function getSourceData($url) {
     $query = $this->spage_query_default_string;
-    $spage_query = $this->hexadecimally_encode_string($query);
+    $spage_query = $this->hexadecimally_encode_string($query) . ' AND DM:' . current($this->date_period);
     $spage_first = 0;
     $url = str_replace(
       array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),
@@ -210,6 +210,16 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       return $array;
     } catch (RequestException $e) {
       throw new MigrateException($e->getMessage(), $e->getCode(), $e);
+    }
+  }
+
+  public function next() {
+    parent::next();
+    if ($this->currentRow === NULL && key($this->date_period) !== NULL) {
+      next($this->date_period);
+      $this->getSourceData($this->path);
+      $this->initializeIterator();
+      parent::next();
     }
   }
 

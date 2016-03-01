@@ -36,13 +36,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   protected $identifier = '';
 
   /**
-   * An array of source fields.
-   *
-   * @var array
-   */
-  protected $fields = [];
-
-  /**
    * The HTTP client.
    */
   protected $client;
@@ -64,23 +57,10 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
-    $config_fields = array(
-      'path',
-      'fields',
-      'identifier',
-    );
 
-    // Store the configuration data.
-    foreach ($config_fields as $config_field) {
-      if (isset($configuration[$config_field])) {
-        $this->{$config_field} = $configuration[$config_field];
-      }
-      else {
-        // Throw Exception
-        throw new MigrateException('The source configuration must include ' . $config_field . '.');
-      }
-    }
-
+    $this->path = 'http://www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE';
+    $this->identifier = 'id';
+    
     $this->client = \Drupal::httpClient();
     $this->date_period = $this->get_date_period();
   }
@@ -122,7 +102,32 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function fields() {
-    return $this->fields;
+    return array(
+      'id' => 'Remote primary key',
+      'id2' => 'ID2',
+      'isisMfn' => 'Isis number',
+      'dateOfEntry' => 'Date of entry',
+      'dateOfModification' => 'Date of modification',
+      'titleOfText' => 'Title of text',
+      'titleOfTextShort' => 'Title of text short',
+      'titleOfText_original' => 'Title of text in english',
+      'titleOfText_languages' => 'Languages of titleOfText field',
+      'country' => 'Country',
+      'subject' => 'Subject',
+      'languageOfDocument' => 'Language',
+      'courtName' => 'Court name',
+      'dateOfText' => 'Date of text',
+      'referenceNumber' => 'Reference number',
+      'numberOfPages' => 'Number of pages',
+      'availableIn' => 'Available in',
+      'linkToFullText' => 'Link to the full text',
+      'linkToFullText_languages' => 'Languages of linkToFullText field',
+      'keyword' => 'Keywords',
+      'abstract' => 'Abstract',
+      'typeOfText' => 'Type of text',
+      'abstract_languages' => 'Languages of abstract field',
+      'referenceToNationalLegislation' => 'Reference to legislation',
+    );
   }
 
   public function getResponse($url) {

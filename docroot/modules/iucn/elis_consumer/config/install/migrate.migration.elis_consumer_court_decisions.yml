@@ -3,29 +3,6 @@ label: Elis court decisions
 migration_group: elis
 source:
   plugin: elis_consumer_court_decisions
-  path: 'http://www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE'
-  identifier: id
-  fields:
-    - id
-    - id2
-    - isisMfn
-    - dateOfEntry
-    - dateOfModification
-    - titleOfText
-    - titleOfTextShort
-    - country
-    - subject
-    - languageOfDocument
-    - courtName
-    - dateOfText
-    - referenceNumber
-    - numberOfPages
-    - availableIn
-    - linkToFullText
-    - keyword
-    - abstract
-    - typeOfText
-    - referenceToNationalLegislation
 destination:
   plugin: entity:node
 process:

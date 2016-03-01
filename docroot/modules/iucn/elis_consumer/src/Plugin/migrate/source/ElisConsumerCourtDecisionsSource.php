@@ -228,6 +228,9 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
    *  An array with nids.
    */
   public function map_countries_by_name($countries, $bundle = 'country') {
+    if (!is_array($countries)) {
+      $countries = array($countries);
+    }
     $db = \Drupal::database();
     $q = $db->select('node_field_data', 'n')
       ->fields('n', array('nid'))
@@ -240,9 +243,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     parent::prepareRow($row);
     // @ToDo: map subject and typeOfText fields
     $countries = $row->getSourceProperty('country');
-    if (!is_array($countries)) {
-      $countries = array($countries);
-    }
     $row->setSourceProperty('country', $this->map_countries_by_name($countries));
     $row->setSourceProperty('subject', NULL);
     $row->setSourceProperty('typeOfText', NULL);

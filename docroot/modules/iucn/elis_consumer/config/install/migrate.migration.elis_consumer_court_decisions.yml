@@ -9,7 +9,7 @@ process:
   type:
     plugin: default_value
     default_value: court_decision
-  title: titleOfText
+  title: titleOfTextShort
   field_abstract: abstract
   field_country: country
   field_court_name: courtName

@@ -228,16 +228,15 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
   public function next() {
     parent::next();
-    if ($this->currentRow === NULL && key($this->date_period) !== NULL) {
-      next($this->date_period);
-      $this->getSourceData($this->path);
-      $this->initializeIterator();
+    while ($this->currentRow === NULL && key($this->date_period) !== NULL) {
+      $this->iterator = $this->initializeIterator();
       parent::next();
     }
   }
 
   protected function initializeIterator() {
     $data = $this->getSourceData($this->path);
+    next($this->date_period);
     $iterator = new \ArrayIterator($data['documents']);
     return $iterator;
   }
@@ -299,6 +298,12 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
+    if (empty($row->getSourceProperty('titleOfTextShort'))) {
+      if (empty($row->getSourceProperty('titleOfText'))) {
+        return FALSE;
+      }
+      $row->setSourceProperty('titleOfTextShort', $row->getSourceProperty('titleOfText'));
+    }
     $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
     $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));
     $row->setSourceProperty('typeOfText', $this->map_taxonomy_terms_by_name($row->getSourceProperty('typeOfText'), 'document_types'));

@@ -7,6 +7,7 @@
 
 namespace Drupal\elis_consumer\Plugin\migrate\source;
 
+use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
@@ -299,10 +300,13 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
     if (empty($row->getSourceProperty('titleOfTextShort'))) {
-      if (empty($row->getSourceProperty('titleOfText'))) {
+      if (empty($titleOfText = $row->getSourceProperty('titleOfText')) || strlen($titleOfText) > 255) {
+        $this->idMap->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
+        $message = 'Title is NULL or title is too long. (' . $row->getSourceProperty('id') . ')';
+        \Drupal::logger('elis_consumer_court_decisions')->warning($message);
         return FALSE;
       }
-      $row->setSourceProperty('titleOfTextShort', $row->getSourceProperty('titleOfText'));
+      $row->setSourceProperty('titleOfTextShort', $titleOfText);
     }
     $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
     $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));

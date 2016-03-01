@@ -200,26 +200,38 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return $ob;
   }
 
-  public function getSourceData($url) {
-    $query = $this->spage_query_default_string . ' AND DM:' . current($this->date_period) . '*';
-    $spage_query = $this->hexadecimally_encode_string($query);
-    $spage_first = 0;
+  public function getElisXml($url, $spage_query, $spage_first) {
     $url = str_replace(
       array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),
       array($spage_query,$spage_first),
       $url
     );
+    $response = $this->getResponse($url);
+    $data = trim(utf8_encode($response->getBody()));
+    return simplexml_load_string($data);
+  }
+
+  public function getSourceData($url) {
+    $query = $this->spage_query_default_string . ' AND DM:' . current($this->date_period) . '*';
+    $spage_query = $this->hexadecimally_encode_string($query);
+    $spage_first = 0;
     try {
-      $response = $this->getResponse($url);
-      $data = trim(utf8_encode($response->getBody()));
-      $xml = simplexml_load_string($data);
+      $xml = $this->getElisXml($url, $spage_query, $spage_first);
+      $numberResultsFound = (int)$xml->attributes()->numberResultsFound;
       $docs = [];
-      foreach ($xml->document as $doc) {
-        $docs[(string) $doc->{$this->identifier}] = (array)$this->getItem($doc);
-      }
       $json = json_encode($xml->attributes());
       // The TRUE setting means decode the response into an associative array.
       $array = json_decode($json, TRUE);
+      while (TRUE) {
+        foreach ($xml->document as $doc) {
+          $docs[(string) $doc->{$this->identifier}] = (array)$this->getItem($doc);
+        }
+        $spage_first += 20;
+        if ($spage_first >= $numberResultsFound) {
+          break;
+        }
+        $xml = $this->getElisXml($url, $spage_query, $spage_first);
+      }
       $array['documents'] = $docs;
       return $array;
     } catch (RequestException $e) {

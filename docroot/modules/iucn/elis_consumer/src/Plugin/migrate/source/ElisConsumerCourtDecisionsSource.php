@@ -219,11 +219,31 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return $iterator;
   }
 
+  /**
+   * @param $countries
+   *  An array with country names.
+   * @param string $bundle
+   *  The machine name of country content type.
+   * @return array
+   *  An array with nids.
+   */
+  public function map_countries_by_name($countries, $bundle = 'country') {
+    $db = \Drupal::database();
+    $q = $db->select('node_field_data', 'n')
+      ->fields('n', array('nid'))
+      ->condition('type', $bundle)
+      ->condition('title', $countries, 'IN');
+    return $q->execute()->fetchCol();
+  }
+
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-    // @ToDo: abstract, country, subject and typeOfText fields
-    $row->setSourceProperty('abstract', NULL);
-    $row->setSourceProperty('country', NULL);
+    // @ToDo: map subject and typeOfText fields
+    $countries = $row->getSourceProperty('country');
+    if (!is_array($countries)) {
+      $countries = array($countries);
+    }
+    $row->setSourceProperty('country', $this->map_countries_by_name($countries));
     $row->setSourceProperty('subject', NULL);
     $row->setSourceProperty('typeOfText', NULL);
   }

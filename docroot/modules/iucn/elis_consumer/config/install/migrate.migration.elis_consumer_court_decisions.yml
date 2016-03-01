@@ -10,3 +10,15 @@ process:
     plugin: default_value
     default_value: court_decision
   title: titleOfText
+  field_abstract: abstract
+  field_country: country
+  field_court_name: courtName
+  field_date_of_entry: dateOfEntry
+  field_date_of_modification: dateOfModification
+  field_date_of_text: dateOfText
+  field_ecolex_subjects: subject
+  field_isis_number: isisMfn
+  field_number_of_pages: numberOfPages
+  field_reference_number: referenceNumber
+  field_type_of_text: typeOfText
+  field_url: linkToFullText

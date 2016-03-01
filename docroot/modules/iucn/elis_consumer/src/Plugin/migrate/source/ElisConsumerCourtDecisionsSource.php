@@ -86,9 +86,22 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function count($refresh = FALSE) {
-    $data = $this->getSourceData($this->path);
-    $results = $data['@attributes']['numberResultsFound'];
-    return $results;
+    $query = $this->spage_query_default_string;
+    $spage_query = $this->hexadecimally_encode_string($query);
+    $spage_first = 0;
+    $url = str_replace(
+      array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),
+      array($spage_query,$spage_first),
+      $this->path
+    );
+    try {
+      $response = $this->getResponse($url);
+      $data = trim(utf8_encode($response->getBody()));
+      $xml = simplexml_load_string($data);
+      return (string)$xml->attributes()->numberResultsFound;
+    } catch (RequestException $e) {
+      throw new MigrateException($e->getMessage(), $e->getCode(), $e);
+    }
   }
 
   public function getIds() {
@@ -187,8 +200,8 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function getSourceData($url) {
-    $query = $this->spage_query_default_string;
-    $spage_query = $this->hexadecimally_encode_string($query) . ' AND DM:' . current($this->date_period);
+    $query = $this->spage_query_default_string . ' AND DM:' . current($this->date_period) . '*';
+    $spage_query = $this->hexadecimally_encode_string($query);
     $spage_first = 0;
     $url = str_replace(
       array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),

@@ -239,13 +239,46 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return $q->execute()->fetchCol();
   }
 
+  /**
+   * @param $terms
+   *  An array with term names.
+   * @param $vid
+   *  Vocabulary machine name.
+   * @param bool $create
+   *  If TRUE, nonexistent terms will be created.
+   * @return array
+   *  An array with tids.
+   */
+  public function map_taxonomy_terms_by_name($terms, $vid, $create = TRUE) {
+    if (!is_array($terms)) {
+      $terms = array($terms);
+    }
+    $db = \Drupal::database();
+    $q = $db->select('taxonomy_term_field_data', 't')
+      ->fields('t', array('tid', 'name'))
+      ->condition('vid', $vid)
+      ->condition('name', $terms, 'IN');
+    $data = $q->execute()->fetchAllKeyed();
+    if (count($data) != count($terms) && $create === TRUE) {
+      foreach ($terms as $term_name) {
+        if (!in_array($term_name, $data)) {
+          $term = \Drupal\taxonomy\Entity\Term::create(array(
+            'name' => $term_name,
+            'vid' => $vid,
+          ));
+          $term->save();
+          $data[$term->id()] = trim($term_name);
+        }
+      }
+    }
+    return array_keys($data);
+  }
+
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-    // @ToDo: map subject and typeOfText fields
-    $countries = $row->getSourceProperty('country');
-    $row->setSourceProperty('country', $this->map_nodes_by_name($countries, 'country'));
-    $row->setSourceProperty('subject', NULL);
-    $row->setSourceProperty('typeOfText', NULL);
+    $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
+    $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));
+    $row->setSourceProperty('typeOfText', $this->map_taxonomy_terms_by_name($row->getSourceProperty('typeOfText'), 'document_types'));
   }
 
 }

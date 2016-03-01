@@ -163,7 +163,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $abstract = '';
     foreach ($data as $field_name => $value) {
       if ($field_name == 'abstract') {
-        $abstract .= (string) $value . PHP_EOL;
+        $abstract .= utf8_encode((string) $value . PHP_EOL);
         continue;
       }
       elseif ($field_name == 'party') {
@@ -172,17 +172,17 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       }
       elseif (property_exists($ob, $field_name)) {
         if (is_array($ob->{$field_name})) {
-          $ob->{$field_name}[] = (string)$value;
+          $ob->{$field_name}[] = utf8_encode((string)$value);
         }
         else {
-          $ob->{$field_name} = array($ob->{$field_name}, (string) $value);
+          $ob->{$field_name} = array($ob->{$field_name}, utf8_encode((string) $value));
         }
       }
       else {
         if ($field_name == 'titleOfText') {
-          $ob->titleOfText_original = (string) $value;
+          $ob->titleOfText_original = utf8_encode((string) $value);
         }
-        $ob->{$field_name} = (string) $value;
+        $ob->{$field_name} = utf8_encode((string) $value);
       }
     }
     $ob->abstract = $abstract;
@@ -334,13 +334,21 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
     if (empty($row->getSourceProperty('titleOfTextShort'))) {
-      if (empty($titleOfText = $row->getSourceProperty('titleOfText')) || strlen($titleOfText) > 255) {
-        $this->idMap->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
-        $message = 'Title is NULL or title is too long. (' . $row->getSourceProperty('id') . ')';
-        \Drupal::logger('elis_consumer_court_decisions')->warning($message);
-        return FALSE;
+      if (empty($titleOfText = $row->getSourceProperty('titleOfText'))) {
+        if (empty($titleOfText = $row->getSourceProperty('titleOfTextSp'))) {
+          if (empty($titleOfText = $row->getSourceProperty('titleOfTextFr'))) {
+            if (empty($titleOfText = $row->getSourceProperty('titleOfTextOther'))) {
+              $this->idMap->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
+              $message = 'Title cannot be NULL. (' . $row->getSourceProperty('id') . ')';
+              \Drupal::logger('elis_consumer_court_decisions')
+                ->warning($message);
+              return FALSE;
+            }
+          }
+        }
+        $row->setSourceProperty('titleOfText', $titleOfText);
       }
-      $row->setSourceProperty('titleOfTextShort', $titleOfText);
+      $row->setSourceProperty('titleOfTextShort', substr($titleOfText, 0, 255));
     }
     $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
     $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));

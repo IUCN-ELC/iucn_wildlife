@@ -90,15 +90,8 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $query = $this->spage_query_default_string;
     $spage_query = $this->hexadecimally_encode_string($query);
     $spage_first = 0;
-    $url = str_replace(
-      array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),
-      array($spage_query,$spage_first),
-      $this->path
-    );
     try {
-      $response = $this->getResponse($url);
-      $data = trim(utf8_encode($response->getBody()));
-      $xml = simplexml_load_string($data);
+      $xml = $this->getElisXml($this->path, $spage_query, $spage_first);
       return (string)$xml->attributes()->numberResultsFound;
     } catch (RequestException $e) {
       throw new MigrateException($e->getMessage(), $e->getCode(), $e);

@@ -220,22 +220,22 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   /**
-   * @param $countries
-   *  An array with country names.
+   * @param $names
+   *  An array with entity names.
    * @param string $bundle
-   *  The machine name of country content type.
+   *  The machine name of destination content type.
    * @return array
    *  An array with nids.
    */
-  public function map_countries_by_name($countries, $bundle = 'country') {
-    if (!is_array($countries)) {
-      $countries = array($countries);
+  public function map_nodes_by_name($names, $bundle) {
+    if (!is_array($names)) {
+      $names = array($names);
     }
     $db = \Drupal::database();
     $q = $db->select('node_field_data', 'n')
       ->fields('n', array('nid'))
       ->condition('type', $bundle)
-      ->condition('title', $countries, 'IN');
+      ->condition('title', $names, 'IN');
     return $q->execute()->fetchCol();
   }
 
@@ -243,7 +243,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     parent::prepareRow($row);
     // @ToDo: map subject and typeOfText fields
     $countries = $row->getSourceProperty('country');
-    $row->setSourceProperty('country', $this->map_countries_by_name($countries));
+    $row->setSourceProperty('country', $this->map_nodes_by_name($countries, 'country'));
     $row->setSourceProperty('subject', NULL);
     $row->setSourceProperty('typeOfText', NULL);
   }

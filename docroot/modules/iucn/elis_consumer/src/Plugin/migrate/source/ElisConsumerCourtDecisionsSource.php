@@ -220,8 +220,12 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function prepareRow(Row $row) {
-    // @ToDo: prepare all fields
-    return parent::prepareRow($row);
+    parent::prepareRow($row);
+    // @ToDo: abstract, country, subject and typeOfText fields
+    $row->setSourceProperty('abstract', NULL);
+    $row->setSourceProperty('country', NULL);
+    $row->setSourceProperty('subject', NULL);
+    $row->setSourceProperty('typeOfText', NULL);
   }
 
 }

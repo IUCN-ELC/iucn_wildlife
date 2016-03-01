@@ -199,7 +199,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       array($spage_query,$spage_first),
       $url
     );
-    print_r($url . PHP_EOL);
     $response = $this->getResponse($url);
     $data = trim(utf8_encode($response->getBody()));
     return simplexml_load_string($data);
@@ -208,11 +207,11 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   public function getDocumentsByMonth($year) {
     $date_period = $this->get_date_period('Ym', '1 month', $year . '-01', ($year + 1) . '-01');
     $docs = [];
-    while (key($date_period) !== NULL) {
-      $query = $this->spage_query_default_string . ' AND DM:' . current($date_period);
+    foreach ($date_period as $date) {
+      $query = $this->spage_query_default_string . ' AND DM:' . $date;
       $spage_query = $this->hexadecimally_encode_string($query);
       $spage_first = 0;
-      $xml = $this->getElisXml($url, $spage_query, $spage_first);
+      $xml = $this->getElisXml($this->path, $spage_query, $spage_first);
       $numberResultsFound = (int)$xml->attributes()->numberResultsFound;
       while (TRUE) {
         foreach ($xml->document as $doc) {
@@ -222,9 +221,8 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
         if ($spage_first >= $numberResultsFound) {
           break;
         }
-        $xml = $this->getElisXml($url, $spage_query, $spage_first);
+        $xml = $this->getElisXml($this->path, $spage_query, $spage_first);
       }
-      next($date_period);
     }
     return $docs;
   }

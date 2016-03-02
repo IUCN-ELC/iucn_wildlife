@@ -2,8 +2,8 @@ core: 8.x
 type: theme
 base theme: bootstrap
 
-name: 'IUCN frontend'
-description: 'IUCN Wildlife Frontend Theme - Bootstrap Sub-Theme (CDN)'
+name: 'IUCN Wildlife'
+description: 'Front-end theme for IUCN Wildlife.'
 package: 'Bootstrap'
 
 regions:

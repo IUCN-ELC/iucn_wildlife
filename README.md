@@ -1,26 +1,32 @@
 # IUCN Wildlife
 
-#Installation#
+# Installation
 
-##Pre-requisites##
+## Pre-requisites
 
 1. Drush (8.0)
-2. Virtual host for your Drupal instance that points to the docroot/ directory from this repo
+2. Virtual host for your Drupal instance that points to the `docroot` directory from this repo.
 
-##Quick start##
+## Quick start
 
-1. Create docroot/sites/default/settings.local.php file.
-2. Configure your database within settings.local.php file. Example:
+1. Copy and rename `docroot/sites/example.settings.local.php` to `docroot/sites/default/settings.local.php`.
+2. Append your database configuration settings:
+
   ```php
-      $databases['default']['default'] = array(
-        'driver' => 'mysql',
-        'database' => 'iucn_wildlife_db',
-        'username' => 'username',
-        'password' => 'password',
-        'host' => 'localhost',
-        'prefix' => '',
-      );
-      
+  /**
+   * Database settings.
+   */
+  $databases['default']['default'] = array(
+    'database' => 'iucn_wildlife',
+    'username' => 'username',
+    'password' => 'password',
+    'prefix' => '',
+    'host' => 'localhost',
+    'port' => '3306',
+    'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+    'driver' => 'mysql',
+  );
   ```
-3. Download drush aliases from Acquia. (https://docs.acquia.com/cloud/drush-aliases)
-4. Run ```drush sql-sync @iucnwildlifed8.environment @self -y``` (Replace 'environment' with 'dev', 'test' or 'prod')
+
+3. Download drush aliases from Acquia (https://docs.acquia.com/cloud/drush-aliases).
+4. Run `drush sql-sync @iucnwildlifed8.environment @self -y` (replace `environment` with `dev`, `test` or `prod`).

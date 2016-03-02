@@ -20,5 +20,6 @@ regions:
   page_bottom: 'Page bottom'
 
 libraries:
+  - 'iucn_frontend/bootstrap'
   - 'iucn_frontend/fonts'
   - 'iucn_frontend/global-styling'

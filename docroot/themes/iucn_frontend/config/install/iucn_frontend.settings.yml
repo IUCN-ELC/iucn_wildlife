@@ -12,3 +12,4 @@
 # @see \Drupal\bootstrap\ThemeSettings
 
 navbar_position: static-top
+cdn_provider: ''

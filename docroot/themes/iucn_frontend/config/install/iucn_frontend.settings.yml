@@ -10,3 +10,5 @@
 # @see \Drupal\bootstrap\Plugin\SettingManager
 # @see \Drupal\bootstrap\Plugin\Form\SystemThemeSettings
 # @see \Drupal\bootstrap\ThemeSettings
+
+navbar_position: static-top

@@ -36,3 +36,5 @@ process:
   field_instance: instance
   field_internet_reference: internetReference
   field_decision_status: statusOfDecision
+  field_subdivision: subdivision
+  field_territorial_subdivisions: territorialSubdivision

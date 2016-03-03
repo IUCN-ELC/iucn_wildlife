@@ -368,6 +368,8 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $row->setSourceProperty('courtJurisdiction', $this->map_taxonomy_terms_by_name($row->getSourceProperty('courtJurisdiction'), 'court_jurisdictions'));
     $row->setSourceProperty('instance', $this->map_taxonomy_terms_by_name($row->getSourceProperty('instance'), 'instances'));
     $row->setSourceProperty('statusOfDecision', $this->map_taxonomy_terms_by_name($row->getSourceProperty('statusOfDecision'), 'decision_status'));
+    $row->setSourceProperty('subdivision', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subdivision'), 'subdivisions'));
+    $row->setSourceProperty('territorialSubdivision', $this->map_taxonomy_terms_by_name($row->getSourceProperty('territorialSubdivision'), 'territorial_subdivisions'));
   }
 
 }

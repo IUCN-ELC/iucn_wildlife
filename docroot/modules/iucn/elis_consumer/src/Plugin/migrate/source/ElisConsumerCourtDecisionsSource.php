@@ -316,6 +316,8 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       }
       else {
         $term_name = htmlspecialchars_decode($term_name);
+        // Remove multiple spaces
+        $term_name = preg_replace('/\s+/', ' ', $term_name);
       }
     }
     if (empty($terms)) {

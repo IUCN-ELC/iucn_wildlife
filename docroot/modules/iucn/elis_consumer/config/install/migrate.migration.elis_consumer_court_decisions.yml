@@ -27,6 +27,7 @@ process:
   field_related_website: relatedWebSite
   field_seat_of_court: seatOfCourt
   field_justices: justices
+  field_reference_to_cou: referenceToCourtDecision
   field_reference_to_legislation: referenceToEULegislation
   field_reference_to_faolex: referenceToFaolex
   field_reference_to_national_legi: referenceToNationalLegislation

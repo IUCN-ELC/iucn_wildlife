@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Default theme implementation to display a single page.
+ * Default theme implementation to display the front page.
  *
  * The doctype, html, head and body tags are not in this template. Instead they
  * can be found in the html.html.twig template in this directory.
@@ -61,53 +61,9 @@
  * @ingroup templates
  */
 #}
+{% extends 'page.html.twig' %}
+
 {% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
-{# Navbar #}
-{% if page.navigation or page.navigation_collapsible %}
-  {% block navbar %}
-    {%
-      set navbar_classes = [
-        'navbar',
-        theme.settings.navbar_inverse ? 'navbar-inverse' : 'navbar-default',
-        theme.settings.navbar_position ? 'navbar-' ~ theme.settings.navbar_position|clean_class : container,
-      ]
-    %}
-    <header{{ navbar_attributes.addClass(navbar_classes) }} id="navbar" role="banner">
-      <div class="{{ container }}">
-        <div class="navbar-header">
-          {{ page.navigation }}
-          {# .btn-navbar is used as the toggle for collapsed navbar content #}
-          {% if page.navigation_collapsible %}
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">{{ 'Toggle navigation'|t }}</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          {% endif %}
-        </div>
-
-        {# Navigation (collapsible) #}
-        {% if page.navigation_collapsible %}
-          <div class="navbar-collapse collapse">
-            {{ page.navigation_collapsible }}
-          </div>
-        {% endif %}
-      </div>
-    </header>
-  {% endblock %}
-{% endif %}
-
-<div class="jumbotron">
-  <div class="{{ container }}">
-    {% if site_name %}
-      <h1>{{ site_name }}</h1>
-    {% endif %}
-    {% if site_slogan %}
-      <p class="text-primary">{{ site_slogan }}</p>
-    {% endif %}
-  </div>
-</div>
 
 {# Main #}
 {% block main %}
@@ -203,11 +159,3 @@
     </div>
   </div>
 {% endblock %}
-
-{% if page.footer %}
-  {% block footer %}
-    <footer class="footer {{ container }}" role="contentinfo">
-      {{ page.footer }}
-    </footer>
-  {% endblock %}
-{% endif %}

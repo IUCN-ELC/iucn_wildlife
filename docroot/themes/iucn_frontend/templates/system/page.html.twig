@@ -101,12 +101,19 @@
 
 <div class="jumbotron">
   <div class="{{ container }}">
-    {% if site_name %}
-      <h1>{{ site_name }}</h1>
-    {% endif %}
-    {% if site_slogan %}
-      <p class="text-primary">{{ site_slogan }}</p>
-    {% endif %}
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 text-center">
+        {% if site_name %}
+          <h1>{{ site_name }}</h1>
+        {% endif %}
+        {% if site_slogan %}
+          <p class="text-primary">{{ site_slogan }}</p>
+        {% endif %}
+        <form>
+          <input type="text" class="form-control input-lg" placeholder="Search in record and full text&hellip;">
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 

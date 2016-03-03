@@ -122,22 +122,23 @@
     {% endif %}
 
     <div class="row">
-      {# Sidebar First #}
-      {% if page.sidebar_first %}
-        {% block sidebar_first %}
-          <aside class="col-sm-3" role="complementary">
-            {{ page.sidebar_first }}
-          </aside>
-        {% endblock %}
-      {% endif %}
+      {# Tour Box #}
+      <aside class="col-sm-3" role="complementary">
+        <div class="panel panel-primary">
+          <div class="panel-body text-center">
+            <h4>Take a tour of the prototype</h4>
+            <p>See all the great features of this prototype and learn about what we have in mind for the final product.</p>
+            <p>We wish to offer end users a similar tour to help them get acquainted to the new interface</p>
+            <p><a href="#" class="btn btn-primary">Start tour</a></p>
+          </div>
+        </div>
+      </aside>
 
       {# Content #}
       {%
         set content_classes = [
-          page.sidebar_first and page.sidebar_second ? 'col-sm-6',
-          page.sidebar_first and page.sidebar_second is empty ? 'col-sm-9',
-          page.sidebar_second and page.sidebar_first is empty ? 'col-sm-9',
-          page.sidebar_first is empty and page.sidebar_second is empty ? 'col-sm-12'
+          page.sidebar_second ? 'col-sm-6',
+          page.sidebar_second is empty ? 'col-sm-9'
         ]
       %}
       <section{{ content_attributes.addClass(content_classes) }}>
@@ -172,7 +173,22 @@
         {# Content #}
         {% block content %}
           <a id="main-content"></a>
-          {{ page.content }}
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h4>Other resources</h4>
+              <p>For further read, please consult these websites.</p>
+              <dl>
+                <dt><a href="#">Protected Areas Law</a></dt>
+                <dd><p>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Wnironmental Law, and the IUCN Academy of Environmental Law, working with the World Commission on Protected Areas, the IUCN Global Protected Areas Programme, and IUCN regional offices for Eastern and Southern Africa (ESARO), West and Central Africa (PACO), and Mexico, Central America and the Caribbean (ORMACC). It is generously supported by the Aage V. Jensen Charity Foundation.</p></dd>
+                <dt><a href="#">Law for Sustainability</a></dt>
+                <dd><p>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Environmental Law, and the IUCN Academy of Environmental Law. It is generously supported by the German Federal Ministry for Economic Cooperation and Development (BMZ).</p></dd>
+                <dt><a href="#">Water Law &amp; Covernance Support Platform</a></dt>
+                <dd><p>The Water Law and Governance Support Platform (WLGSP) offers legal expertise and ad hoc technical support on water governance issues in transboundary basins</p></dd>
+                <dt><a href="#">Mesolex</a></dt>
+                <dd><p>This database has been designed as a regional platform ECOLEX. Here you will find updated information related to environmental governance instruments that affect natural resources information.</p></dd>
+              </dl>
+            </div>
+          </div>
         {% endblock %}
       </section>
 

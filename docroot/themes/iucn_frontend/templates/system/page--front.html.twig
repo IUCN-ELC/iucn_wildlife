@@ -68,15 +68,6 @@
 {# Main #}
 {% block main %}
   <div role="main" class="main-container {{ container }} js-quickedit-main-content">
-    {# Header #}
-    {% if page.header %}
-      {% block header %}
-        <div role="heading">
-          {{ page.header }}
-        </div>
-      {% endblock %}
-    {% endif %}
-
     <div class="row">
       {# Tour Box #}
       <aside class="col-md-3" role="complementary">
@@ -92,12 +83,7 @@
       </aside>
 
       {# Content #}
-      {%
-        set content_classes = [
-          page.sidebar_second ? 'col-md-6',
-          page.sidebar_second is empty ? 'col-md-9'
-        ]
-      %}
+      {% set content_classes = 'col-md-9' %}
       <section{{ content_attributes.addClass(content_classes) }}>
         {# Highlighted #}
         {% if page.highlighted %}
@@ -148,15 +134,6 @@
           </div>
         {% endblock %}
       </section>
-
-      {# Sidebar Second #}
-      {% if page.sidebar_second %}
-        {% block sidebar_second %}
-          <aside class="col-md-3" role="complementary">
-            {{ page.sidebar_second }}
-          </aside>
-        {% endblock %}
-      {% endif %}
     </div>
   </div>
 {% endblock %}

@@ -21,17 +21,25 @@
 @media (min-width: 992px) {
   .panel-tour {
     display: table;
-    height: 789px;
+    height: 610px;
   }
 
   .panel-tour > .panel-body {
     display: table-cell;
     vertical-align: middle;
   }
+
+  .panel-resources {
+    min-height: 610px;
+  }
 }
 
 @media (min-width: 1200px) {
   .panel-tour {
-    height: 677px;
+    height: 521px;
+  }
+
+  .panel-resources {
+    min-height: 521px;
   }
 }

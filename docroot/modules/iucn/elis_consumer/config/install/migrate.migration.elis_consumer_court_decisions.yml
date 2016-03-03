@@ -31,3 +31,4 @@ process:
   field_available_in: availableIn
   field_court_jurisdiction: courtJurisdiction
   field_instance: instance
+  field_internet_reference: internetReference

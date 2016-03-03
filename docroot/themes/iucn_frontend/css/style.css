@@ -47,4 +47,18 @@
   color: #808080;
   font-size: 14px;
 }
+.footer a {
+  color: #808080;
+}
+.footer a:hover,
+.footer a:focus {
+  color: #666;
+}
+#block-iucn-frontend-footer {
+  float: right;
+}
+#block-iucn-frontend-footer .nav > li > a:hover,
+#block-iucn-frontend-footer .nav > li > a:focus {
+  text-decoration: underline;
+}
 /*# sourceMappingURL=style.css.map */

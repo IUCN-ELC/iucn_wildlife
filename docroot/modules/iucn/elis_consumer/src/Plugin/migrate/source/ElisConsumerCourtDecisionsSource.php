@@ -338,16 +338,16 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     parent::prepareRow($row);
     if (empty($row->getSourceProperty('titleOfTextShort'))) {
       if (empty($titleOfText = $row->getSourceProperty('titleOfText'))) {
-        if (empty($titleOfText = $row->getSourceProperty('titleOfTextSp'))) {
-          if (empty($titleOfText = $row->getSourceProperty('titleOfTextFr'))) {
-            if (empty($titleOfText = $row->getSourceProperty('titleOfTextOther'))) {
-              $this->idMap->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
-              $message = 'Title cannot be NULL. (' . $row->getSourceProperty('id') . ')';
-              \Drupal::logger('elis_consumer_court_decisions')
-                ->warning($message);
-              return FALSE;
-            }
-          }
+        if (
+          empty($titleOfText = $row->getSourceProperty('titleOfTextSp')) &&
+          empty($titleOfText = $row->getSourceProperty('titleOfTextFr')) &&
+          empty($titleOfText = $row->getSourceProperty('titleOfTextOther'))
+        ) {
+          $this->idMap->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
+          $message = 'Title cannot be NULL. (' . $row->getSourceProperty('id') . ')';
+          \Drupal::logger('elis_consumer_court_decisions')
+            ->warning($message);
+          return FALSE;
         }
         $row->setSourceProperty('titleOfText', $titleOfText);
       }

@@ -10,6 +10,9 @@
 .jumbotron .form-control-feedback {
   color: #666;
 }
+#search-form .form-control {
+  font-size: 16px;
+}
 .panel {
   border-width: 2px;
 }
@@ -21,6 +24,11 @@
 }
 .panel-resources .list-resources > dd {
   margin-bottom: 11px;
+}
+@media (max-width: 991px) {
+  .panel-tour:last-child {
+    margin-bottom: 22px;
+  }
 }
 @media (min-width: 992px) {
   .row-flex,

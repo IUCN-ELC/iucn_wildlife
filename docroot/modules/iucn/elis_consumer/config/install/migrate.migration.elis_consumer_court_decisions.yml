@@ -35,3 +35,4 @@ process:
   field_court_jurisdiction: courtJurisdiction
   field_instance: instance
   field_internet_reference: internetReference
+  field_decision_status: statusOfDecision

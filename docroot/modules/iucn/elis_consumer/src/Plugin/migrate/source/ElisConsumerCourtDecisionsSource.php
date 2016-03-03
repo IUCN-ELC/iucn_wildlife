@@ -356,6 +356,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
     $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));
     $row->setSourceProperty('typeOfText', $this->map_taxonomy_terms_by_name($row->getSourceProperty('typeOfText'), 'document_types'));
+    $row->setSourceProperty('justices', $this->map_taxonomy_terms_by_name($row->getSourceProperty('justices'), 'justices'));
   }
 
 }

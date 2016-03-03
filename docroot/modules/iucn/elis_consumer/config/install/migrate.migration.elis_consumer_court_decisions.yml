@@ -9,6 +9,7 @@ process:
   type:
     plugin: default_value
     default_value: court_decision
+  field_original_id: id
   title: titleOfTextShort
   field_original_title: titleOfText
   field_abstract: abstract
@@ -23,3 +24,8 @@ process:
   field_reference_number: referenceNumber
   field_type_of_text: typeOfText
   field_url: linkToFullText
+  field_related_website: relatedWebSite
+  field_seat_of_court: seatOfCourt
+  field_justices: justices
+  field_reference_to_treaties: referenceToTreaties
+  field_available_in: availableIn

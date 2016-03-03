@@ -344,6 +344,31 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return array_keys($data);
   }
 
+  /**
+   * @param array $urls
+   * @return array
+   *  Array with files fids.
+   */
+  public function createFiles($urls) {
+    if (!is_array($urls)) {
+      if (empty($urls)) {
+        return;
+      }
+      $urls = array($urls);
+    }
+    $fids = [];
+    foreach ($urls as $url) {
+      $filename = basename($url);
+      $destination = 'public://field_files/' . $filename;
+      $data = file_get_contents($url);
+      $file = file_save_data($data, $destination, FILE_EXISTS_REPLACE);
+      if (!empty($file)) {
+        $fids[] = $file->id();
+      }
+    }
+    return $fids;
+  }
+
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
     if (empty($row->getSourceProperty('titleOfTextShort'))) {
@@ -363,7 +388,12 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       }
       $row->setSourceProperty('titleOfTextShort', substr($titleOfText, 0, 255));
     }
+    $row->setSourceProperty('linkToFullText', str_replace('server2.php/', '', $row->getSourceProperty('linkToFullText')));
     $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
+
+    $row->setSourceProperty('files', $this->createFiles($row->getSourceProperty('linkToFullText')));
+
+    /* Map taxonomy term reference fields */
     $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));
     $row->setSourceProperty('typeOfText', $this->map_taxonomy_terms_by_name($row->getSourceProperty('typeOfText'), 'document_types'));
     $row->setSourceProperty('justices', $this->map_taxonomy_terms_by_name($row->getSourceProperty('justices'), 'justices'));

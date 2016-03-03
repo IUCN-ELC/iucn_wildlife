@@ -310,8 +310,16 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     if (!is_array($terms)) {
       $terms = array($terms);
     }
-    foreach ($terms as &$term_name) {
-      $term_name = htmlspecialchars_decode($term_name);
+    foreach ($terms as $key => &$term_name) {
+      if (empty($term_name)) {
+        unset($terms[$key]);
+      }
+      else {
+        $term_name = htmlspecialchars_decode($term_name);
+      }
+    }
+    if (empty($terms)) {
+      return [];
     }
     $db = \Drupal::database();
     $q = $db->select('taxonomy_term_field_data', 't')

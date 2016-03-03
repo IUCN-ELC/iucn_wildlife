@@ -388,6 +388,8 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       }
       $row->setSourceProperty('titleOfTextShort', substr($titleOfText, 0, 255));
     }
+
+    // Used str_replace('server2.php/', '', ...) because there is a bug in url's from ELIS
     $row->setSourceProperty('linkToFullText', str_replace('server2.php/', '', $row->getSourceProperty('linkToFullText')));
     $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
 

@@ -1,7 +1,7 @@
 <?php
-/**
- * @file
- * Bootstrap sub-theme.
- *
- * Place your custom PHP code in this file.
- */
+function iucn_frontend_preprocess_page(array &$variables) {
+  $config = \Drupal::config('system.site');
+
+  $variables['site_name'] = $config->get('name');
+  $variables['site_slogan'] = $config->get('slogan');
+}

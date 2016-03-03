@@ -30,3 +30,4 @@ process:
   field_reference_to_treaties: referenceToTreaties
   field_available_in: availableIn
   field_court_jurisdiction: courtJurisdiction
+  field_instance: instance

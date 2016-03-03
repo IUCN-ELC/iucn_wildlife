@@ -1,0 +1,3 @@
+# Treat as binary data
+*.map   binary
+*.min.* binary

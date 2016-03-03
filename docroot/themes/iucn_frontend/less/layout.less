@@ -1,39 +1,37 @@
-.jumbotron .text-primary {
-  color: #0095f3;
+.jumbotron {
+  .text-primary {
+    color: #0095f3;
+  }
 }
 
 .panel {
   border-width: 2px;
 }
 
-.panel-tour .tour-title {
-  margin-top: 22px;
+.panel-tour {
+  .tour-title {
+    margin-top: 22px;
+  }
 }
 
-.panel-resources .list-resources {
-  margin-bottom: 0;
-}
+.panel-resources {
+  .list-resources {
+    margin-bottom: 0;
 
-.panel-resources .list-resources > dd {
-  margin-bottom: 11px;
+    > dd {
+      margin-bottom: 11px;
+    }
+  }
 }
 
 @media (min-width: 992px) {
-  .row-eq-height {
+  .row-flex,
+  .col-flex {
     display: flex;
   }
 
   .panel-tour {
-    display: table;
-    height: 100%;
-  }
-
-  .panel-tour > .panel-body {
-    display: table-cell;
-    vertical-align: middle;
-  }
-
-  .panel-resources {
-    height: 100%;
+    align-items: center;
+    display: flex;
   }
 }

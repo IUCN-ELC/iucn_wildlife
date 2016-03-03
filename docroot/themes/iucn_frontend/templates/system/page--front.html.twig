@@ -68,9 +68,9 @@
 {# Main #}
 {% block main %}
   <div role="main" class="main-container {{ container }} js-quickedit-main-content">
-    <div class="row row-eq-height">
+    <div class="row row-flex">
       {# Tour Box #}
-      <aside class="col-md-3" role="complementary">
+      <aside class="col-md-3 col-flex" role="complementary">
         <div class="panel panel-primary panel-tour">
           <div class="panel-body text-center">
             <p><img src="{{ base_path ~ directory }}/img/icon-directions.png" alt=""></p>
@@ -83,7 +83,12 @@
       </aside>
 
       {# Content #}
-      {% set content_classes = 'col-md-9' %}
+      {%
+        set content_classes = [
+          'col-md-9',
+          'col-flex'
+        ]
+      %}
       <section{{ content_attributes.addClass(content_classes) }}>
         {# Highlighted #}
         {% if page.highlighted %}

@@ -14,22 +14,22 @@
   margin-bottom: 11px;
 }
 @media (min-width: 992px) {
-  .row-eq-height {
+  .row-flex,
+  .col-flex {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display:         flex;
   }
   .panel-tour {
-    display: table;
-    height: 100%;
-  }
-  .panel-tour > .panel-body {
-    display: table-cell;
-    vertical-align: middle;
-  }
-  .panel-resources {
-    height: 100%;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display:         flex;
   }
 }
 /*# sourceMappingURL=style.css.map */

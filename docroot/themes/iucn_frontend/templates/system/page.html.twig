@@ -110,7 +110,10 @@
           <p class="text-primary">{{ site_slogan }}</p>
         {% endif %}
         <form>
-          <input type="text" class="form-control input-lg" placeholder="Search in record and full text&hellip;">
+          <div class="form-group has-feedback">
+            <input type="text" class="form-control input-lg" placeholder="Search in record and full text&hellip;">
+            <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+          </div>
         </form>
       </div>
     </div>

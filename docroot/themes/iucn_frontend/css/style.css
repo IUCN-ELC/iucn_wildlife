@@ -1,8 +1,14 @@
+.jumbotron {
+  margin-bottom: 45px;
+}
 .jumbotron h1 {
   margin-top: 0;
 }
 .jumbotron .text-primary {
   color: #0095f3;
+}
+.jumbotron .form-control-feedback {
+  color: #666;
 }
 .panel {
   border-width: 2px;

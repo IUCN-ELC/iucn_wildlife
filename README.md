@@ -30,3 +30,13 @@
 
 3. Download drush aliases from Acquia (https://docs.acquia.com/cloud/drush-aliases).
 4. Run `drush sql-sync @iucnwildlifed8.environment @self -y` (replace `environment` with `dev`, `test` or `prod`).
+
+### Theme development
+
+CSS files (the `css` directory) are genereted from LESS sources (the `less` directory). Don't edit the CSS files directly, use `grunt` to recompile.
+
+```
+$ npm install grunt-cli -g # install grunt command line interface if not already installed
+$ npm install
+$ grunt build # or watch
+```

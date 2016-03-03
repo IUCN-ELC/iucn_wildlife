@@ -1,3 +1,7 @@
+.toolbar-oriented .toolbar-bar {
+  z-index: 1080;
+}
+
 .jumbotron .text-primary {
   color: #0095f3;
 }

@@ -11,5 +11,8 @@
 # @see \Drupal\bootstrap\Plugin\Form\SystemThemeSettings
 # @see \Drupal\bootstrap\ThemeSettings
 
+# Components
 navbar_position: static-top
+
+# Advanced
 cdn_provider: ''

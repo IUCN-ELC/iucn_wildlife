@@ -5,3 +5,33 @@
 .jumbotron .text-primary {
   color: #0095f3;
 }
+
+.panel {
+  border-width: 2px;
+}
+
+.panel-tour .tour-title {
+  margin-top: 22px;
+}
+
+.panel-resources .resources-websites {
+  margin-bottom: 0;
+}
+
+@media (min-width: 992px) {
+  .panel-tour {
+    display: table;
+    height: 789px;
+  }
+
+  .panel-tour > .panel-body {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+
+@media (min-width: 1200px) {
+  .panel-tour {
+    height: 677px;
+  }
+}

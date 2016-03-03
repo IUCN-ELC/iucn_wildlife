@@ -79,11 +79,11 @@
 
     <div class="row">
       {# Tour Box #}
-      <aside class="col-sm-3" role="complementary">
-        <div class="panel panel-primary">
+      <aside class="col-md-3" role="complementary">
+        <div class="panel panel-primary panel-tour">
           <div class="panel-body text-center">
             <p><img src="{{ base_path ~ directory }}/img/icon-directions.png" alt=""></p>
-            <h4>Take a tour of the prototype</h4>
+            <h4 class="tour-title">Take a tour of the prototype</h4>
             <p>See all the great features of this prototype and learn about what we have in mind for the final product.</p>
             <p>We wish to offer end users a similar tour to help them get acquainted to the new interface</p>
             <p><a href="#" class="btn btn-primary">Start tour</a></p>
@@ -94,8 +94,8 @@
       {# Content #}
       {%
         set content_classes = [
-          page.sidebar_second ? 'col-sm-6',
-          page.sidebar_second is empty ? 'col-sm-9'
+          page.sidebar_second ? 'col-md-6',
+          page.sidebar_second is empty ? 'col-md-9'
         ]
       %}
       <section{{ content_attributes.addClass(content_classes) }}>
@@ -130,11 +130,11 @@
         {# Content #}
         {% block content %}
           <a id="main-content"></a>
-          <div class="panel panel-default">
+          <div class="panel panel-default panel-resources">
             <div class="panel-body">
               <h4>Other resources</h4>
               <p>For further read, please consult these websites.</p>
-              <dl>
+              <dl class="resources-websites">
                 <dt><a href="#">Protected Areas Law</a></dt>
                 <dd><p>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Wnironmental Law, and the IUCN Academy of Environmental Law, working with the World Commission on Protected Areas, the IUCN Global Protected Areas Programme, and IUCN regional offices for Eastern and Southern Africa (ESARO), West and Central Africa (PACO), and Mexico, Central America and the Caribbean (ORMACC). It is generously supported by the Aage V. Jensen Charity Foundation.</p></dd>
                 <dt><a href="#">Law for Sustainability</a></dt>
@@ -152,7 +152,7 @@
       {# Sidebar Second #}
       {% if page.sidebar_second %}
         {% block sidebar_second %}
-          <aside class="col-sm-3" role="complementary">
+          <aside class="col-md-3" role="complementary">
             {{ page.sidebar_second }}
           </aside>
         {% endblock %}

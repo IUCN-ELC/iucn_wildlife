@@ -1,0 +1,23 @@
+uuid: 6edddfe9-fe7e-41e7-a100-f55f616a7267
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_text
+    - node.type.court_decision
+  module:
+    - datetime
+_core:
+  default_config_hash: kpowyUFrQiGcb4gheNch2bbWsuQNuH3NDej0XUfex6Y
+id: node.court_decision.field_date_of_text
+field_name: field_date_of_text
+entity_type: node
+bundle: court_decision
+label: 'Date of text'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

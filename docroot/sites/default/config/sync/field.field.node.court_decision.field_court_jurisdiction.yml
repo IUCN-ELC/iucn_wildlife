@@ -1,0 +1,27 @@
+uuid: 1a1fb2fe-a5a0-4370-9100-0df0c5e333f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_court_jurisdiction
+    - node.type.court_decision
+    - taxonomy.vocabulary.court_jurisdictions
+id: node.court_decision.field_court_jurisdiction
+field_name: field_court_jurisdiction
+entity_type: node
+bundle: court_decision
+label: 'Court jurisdiction'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      court_jurisdictions: court_jurisdictions
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

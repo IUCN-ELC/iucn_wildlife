@@ -1,0 +1,23 @@
+uuid: 62399bf8-990b-4966-9315-21001a15055d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_modification
+    - node.type.court_decision
+  module:
+    - datetime
+_core:
+  default_config_hash: 3DzKOPOQiPOHXWcO1OArnrSuHpk0ZBHEzPTetEqkvSg
+id: node.court_decision.field_date_of_modification
+field_name: field_date_of_modification
+entity_type: node
+bundle: court_decision
+label: 'Date of modification'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

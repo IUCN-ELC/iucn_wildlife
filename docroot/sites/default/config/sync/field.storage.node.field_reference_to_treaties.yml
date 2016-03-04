@@ -1,0 +1,21 @@
+uuid: c145978e-01e4-4750-8c1f-316bb5fd91d8
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_reference_to_treaties
+field_name: field_reference_to_treaties
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

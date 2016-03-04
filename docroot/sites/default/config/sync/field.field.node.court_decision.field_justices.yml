@@ -1,0 +1,27 @@
+uuid: e08f3b07-13f6-4c86-9420-320ad9332aa3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_justices
+    - node.type.court_decision
+    - taxonomy.vocabulary.justices
+id: node.court_decision.field_justices
+field_name: field_justices
+entity_type: node
+bundle: court_decision
+label: Justices
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      justices: justices
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

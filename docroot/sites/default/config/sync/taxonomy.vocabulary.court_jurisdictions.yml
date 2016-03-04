@@ -1,0 +1,9 @@
+uuid: 099433d7-ac9c-47e3-8800-d7b040a80e0e
+langcode: en
+status: true
+dependencies: {  }
+name: 'Court jurisdictions'
+vid: court_jurisdictions
+description: ''
+hierarchy: 0
+weight: 0

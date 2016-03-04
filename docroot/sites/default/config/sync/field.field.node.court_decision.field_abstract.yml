@@ -1,0 +1,21 @@
+uuid: 367378d9-68c0-402d-8005-5e45c5e487fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_abstract
+    - node.type.court_decision
+  module:
+    - text
+id: node.court_decision.field_abstract
+field_name: field_abstract
+entity_type: node
+bundle: court_decision
+label: Abstract
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

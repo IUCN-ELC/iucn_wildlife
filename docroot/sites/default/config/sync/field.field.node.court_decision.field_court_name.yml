@@ -1,0 +1,21 @@
+uuid: af319d1e-54f9-4eb4-b244-68bb98507312
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_court_name
+    - node.type.court_decision
+_core:
+  default_config_hash: AFSBP6hENuWxwuukeGO6RMMAakLiwOAsZtHinGGAmW0
+id: node.court_decision.field_court_name
+field_name: field_court_name
+entity_type: node
+bundle: court_decision
+label: 'Court name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

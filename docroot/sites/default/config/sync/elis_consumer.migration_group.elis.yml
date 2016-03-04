@@ -1,0 +1,6 @@
+id: elis
+label: 'Elis Imports'
+description: 'Import data from ELIS web service.'
+source_type: XML
+_core:
+  default_config_hash: v5gGjegzkG2sV40MzwO2iI-JorH5YBNg5ffzD7oGpUQ

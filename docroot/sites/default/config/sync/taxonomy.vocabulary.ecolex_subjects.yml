@@ -1,0 +1,9 @@
+uuid: 497ebc96-2291-45fa-8724-369ef917ab01
+langcode: en
+status: true
+dependencies: {  }
+name: 'ECOLEX subjects'
+vid: ecolex_subjects
+description: ''
+hierarchy: 0
+weight: 0

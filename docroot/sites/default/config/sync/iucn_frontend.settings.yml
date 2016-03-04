@@ -1,0 +1,19 @@
+navbar_position: static-top
+cdn_provider: ''
+_core:
+  default_config_hash: 6JAKvrB01d2UlhyfFIIeqqHyJ8AOKWks5XrRfcNAhec
+favicon:
+  mimetype: image/vnd.microsoft.icon
+  path: ''
+  url: 'http://iucnwildlifed8vggq2jmz5y.devcloud.acquia-sites.com/themes/bootstrap/favicon.ico'
+  use_default: true
+features:
+  comment_user_picture: true
+  comment_user_verification: true
+  favicon: true
+  node_user_picture: true
+logo:
+  path: ''
+  url: ''
+  use_default: true
+schema: 8000

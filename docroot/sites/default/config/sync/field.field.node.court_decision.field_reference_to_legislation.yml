@@ -1,0 +1,19 @@
+uuid: b98ae54b-e0e9-4f23-a91f-3187ad342a0f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reference_to_legislation
+    - node.type.court_decision
+id: node.court_decision.field_reference_to_legislation
+field_name: field_reference_to_legislation
+entity_type: node
+bundle: court_decision
+label: 'Reference to EU Legislation'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

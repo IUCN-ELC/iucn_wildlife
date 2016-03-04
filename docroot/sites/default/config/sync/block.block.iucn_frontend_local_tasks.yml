@@ -1,0 +1,22 @@
+uuid: 51057694-1b97-4882-a901-01844cf3d8d4
+langcode: en
+status: true
+dependencies:
+  theme:
+    - iucn_frontend
+_core:
+  default_config_hash: qHdtze2DZ2mFfaJadxjZz6epm92_SN9SAFY4yJGl8Fo
+id: iucn_frontend_local_tasks
+theme: iucn_frontend
+region: header
+weight: 10
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

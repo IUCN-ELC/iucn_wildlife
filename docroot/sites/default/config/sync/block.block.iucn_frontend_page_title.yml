@@ -1,0 +1,20 @@
+uuid: c6c420b0-95ad-4b5e-b248-7203dadab6cf
+langcode: en
+status: true
+dependencies:
+  theme:
+    - iucn_frontend
+_core:
+  default_config_hash: 1TQP4b3ZnlzvIH9bj6cpCz_SyUHdJjLQkZnHpikjjhw
+id: iucn_frontend_page_title
+theme: iucn_frontend
+region: header
+weight: 0
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

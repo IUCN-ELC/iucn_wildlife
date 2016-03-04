@@ -1,0 +1,54 @@
+uuid: 5c16a308-08c7-48bd-af05-5d7ad9e98493
+langcode: en
+status: true
+dependencies:
+  module:
+    - elis_consumer
+    - node
+_core:
+  default_config_hash: DvTEbzX0V-aEKRUw-am_ulLlapuXhjCmjXhL_Z8pY5c
+id: elis_consumer_court_decisions
+migration_tags: null
+label: 'Elis court decisions'
+source:
+  plugin: elis_consumer_court_decisions
+process:
+  type:
+    plugin: default_value
+    default_value: court_decision
+  field_original_id: id
+  title: titleOfTextShort
+  field_original_title: titleOfText
+  field_abstract: abstract
+  field_country: country
+  field_court_name: courtName
+  field_date_of_entry: dateOfEntry
+  field_date_of_modification: dateOfModification
+  field_date_of_text: dateOfText
+  field_ecolex_subjects: subject
+  field_isis_number: isisMfn
+  field_number_of_pages: numberOfPages
+  field_reference_number: referenceNumber
+  field_type_of_text: typeOfText
+  field_url: linkToFullText
+  field_related_website: relatedWebSite
+  field_seat_of_court: seatOfCourt
+  field_justices: justices
+  field_reference_to_cou: referenceToCourtDecision
+  field_reference_to_legislation: referenceToEULegislation
+  field_reference_to_faolex: referenceToFaolex
+  field_reference_to_national_legi: referenceToNationalLegislation
+  field_reference_to_treaties: referenceToTreaties
+  field_available_in: availableIn
+  field_court_jurisdiction: courtJurisdiction
+  field_instance: instance
+  field_internet_reference: internetReference
+  field_decision_status: statusOfDecision
+  field_subdivision: subdivision
+  field_territorial_subdivisions: territorialSubdivision
+  field_files: files
+destination:
+  plugin: 'entity:node'
+template: null
+migration_dependencies: {  }
+migration_group: elis

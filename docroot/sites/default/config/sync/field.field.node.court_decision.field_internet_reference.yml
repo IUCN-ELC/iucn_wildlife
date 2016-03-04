@@ -1,0 +1,23 @@
+uuid: f914dfdd-651c-4feb-b400-d8fc15849eba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_internet_reference
+    - node.type.court_decision
+  module:
+    - link
+id: node.court_decision.field_internet_reference
+field_name: field_internet_reference
+entity_type: node
+bundle: court_decision
+label: 'Internet reference'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

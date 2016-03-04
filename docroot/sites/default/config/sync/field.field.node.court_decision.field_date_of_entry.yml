@@ -1,0 +1,23 @@
+uuid: da7bf293-fc6c-457e-8706-6d0fe1f1b208
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_entry
+    - node.type.court_decision
+  module:
+    - datetime
+_core:
+  default_config_hash: PrvfaiBX8Cz_QXuykbPFuvBjG4-zY8lmY_5s6U1hyuA
+id: node.court_decision.field_date_of_entry
+field_name: field_date_of_entry
+entity_type: node
+bundle: court_decision
+label: 'Date of entry'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,27 @@
+uuid: b11a123d-5a77-4f06-9e29-412fd07f8813
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_files
+    - node.type.court_decision
+  module:
+    - file
+id: node.court_decision.field_files
+field_name: field_files
+entity_type: node
+bundle: court_decision
+label: Files
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: field_files/court_decisions
+  file_extensions: 'txt pdf doc docx xls rtf odt'
+  max_filesize: ''
+  description_field: true
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

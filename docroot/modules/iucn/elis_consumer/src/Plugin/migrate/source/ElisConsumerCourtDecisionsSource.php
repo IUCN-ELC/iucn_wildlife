@@ -172,9 +172,10 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $ob = new \stdClass();
     $parties = array();
     $abstract = '';
-    foreach ($data as $field_name => $value) {
+    foreach ($data as $field_name => &$value) {
+      $value = utf8_encode((string) $value);
       if ($field_name == 'abstract') {
-        $abstract .= utf8_encode((string) $value . PHP_EOL);
+        $abstract .= $value . PHP_EOL;
         continue;
       }
       elseif ($field_name == 'party') {
@@ -183,17 +184,17 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       }
       elseif (property_exists($ob, $field_name)) {
         if (is_array($ob->{$field_name})) {
-          $ob->{$field_name}[] = utf8_encode((string)$value);
+          $ob->{$field_name}[] = $value;
         }
         else {
-          $ob->{$field_name} = array($ob->{$field_name}, utf8_encode((string) $value));
+          $ob->{$field_name} = array($ob->{$field_name}, $value);
         }
       }
       else {
         if ($field_name == 'titleOfText') {
-          $ob->titleOfText_original = utf8_encode((string) $value);
+          $ob->titleOfText_original = $value;
         }
-        $ob->{$field_name} = utf8_encode((string) $value);
+        $ob->{$field_name} = $value;
       }
     }
     $ob->abstract = $abstract;

@@ -1,0 +1,31 @@
+export:
+  folder: custom
+langcode: en
+exclude_paths: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/user/*/*"
+popup_info:
+  value: "<p>We use cookies on this site to enhance your user experience.</p>\r\n"
+  format: basic_html
+popup_agreed:
+  value: "<p>Thank you for accepting cookies.</p>\r\n"
+  format: basic_html
+_core:
+  default_config_hash: 1nGjaIrY9azKyikRoo0FTLRRSILozzYtUExZ4sLK_0E
+domain: ''
+popup_enabled: true
+popup_clicking_confirmation: false
+popup_position: true
+popup_agree_button_message: 'Got it!'
+popup_disagree_button_message: 'Learn more'
+popup_agreed_enabled: '0'
+popup_hide_agreed: false
+popup_find_more_button_message: 'More info'
+popup_hide_button_message: Hide
+popup_link: /
+popup_link_new_window: true
+popup_height: null
+popup_width: 100%
+popup_delay: 1
+popup_bg_hex: '212121'
+popup_text_hex: '999'
+domains_option: 1
+domains_list: ''

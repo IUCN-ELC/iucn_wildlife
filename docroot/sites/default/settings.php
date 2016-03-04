@@ -245,8 +245,7 @@ $databases = array();
  * @endcode
  */
 $config_directories = array(
-  'config' => 'sites/default/config',
-  'sync' => 'sites/default/config/sync',
+  'vcs' => $app_root . '/../config/' . basename($site_path),
 );
 
 /**

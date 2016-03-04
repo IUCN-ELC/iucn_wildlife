@@ -174,6 +174,9 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $abstract = '';
     foreach ($data as $field_name => &$value) {
       $value = utf8_encode((string) $value);
+      if (strpos($value, 'www.') === 0) {
+        $value = 'http://' . $value;
+      }
       if ($field_name == 'abstract') {
         $abstract .= $value . PHP_EOL;
         continue;

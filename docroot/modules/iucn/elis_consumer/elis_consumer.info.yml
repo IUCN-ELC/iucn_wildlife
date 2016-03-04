@@ -5,4 +5,3 @@ package: elis_consumer
 dependencies:
   - migrate
 core: '8.x'
-project: 'elis_consumer'

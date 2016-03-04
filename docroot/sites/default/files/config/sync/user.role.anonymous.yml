@@ -14,3 +14,4 @@ permissions:
   - 'access comments'
   - 'access site-wide contact form'
   - 'search content'
+  - 'display EU Cookie Compliance popup'

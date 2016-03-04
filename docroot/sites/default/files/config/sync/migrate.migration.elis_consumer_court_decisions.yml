@@ -1,4 +1,4 @@
-uuid: 5c16a308-08c7-48bd-af05-5d7ad9e98493
+uuid: 45fdef02-ad58-4c9a-aa00-d5048e4874dd
 langcode: en
 status: true
 dependencies:
@@ -6,12 +6,13 @@ dependencies:
     - elis_consumer
     - node
 _core:
-  default_config_hash: DvTEbzX0V-aEKRUw-am_ulLlapuXhjCmjXhL_Z8pY5c
+  default_config_hash: WtlDxNC8CWujIXrQHLxTOROKGl7fQVZsoR6OcoIGWyc
 id: elis_consumer_court_decisions
 migration_tags: null
 label: 'Elis court decisions'
 source:
   plugin: elis_consumer_court_decisions
+  files_destination: field_files/court_decisions
 process:
   type:
     plugin: default_value

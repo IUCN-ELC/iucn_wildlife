@@ -173,7 +173,10 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $parties = array();
     $abstract = '';
     foreach ($data as $field_name => $value) {
-      $value = utf8_encode((string) $value);
+      $value = (string) $value;
+      if (mb_detect_encoding($value) != 'UTF-8') {
+        $value = utf8_encode($value);
+      }
       if (strpos($value, 'www.') === 0) {
         $value = 'http://' . $value;
       }

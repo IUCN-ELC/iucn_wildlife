@@ -20,6 +20,17 @@ regions:
   page_bottom: 'Page bottom'
 
 libraries:
-  - 'iucn_frontend/bootstrap'
-  - 'iucn_frontend/fonts'
-  - 'iucn_frontend/global-styling'
+  - iucn_frontend/bootstrap
+  - iucn_frontend/fonts
+  - iucn_frontend/global-styling
+
+libraries-extend:
+  bootstrap/drupal.bootstrap:
+    - iucn_frontend/bootstrap-overrides
+
+libraries-override:
+  eu_cookie_compliance/eu_cookie_compliance:
+    css:
+      state:
+        css/eu_cookie_compliance.css: false
+

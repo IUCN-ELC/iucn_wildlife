@@ -1,3 +1,14 @@
+#sliding-popup {
+  font-size: 14px;
+  text-align: center;
+}
+#sliding-popup .list-inline > li {
+  margin-top: 11px;
+  vertical-align: middle;
+}
+#sliding-popup .find-more-button {
+  color: #fff;
+}
 .jumbotron {
   margin-bottom: 45px;
 }

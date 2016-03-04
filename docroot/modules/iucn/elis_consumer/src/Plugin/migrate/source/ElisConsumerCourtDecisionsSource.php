@@ -73,6 +73,8 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     if (isset($configuration['files_destination'])) {
       $this->files_destination = $configuration['files_destination'];
     }
+    $directory = "public://{$this->files_destination}";
+    file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
   }
 
   public function hexadecimally_encode_string($str) {

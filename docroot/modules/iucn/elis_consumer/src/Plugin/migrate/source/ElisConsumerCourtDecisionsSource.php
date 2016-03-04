@@ -56,6 +56,11 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
    */
   protected $date_period = array();
 
+  /**
+   * The directory where files should be stored.
+   */
+  protected $files_destination = 'court_decisions';
+
   public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
 
@@ -64,6 +69,10 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     
     $this->client = \Drupal::httpClient();
     $this->date_period = $this->get_date_period('Y*', '1 year');
+
+    if (isset($configuration['files_destination'])) {
+      $this->files_destination = $configuration['files_destination'];
+    }
   }
 
   public function hexadecimally_encode_string($str) {
@@ -359,7 +368,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $fids = [];
     foreach ($urls as $url) {
       $filename = basename($url);
-      $destination = 'public://field_files/' . $filename;
+      $destination = "public://{$this->files_destination}/{$filename}";
       $data = file_get_contents($url);
       $file = file_save_data($data, $destination, FILE_EXISTS_REPLACE);
       if (!empty($file)) {

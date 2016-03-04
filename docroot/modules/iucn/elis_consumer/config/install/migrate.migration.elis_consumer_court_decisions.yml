@@ -3,6 +3,7 @@ label: Elis court decisions
 migration_group: elis
 source:
   plugin: elis_consumer_court_decisions
+  files_destination: field_files/court_decisions
 destination:
   plugin: entity:node
 process:

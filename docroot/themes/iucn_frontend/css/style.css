@@ -83,7 +83,8 @@
   text-align: right;
   width: 24rem;
 }
-.page-node-type-court-decision .field--label + .field--item {
+.page-node-type-court-decision .field--label + .field--item,
+.page-node-type-court-decision .field--label + .field__items {
   overflow: hidden;
 }
 .footer {

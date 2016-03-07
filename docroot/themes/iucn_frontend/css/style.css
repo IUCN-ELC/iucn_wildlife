@@ -65,27 +65,12 @@
   margin-bottom: 11px;
   padding-bottom: 11px;
 }
-.page-node-type-court-decision .field:before,
-.page-node-type-court-decision .field:after {
-  content: " ";
-  display: table;
-}
-.page-node-type-court-decision .field:after {
-  clear: both;
-}
 .page-node-type-court-decision .field:last-child {
   border-bottom: 0;
   padding-bottom: 0;
 }
 .page-node-type-court-decision .field--label {
-  float: left;
-  margin-right: 15px;
   text-align: right;
-  width: 24rem;
-}
-.page-node-type-court-decision .field--label + .field--item,
-.page-node-type-court-decision .field--label + .field__items {
-  overflow: hidden;
 }
 .footer {
   background-color: #eee;

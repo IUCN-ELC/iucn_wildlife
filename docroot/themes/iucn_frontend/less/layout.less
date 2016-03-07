@@ -1,3 +1,15 @@
+.clearfix() {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
 #sliding-popup {
   font-size: 14px;
   text-align: center;
@@ -71,6 +83,32 @@
   .panel-tour {
     align-items: center;
     display: flex;
+  }
+}
+
+.page-node-type-court-decision {
+  .field {
+    .clearfix();
+
+    border-bottom: 1px solid #eee;
+    margin-bottom: 11px;
+    padding-bottom: 11px;
+
+    &:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  .field--label {
+    float: left;
+    margin-right: 15px;
+    text-align: right;
+    width: 24rem;
+
+    + .field--item {
+      overflow: hidden;
+    }
   }
 }
 

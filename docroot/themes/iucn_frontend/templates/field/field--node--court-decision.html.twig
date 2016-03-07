@@ -70,10 +70,14 @@
   <div{{ attributes.addClass(classes) }}>
     <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
-      <div class="field__items">
+      <div class="col-md-8 field__items">
     {% endif %}
     {% for item in items %}
-      <div{{ item.attributes.addClass('col-md-8', 'field--item') }}>{{ item.content }}</div>
+      {% if multiple %}
+        <div{{ item.attributes.addClass('field--item') }}>{{ item.content }}</div>
+      {% else %}
+        <div{{ item.attributes.addClass('col-md-8', 'field--item') }}>{{ item.content }}</div>
+      {% endif %}
     {% endfor %}
     {% if multiple %}
       </div>

@@ -14,6 +14,7 @@ use Drupal\search_api\Entity\Index;
 class IucnSearchForm extends FormBase {
 
   protected $search_url_param = 'q';
+  protected $items_per_page = 10;
 
   /**
    * {@inheritdoc}
@@ -27,6 +28,7 @@ class IucnSearchForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $text = !empty($_GET[$this->search_url_param]) ? $_GET[$this->search_url_param] : '';
+    $current_page = !empty($_GET['page']) ? $_GET['page'] : 1;
     $form['text'] = [
       '#type' => 'textfield',
       '#title' => 'Search text',
@@ -38,7 +40,7 @@ class IucnSearchForm extends FormBase {
     ];
     $elements = [
       '#theme' => 'iucn_search_results',
-      '#items' => $this->getSeachResults($text),
+      '#items' => $this->getSeachResults($text, $current_page),
     ];
     $form['results'] = [
       '#markup' => \Drupal::service('renderer')->render($elements),
@@ -60,12 +62,13 @@ class IucnSearchForm extends FormBase {
     $form_state->setRedirect('iucn.search', [], ['query' => [$this->search_url_param => $search_text]]);
   }
 
-  private function getSeachResults($search_text) {
+  private function getSeachResults($search_text, $current_page) {
     $index = Index::load('default_node_index');
     $query = $index->query();
     $query->keys($search_text);
     $query->addCondition('type_1', 'court_decision', '=');
-    $query->range(0,10);
+    $offset = ($current_page - 1) * $this->items_per_page;
+    $query->range($offset, $this->items_per_page);
     $resultSet = $index->getServerInstance()->search($query);
 
     $results = [];

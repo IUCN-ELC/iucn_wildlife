@@ -64,29 +64,28 @@ class IucnSearchForm extends FormBase {
 
   private function getSeachResults($search_text, $current_page) {
     $results = [];
-    $index = Index::load('default_node_index');
-    if (!empty($index)) {
-      try {
-        $query = $index->query();
-        $query->keys($search_text);
-        $query->addCondition('type_1', 'court_decision', '=');
-        $offset = ($current_page - 1) * $this->items_per_page;
-        $query->range($offset, $this->items_per_page);
-        $resultSet = $index->getServerInstance()->search($query);
 
-        foreach ($resultSet->getResultItems() as $item) {
-          $item_nid = $item->getField('nid')->getValues()[0];
-          $results[$item_nid] = \Drupal\node\Entity\Node::load($item_nid);
-        }
-      }
-      catch (\Exception $e) {
-        watchdog_exception('iucn_search', $e);
-        drupal_set_message(t('An error occurred.'), 'error');
-      }
-    }
-    else {
+    if (empty($index = Index::load('default_node_index')) && empty($index = Index::load('acquia_search_index'))) {
       drupal_set_message(t('The search index is not properly configured.'), 'error');
+      return $results;
     }
+    try {
+      $query = $index->query();
+      $query->keys($search_text);
+      $query->addCondition('type_1', 'court_decision', '=');
+      $offset = ($current_page - 1) * $this->items_per_page;
+      $query->range($offset, $this->items_per_page);
+      $resultSet = $index->getServerInstance()->search($query);
+
+      foreach ($resultSet->getResultItems() as $item) {
+        $item_nid = $item->getField('nid')->getValues()[0];
+        $results[$item_nid] = \Drupal\node\Entity\Node::load($item_nid);
+      }
+    }
+    catch (\Exception $e) {
+      watchdog_exception('iucn_search', $e);
+      drupal_set_message(t('An error occurred.'), 'error');
+      }
     return $results;
   }
 

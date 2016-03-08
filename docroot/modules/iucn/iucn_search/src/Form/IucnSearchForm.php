@@ -79,7 +79,7 @@ class IucnSearchForm extends FormBase {
       }
     }
     else {
-      drupal_set_message('The search index is not properly configured.', 'error');
+      drupal_set_message(t('The search index is not properly configured.'), 'error');
     }
     return $results;
   }

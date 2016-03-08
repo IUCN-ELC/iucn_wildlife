@@ -1,0 +1,5 @@
+type: module
+name: 'IUCN Search'
+description: 'Holds search functionality'
+package: iucn_search
+core: '8.x'

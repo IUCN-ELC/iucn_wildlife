@@ -23,6 +23,7 @@ module:
   help: 0
   history: 0
   image: 0
+  iucn_search: 0
   link: 0
   menu_ui: 0
   migrate: 0

@@ -66,16 +66,21 @@ class IucnSearchForm extends FormBase {
     $results = [];
     $index = Index::load('default_node_index');
     if (!empty($index)) {
-      $query = $index->query();
-      $query->keys($search_text);
-      $query->addCondition('type_1', 'court_decision', '=');
-      $offset = ($current_page - 1) * $this->items_per_page;
-      $query->range($offset, $this->items_per_page);
-      $resultSet = $index->getServerInstance()->search($query);
+      try {
+        $query = $index->query();
+        $query->keys($search_text);
+        $query->addCondition('type_1', 'court_decision', '=');
+        $offset = ($current_page - 1) * $this->items_per_page;
+        $query->range($offset, $this->items_per_page);
+        $resultSet = $index->getServerInstance()->search($query);
 
-      foreach ($resultSet->getResultItems() as $item) {
-        $item_nid = $item->getField('nid')->getValues()[0];
-        $results[$item_nid] = \Drupal\node\Entity\Node::load($item_nid);
+        foreach ($resultSet->getResultItems() as $item) {
+          $item_nid = $item->getField('nid')->getValues()[0];
+          $results[$item_nid] = \Drupal\node\Entity\Node::load($item_nid);
+        }
+      }
+      catch (\Exception $e) {
+        drupal_set_message($e->getMessage(), 'error');
       }
     }
     else {

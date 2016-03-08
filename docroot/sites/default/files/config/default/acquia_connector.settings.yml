@@ -1,9 +1,7 @@
 cloud_migration: {  }
-identifier: ''
-key: ''
-subscription_data:
-  active: false
-subscription_name: ''
+identifier: DKWZ-106572
+key: 238e626cf32b801a2b6d4341dd572ae5
+subscription_name: iucnwildlifed8
 debug: false
 cron_interval: 30
 cron_interval_override: 0
@@ -15,9 +13,12 @@ spi:
   server: 'https://nspi.acquia.com'
   ssl_override: false
   ssl_verify: true
-  def_vars: {  }
+  def_vars:
+    preprocess_css:
+      optional: 0
+      description: ''
   def_waived_vars: {  }
-  def_timestamp: 0
+  def_timestamp: 1374783288
   new_optional_data: 1
   admin_priv: 1
   send_node_user: 1
@@ -48,6 +49,9 @@ spi:
     variables: {  }
     time: 0
   cron_interval: 28800
+  site_name: 'IUCN Wildlife'
+  site_machine_name: iucn_wildlife
+  site_uuid: 20bebc3a-6ad4-407f-878e-5e41638dc248
 mapping:
   acquia_spi_send_node_user:
     - acquia_connector.settings
@@ -184,3 +188,30 @@ mapping:
     - allow_insecure_uploads
 _core:
   default_config_hash: 9SqZ2n8DRznf0iTNP0QygHRAeVL4GnjIKCKIX0DlOOg
+subscription_data:
+  active: true
+  href: 'https://insight.acquia.com/node/uuid/d484c3c7-f96a-4860-b6c8-8987bf196be3/dashboard'
+  uuid: d484c3c7-f96a-4860-b6c8-8987bf196be3
+  subscription_name: iucnwildlifed8
+  expiration_date:
+    value: '2017-02-25T00:00:00'
+  product:
+    view: 'Acquia Network'
+  derived_key_salt: aea0847a59bac3a69f8a04d01273d69c
+  update_service: '1'
+  search_service_enabled: 1
+  rpc_version: '3'
+  update: {  }
+  heartbeat_data:
+    acquia_lift:
+      status: false
+      decision:
+        public_key: ''
+        private_key: ''
+      profile:
+        account_name: ''
+        hostname: ''
+        public_key: ''
+        secret_key: ''
+        js_path: ''
+    search_service_enabled: 1

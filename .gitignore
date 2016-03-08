@@ -24,10 +24,13 @@ conf/apache.conf
 
 # User Generated Content #
 ##########################
-docroot/files
-docroot/sites/*/files
+docroot/file
+docroot/sites/*/files/*
 docroot/sites/*/private
 acquia-files
+# Acquia server needs this
+!docroot/sites/default/files/config
+
 
 # Vagrant Files #
 #################

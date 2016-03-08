@@ -11,7 +11,7 @@ _core:
 id: iucn_frontend_help
 theme: iucn_frontend
 region: help
-weight: -30
+weight: -6
 provider: null
 plugin: help_block
 settings:

@@ -9,7 +9,7 @@ _core:
 id: iucn_frontend_local_actions
 theme: iucn_frontend
 region: header
-weight: 20
+weight: -6
 provider: null
 plugin: local_actions_block
 settings:

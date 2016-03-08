@@ -80,7 +80,8 @@ class IucnSearchForm extends FormBase {
         }
       }
       catch (\Exception $e) {
-        drupal_set_message($e->getMessage(), 'error');
+        watchdog_exception('iucn_search', $e);
+        drupal_set_message(t('An error occurred.'), 'error');
       }
     }
     else {

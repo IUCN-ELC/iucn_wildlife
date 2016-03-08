@@ -1,0 +1,7 @@
+iucn.search:
+  path: '/search'
+  defaults:
+    _form: 'Drupal\iucn_search\Form\IucnSearchForm'
+    _title: 'Search'
+  requirements:
+    _permission: 'access content'

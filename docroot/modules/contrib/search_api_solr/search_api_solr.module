@@ -107,7 +107,7 @@ function search_api_solr_search_api_server_update(ServerInterface $server) {
  */
 function search_api_solr_form_search_api_index_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   $index = $form_state->getFormObject()->getEntity();
-  $backend = $index->getServer() ? $index->getServer()->getBackend() : NULL;
+  $backend = $index->getServerInstance();
   if ($backend instanceof SearchApiSolrBackend) {
 
     $form['options']['index_directly']['#description'] .= ' ' . t('This feature is well supported for solr 4 but could cause latency and timeout problems with solr 3. Not recommended with that version.');

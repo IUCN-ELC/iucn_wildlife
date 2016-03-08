@@ -1,0 +1,3 @@
+{% for item in items %}
+    <div><a href="{{ url('entity.node.canonical', {'node': item.nid.value }) }}">{{ item.field_original_title.value }}</a></div>
+{% endfor %}

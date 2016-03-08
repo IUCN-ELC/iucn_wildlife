@@ -74,10 +74,7 @@ class IucnSearchForm extends FormBase {
     $results = [];
     foreach ($resultSet->getResultItems() as $item) {
       $item_nid = $item->getField('nid')->getValues()[0];
-      $results[$item_nid] = [
-        'nid' => $item_nid,
-        'field_original_title' => $item->getField('field_original_title')->getValues()[0],
-      ];
+      $results[$item_nid] = \Drupal\node\Entity\Node::load($item_nid);
     }
     return $results;
   }

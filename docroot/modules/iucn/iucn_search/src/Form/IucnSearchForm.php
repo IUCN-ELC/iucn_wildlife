@@ -36,11 +36,13 @@ class IucnSearchForm extends FormBase {
       '#type' => 'submit',
       '#value' => 'Search',
     ];
-    if (!empty($text)) {
-      $form['results'] = [
-        '#markup' => $this->getSeachResults($text),
-      ];
-    }
+    $elements = [
+      '#theme' => 'iucn_search_results',
+      '#items' => $this->getSeachResults($text),
+    ];
+    $form['results'] = [
+      '#markup' => \Drupal::service('renderer')->render($elements),
+    ];
     return $form;
   }
 
@@ -62,16 +64,17 @@ class IucnSearchForm extends FormBase {
     $index = Index::load('default_node_index');
     $query = $index->query();
     $query->keys($search_text);
+    $query->addCondition('type_1', 'court_decision', '=');
+    $query->range(0,10);
     $resultSet = $index->getServerInstance()->search($query);
 
     $results = [];
-
     foreach ($resultSet->getResultItems() as $item) {
       $item_nid = $item->getField('nid')->getValues()[0];
       $results[$item_nid] = [
         'nid' => $item_nid,
+        'field_original_title' => $item->getField('field_original_title')->getValues()[0],
       ];
-      break;
     }
     return $results;
   }

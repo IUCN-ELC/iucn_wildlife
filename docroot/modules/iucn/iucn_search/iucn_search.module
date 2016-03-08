@@ -1,1 +1,15 @@
 <?php
+
+/**
+ * Implements hook_theme().
+ */
+function iucn_search_theme($existing, $type, $theme, $path) {
+  $return = [];
+  $return ['iucn_search_results'] = [
+    'variables' => [
+      'items' => NULL,
+    ],
+    'path' => 'themes/iucn_frontend/templates/iucn_search',
+  ];
+  return $return;
+}

@@ -63,18 +63,23 @@ class IucnSearchForm extends FormBase {
   }
 
   private function getSeachResults($search_text, $current_page) {
-    $index = Index::load('default_node_index');
-    $query = $index->query();
-    $query->keys($search_text);
-    $query->addCondition('type_1', 'court_decision', '=');
-    $offset = ($current_page - 1) * $this->items_per_page;
-    $query->range($offset, $this->items_per_page);
-    $resultSet = $index->getServerInstance()->search($query);
-
     $results = [];
-    foreach ($resultSet->getResultItems() as $item) {
-      $item_nid = $item->getField('nid')->getValues()[0];
-      $results[$item_nid] = \Drupal\node\Entity\Node::load($item_nid);
+    $index = Index::load('default_node_index');
+    if (!empty($index)) {
+      $query = $index->query();
+      $query->keys($search_text);
+      $query->addCondition('type_1', 'court_decision', '=');
+      $offset = ($current_page - 1) * $this->items_per_page;
+      $query->range($offset, $this->items_per_page);
+      $resultSet = $index->getServerInstance()->search($query);
+
+      foreach ($resultSet->getResultItems() as $item) {
+        $item_nid = $item->getField('nid')->getValues()[0];
+        $results[$item_nid] = \Drupal\node\Entity\Node::load($item_nid);
+      }
+    }
+    else {
+      drupal_set_message('The search index is not properly configured.', 'error');
     }
     return $results;
   }

@@ -32,6 +32,12 @@
   left: 0;
   right: auto;
 }
+#search-form .btn {
+  line-height: 27px;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
 .panel {
   border-width: 2px;
 }

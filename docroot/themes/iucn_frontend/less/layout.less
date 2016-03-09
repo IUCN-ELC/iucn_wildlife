@@ -10,6 +10,63 @@
   }
 }
 
+.button-variant(@color; @background; @border) {
+  background-color: @background;
+  border-color: @border;
+  color: @color;
+
+  &:focus,
+  &.focus {
+    background-color: darken(@background, 10%);
+    border-color: darken(@border, 25%);
+    color: @color;
+  }
+
+  &:hover {
+    background-color: darken(@background, 10%);
+    border-color: darken(@border, 12%);
+    color: @color;
+  }
+
+  &:active,
+  &.active,
+  .open > .dropdown-toggle& {
+    background-color: darken(@background, 10%);
+    border-color: darken(@border, 12%);
+    color: @color;
+
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: darken(@background, 17%);
+      border-color: darken(@border, 25%);
+      color: @color;
+    }
+  }
+
+  &:active,
+  &.active,
+  .open > .dropdown-toggle& {
+    background-image: none;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: @background;
+      border-color: @border;
+    }
+  }
+
+  .badge {
+    background-color: @color;
+    color: @background;
+  }
+}
+
 #sliding-popup {
   font-size: 14px;
   text-align: center;
@@ -63,6 +120,10 @@
     right: 4px;
     top: 4px;
     width: 100px;
+  }
+
+  .btn-primary {
+    .button-variant(#fff, #0077c0, #0077c0);
   }
 }
 

@@ -11,6 +11,7 @@ function iucn_frontend_preprocess_field(array &$variables, $hook) {
     foreach ($variables['items'] as &$item) {
       $item['content']['#attributes']['class'][] = 'label';
       $item['content']['#attributes']['class'][] = 'label-primary';
+      $item['content']['#attributes']['class'][] = 'field--item';
     }
   }
 }

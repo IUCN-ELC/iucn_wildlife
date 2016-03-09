@@ -71,17 +71,15 @@
     <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
       <div class="col-md-9 field__items">
-        <ul class="list-inline">
     {% endif %}
     {% for item in items %}
       {% if multiple %}
-        <li{{ item.attributes.addClass('field--item') }}>{{ item.content }}</li>
+        {{ item.content }}
       {% else %}
-        <div{{ item.attributes.addClass('col-md-9', 'field--item') }}>{{ item.content }}</div>
+        <div{{ item.attributes.addClass('col-md-9') }}>{{ item.content }}</div>
       {% endif %}
     {% endfor %}
     {% if multiple %}
-        </ul>
       </div>
     {% endif %}
   </div>

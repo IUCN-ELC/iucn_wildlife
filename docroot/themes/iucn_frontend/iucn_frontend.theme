@@ -5,3 +5,12 @@ function iucn_frontend_preprocess_page(array &$variables) {
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
 }
+
+function iucn_frontend_preprocess_field(array &$variables, $hook) {
+  if ($variables['element']['#field_name'] == 'field_justices') {
+    foreach ($variables['items'] as &$item) {
+      $item['content']['#attributes']['class'][] = 'label';
+      $item['content']['#attributes']['class'][] = 'label-primary';
+    }
+  }
+}

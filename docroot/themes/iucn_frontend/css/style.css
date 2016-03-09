@@ -20,10 +20,8 @@
 .jumbotron .text-primary {
   color: #0095f3;
 }
-.jumbotron .form-control-feedback {
-  color: #666;
-}
 #search-form .form-control {
+  border-radius: 5px;
   font-size: 16px;
   padding-right: 120px;
 }
@@ -31,6 +29,7 @@
   padding-left: 45px;
 }
 #search-form .form-control-feedback {
+  color: #666;
   left: 0;
   right: auto;
 }

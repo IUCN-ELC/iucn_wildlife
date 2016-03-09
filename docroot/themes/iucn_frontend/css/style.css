@@ -136,8 +136,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .field--label {
   color: #212121;
   font-size: 14px;
-  line-height: 1;
-  padding-top: 6px;
+  padding-top: 3px;
 }
 .page-node-type-court-decision .field {
   margin-bottom: 11px;

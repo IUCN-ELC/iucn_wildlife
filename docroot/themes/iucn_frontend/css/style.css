@@ -23,10 +23,10 @@
 }
 #search-form .form-control {
   font-size: 16px;
+  padding-right: 120px;
 }
 #search-form .has-feedback .form-control {
   padding-left: 45px;
-  padding-right: 16px;
 }
 #search-form .form-control-feedback {
   left: 0;
@@ -37,6 +37,7 @@
   position: absolute;
   right: 4px;
   top: 4px;
+  width: 100px;
 }
 .panel {
   border-width: 2px;

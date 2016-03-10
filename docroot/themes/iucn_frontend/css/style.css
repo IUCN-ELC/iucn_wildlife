@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "ecolex-icons";
+  src: url("../fonts/ecolex-icons.eot");
+  src: url("../fonts/ecolex-icons.eot?#iefix") format("embedded-opentype"), url("../fonts/ecolex-icons.woff") format("woff"), url("../fonts/ecolex-icons.ttf") format("truetype"), url("../fonts/ecolex-icons.svg#ecolex-icons") format("svg");
+}
 #sliding-popup {
   font-size: 14px;
   text-align: center;

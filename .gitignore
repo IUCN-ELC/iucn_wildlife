@@ -32,6 +32,7 @@ acquia-files
 !docroot/sites/default/files/config
 # Used to store configurations like SOLR server/index
 docroot/sites/default/files/config/local
+config/local
 
 # Vagrant Files #
 #################

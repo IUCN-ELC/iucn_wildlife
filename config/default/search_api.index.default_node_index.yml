@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - search_api.server.solr_server
+    - field.field.node.court_decision.field_abstract
+    - field.field.node.court_decision.field_type_of_text
   module:
     - search_api
     - node
@@ -21,6 +23,21 @@ field_settings:
     type: string
     indexed_locked: true
     type_locked: true
+  type:
+    label: Type
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+  field_abstract:
+    label: Abstract
+    datasource_id: 'entity:node'
+    property_path: field_abstract
+    type: text
+  field_type_of_text:
+    label: 'Type of text'
+    datasource_id: 'entity:node'
+    property_path: field_type_of_text
+    type: integer
 processor_settings:
   add_url:
     plugin_id: add_url
@@ -35,9 +52,14 @@ datasource_settings:
   'entity:node':
     plugin_id: 'entity:node'
     settings:
-      languages: {  }
-      default: '1'
-      bundles: {  }
+      default: '0'
+      bundles:
+        court_decision: court_decision
+        article: '0'
+        country: '0'
+        page: '0'
+      languages:
+        - en
 tracker_settings:
   default:
     plugin_id: default

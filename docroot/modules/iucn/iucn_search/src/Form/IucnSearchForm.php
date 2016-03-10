@@ -65,7 +65,7 @@ class IucnSearchForm extends FormBase {
   private function getSeachResults($search_text, $current_page) {
     $results = [];
 
-    if (empty($index = Index::load('default_node_index')) && empty($index = Index::load('acquia_search_index'))) {
+    if (empty($index = Index::load('default_node_index'))) {
       drupal_set_message(t('The search index is not properly configured.'), 'error');
       return $results;
     }

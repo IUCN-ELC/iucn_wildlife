@@ -4,6 +4,8 @@ function iucn_frontend_preprocess_page(array &$variables) {
 
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
+
+  $variables['q'] = isset($_GET['q']) ? $_GET['q'] : '';
 }
 
 function iucn_frontend_preprocess_field(array &$variables, $hook) {

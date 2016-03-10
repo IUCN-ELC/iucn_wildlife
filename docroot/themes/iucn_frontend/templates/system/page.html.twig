@@ -109,9 +109,9 @@
         {% if site_slogan %}
           <p class="text-primary">{{ site_slogan }}</p>
         {% endif %}
-        <form id="search-form">
+        <form id="search-form" action="/search">
           <div class="form-group has-feedback">
-            <input type="text" class="form-control input-lg" placeholder="{{ 'Search in record and full text&hellip;'|t }}">
+            <input type="text" class="form-control input-lg" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}">
             <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
             <button type="submit" class="btn btn-primary">{{ 'Search'|t }}</button>
           </div>

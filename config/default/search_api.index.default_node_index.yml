@@ -5,6 +5,7 @@ dependencies:
   config:
     - search_api.server.solr_server
     - field.field.node.court_decision.field_abstract
+    - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_type_of_text
   module:
     - search_api
@@ -37,6 +38,21 @@ field_settings:
     label: 'Type of text'
     datasource_id: 'entity:node'
     property_path: field_type_of_text
+    type: integer
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+  field_country:
+    label: Country
+    datasource_id: 'entity:node'
+    property_path: field_country
+    type: integer
+  nid:
+    label: 'Node ID'
+    datasource_id: 'entity:node'
+    property_path: nid
     type: integer
 processor_settings:
   add_url:

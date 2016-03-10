@@ -72,10 +72,9 @@ class IucnSearchForm extends FormBase {
     try {
       $query = $index->query();
       $query->keys($search_text);
-      $query->addCondition('type_1', 'court_decision', '=');
       $offset = ($current_page - 1) * $this->items_per_page;
       $query->range($offset, $this->items_per_page);
-      $resultSet = $index->getServerInstance()->search($query);
+      $resultSet = $query->execute();
 
       foreach ($resultSet->getResultItems() as $item) {
         $item_nid = $item->getField('nid')->getValues()[0];
@@ -85,7 +84,7 @@ class IucnSearchForm extends FormBase {
     catch (\Exception $e) {
       watchdog_exception('iucn_search', $e);
       drupal_set_message(t('An error occurred.'), 'error');
-      }
+    }
     return $results;
   }
 

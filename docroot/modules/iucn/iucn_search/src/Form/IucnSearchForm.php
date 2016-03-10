@@ -78,7 +78,8 @@ class IucnSearchForm extends FormBase {
 
       foreach ($resultSet->getResultItems() as $item) {
         $item_nid = $item->getField('nid')->getValues()[0];
-        $results[$item_nid] = \Drupal\node\Entity\Node::load($item_nid);
+        $node = \Drupal\node\Entity\Node::load($item_nid);
+        $results[$item_nid] = node_view($node, 'search_index');
       }
     }
     catch (\Exception $e) {

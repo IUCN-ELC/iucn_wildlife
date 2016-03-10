@@ -15,6 +15,7 @@ class IucnSearchForm extends FormBase {
 
   protected $search_url_param = 'q';
   protected $items_per_page = 10;
+  protected $items_viewmode = 'full';
 
   /**
    * {@inheritdoc}
@@ -79,7 +80,7 @@ class IucnSearchForm extends FormBase {
       foreach ($resultSet->getResultItems() as $item) {
         $item_nid = $item->getField('nid')->getValues()[0];
         $node = \Drupal\node\Entity\Node::load($item_nid);
-        $results[$item_nid] = node_view($node, 'search_index');
+        $results[$item_nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
       }
     }
     catch (\Exception $e) {

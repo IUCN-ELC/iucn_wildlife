@@ -15,7 +15,7 @@ class IucnSearchForm extends FormBase {
 
   protected $search_url_param = 'q';
   protected $items_per_page = 10;
-  protected $items_viewmode = 'full';
+  protected $items_viewmode = 'search_index';
 
   /**
    * {@inheritdoc}

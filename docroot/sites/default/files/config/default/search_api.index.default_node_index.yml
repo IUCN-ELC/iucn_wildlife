@@ -3,13 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - search_api.server.acquia_search_server
+    - search_api.server.solr_server
   module:
     - search_api
+    - node
 _core:
   default_config_hash: jnvkAE1hYsM03J9bo8VW3URRXUxfe7k7X3e8cZJ39_I
-id: acquia_search_index
-name: 'Acquia Search Solr Index'
+id: default_node_index
+name: 'Default node index'
 description: ''
 read_only: false
 field_settings:
@@ -30,23 +31,15 @@ processor_settings:
 options:
   index_directly: false
   cron_limit: 50
-  processors:
-    language:
-      status: '1'
-      weight: -50
-      settings: {  }
-      processorPluginId: language
-  fields:
-    search_api_language:
-      type: string
-    'entity:node/body':
-      type: text
-    'entity:node/title':
-      type: string
-  'additional fields': {  }
-datasource_settings: {  }
+datasource_settings:
+  'entity:node':
+    plugin_id: 'entity:node'
+    settings:
+      languages: {  }
+      default: '1'
+      bundles: {  }
 tracker_settings:
   default:
     plugin_id: default
     settings: {  }
-server: acquia_search_server
+server: solr_server

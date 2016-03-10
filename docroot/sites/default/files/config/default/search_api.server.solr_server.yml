@@ -6,13 +6,11 @@ dependencies:
     - acquia_search
 _core:
   default_config_hash: 9qmJQXzunAx3irbErjjRWx2zzwFQj5-eVdLAIoGa_vY
-id: acquia_search_server
-name: 'Acquia Search API Solr server'
+id: solr_server
+name: 'SOLR Server'
 description: ''
 backend: search_api_solr_acquia
 backend_config:
-  clean_ids: true
-  site_hash: true
   scheme: http
   host: euwest1-c7.acquia-search.com
   port: 80
@@ -21,19 +19,21 @@ backend_config:
     http_user: ''
     http_pass: ''
   advanced:
-    excerpt: 0
+    excerpt: 1
     retrieve_data: 1
     highlight_data: 1
     skip_schema_check: 0
-    solr_version: 4
+    solr_version: '4'
     http_method: AUTO
+    site_hash: 1
   http_user: ''
   http_pass: ''
-  excerpt: 0
+  excerpt: 1
   retrieve_data: 1
   highlight_data: 1
   skip_schema_check: 0
-  solr_version: 4
+  solr_version: '4'
   http_method: AUTO
+  site_hash: 1
   autocorrect_spell: true
   autocorrect_suggest_words: true

@@ -215,4 +215,8 @@ subscription_data:
         secret_key: ''
         js_path: ''
     search_service_enabled: 1
+    search_cores:
+      -
+        balancer: euwest1-c7.acquia-search.com
+        core_id: DKWZ-106572
     search_service_colony: euwest1-c7.acquia-search.com

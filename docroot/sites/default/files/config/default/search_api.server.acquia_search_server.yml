@@ -14,7 +14,7 @@ backend_config:
   clean_ids: true
   site_hash: true
   scheme: http
-  host: search.acquia.com
+  host: euwest1-c7.acquia-search.com
   port: 80
   path: /solr/DKWZ-106572
   http:

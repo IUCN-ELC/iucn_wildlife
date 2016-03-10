@@ -1,6 +1,6 @@
 uuid: 204dd94e-1f4d-47b0-bb25-3717ac7f5e85
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - search_api.index.acquia_search_index

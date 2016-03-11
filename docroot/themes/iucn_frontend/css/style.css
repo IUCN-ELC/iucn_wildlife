@@ -3,6 +3,65 @@
   src: url("../fonts/ecolex-icons.eot");
   src: url("../fonts/ecolex-icons.eot?#iefix") format("embedded-opentype"), url("../fonts/ecolex-icons.woff") format("woff"), url("../fonts/ecolex-icons.ttf") format("truetype"), url("../fonts/ecolex-icons.svg#ecolex-icons") format("svg");
 }
+.icon {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-family: "ecolex-icons";
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  position: relative;
+  top: 1px;
+}
+.icon-cop-decision:before {
+  content: "\e600";
+}
+.icon-court-decision:before {
+  content: "\e601";
+}
+.icon-legislation:before {
+  content: "\e602";
+}
+.icon-literature:before {
+  content: "\e603";
+}
+.icon-treaty:before {
+  content: "\e604";
+}
+.icon-drop-down:before {
+  content: "\e605";
+}
+.icon-drop-up:before {
+  content: "\e606";
+}
+.icon-close:before {
+  content: "\e607";
+}
+.icon-menu:before {
+  content: "\e608";
+}
+.icon-search:before {
+  content: "\e609";
+}
+.icon-list-add:before {
+  content: "\e60a";
+}
+.icon-vellip:before {
+  content: "\e60b";
+}
+.icon-pointer:before {
+  content: "\e610";
+}
+.icon-time:before {
+  content: "\e60d";
+}
+.icon-globe:before {
+  content: "\e60e";
+}
+.icon-new-window:before {
+  content: "\e60f";
+}
 #sliding-popup {
   font-size: 14px;
   text-align: center;

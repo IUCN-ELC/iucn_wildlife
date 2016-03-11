@@ -161,14 +161,24 @@ fieldset[disabled] #search-form .btn-primary.focus {
   background-color: #fff;
   color: #0077c0;
 }
-.page-header {
-  margin-top: 0;
+.page-title {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 22px;
+  padding-bottom: 10px;
 }
-.page-header h1 {
+.page-title .icon {
+  color: #808080;
+  display: block;
+  font-size: 36px;
+  margin-bottom: 11px;
+  margin-top: 22px;
+  text-align: right;
+}
+.page-title h1 {
   font-size: 18px;
 }
 @media (min-width: 992px) {
-  .page-header > .row {
+  .page-title > .row {
     -webkit-box-align: center;
     -webkit-align-items: center;
     -ms-flex-align: center;

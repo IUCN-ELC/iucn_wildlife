@@ -45,7 +45,6 @@ class Facet {
     foreach ($this->values as $value) {
       // @ToDo: Check why there are "" in string
       $id = str_replace('"', '', $value['filter']);
-      dpm($value['filter']);
       switch ($this->entity_type) {
         case 'term':
           $entity = \Drupal\taxonomy\Entity\Term::load($id);

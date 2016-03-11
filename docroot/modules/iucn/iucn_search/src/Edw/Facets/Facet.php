@@ -23,7 +23,7 @@ class Facet {
   }
 
   public function __toString() {
-    return $this->title;
+    return $this->field;
   }
 
   public function getArray() {

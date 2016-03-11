@@ -22,11 +22,13 @@ class IucnSearchForm extends FormBase {
 
   public function __construct() {
     // @ToDo: Configure operator, limit, min_count for each facet
+    // @ToDo: Translate titles
     $facet_fields = [
-      'field_country',
+      'Country' => 'field_country',
+      'Type' => 'field_type_of_text',
     ];
-    foreach ($facet_fields as $field) {
-      $this->facets[] = new Facet($field);
+    foreach ($facet_fields as $title => $field) {
+      $this->facets[] = new Facet($title, $field);
     }
   }
 
@@ -63,6 +65,7 @@ class IucnSearchForm extends FormBase {
         'nodes' => ['#markup' => \Drupal::service('renderer')->render($elements)],
         'pager' => ['#type' => 'pager'],
       ],
+      'facets' => $this->getRenderedFacets(),
     ];
     return $form;
   }
@@ -81,12 +84,26 @@ class IucnSearchForm extends FormBase {
     $form_state->setRedirect('iucn.search', [], ['query' => [$this->search_url_param => $search_text]]);
   }
 
-  public function setFacets(\Drupal\search_api\Query\QueryInterface &$query) {
+  private function setQueryFacets(\Drupal\search_api\Query\QueryInterface &$query) {
     $query_facets = [];
     foreach ($this->facets as $facet) {
       $query_facets[] = $facet->getArray();
     }
     $query->setOption('search_api_facets', $query_facets);
+  }
+
+  private function setFacetsValues(array $values) {
+    foreach ($this->facets as $key => &$facet) {
+      $facet->setValues($values[$key]);
+    }
+  }
+
+  private function getRenderedFacets() {
+    $return = [];
+    foreach ($this->facets as $facet) {
+      $return[(string) $facet] = $facet->render();
+    }
+    return $return;
   }
 
   private function getSeachResults($search_text, $current_page) {
@@ -100,10 +117,11 @@ class IucnSearchForm extends FormBase {
       $query->keys($search_text);
       $offset = $current_page * $this->items_per_page;
       $query->range($offset, $this->items_per_page);
-      $this->setFacets($query);
+      $this->setQueryFacets($query);
       $resultSet = $query->execute();
 
       $this->resultCount = $resultSet->getResultCount();
+      $this->setFacetsValues($resultSet->getExtraData('search_api_facets'));
 
       foreach ($resultSet->getResultItems() as $item) {
         $item_nid = $item->getField('nid')->getValues()[0];

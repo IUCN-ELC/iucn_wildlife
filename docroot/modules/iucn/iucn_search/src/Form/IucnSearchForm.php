@@ -16,6 +16,7 @@ class IucnSearchForm extends FormBase {
   protected $search_url_param = 'q';
   protected $items_per_page = 10;
   protected $items_viewmode = 'search_index';
+  protected $resultCount = 0;
 
   /**
    * {@inheritdoc}
@@ -29,7 +30,9 @@ class IucnSearchForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $text = !empty($_GET[$this->search_url_param]) ? $_GET[$this->search_url_param] : '';
-    $current_page = !empty($_GET['page']) ? $_GET['page'] : 1;
+    $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
+    $results = $this->getSeachResults($text, $current_page);
+    pager_default_initialize($this->resultCount, $this->items_per_page);
     $form['text'] = [
       '#type' => 'textfield',
       '#title' => 'Search text',
@@ -41,10 +44,13 @@ class IucnSearchForm extends FormBase {
     ];
     $elements = [
       '#theme' => 'iucn_search_results',
-      '#items' => $this->getSeachResults($text, $current_page),
+      '#items' => $results,
     ];
-    $form['results'] = [
-      '#markup' => \Drupal::service('renderer')->render($elements),
+    $form['display'] = [
+      'results' => [
+        'nodes' => ['#markup' => \Drupal::service('renderer')->render($elements)],
+        'pager' => ['#type' => 'pager'],
+      ],
     ];
     return $form;
   }
@@ -64,8 +70,7 @@ class IucnSearchForm extends FormBase {
   }
 
   private function getSeachResults($search_text, $current_page) {
-    $results = [];
-
+    $nodes = [];
     if (empty($index = Index::load('default_node_index'))) {
       drupal_set_message(t('The search index is not properly configured.'), 'error');
       return $results;
@@ -73,21 +78,23 @@ class IucnSearchForm extends FormBase {
     try {
       $query = $index->query();
       $query->keys($search_text);
-      $offset = ($current_page - 1) * $this->items_per_page;
+      $offset = $current_page * $this->items_per_page;
       $query->range($offset, $this->items_per_page);
       $resultSet = $query->execute();
+
+      $this->resultCount = $resultSet->getResultCount();
 
       foreach ($resultSet->getResultItems() as $item) {
         $item_nid = $item->getField('nid')->getValues()[0];
         $node = \Drupal\node\Entity\Node::load($item_nid);
-        $results[$item_nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+        $nodes[$item_nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
       }
     }
     catch (\Exception $e) {
       watchdog_exception('iucn_search', $e);
       drupal_set_message(t('An error occurred.'), 'error');
     }
-    return $results;
+    return $nodes;
   }
 
 }

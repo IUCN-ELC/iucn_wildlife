@@ -26,6 +26,10 @@ class Facet {
     return $this->field;
   }
 
+  public function getOperator() {
+    return $this->operator;
+  }
+
   public function getArray() {
     return [
       'field' => $this->field,
@@ -65,6 +69,7 @@ class Facet {
       '#type' => 'checkboxes',
       '#title' => $this->title,
       '#options' => $return,
+      '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],
     ];
   }
 }

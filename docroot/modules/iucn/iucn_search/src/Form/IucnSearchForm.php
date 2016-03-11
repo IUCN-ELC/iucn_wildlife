@@ -99,13 +99,34 @@ class IucnSearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $query = [];
     $search_text = $form_state->getValue('text');
-    $form_state->setRedirect('iucn.search', [], ['query' => [$this->search_url_param => $search_text]]);
+    $query[$this->search_url_param] = $search_text;
+    foreach ($this->facets as $facet) {
+      $values = [];
+      foreach ($form_state->getValue((string) $facet) as $value => $selected) {
+        if ($selected) {
+          $values[] = $value;
+        }
+      }
+      if (!empty($values)) {
+        $query[(string) $facet] = implode(',', $values);
+      }
+    }
+    $form_state->setRedirect('iucn.search', [], ['query' => $query]);
   }
 
   private function setQueryFacets(\Drupal\search_api\Query\QueryInterface &$query) {
     $query_facets = [];
     foreach ($this->facets as $facet) {
+      $field = (string) $facet;
+      if (!empty($_GET[$field])) {
+        $conditionGroup = $query->createConditionGroup('OR', $field);
+        foreach (explode(',', $_GET[$field]) as $val) {
+          $conditionGroup->addCondition($field, $val);
+        }
+        $query->addConditionGroup($conditionGroup);
+      }
       $query_facets[] = $facet->getArray();
     }
     $query->setOption('search_api_facets', $query_facets);

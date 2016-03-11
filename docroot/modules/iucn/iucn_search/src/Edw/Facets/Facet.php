@@ -9,13 +9,17 @@ class Facet {
   protected $limit;
   protected $min_count;
   protected $values = [];
+  protected $entity_type;
+  protected $bundle;
 
-  function __construct($title, $field, $operator = 'AND', $limit = '10', $min_count = '1') {
+  function __construct($title, $field, $operator = 'AND', $limit = '10', $min_count = '1', $entity_type = 'term', $bundle = NULL) {
     $this->title = $title;
     $this->field = $field;
     $this->operator = $operator;
     $this->limit = $limit;
     $this->min_count = $min_count;
+    $this->entity_type = $entity_type;
+    $this->bundle = $bundle;
   }
 
   public function __toString() {
@@ -36,15 +40,26 @@ class Facet {
   }
 
   public function render() {
-    // @ToDo: Handle facet values for terms/nodes
     // @ToDo: Make display type configurable
     $return = [];
     foreach ($this->values as $value) {
       // @ToDo: Check why there are "" in string
-      $tid = str_replace('"', '', $value['filter']);
-      $term = \Drupal\taxonomy\Entity\Term::load($tid);
-      if ($term) {
-        $return[$tid] = "{$term->getName()} ({$value['count']})";
+      $id = str_replace('"', '', $value['filter']);
+      dpm($value['filter']);
+      switch ($this->entity_type) {
+        case 'term':
+          $entity = \Drupal\taxonomy\Entity\Term::load($id);
+          $display = "{$entity->getName()} ({$value['count']})";
+          break;
+        case 'node':
+          $entity = \Drupal\node\Entity\Node::load($id);
+          $display = "{$entity->getTitle()} ({$value['count']})";
+          break;
+        default:
+          $entity = $display = NULL;
+      }
+      if ($entity) {
+        $return[$id] = $display;
       }
     }
     return [

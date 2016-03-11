@@ -24,12 +24,30 @@ class IucnSearchForm extends FormBase {
     // @ToDo: Configure operator, limit, min_count for each facet
     // @ToDo: Translate facet titles
     // @ToDo: Move facets configuration in a .yml config file
-    $facet_fields = [
-      'Country' => 'field_country',
-      'Type' => 'field_type_of_text',
+    $facets = [
+      'Country' => [
+        'title' => 'Country',
+        'field' => 'field_country',
+        'entity_type' => 'node',
+        'bundle' => 'country',
+      ],
+      'Type' => [
+        'title' => 'Type',
+        'field' => 'field_type_of_text',
+        'entity_type' => 'term',
+        'bundle' => 'document_types',
+      ],
     ];
-    foreach ($facet_fields as $title => $field) {
-      $this->facets[] = new Facet($title, $field);
+    foreach ($facets as $facet) {
+      $this->facets[] = new Facet(
+        $facet['title'],
+        $facet['field'],
+        'OR',
+        '10',
+        '1',
+        $facet['entity_type'],
+        $facet['bundle']
+      );
     }
   }
 

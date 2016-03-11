@@ -121,7 +121,7 @@ class IucnSearchForm extends FormBase {
     foreach ($this->facets as $facet) {
       $field = (string) $facet;
       if (!empty($_GET[$field])) {
-        $conditionGroup = $query->createConditionGroup('OR', $field);
+        $conditionGroup = $query->createConditionGroup($facet->getOperator(), $field);
         foreach (explode(',', $_GET[$field]) as $val) {
           $conditionGroup->addCondition($field, $val);
         }

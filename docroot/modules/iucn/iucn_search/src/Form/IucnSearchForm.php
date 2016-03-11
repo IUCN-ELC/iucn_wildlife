@@ -10,6 +10,7 @@ namespace Drupal\iucn_search\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\search_api\Entity\Index;
+use Drupal\iucn_search\Edw\Facets\Facet;
 
 class IucnSearchForm extends FormBase {
 
@@ -17,6 +18,17 @@ class IucnSearchForm extends FormBase {
   protected $items_per_page = 10;
   protected $items_viewmode = 'search_index';
   protected $resultCount = 0;
+  protected $facets = [];
+
+  public function __construct() {
+    // @ToDo: Configure operator, limit, min_count for each facet
+    $facet_fields = [
+      'field_country',
+    ];
+    foreach ($facet_fields as $field) {
+      $this->facets[] = new Facet($field);
+    }
+  }
 
   /**
    * {@inheritdoc}
@@ -69,6 +81,14 @@ class IucnSearchForm extends FormBase {
     $form_state->setRedirect('iucn.search', [], ['query' => [$this->search_url_param => $search_text]]);
   }
 
+  public function setFacets(\Drupal\search_api\Query\QueryInterface &$query) {
+    $query_facets = [];
+    foreach ($this->facets as $facet) {
+      $query_facets[] = $facet->getArray();
+    }
+    $query->setOption('search_api_facets', $query_facets);
+  }
+
   private function getSeachResults($search_text, $current_page) {
     $nodes = [];
     if (empty($index = Index::load('default_node_index'))) {
@@ -80,6 +100,7 @@ class IucnSearchForm extends FormBase {
       $query->keys($search_text);
       $offset = $current_page * $this->items_per_page;
       $query->range($offset, $this->items_per_page);
+      $this->setFacets($query);
       $resultSet = $query->execute();
 
       $this->resultCount = $resultSet->getResultCount();

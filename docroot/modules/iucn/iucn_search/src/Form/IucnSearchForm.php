@@ -22,7 +22,8 @@ class IucnSearchForm extends FormBase {
 
   public function __construct() {
     // @ToDo: Configure operator, limit, min_count for each facet
-    // @ToDo: Translate titles
+    // @ToDo: Translate facet titles
+    // @ToDo: Move facets configuration in a .yml config file
     $facet_fields = [
       'Country' => 'field_country',
       'Type' => 'field_type_of_text',

@@ -40,6 +40,7 @@ class Facet {
     // @ToDo: Make display type configurable
     $return = [];
     foreach ($this->values as $value) {
+      // @ToDo: Check why there are "" in string
       $tid = str_replace('"', '', $value['filter']);
       $term = \Drupal\taxonomy\Entity\Term::load($tid);
       if ($term) {

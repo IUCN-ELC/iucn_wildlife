@@ -42,7 +42,7 @@ class IucnSearchForm extends FormBase {
       $this->facets[] = new Facet(
         $facet['title'],
         $facet['field'],
-        'OR',
+        'or',
         '10',
         '1',
         $facet['entity_type'],

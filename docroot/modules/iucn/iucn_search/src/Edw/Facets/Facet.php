@@ -52,11 +52,11 @@ class Facet {
       switch ($this->entity_type) {
         case 'term':
           $entity = \Drupal\taxonomy\Entity\Term::load($id);
-          $display = "{$entity->getName()} ({$value['count']})";
+          $display = !empty($entity) ? "{$entity->getName()} ({$value['count']})" : NULL;
           break;
         case 'node':
           $entity = \Drupal\node\Entity\Node::load($id);
-          $display = "{$entity->getTitle()} ({$value['count']})";
+          $display = !empty($entity) ? "{$entity->getTitle()} ({$value['count']})" : NULL;
           break;
         default:
           $entity = $display = NULL;

@@ -8,6 +8,12 @@ function iucn_frontend_preprocess_page(array &$variables) {
   $variables['q'] = isset($_GET['q']) ? $_GET['q'] : '';
 }
 
+function iucn_frontend_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $suggestions[] = 'page_title__node__' . $node->getType();
+  }
+}
+
 function iucn_frontend_preprocess_field(array &$variables, $hook) {
   if ($variables['element']['#field_name'] == 'field_justices') {
     foreach ($variables['items'] as &$item) {

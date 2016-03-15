@@ -152,25 +152,47 @@ class IucnSearchForm extends FormBase {
     $form_state->setRedirect('iucn.search', [], ['query' => $query]);
   }
 
-  private function setQueryFacets(\Drupal\search_api\Query\QueryInterface &$query) {
-    $query_facets = [];
+  private function setFacets(&$solarium_query, array $field_names) {
+    $facet_set = $solarium_query->getFacetSet();
+    $facet_set->setSort('count');
+    $facet_set->setLimit(10);
+    $facet_set->setMinCount(1);
+    $facet_set->setMissing(FALSE);
     foreach ($this->facets as $facet) {
-      $field = (string) $facet;
-      if (!empty($_GET[$field])) {
-        $conditionGroup = $query->createConditionGroup($facet->getOperator(), $field);
-        foreach (explode(',', $_GET[$field]) as $val) {
-          $conditionGroup->addCondition($field, $val);
-        }
-        $query->addConditionGroup($conditionGroup);
+      $info = $facet->getArray();
+//      $field = (string) $facet;
+//      if (!empty($_GET[$field])) {
+//        $conditionGroup = $query->createConditionGroup($facet->getOperator(), $field);
+//        foreach (explode(',', $_GET[$field]) as $val) {
+//          $conditionGroup->addCondition($field, $val);
+//        }
+//        $query->addConditionGroup($conditionGroup);
+//      }
+//      $query_facets[] = $facet->getArray();
+      $solr_field_name = $field_names[$info['field']];
+      $facet_field = $facet_set->createFacetField($info['field'])->setField($solr_field_name);
+      if (isset($info['operator']) && strtolower($info['operator']) === 'or') {
+        $facet_field->setExcludes(array('facet:' . $info['field']));
       }
-      $query_facets[] = $facet->getArray();
+      // Set limit, unless it's the default.
+      if ($info['limit'] != 10) {
+        $limit = $info['limit'] ?: -1;
+        $facet_field->setLimit($limit);
+      }
+      // Set mincount, unless it's the default.
+      if ($info['min_count'] != 1) {
+        $facet_field->setMinCount($info['min_count']);
+      }
+
+      // Set missing, if specified.
+      $facet_field->setMissing($info['missing'] ?: FALSE);
     }
-    $query->setOption('search_api_facets', $query_facets);
   }
 
-  private function setFacetsValues(array $values) {
-    foreach ($this->facets as $key => &$facet) {
-      $facet->setValues($values[$key]);
+  private function setFacetsValues($facetSet) {
+    foreach ($this->facets as &$facet) {
+      $solrFacet = $facetSet->getFacet($facet->getField());
+      $facet->setValues($solrFacet->getValues());
     }
   }
 
@@ -228,6 +250,8 @@ class IucnSearchForm extends FormBase {
     }
     $solarium_query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
 
+    $this->setFacets($solarium_query, $field_names);
+
     $resultSet = $this->createSolariumRequest($solarium_query);
     $documents = $resultSet->getDocuments();
 
@@ -240,6 +264,8 @@ class IucnSearchForm extends FormBase {
       $node = \Drupal\node\Entity\Node::load($nid);
       $nodes[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
     }
+
+    $this->setFacetsValues($resultSet->getFacetSet());
 
 //    if (empty($index = Index::load('default_node_index'))) {
 //      drupal_set_message(t('The search index is not properly configured.'), 'error');
@@ -254,7 +280,6 @@ class IucnSearchForm extends FormBase {
 //      $resultSet = $query->execute();
 //
 //      $this->resultCount = $resultSet->getResultCount();
-//      $this->setFacetsValues($resultSet->getExtraData('search_api_facets'));
 //
 //      foreach ($resultSet->getResultItems() as $item) {
 //        $item_nid = $item->getField('nid')->getValues()[0];

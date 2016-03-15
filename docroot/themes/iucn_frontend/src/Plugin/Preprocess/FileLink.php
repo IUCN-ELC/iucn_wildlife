@@ -33,12 +33,14 @@ class FileLink extends PreprocessBase {
     $file = ($variables['file'] instanceof File) ? $variables['file'] : File::load($variables['file']->fid);
 
     $url = file_create_url($file->getFileUri());
-    $variables['attributes']['href'] = $url;
+    $variables['url'] = $url;
     $variables['#cache']['contexts'][] = 'url.site';
 
     $file_size = $file->getSize();
+    $variables['file_size'] = format_size($file_size);
+
     $mime_type = $file->getMimeType();
-    $variables['attributes']['type'] = $mime_type . '; length=' . $file_size;
+    $variables['type'] = $mime_type . '; length=' . $file_size;
 
     if (empty($variables['description'])) {
       $link_text = $file->getFilename();
@@ -46,6 +48,8 @@ class FileLink extends PreprocessBase {
       $link_text = $variables['description'];
       $variables['attributes']['title'] = $file->getFilename();
     }
+
+    $variables['file_name'] = $link_text;
 
     $variables->addClass(array(
       'file',
@@ -58,11 +62,6 @@ class FileLink extends PreprocessBase {
     $variables['icon'] = Element::create($icon)
       ->addClass('text-primary')
       ->getArray();
-
-    $variables['file_name'] = $link_text;
-    $variables['url'] = $url;
-
-    $variables['file_size'] = format_size($file_size);
 
     $this->preprocessAttributes($variables, $hook, $info);
   }

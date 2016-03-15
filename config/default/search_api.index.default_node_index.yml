@@ -6,7 +6,14 @@ dependencies:
     - search_api.server.solr_server
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_country
+    - field.field.node.court_decision.field_court_jurisdiction
+    - field.field.node.court_decision.field_decision_status
+    - field.field.node.court_decision.field_ecolex_subjects
     - field.field.node.court_decision.field_files
+    - field.field.node.court_decision.field_instance
+    - field.field.node.court_decision.field_justices
+    - field.field.node.court_decision.field_subdivision
+    - field.field.node.court_decision.field_territorial_subdivisions
     - field.field.node.court_decision.field_type_of_text
   module:
     - search_api
@@ -59,6 +66,41 @@ field_settings:
     label: Files
     datasource_id: 'entity:node'
     property_path: field_files
+    type: integer
+  field_territorial_subdivisions:
+    label: 'Territorial subdivisions'
+    datasource_id: 'entity:node'
+    property_path: field_territorial_subdivisions
+    type: integer
+  field_subdivision:
+    label: Subdivision
+    datasource_id: 'entity:node'
+    property_path: field_subdivision
+    type: integer
+  field_justices:
+    label: Justices
+    datasource_id: 'entity:node'
+    property_path: field_justices
+    type: integer
+  field_instance:
+    label: Instance
+    datasource_id: 'entity:node'
+    property_path: field_instance
+    type: integer
+  field_ecolex_subjects:
+    label: 'ECOLEX subject(s)'
+    datasource_id: 'entity:node'
+    property_path: field_ecolex_subjects
+    type: integer
+  field_decision_status:
+    label: 'Decision status'
+    datasource_id: 'entity:node'
+    property_path: field_decision_status
+    type: integer
+  field_court_jurisdiction:
+    label: 'Court jurisdiction'
+    datasource_id: 'entity:node'
+    property_path: field_court_jurisdiction
     type: integer
 processor_settings:
   add_url:

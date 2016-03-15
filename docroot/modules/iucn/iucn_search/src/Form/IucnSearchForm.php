@@ -250,10 +250,17 @@ class IucnSearchForm extends FormBase {
     }
     $solarium_query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
 
+    $offset = $current_page * $this->items_per_page;
+    $solarium_query->setStart($offset);
+    $solarium_query->setRows($this->items_per_page);
+
     $this->setFacets($solarium_query, $field_names);
+
 
     $resultSet = $this->createSolariumRequest($solarium_query);
     $documents = $resultSet->getDocuments();
+
+    $this->resultCount = $resultSet->getNumFound();
 
     foreach ($documents as $document) {
       $fields = $document->getFields();
@@ -267,30 +274,6 @@ class IucnSearchForm extends FormBase {
 
     $this->setFacetsValues($resultSet->getFacetSet());
 
-//    if (empty($index = Index::load('default_node_index'))) {
-//      drupal_set_message(t('The search index is not properly configured.'), 'error');
-//      return $results;
-//    }
-//    try {
-//      $query = $index->query();
-//      $query->keys($search_text);
-//      $offset = $current_page * $this->items_per_page;
-//      $query->range($offset, $this->items_per_page);
-//      $this->setQueryFacets($query);
-//      $resultSet = $query->execute();
-//
-//      $this->resultCount = $resultSet->getResultCount();
-//
-//      foreach ($resultSet->getResultItems() as $item) {
-//        $item_nid = $item->getField('nid')->getValues()[0];
-//        $node = \Drupal\node\Entity\Node::load($item_nid);
-//        $nodes[$item_nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
-//      }
-//    }
-//    catch (\Exception $e) {
-//      watchdog_exception('iucn_search', $e);
-//      drupal_set_message(t('An error occurred.'), 'error');
-//    }
     return $nodes;
   }
 

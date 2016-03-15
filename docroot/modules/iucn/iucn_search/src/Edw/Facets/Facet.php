@@ -22,7 +22,7 @@ class Facet {
     $this->bundle = $bundle;
   }
 
-  public function __toString() {
+  public function getField() {
     return $this->field;
   }
 

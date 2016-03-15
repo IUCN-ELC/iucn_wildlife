@@ -249,6 +249,55 @@
   }
 }
 
+.file {
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 11px;
+
+  &.thumbnail {
+    max-width: 480px;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
+  > span {
+    border-bottom: 0;
+    border-top: 0;
+    color: #808080;
+
+    &:first-child {
+      border-left: 0;
+    }
+
+    &:last-child {
+      border-right: 0;
+    }
+  }
+
+  &:hover,
+  &:focus {
+    .file-action {
+      visibility: visible;
+    }
+  }
+}
+
+.file-icon {
+  font-size: 24px;
+}
+
+.file-name {
+  color: #1c5479;
+  font-weight: 700;
+}
+
+.file-action {
+  visibility: hidden;
+}
+
 .footer {
   background-color: #eee;
   border-color: #ddd;

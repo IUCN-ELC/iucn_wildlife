@@ -238,6 +238,43 @@ fieldset[disabled] #search-form .btn-primary.focus {
     text-align: right;
   }
 }
+.file {
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 11px;
+}
+.file.thumbnail {
+  max-width: 480px;
+}
+.file.thumbnail:hover,
+.file.thumbnail:focus {
+  text-decoration: none;
+}
+.file > span {
+  border-bottom: 0;
+  border-top: 0;
+  color: #808080;
+}
+.file > span:first-child {
+  border-left: 0;
+}
+.file > span:last-child {
+  border-right: 0;
+}
+.file:hover .file-action,
+.file:focus .file-action {
+  visibility: visible;
+}
+.file-icon {
+  font-size: 24px;
+}
+.file-name {
+  color: #1c5479;
+  font-weight: 700;
+}
+.file-action {
+  visibility: hidden;
+}
 .footer {
   background-color: #eee;
   border-color: #ddd;

@@ -77,14 +77,18 @@ class Facet {
         ];
       case 'select':
         return [
+          '#type' => 'container',
+          'title' => [
+            '#markup' => "<h3 class='facet-title'>{$this->title}</h3>",
+          ],
           $this->field . '_operator' => [
-            '#title' => $this->operator,
+//            '#title' => $this->operator,
             '#type' => 'checkbox',
             '#default_value' => $this->operator == 'AND',
             '#return_value' => 'AND'
           ],
           $this->field . '_values' => [
-            '#title' => $this->title,
+//            '#title' => $this->title,
             '#type' => $this->display_type,
             '#options' => $options,
             '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],

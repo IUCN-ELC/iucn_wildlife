@@ -25,6 +25,15 @@ select2:
   dependencies:
     - core/jquery
 
+bootstrap-switch:
+  css:
+    theme:
+      lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css: { minified: true }
+  js:
+    lib/bootstrap-switch/dist/js/bootstrap-switch.min.js: { minified: true }
+  dependencies:
+    - core/jquery
+
 global-styling:
   css:
     theme:

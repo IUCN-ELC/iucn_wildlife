@@ -46,6 +46,9 @@ class Facet {
   public function render() {
     // @ToDo: Make display type configurable
     $return = [];
+    if (empty($this->values)) {
+      return NULL;
+    }
     foreach ($this->values as $id => $count) {
       // @ToDo: Check why there are "" in string
       $id = str_replace('"', '', $id);

@@ -102,25 +102,33 @@ class IucnSearchForm extends FormBase {
     $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
     $results = $this->getSeachResults($text, $current_page);
     pager_default_initialize($this->resultCount, $this->items_per_page);
-    $form['text'] = [
-      '#type' => 'textfield',
-      '#title' => 'Search text',
-      '#default_value' => $text,
-    ];
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => 'Search',
-    ];
     $elements = [
       '#theme' => 'iucn_search_results',
       '#items' => $results,
     ];
-    $form['display'] = [
-      'results' => [
-        'nodes' => ['#markup' => \Drupal::service('renderer')->render($elements)],
-        'pager' => ['#type' => 'pager'],
+    $form['left-col'] = [
+      'search_text' => [
+        '#type' => 'textfield',
+        '#title' => 'Search text',
+        '#default_value' => $text,
       ],
+      'submit' => [
+        '#type' => 'submit',
+        '#value' => 'Search',
+      ],
+      'nodes' => [
+        '#markup' => \Drupal::service('renderer')->render($elements)
+      ],
+      'pager' => [
+        '#type' => 'pager'
+      ],
+      '#prefix' => '<div class="results col-md-8">',
+      '#suffix' => '</div>',
+    ];
+    $form['facets'] = [
       'facets' => $this->getRenderedFacets(),
+      '#prefix' => '<div class="facets col-md-4">',
+      '#suffix' => '</div>',
     ];
     return $form;
   }

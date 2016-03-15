@@ -58,7 +58,6 @@ class IucnSearchForm extends FormBase {
       drupal_set_message(t('An error occurred.'), 'error');
     }
 
-
     // @ToDo: Translate facet titles
     $facets = [
       'Country' => [
@@ -144,7 +143,7 @@ class IucnSearchForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $query = [];
-    $search_text = $form_state->getValue('text');
+    $search_text = $form_state->getValue('search_text');
     $query[$this->search_url_param] = $search_text;
     foreach ($this->facets as $facet) {
       $values = [];

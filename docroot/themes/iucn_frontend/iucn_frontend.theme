@@ -4,7 +4,6 @@ function iucn_frontend_preprocess_page(array &$variables) {
 
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
-
   $variables['q'] = isset($_GET['q']) ? $_GET['q'] : '';
 }
 
@@ -14,7 +13,7 @@ function iucn_frontend_theme_suggestions_page_title_alter(array &$suggestions, a
   }
 }
 
-function iucn_frontend_preprocess_field(array &$variables, $hook) {
+function iucn_frontend_preprocess_field(array &$variables) {
   if ($variables['element']['#field_name'] == 'field_justices') {
     foreach ($variables['items'] as &$item) {
       $item['content']['#attributes']['class'][] = 'label';
@@ -22,4 +21,8 @@ function iucn_frontend_preprocess_field(array &$variables, $hook) {
       $item['content']['#attributes']['class'][] = 'field--item';
     }
   }
+}
+
+function iucn_frontend_preprocess_item_list__file_formatter_list(array &$variables) {
+  $variables['attributes']['class'][] = 'list-unstyled';
 }

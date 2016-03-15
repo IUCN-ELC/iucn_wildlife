@@ -13,13 +13,6 @@ use Drupal\search_api\Entity\Index;
 use Drupal\iucn_search\Edw\Facets\Facet;
 use Solarium\Client;
 use Solarium\Core\Client\Request;
-use Solarium\Core\Query\Helper;
-use Solarium\Core\Query\Result\ResultInterface;
-use Solarium\QueryType\Select\Query\Query;
-use Solarium\Exception\ExceptionInterface;
-use Solarium\Exception\HttpException;
-use Solarium\QueryType\Select\Result\Result;
-use Solarium\QueryType\Update\Query\Document\Document;
 
 class IucnSearchForm extends FormBase {
 
@@ -38,15 +31,27 @@ class IucnSearchForm extends FormBase {
    */
   protected $solr;
 
+  /**
+   * Configuration for solr server.
+   */
+  protected $solr_configuration;
+
+  /**
+   * Search api index.
+   *
+   * @var \Drupal\search_api\Entity\Index
+   */
+  protected $index;
+
   protected $facets = [];
 
   public function __construct() {
     try {
-      $index = Index::load('default_node_index');
-      $server = $index->getServerInstance();
-      $solr_configuration = $server->getBackendConfig() + array('key' => $server->id());
+      $this->index = Index::load('default_node_index');
+      $server = $this->index->getServerInstance();
+      $this->solr_configuration = $server->getBackendConfig() + array('key' => $server->id());
       $this->solr = new Client();
-      $this->solr->createEndpoint(($solr_configuration), TRUE);
+      $this->solr->createEndpoint($this->solr_configuration, TRUE);
     }
     catch (\Exception $e) {
       watchdog_exception('iucn_search', $e);
@@ -177,33 +182,90 @@ class IucnSearchForm extends FormBase {
     return $return;
   }
 
+  private function createSolariumRequest($solarium_query) {
+    // Use the 'postbigrequest' plugin if no specific http method is
+    // configured. The plugin needs to be loaded before the request is
+    // created.
+    if ($this->solr_configuration['http_method'] == 'AUTO') {
+      $this->solr->getPlugin('postbigrequest');
+    }
+
+    $request = $this->solr->createRequest($solarium_query);
+
+    if ($this->solr_configuration['http_method'] == 'POST') {
+      $request->setMethod(Request::METHOD_POST);
+    }
+    elseif ($this->solr_configuration['http_method'] == 'GET') {
+      $request->setMethod(Request::METHOD_GET);
+    }
+    if (strlen($this->solr_configuration['http_user']) && strlen($this->solr_configuration['http_pass'])) {
+      $request->setAuthentication($this->solr_configuration['http_user'], $this->solr_configuration['http_pass']);
+    }
+
+    // Send search request.
+    $response = $this->solr->executeRequest($request);
+    $resultSet = $this->solr->createResult($solarium_query, $response);
+
+    return $resultSet;
+  }
+
   private function getSeachResults($search_text, $current_page) {
     $nodes = [];
-    if (empty($index = Index::load('default_node_index'))) {
-      drupal_set_message(t('The search index is not properly configured.'), 'error');
-      return $results;
+    $solarium_query = $this->solr->createSelect();
+    $solarium_query->setQuery($search_text);
+    $solarium_query->setFields(array('*', 'score'));
+
+    $field_names = $this->index->getServerInstance()->getBackend()->getFieldNames($this->index);
+    $search_fields = $this->index->getFulltextFields();
+    // Get the index fields to be able to retrieve boosts.
+    $index_fields = $this->index->getFields();
+    $query_fields = [];
+    foreach ($search_fields as $search_field) {
+      /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
+      $document = $index_fields[$search_field];
+      $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
+      $query_fields[] = $field_names[$search_field] . $boost;
     }
-    try {
-      $query = $index->query();
-      $query->keys($search_text);
-      $offset = $current_page * $this->items_per_page;
-      $query->range($offset, $this->items_per_page);
-      $this->setQueryFacets($query);
-      $resultSet = $query->execute();
+    $solarium_query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
 
-      $this->resultCount = $resultSet->getResultCount();
-      $this->setFacetsValues($resultSet->getExtraData('search_api_facets'));
+    $resultSet = $this->createSolariumRequest($solarium_query);
+    $documents = $resultSet->getDocuments();
 
-      foreach ($resultSet->getResultItems() as $item) {
-        $item_nid = $item->getField('nid')->getValues()[0];
-        $node = \Drupal\node\Entity\Node::load($item_nid);
-        $nodes[$item_nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+    foreach ($documents as $document) {
+      $fields = $document->getFields();
+      $nid = $fields[$field_names['nid']];
+      if (is_array($nid)) {
+        $nid = reset($nid);
       }
+      $node = \Drupal\node\Entity\Node::load($nid);
+      $nodes[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
     }
-    catch (\Exception $e) {
-      watchdog_exception('iucn_search', $e);
-      drupal_set_message(t('An error occurred.'), 'error');
-    }
+
+//    if (empty($index = Index::load('default_node_index'))) {
+//      drupal_set_message(t('The search index is not properly configured.'), 'error');
+//      return $results;
+//    }
+//    try {
+//      $query = $index->query();
+//      $query->keys($search_text);
+//      $offset = $current_page * $this->items_per_page;
+//      $query->range($offset, $this->items_per_page);
+//      $this->setQueryFacets($query);
+//      $resultSet = $query->execute();
+//
+//      $this->resultCount = $resultSet->getResultCount();
+//      $this->setFacetsValues($resultSet->getExtraData('search_api_facets'));
+//
+//      foreach ($resultSet->getResultItems() as $item) {
+//        $item_nid = $item->getField('nid')->getValues()[0];
+//        $node = \Drupal\node\Entity\Node::load($item_nid);
+//        $nodes[$item_nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+//      }
+//    }
+//    catch (\Exception $e) {
+//      watchdog_exception('iucn_search', $e);
+//      drupal_set_message(t('An error occurred.'), 'error');
+//    }
     return $nodes;
   }
 

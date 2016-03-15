@@ -3,7 +3,7 @@
   src: url("../fonts/ecolex-icons.eot");
   src: url("../fonts/ecolex-icons.eot?#iefix") format("embedded-opentype"), url("../fonts/ecolex-icons.woff") format("woff"), url("../fonts/ecolex-icons.ttf") format("truetype"), url("../fonts/ecolex-icons.svg#ecolex-icons") format("svg");
 }
-.icon {
+.ecolexicon {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
@@ -14,52 +14,52 @@
   position: relative;
   top: 1px;
 }
-.icon-cop-decision:before {
+.ecolexicon-cop-decision:before {
   content: "\e600";
 }
-.icon-court-decision:before {
+.ecolexicon-court-decision:before {
   content: "\e601";
 }
-.icon-legislation:before {
+.ecolexicon-legislation:before {
   content: "\e602";
 }
-.icon-literature:before {
+.ecolexicon-literature:before {
   content: "\e603";
 }
-.icon-treaty:before {
+.ecolexicon-treaty:before {
   content: "\e604";
 }
-.icon-drop-down:before {
+.ecolexicon-drop-down:before {
   content: "\e605";
 }
-.icon-drop-up:before {
+.ecolexicon-drop-up:before {
   content: "\e606";
 }
-.icon-close:before {
+.ecolexicon-close:before {
   content: "\e607";
 }
-.icon-menu:before {
+.ecolexicon-menu:before {
   content: "\e608";
 }
-.icon-search:before {
+.ecolexicon-search:before {
   content: "\e609";
 }
-.icon-list-add:before {
+.ecolexicon-list-add:before {
   content: "\e60a";
 }
-.icon-vellip:before {
+.ecolexicon-vellip:before {
   content: "\e60b";
 }
-.icon-pointer:before {
+.ecolexicon-pointer:before {
   content: "\e610";
 }
-.icon-time:before {
+.ecolexicon-time:before {
   content: "\e60d";
 }
-.icon-globe:before {
+.ecolexicon-globe:before {
   content: "\e60e";
 }
-.icon-new-window:before {
+.ecolexicon-new-window:before {
   content: "\e60f";
 }
 #sliding-popup {
@@ -166,7 +166,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
   margin-bottom: 22px;
   padding-bottom: 10px;
 }
-.page-title .icon {
+.page-title .ecolexicon {
   color: #808080;
   display: block;
   font-size: 36px;

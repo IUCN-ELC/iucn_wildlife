@@ -116,7 +116,7 @@ class IucnSearchForm extends FormBase {
 //      ],
     ];
     foreach ($facets as $facet) {
-      $operator = !empty($facet['operator']) ? $facet['operator'] : 'OR';
+      $operator = !empty($_GET[$facet['field'] . '_operator']) ? $_GET[$facet['field'] . '_operator'] : 'OR';
       $limit = !empty($facet['limit']) ? $facet['limit'] : '-1';
       $min_count = !empty($facet['min_count']) ? $facet['min_count'] : '1';
       $display_type = !empty($facet['display_type']) ? $facet['display_type'] : 'select';
@@ -194,13 +194,16 @@ class IucnSearchForm extends FormBase {
     $query[$this->search_url_param] = $search_text;
     foreach ($this->facets as $facet) {
       $values = [];
-      foreach ($form_state->getValue($facet->getField()) as $value => $selected) {
+      foreach ($form_state->getValue($facet->getField() . '_values') as $value => $selected) {
         if ($selected) {
           $values[] = $value;
         }
       }
       if (!empty($values)) {
         $query[$facet->getField()] = implode(',', $values);
+      }
+      if ($op = $form_state->getValue(($facet->getField() . '_operator'))) {
+        $query[$facet->getField() . '_operator'] = $op;
       }
     }
     $form_state->setRedirect('iucn.search', [], ['query' => $query]);

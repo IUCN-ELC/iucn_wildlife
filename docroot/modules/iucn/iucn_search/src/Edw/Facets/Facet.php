@@ -11,13 +11,15 @@ class Facet {
   protected $values = [];
   protected $entity_type;
   protected $bundle;
+  protected $display_type;
 
-  function __construct($title, $field, $operator = 'AND', $limit = '10', $min_count = '1', $entity_type = 'term', $bundle = NULL) {
+  function __construct($title, $field, $operator = 'AND', $limit = '10', $min_count = '1', $display_type = 'checkboxes', $entity_type = 'term', $bundle = NULL) {
     $this->title = $title;
     $this->field = $field;
     $this->operator = $operator;
     $this->limit = $limit;
     $this->min_count = $min_count;
+    $this->display_type = $display_type;
     $this->entity_type = $entity_type;
     $this->bundle = $bundle;
   }
@@ -44,7 +46,6 @@ class Facet {
   }
 
   public function render() {
-    // @ToDo: Make display type configurable
     $return = [];
     foreach ($this->values as $id => $count) {
       // @ToDo: Check why there are "" in string
@@ -66,7 +67,7 @@ class Facet {
       }
     }
     return [
-      '#type' => 'checkboxes',
+      '#type' => $this->display_type,
       '#title' => $this->title,
       '#options' => $return,
       '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],

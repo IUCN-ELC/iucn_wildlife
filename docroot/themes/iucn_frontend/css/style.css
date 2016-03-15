@@ -298,21 +298,21 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #iucn-search-form .form-submit {
   display: none;
 }
-#iucn-search-form .facet-container .facet-title {
+#iucn-search-form .facets .facet-container .facet-title {
   font-size: 14px;
   margin-top: 4px;
   margin-bottom: 4px;
   font-weight: bold;
   float: left;
 }
-#iucn-search-form .facet-container .checkbox {
+#iucn-search-form .facets .facet-container .checkbox {
   float: right;
   margin-top: 0;
 }
-#iucn-search-form .select2 .select2-selection {
+#iucn-search-form .facets .select2 .select2-selection {
   border: none;
 }
-#iucn-search-form .select2 .select2-selection__choice {
+#iucn-search-form .facets .select2 .select2-selection__choice {
   clear: left;
 }
 /*# sourceMappingURL=style.css.map */

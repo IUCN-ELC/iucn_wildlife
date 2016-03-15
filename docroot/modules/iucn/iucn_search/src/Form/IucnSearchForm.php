@@ -175,7 +175,7 @@ class IucnSearchForm extends FormBase {
     ];
     $form['facets'] = [
       'facets' => $this->getRenderedFacets(),
-      '#prefix' => '<div class="facets col-md-4">',
+      '#prefix' => '<div class="facets invisible col-md-4">',
       '#suffix' => '</div>',
     ];
     $form['submit'] = [

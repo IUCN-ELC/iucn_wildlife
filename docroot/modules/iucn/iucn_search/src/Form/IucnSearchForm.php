@@ -62,24 +62,28 @@ class IucnSearchForm extends FormBase {
     $facets = [
       'Subject' => [
         'title' => 'Subject',
+        'placeholder' => 'Add subjects...',
         'field' => 'field_ecolex_subjects',
         'entity_type' => 'term',
         'bundle' => 'ecolex_subjects',
       ],
       'Country' => [
         'title' => 'Country',
+        'placeholder' => 'Add countries...',
         'field' => 'field_country',
         'entity_type' => 'node',
         'bundle' => 'country',
       ],
       'Type of court' => [
         'title' => 'Type of court',
+        'placeholder' => 'Add types...',
         'field' => 'field_type_of_text',
         'entity_type' => 'term',
         'bundle' => 'document_types',
       ],
       'Territorial subdivision' => [
         'title' => 'Sub-national/state level',
+        'placeholder' => 'Add territory...',
         'field' => 'field_territorial_subdivisions',
         'entity_type' => 'term',
         'bundle' => 'territorial_subdivisions',
@@ -116,12 +120,14 @@ class IucnSearchForm extends FormBase {
 //      ],
     ];
     foreach ($facets as $facet) {
+      $placeholder = !empty($facet['placeholder']) ? $facet['placeholder'] : 'Add...';
       $operator = !empty($_GET[$facet['field'] . '_operator']) ? $_GET[$facet['field'] . '_operator'] : 'OR';
       $limit = !empty($facet['limit']) ? $facet['limit'] : '-1';
       $min_count = !empty($facet['min_count']) ? $facet['min_count'] : '1';
       $display_type = !empty($facet['display_type']) ? $facet['display_type'] : 'select';
       $this->facets[] = new Facet(
         $facet['title'],
+        $placeholder,
         $facet['field'],
         $operator,
         $limit,

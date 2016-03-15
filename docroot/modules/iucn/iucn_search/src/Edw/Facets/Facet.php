@@ -4,6 +4,7 @@ namespace Drupal\iucn_search\Edw\Facets;
 
 class Facet {
   protected $title;
+  protected $placeholder;
   protected $field;
   protected $operator;
   protected $limit;
@@ -13,8 +14,9 @@ class Facet {
   protected $bundle;
   protected $display_type;
 
-  function __construct($title, $field, $operator = 'AND', $limit = '10', $min_count = '1', $display_type = 'checkboxes', $entity_type = 'term', $bundle = NULL) {
+  function __construct($title, $placeholder, $field, $operator = 'AND', $limit = '10', $min_count = '1', $display_type = 'checkboxes', $entity_type = 'term', $bundle = NULL) {
     $this->title = $title;
+    $this->placeholder = $placeholder;
     $this->field = $field;
     $this->operator = $operator;
     $this->limit = $limit;
@@ -78,6 +80,11 @@ class Facet {
       case 'select':
         return [
           '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'facet-container',
+            ],
+          ],
           'title' => [
             '#markup' => "<h3 class='facet-title'>{$this->title}</h3>",
           ],
@@ -85,7 +92,7 @@ class Facet {
 //            '#title' => $this->operator,
             '#type' => 'checkbox',
             '#default_value' => $this->operator == 'AND',
-            '#return_value' => 'AND'
+            '#return_value' => 'AND',
           ],
           $this->field . '_values' => [
 //            '#title' => $this->title,
@@ -93,6 +100,9 @@ class Facet {
             '#options' => $options,
             '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],
             '#multiple' => TRUE,
+            '#attributes' => [
+              'data-placeholder' => $this->placeholder,
+            ],
           ],
         ];
     }

@@ -1,6 +1,7 @@
 jQuery('select').select2({
-    //@ToDo: Configure placeholders
-    placeholder: 'Add...'
+    placeholder: function(){
+        $(this).data('placeholder');
+    }
 });
 
 jQuery('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({

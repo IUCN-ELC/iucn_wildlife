@@ -164,12 +164,14 @@ class IucnSearchForm extends FormBase {
       if (!empty($_GET[$info['field']])) {
         $values = explode(',', $_GET[$info['field']]);
         if (count($values) > 1) {
-
+          $op = $info['operator'] ?: 'OR';
+          $op = strtoupper($op);
+          $val = '(' . implode(" {$op} ", $values) . ')';
         }
         else {
           $val = reset($values);
-          $solarium_query->createFilterQuery("facet:{$info['field']}")->setTags(["facet:{$info['field']}"])->setQuery("{$solr_field_name}:$val");
         }
+        $solarium_query->createFilterQuery("facet:{$info['field']}")->setTags(["facet:{$info['field']}"])->setQuery("{$solr_field_name}:$val");
       }
       $facet_field = $facet_set->createFacetField($info['field'])->setField($solr_field_name);
       if (isset($info['operator']) && strtolower($info['operator']) === 'or') {

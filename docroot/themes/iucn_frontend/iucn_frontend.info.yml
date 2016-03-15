@@ -22,6 +22,7 @@ regions:
 libraries:
   - iucn_frontend/bootstrap
   - iucn_frontend/fonts
+  - iucn_frontend/select2
   - iucn_frontend/global-styling
 
 libraries-extend:

@@ -15,7 +15,19 @@ fonts:
     theme:
       //fonts.googleapis.com/css?family=Noto+Sans:400,700&subset=latin,latin-ext: { type: external }
 
+select2:
+  version: 4.0.2
+  css:
+    theme:
+      lib/select2/dist/css/select2.min.css: { minified: true }
+  js:
+    lib/select2/dist/js/select2.min.js: { minified: true }
+  dependencies:
+    - core/jquery
+
 global-styling:
   css:
     theme:
       css/style.min.css: { minified: true }
+  js:
+    js/application.js: {}

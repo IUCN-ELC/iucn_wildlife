@@ -258,4 +258,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #block-iucn-frontend-footer .nav > li > a:focus {
   text-decoration: underline;
 }
+#iucn-search-form .form-submit {
+  display: none;
+}
 /*# sourceMappingURL=style.css.map */

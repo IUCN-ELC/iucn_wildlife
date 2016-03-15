@@ -11,19 +11,50 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\iucn_search\Edw\Facets\Facet;
+use Solarium\Client;
+use Solarium\Core\Client\Request;
+use Solarium\Core\Query\Helper;
+use Solarium\Core\Query\Result\ResultInterface;
+use Solarium\QueryType\Select\Query\Query;
+use Solarium\Exception\ExceptionInterface;
+use Solarium\Exception\HttpException;
+use Solarium\QueryType\Select\Result\Result;
+use Solarium\QueryType\Update\Query\Document\Document;
 
 class IucnSearchForm extends FormBase {
 
   protected $search_url_param = 'q';
+
   protected $items_per_page = 10;
+
   protected $items_viewmode = 'search_index';
+
   protected $resultCount = 0;
+
+  /**
+   * A connection to the Solr server.
+   *
+   * @var \Solarium\Client
+   */
+  protected $solr;
+
   protected $facets = [];
 
   public function __construct() {
-    // @ToDo: Configure operator, limit, min_count for each facet
+    try {
+      $index = Index::load('default_node_index');
+      $server = $index->getServerInstance();
+      $solr_configuration = $server->getBackendConfig() + array('key' => $server->id());
+      $this->solr = new Client();
+      $this->solr->createEndpoint(($solr_configuration), TRUE);
+    }
+    catch (\Exception $e) {
+      watchdog_exception('iucn_search', $e);
+      drupal_set_message(t('An error occurred.'), 'error');
+    }
+
+
     // @ToDo: Translate facet titles
-    // @ToDo: Move facets configuration in a .yml config file
     $facets = [
       'Country' => [
         'title' => 'Country',

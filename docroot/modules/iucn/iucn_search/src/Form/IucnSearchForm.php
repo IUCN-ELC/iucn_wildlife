@@ -153,15 +153,11 @@ class IucnSearchForm extends FormBase {
       '#items' => $results,
     ];
     $form['left-col'] = [
-      'search_text' => [
-        '#type' => 'textfield',
-        '#title' => 'Search text',
-        '#default_value' => $text,
-      ],
-      'submit' => [
-        '#type' => 'submit',
-        '#value' => 'Search',
-      ],
+//      'search_text' => [
+//        '#type' => 'textfield',
+//        '#title' => 'Search text',
+//        '#default_value' => $text,
+//      ],
       'nodes' => [
         '#markup' => \Drupal::service('renderer')->render($elements)
       ],
@@ -175,6 +171,10 @@ class IucnSearchForm extends FormBase {
       'facets' => $this->getRenderedFacets(),
       '#prefix' => '<div class="facets col-md-4">',
       '#suffix' => '</div>',
+    ];
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => 'Search',
     ];
     return $form;
   }
@@ -190,7 +190,7 @@ class IucnSearchForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $query = [];
-    $search_text = $form_state->getValue('search_text');
+    $search_text = !empty($_GET[$this->search_url_param]) ? $_GET[$this->search_url_param] : '';
     $query[$this->search_url_param] = $search_text;
     foreach ($this->facets as $facet) {
       $values = [];

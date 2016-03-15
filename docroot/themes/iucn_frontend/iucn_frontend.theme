@@ -5,6 +5,9 @@ function iucn_frontend_preprocess_page(array &$variables) {
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
   $variables['q'] = isset($_GET['q']) ? $_GET['q'] : '';
+  $get = $_GET;
+  unset($get['q']);
+  $variables['url_query'] = $get;
 }
 
 function iucn_frontend_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {

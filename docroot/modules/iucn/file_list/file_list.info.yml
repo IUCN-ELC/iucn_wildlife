@@ -1,0 +1,6 @@
+name: 'File list'
+type: module
+description: 'Provides a file formatter to output files using the item list template.'
+core: '8.x'
+dependencies:
+  - file

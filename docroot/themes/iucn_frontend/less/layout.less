@@ -252,10 +252,16 @@
 .file {
   font-size: 14px;
   font-weight: normal;
-  margin-bottom: 11px;
+  margin: 0 0 11px;
+  max-width: 640px;
+  position: relative;
 
-  &.thumbnail {
-    max-width: 480px;
+  .thumbnail {
+    color: #808080;
+    display: table;
+    margin-bottom: 0;
+    padding: 10px 0;
+    width: 100%;
 
     &:hover,
     &:focus {
@@ -263,23 +269,13 @@
     }
   }
 
-  > span {
-    border-bottom: 0;
-    border-top: 0;
-    color: #808080;
-
-    &:first-child {
-      border-left: 0;
-    }
-
-    &:last-child {
-      border-right: 0;
-    }
-  }
-
   &:hover,
   &:focus {
-    .file-action {
+    .thumbnail {
+      border-color: #1c5479;
+    }
+
+    .file-help {
       visibility: visible;
     }
   }
@@ -287,6 +283,13 @@
 
 .file-icon {
   font-size: 24px;
+  padding: 0 15px;
+  width: 1%;
+}
+
+.file-info {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .file-name {
@@ -294,8 +297,21 @@
   font-weight: 700;
 }
 
-.file-action {
+.file-size {
+  display: inline;
+  padding: 0;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.file-help {
   visibility: hidden;
+}
+
+.file-download {
+  position: absolute;
+  right: 14px;
+  top: 14px;
 }
 
 .footer {

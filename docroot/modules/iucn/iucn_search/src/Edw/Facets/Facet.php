@@ -46,7 +46,7 @@ class Facet {
   }
 
   public function render() {
-    $return = [];
+    $options = [];
     foreach ($this->values as $id => $count) {
       // @ToDo: Check why there are "" in string
       $id = str_replace('"', '', $id);
@@ -63,22 +63,23 @@ class Facet {
           $entity = $display = NULL;
       }
       if ($entity) {
-        $return[$id] = $display;
+        $options[$id] = $display;
       }
     }
+    sort($options);
     switch ($this->display_type) {
       case 'checkboxes':
         return [
           '#type' => $this->display_type,
           '#title' => $this->title,
-          '#options' => $return,
+          '#options' => $options,
           '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],
         ];
       case 'select':
         return [
           '#type' => $this->display_type,
           '#title' => $this->title,
-          '#options' => $return,
+          '#options' => $options,
           '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],
           '#multiple' => TRUE,
           '#size' => 5,

@@ -117,7 +117,7 @@ class IucnSearchForm extends FormBase {
     ];
     foreach ($facets as $facet) {
       $operator = !empty($facet['operator']) ? $facet['operator'] : 'OR';
-      $limit = !empty($facet['limit']) ? $facet['limit'] : '10';
+      $limit = !empty($facet['limit']) ? $facet['limit'] : '-1';
       $min_count = !empty($facet['min_count']) ? $facet['min_count'] : '1';
       $display_type = !empty($facet['display_type']) ? $facet['display_type'] : 'select';
       $this->facets[] = new Facet(

@@ -46,17 +46,17 @@ class Facet {
   public function render() {
     // @ToDo: Make display type configurable
     $return = [];
-    foreach ($this->values as $value) {
+    foreach ($this->values as $id => $count) {
       // @ToDo: Check why there are "" in string
-      $id = str_replace('"', '', $value['filter']);
+      $id = str_replace('"', '', $id);
       switch ($this->entity_type) {
         case 'term':
           $entity = \Drupal\taxonomy\Entity\Term::load($id);
-          $display = !empty($entity) ? "{$entity->getName()} ({$value['count']})" : NULL;
+          $display = !empty($entity) ? "{$entity->getName()} ({$count})" : NULL;
           break;
         case 'node':
           $entity = \Drupal\node\Entity\Node::load($id);
-          $display = !empty($entity) ? "{$entity->getTitle()} ({$value['count']})" : NULL;
+          $display = !empty($entity) ? "{$entity->getTitle()} ({$count})" : NULL;
           break;
         default:
           $entity = $display = NULL;

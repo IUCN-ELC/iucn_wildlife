@@ -199,7 +199,7 @@ class IucnSearchForm extends FormBase {
   private function getRenderedFacets() {
     $return = [];
     foreach ($this->facets as $facet) {
-      $return[(string) $facet] = $facet->render();
+      $return[$facet->getField()] = $facet->render();
     }
     return $return;
   }

@@ -196,7 +196,7 @@ class IucnSearchForm extends FormBase {
       }
 
       // Set missing, if specified.
-      $facet_field->setMissing($info['missing'] ?: FALSE);
+      $facet_field->setMissing(!empty($info['missing']) ? $info['missing'] : FALSE);
     }
   }
 
@@ -244,47 +244,52 @@ class IucnSearchForm extends FormBase {
 
   private function getSeachResults($search_text, $current_page) {
     $nodes = [];
-    $solarium_query = $this->solr->createSelect();
-    $solarium_query->setQuery($search_text);
-    $solarium_query->setFields(array('*', 'score'));
+    try {
+      $solarium_query = $this->solr->createSelect();
+      $solarium_query->setQuery($search_text);
+      $solarium_query->setFields(array('*', 'score'));
 
-    $field_names = $this->index->getServerInstance()->getBackend()->getFieldNames($this->index);
-    $search_fields = $this->index->getFulltextFields();
-    // Get the index fields to be able to retrieve boosts.
-    $index_fields = $this->index->getFields();
-    $query_fields = [];
-    foreach ($search_fields as $search_field) {
-      /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
-      $document = $index_fields[$search_field];
-      $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
-      $query_fields[] = $field_names[$search_field] . $boost;
-    }
-    $solarium_query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
-
-    $offset = $current_page * $this->items_per_page;
-    $solarium_query->setStart($offset);
-    $solarium_query->setRows($this->items_per_page);
-
-    $this->setFacets($solarium_query, $field_names);
-
-
-    $resultSet = $this->createSolariumRequest($solarium_query);
-    $documents = $resultSet->getDocuments();
-
-    $this->resultCount = $resultSet->getNumFound();
-
-    foreach ($documents as $document) {
-      $fields = $document->getFields();
-      $nid = $fields[$field_names['nid']];
-      if (is_array($nid)) {
-        $nid = reset($nid);
+      $field_names = $this->index->getServerInstance()->getBackend()->getFieldNames($this->index);
+      $search_fields = $this->index->getFulltextFields();
+      // Get the index fields to be able to retrieve boosts.
+      $index_fields = $this->index->getFields();
+      $query_fields = [];
+      foreach ($search_fields as $search_field) {
+        /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
+        $document = $index_fields[$search_field];
+        $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
+        $query_fields[] = $field_names[$search_field] . $boost;
       }
-      $node = \Drupal\node\Entity\Node::load($nid);
-      $nodes[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+      $solarium_query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
+
+      $offset = $current_page * $this->items_per_page;
+      $solarium_query->setStart($offset);
+      $solarium_query->setRows($this->items_per_page);
+
+      $this->setFacets($solarium_query, $field_names);
+
+
+      $resultSet = $this->createSolariumRequest($solarium_query);
+      $documents = $resultSet->getDocuments();
+
+      $this->resultCount = $resultSet->getNumFound();
+
+      foreach ($documents as $document) {
+        $fields = $document->getFields();
+        $nid = $fields[$field_names['nid']];
+        if (is_array($nid)) {
+          $nid = reset($nid);
+        }
+        $node = \Drupal\node\Entity\Node::load($nid);
+        $nodes[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+      }
+
+      $this->setFacetsValues($resultSet->getFacetSet());
     }
-
-    $this->setFacetsValues($resultSet->getFacetSet());
-
+    catch (\Exception $e) {
+      watchdog_exception('iucn_search', $e);
+      drupal_set_message(t('An error occurred.'), 'error');
+    }
     return $nodes;
   }
 

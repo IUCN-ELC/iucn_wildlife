@@ -66,11 +66,23 @@ class Facet {
         $return[$id] = $display;
       }
     }
-    return [
-      '#type' => $this->display_type,
-      '#title' => $this->title,
-      '#options' => $return,
-      '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],
-    ];
+    switch ($this->display_type) {
+      case 'checkboxes':
+        return [
+          '#type' => $this->display_type,
+          '#title' => $this->title,
+          '#options' => $return,
+          '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],
+        ];
+      case 'select':
+        return [
+          '#type' => $this->display_type,
+          '#title' => $this->title,
+          '#options' => $return,
+          '#default_value' => !empty($_GET[$this->field]) ? explode(',', $_GET[$this->field]) : [],
+          '#multiple' => TRUE,
+          '#size' => 5,
+        ];
+    }
   }
 }

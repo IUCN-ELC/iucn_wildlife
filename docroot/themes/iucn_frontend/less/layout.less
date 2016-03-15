@@ -67,44 +67,6 @@
   }
 }
 
-@font-face {
-  font-family: 'ecolex-icons';
-  src: url('../fonts/ecolex-icons.eot');
-  src: url('../fonts/ecolex-icons.eot?#iefix') format('embedded-opentype'),
-       url('../fonts/ecolex-icons.woff') format('woff'),
-       url('../fonts/ecolex-icons.ttf') format('truetype'),
-       url('../fonts/ecolex-icons.svg#ecolex-icons') format('svg');
-}
-
-.ecolexicon {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  display: inline-block;
-  font-family: 'ecolex-icons';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  position: relative;
-  top: 1px;
-}
-
-.ecolexicon-cop-decision      { &:before { content: "\e600"; } }
-.ecolexicon-court-decision    { &:before { content: "\e601"; } }
-.ecolexicon-legislation       { &:before { content: "\e602"; } }
-.ecolexicon-literature        { &:before { content: "\e603"; } }
-.ecolexicon-treaty            { &:before { content: "\e604"; } }
-.ecolexicon-drop-down         { &:before { content: "\e605"; } }
-.ecolexicon-drop-up           { &:before { content: "\e606"; } }
-.ecolexicon-close             { &:before { content: "\e607"; } }
-.ecolexicon-menu              { &:before { content: "\e608"; } }
-.ecolexicon-search            { &:before { content: "\e609"; } }
-.ecolexicon-list-add          { &:before { content: "\e60a"; } }
-.ecolexicon-vellip            { &:before { content: "\e60b"; } }
-.ecolexicon-pointer           { &:before { content: "\e610"; } }
-.ecolexicon-time              { &:before { content: "\e60d"; } }
-.ecolexicon-globe             { &:before { content: "\e60e"; } }
-.ecolexicon-new-window        { &:before { content: "\e60f"; } }
-
 #sliding-popup {
   font-size: 14px;
   text-align: center;
@@ -247,71 +209,6 @@
       text-align: right;
     }
   }
-}
-
-.file {
-  font-size: 14px;
-  font-weight: normal;
-  margin: 0 0 11px;
-  max-width: 640px;
-  position: relative;
-
-  .thumbnail {
-    color: #808080;
-    display: table;
-    margin-bottom: 0;
-    padding: 10px 0;
-    width: 100%;
-
-    &:hover,
-    &:focus {
-      text-decoration: none;
-    }
-  }
-
-  &:hover,
-  &:focus {
-    .thumbnail {
-      border-color: #1c5479;
-    }
-
-    .file-help {
-      visibility: visible;
-    }
-  }
-}
-
-.file-icon {
-  font-size: 24px;
-  padding: 0 15px;
-  width: 1%;
-}
-
-.file-info {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.file-name {
-  color: #1c5479;
-  font-weight: 700;
-}
-
-.file-size {
-  display: inline;
-  padding: 0;
-  text-align: left;
-  vertical-align: baseline;
-}
-
-.file-help {
-  visibility: hidden;
-}
-
-.file-download {
-  position: absolute;
-  right: 14px;
-  top: 14px;
 }
 
 .footer {

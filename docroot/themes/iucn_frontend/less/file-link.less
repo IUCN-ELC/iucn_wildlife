@@ -1,0 +1,64 @@
+.file {
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0 0 11px;
+  max-width: 640px;
+  position: relative;
+
+  .thumbnail {
+    color: #808080;
+    display: table;
+    margin-bottom: 0;
+    padding: 10px 0;
+    width: 100%;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
+  &:hover,
+  &:focus {
+    .thumbnail {
+      border-color: #1c5479;
+    }
+
+    .file-help {
+      visibility: visible;
+    }
+  }
+}
+
+.file-icon {
+  font-size: 24px;
+  padding: 0 15px;
+  width: 1%;
+}
+
+.file-info {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.file-name {
+  color: #1c5479;
+  font-weight: 700;
+}
+
+.file-size {
+  display: inline;
+  padding: 0;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.file-help {
+  visibility: hidden;
+}
+
+.file-download {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+}

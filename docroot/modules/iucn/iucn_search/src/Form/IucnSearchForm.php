@@ -140,13 +140,13 @@ class IucnSearchForm extends FormBase {
     $query[$this->search_url_param] = $search_text;
     foreach ($this->facets as $facet) {
       $values = [];
-      foreach ($form_state->getValue((string) $facet) as $value => $selected) {
+      foreach ($form_state->getValue($facet->getField()) as $value => $selected) {
         if ($selected) {
           $values[] = $value;
         }
       }
       if (!empty($values)) {
-        $query[(string) $facet] = implode(',', $values);
+        $query[$facet->getField()] = implode(',', $values);
       }
     }
     $form_state->setRedirect('iucn.search', [], ['query' => $query]);
@@ -160,19 +160,20 @@ class IucnSearchForm extends FormBase {
     $facet_set->setMissing(FALSE);
     foreach ($this->facets as $facet) {
       $info = $facet->getArray();
-//      $field = (string) $facet;
-//      if (!empty($_GET[$field])) {
-//        $conditionGroup = $query->createConditionGroup($facet->getOperator(), $field);
-//        foreach (explode(',', $_GET[$field]) as $val) {
-//          $conditionGroup->addCondition($field, $val);
-//        }
-//        $query->addConditionGroup($conditionGroup);
-//      }
-//      $query_facets[] = $facet->getArray();
       $solr_field_name = $field_names[$info['field']];
+      if (!empty($_GET[$info['field']])) {
+        $values = explode(',', $_GET[$info['field']]);
+        if (count($values) > 1) {
+
+        }
+        else {
+          $val = reset($values);
+          $solarium_query->createFilterQuery("facet:{$info['field']}")->setTags(["facet:{$info['field']}"])->setQuery("{$solr_field_name}:$val");
+        }
+      }
       $facet_field = $facet_set->createFacetField($info['field'])->setField($solr_field_name);
       if (isset($info['operator']) && strtolower($info['operator']) === 'or') {
-        $facet_field->setExcludes(array('facet:' . $info['field']));
+        $facet_field->setExcludes(["facet:{$info['field']}"]);
       }
       // Set limit, unless it's the default.
       if ($info['limit'] != 10) {

@@ -66,7 +66,7 @@ class Facet {
         $options[$id] = $display;
       }
     }
-    sort($options);
+    asort($options);
     switch ($this->display_type) {
       case 'checkboxes':
         return [

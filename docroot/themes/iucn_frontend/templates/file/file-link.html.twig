@@ -13,35 +13,16 @@
  * @see \Drupal\bootstrap\Plugin\Preprocess\FileLink::preprocessVariables
  */
 #}
-{%
-  set classes = [
-    'thumbnail',
-    icon_only ? 'icon-only',
-    not icon_only ? 'icon-' ~ icon_position|clean_class
-  ]
-%}
-<a{{ attributes.addClass(classes) }}>
-  {% if icon_only %}
-    <span class="file-icon">{{ icon }}</span>
-    <span class="sr-only">
-      <span class="file-link">{{ file_name }}</span>
-      <span class="file-size">{{ file_size }}</span>
-    </span>
-  {% else %}
-    {% if icon_position == 'after' %}
-      <span class="file-link">
-        <span class="file-name">{{ file_name }}</span>
-        <span class="file-action">&ndash; Click to download</span>
-      </span>
-      <span class="file-size">{{ file_size }}</span>
-      <span class="file-icon">{{ icon }}</span>
-    {% else %}
-      <span class="file-icon">{{ icon }}</span>
-      <span class="file-link">
-        <span class="file-name">{{ file_name }}</span>
-        <span class="file-action">&ndash; Click to download</span>
-      </span>
-      <span class="file-size">{{ file_size }}</span>
-    {% endif %}
-  {% endif %}
-</a>
+<div{{ attributes }}>
+  <a class="thumbnail" href="{{ url }}">
+    <div class="file-icon">{{ icon }}</div>
+    <div class="file-info">
+      <div class="file-name">{{ file_name }}</div>
+      <div class="file-meta">
+        <span class="file-size">{{ file_size }}</span>
+        <span class="file-help">{{ '&ndash; Click to open'|t }}</span>
+      </div>
+    </div>
+  </a>
+  <a class="btn btn-default btn-sm file-download" href="{{ url }}" download>{{ 'Download'|t }}</a>
+</div>

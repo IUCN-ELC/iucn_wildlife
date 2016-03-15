@@ -1,4 +1,7 @@
-jQuery('select').select2();
+jQuery('select').select2({
+    //@ToDo: Configure placeholders
+    placeholder: 'Add...'
+});
 
 jQuery('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({
     onText: Drupal.t('and'),

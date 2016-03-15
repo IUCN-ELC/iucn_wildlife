@@ -60,60 +60,60 @@ class IucnSearchForm extends FormBase {
 
     // @ToDo: Translate facet titles
     $facets = [
-      'Country' => [
-        'title' => 'Country',
-        'field' => 'field_country',
-        'entity_type' => 'node',
-        'bundle' => 'country',
-      ],
-      'Type' => [
-        'title' => 'Type',
-        'field' => 'field_type_of_text',
-        'entity_type' => 'term',
-        'bundle' => 'document_types',
-      ],
-      'Territorial subdivision' => [
-        'title' => 'Territorial subdivision',
-        'field' => 'field_territorial_subdivisions',
-        'entity_type' => 'term',
-        'bundle' => 'territorial_subdivisions',
-      ],
-      'Subdivision' => [
-        'title' => 'Subdivision',
-        'field' => 'field_subdivision',
-        'entity_type' => 'term',
-        'bundle' => 'subdivisions',
-      ],
-      'Justice' => [
-        'title' => 'Justice',
-        'field' => 'field_justices',
-        'entity_type' => 'term',
-        'bundle' => 'justices',
-      ],
-      'Instance' => [
-        'title' => 'Instance',
-        'field' => 'field_instance',
-        'entity_type' => 'term',
-        'bundle' => 'instances',
-      ],
       'Subject' => [
         'title' => 'Subject',
         'field' => 'field_ecolex_subjects',
         'entity_type' => 'term',
         'bundle' => 'ecolex_subjects',
       ],
-      'Decision status' => [
-        'title' => 'Decision status',
-        'field' => 'field_decision_status',
-        'entity_type' => 'term',
-        'bundle' => 'decision_status',
+      'Country' => [
+        'title' => 'Country',
+        'field' => 'field_country',
+        'entity_type' => 'node',
+        'bundle' => 'country',
       ],
-      'Court jurisdiction' => [
-        'title' => 'Court jurisdiction',
-        'field' => 'field_court_jurisdiction',
+      'Type of court' => [
+        'title' => 'Type of court',
+        'field' => 'field_type_of_text',
         'entity_type' => 'term',
-        'bundle' => 'court_jurisdictions',
+        'bundle' => 'document_types',
       ],
+      'Territorial subdivision' => [
+        'title' => 'Sub-national/state level',
+        'field' => 'field_territorial_subdivisions',
+        'entity_type' => 'term',
+        'bundle' => 'territorial_subdivisions',
+      ],
+//      'Subdivision' => [
+//        'title' => 'Subdivision',
+//        'field' => 'field_subdivision',
+//        'entity_type' => 'term',
+//        'bundle' => 'subdivisions',
+//      ],
+//      'Justice' => [
+//        'title' => 'Justice',
+//        'field' => 'field_justices',
+//        'entity_type' => 'term',
+//        'bundle' => 'justices',
+//      ],
+//      'Instance' => [
+//        'title' => 'Instance',
+//        'field' => 'field_instance',
+//        'entity_type' => 'term',
+//        'bundle' => 'instances',
+//      ],
+//      'Decision status' => [
+//        'title' => 'Decision status',
+//        'field' => 'field_decision_status',
+//        'entity_type' => 'term',
+//        'bundle' => 'decision_status',
+//      ],
+//      'Court jurisdiction' => [
+//        'title' => 'Court jurisdiction',
+//        'field' => 'field_court_jurisdiction',
+//        'entity_type' => 'term',
+//        'bundle' => 'court_jurisdictions',
+//      ],
     ];
     foreach ($facets as $facet) {
       $operator = !empty($facet['operator']) ? $facet['operator'] : 'OR';

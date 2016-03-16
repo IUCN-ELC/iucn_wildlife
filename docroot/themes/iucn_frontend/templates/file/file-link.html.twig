@@ -14,15 +14,13 @@
  */
 #}
 <div{{ attributes }}>
-  <a class="thumbnail" href="{{ url }}">
-    <div class="file-icon">{{ icon }}</div>
+  <a href="{{ url }}" class="thumbnail">
+    <div class="file-name">{{ file_name }}</div>
     <div class="file-info">
-      <div class="file-name">{{ file_name }}</div>
-      <div class="file-meta">
-        <span class="file-size">{{ file_size }}</span>
-        <span class="file-help">{{ '&ndash; Click to open'|t }}</span>
-      </div>
+      {{ file_size }} <span class="file-reveal">{{ '&ndash; Click to open'|t }}</span>
     </div>
   </a>
-  <a class="btn btn-default btn-sm file-download" href="{{ url }}" download>{{ 'Download'|t }}</a>
+  <div class="file-actions file-reveal">
+    <a href="{{ url }}" class="btn btn-default btn-sm" download>{{ 'Download'|t }}</a>
+  </div>
 </div>

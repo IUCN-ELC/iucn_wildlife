@@ -36,7 +36,7 @@ dependencies:
     - node.type.court_decision
   module:
     - datetime
-    - file
+    - file_list
     - link
     - text
     - user
@@ -122,7 +122,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: file_table
+    type: file_list
   field_instance:
     weight: 20
     label: above

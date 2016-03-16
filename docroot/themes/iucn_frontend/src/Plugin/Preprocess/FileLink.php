@@ -43,25 +43,19 @@ class FileLink extends PreprocessBase {
     $variables['type'] = $mime_type . '; length=' . $file_size;
 
     if (empty($variables['description'])) {
-      $link_text = $file->getFilename();
+      $file_name = $file->getFilename();
     } else {
-      $link_text = $variables['description'];
+      $file_name = $variables['description'];
       $variables['attributes']['title'] = $file->getFilename();
     }
 
-    $variables['file_name'] = $link_text;
+    $variables['file_name'] = $file_name;
 
     $variables->addClass(array(
       'file',
       'file--mime-' . strtr($mime_type, array('/' => '-', '.' => '-')),
       'file--' . file_icon_class($mime_type)
     ));
-
-    $icon = Bootstrap::glyphicon('file');
-
-    $variables['icon'] = Element::create($icon)
-      ->addClass('text-primary')
-      ->getArray();
 
     $this->preprocessAttributes($variables, $hook, $info);
   }

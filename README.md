@@ -33,7 +33,7 @@
 
 ### Theme development
 
-CSS files (the `css` directory) are genereted from LESS sources (the `less` directory). Don't edit the CSS files directly, use `grunt` to recompile.
+CSS files (the `css` directory) are generated from LESS sources (the `less` directory). Don't edit the CSS files directly, use `grunt` to recompile.
 
 ```
 $ npm install grunt-cli -g # install grunt command line interface if not already installed

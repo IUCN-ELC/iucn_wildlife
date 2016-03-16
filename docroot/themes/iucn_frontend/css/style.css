@@ -17,7 +17,7 @@
 .ecolexicon-cop-decision:before {
   content: "\e600";
 }
-.ecolexicon-court-decision:before {
+.ecolexicon-court-decisio:before {
   content: "\e601";
 }
 .ecolexicon-legislation:before {
@@ -281,16 +281,14 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .file {
   font-size: 14px;
   font-weight: normal;
-  margin: 0 0 11px;
-  max-width: 640px;
+  max-width: 600px;
   position: relative;
 }
 .file .thumbnail {
-  color: #808080;
-  display: table;
+  background-position: 13px center;
+  background-repeat: no-repeat;
   margin-bottom: 0;
-  padding: 10px 0;
-  width: 100%;
+  padding: 9px 9px 9px 48px;
 }
 .file .thumbnail:hover,
 .file .thumbnail:focus {
@@ -300,35 +298,41 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .file:focus .thumbnail {
   border-color: #1c5479;
 }
-.file:hover .file-help,
-.file:focus .file-help {
+.file:hover .file-reveal,
+.file:focus .file-reveal {
   visibility: visible;
 }
-.file-icon {
-  font-size: 24px;
-  padding: 0 15px;
-  width: 1%;
+.file.file--application-pdf .thumbnail {
+  background-image: url("../img/icons/file-pdf.png");
 }
-.file-info {
-  display: table-cell;
-  vertical-align: middle;
+.file.file--general .thumbnail {
+  background-image: url("../img/icons/file-general.png");
+}
+.file.file--text .thumbnail {
+  background-image: url("../img/icons/file-text.png");
+}
+.file.file--x-office-document .thumbnail {
+  background-image: url("../img/icons/file-document.png");
+}
+.file.file--x-office-presentation .thumbnail {
+  background-image: url("../img/icons/file-presentation.png");
+}
+.file.file--x-office-spreadsheet .thumbnail {
+  background-image: url("../img/icons/file-spreadsheet.png");
 }
 .file-name {
   color: #1c5479;
   font-weight: 700;
 }
-.file-size {
-  display: inline;
-  padding: 0;
-  text-align: left;
-  vertical-align: baseline;
+.file-info {
+  color: #808080;
 }
-.file-help {
-  visibility: hidden;
-}
-.file-download {
+.file-actions {
   position: absolute;
-  right: 14px;
-  top: 14px;
+  right: 13px;
+  top: 13px;
+}
+.file-reveal {
+  visibility: hidden;
 }
 /*# sourceMappingURL=style.css.map */

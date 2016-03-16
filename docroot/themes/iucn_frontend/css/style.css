@@ -305,11 +305,32 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .file.file--application-pdf .thumbnail {
   background-image: url("../img/icons/file-pdf.png");
 }
+.file.file--application-x-executable .thumbnail {
+  background-image: url("../img/icons/file-executable.png");
+}
+.file.file--audio .thumbnail {
+  background-image: url("../img/icons/file-audio.png");
+}
 .file.file--general .thumbnail {
   background-image: url("../img/icons/file-general.png");
 }
+.file.file--image .thumbnail {
+  background-image: url("../img/icons/file-image.png");
+}
+.file.file--package-x-generic .thumbnail {
+  background-image: url("../img/icons/file-package.png");
+}
 .file.file--text .thumbnail {
   background-image: url("../img/icons/file-text.png");
+}
+.file.file--text-html .thumbnail {
+  background-image: url("../img/icons/file-html.png");
+}
+.file.file--text-x-script .thumbnail {
+  background-image: url("../img/icons/file-script.png");
+}
+.file.file--video .thumbnail {
+  background-image: url("../img/icons/file-spreadsheet.png");
 }
 .file.file--x-office-document .thumbnail {
   background-image: url("../img/icons/file-document.png");

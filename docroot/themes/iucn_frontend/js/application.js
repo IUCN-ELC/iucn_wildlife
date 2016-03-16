@@ -1,21 +1,22 @@
-jQuery('select').select2({
-    placeholder: function(){
-        $(this).data('placeholder');
+(function ($) {
+  $('select').select2({
+    placeholder: function () {
+      $(this).data('placeholder');
     }
-});
+  });
 
-jQuery('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({
-    onText: Drupal.t('and'),
+  $('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({
     offText: Drupal.t('or'),
-    size: 'mini',
-});
+    onText: Drupal.t('and'),
+    size: 'mini'
+  });
 
-jQuery('.facets.invisible').removeClass('invisible');
+  $('.facets.invisible').removeClass('invisible');
 
-jQuery('select', '#iucn-search-form').change(submitSearchForm);
-jQuery('input[type="checkbox"]', '#iucn-search-form').on('switchChange.bootstrapSwitch', submitSearchForm);
+  function submitSearchForm() {
+    $('#iucn-search-form').submit();
+  }
 
-
-function submitSearchForm() {
-    jQuery('#iucn-search-form').submit();
-}
+  $('select', '#iucn-search-form').change(submitSearchForm);
+  $('input[type="checkbox"]', '#iucn-search-form').on('switchChange.bootstrapSwitch', submitSearchForm);
+})(jQuery);

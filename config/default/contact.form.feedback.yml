@@ -7,6 +7,6 @@ _core:
 id: feedback
 label: 'Website feedback'
 recipients:
-  - octavian.belu@eaudeweb.ro
+  - drupal@eaudeweb.ro
 reply: ''
 weight: 0

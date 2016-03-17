@@ -62,12 +62,53 @@ module.exports = function (grunt) {
         ext: '.min.css'
       }
     },
+    eslint: {
+      options: {
+        configFile: 'js/.eslintrc'
+      },
+      target: 'js/*.js'
+    },
+    jscs: {
+      options: {
+        config: 'js/.jscsrc'
+      },
+      grunt: {
+        src: 'Gruntfile.js'
+      },
+      core: {
+        src: 'js/*.js'
+      }
+    },
+    concat: {
+      core: {
+        src: [
+          'js/main.js'
+        ],
+        dest: 'assets/js/application.js'
+      }
+    },
+    uglify: {
+      options: {
+        compress: {
+          warnings: false
+        },
+        preserveComments: 'some'
+      },
+      core: {
+        src: '<%= concat.core.dest %>',
+        dest: 'assets/js/application.min.js'
+      }
+    },
     watch: {
       configFiles: {
         options: {
           reload: true
         },
         files: ['Gruntfile.js', 'package.json']
+      },
+      js: {
+        files: 'js/*.js',
+        tasks: 'js'
       },
       less: {
         files: 'less/**/*.less',
@@ -78,11 +119,13 @@ module.exports = function (grunt) {
       options: {
         force: true
       },
-      css: 'assets/css'
+      css: 'assets/css',
+      js: 'assets/js'
     }
   });
 
   grunt.registerTask('css', ['less', 'postcss', 'csscomb', 'csslint', 'cssmin']);
-  grunt.registerTask('build', 'css');
+  grunt.registerTask('js', [/*'eslint',*/ 'jscs', 'concat', 'uglify']);
+  grunt.registerTask('build', ['css', 'js']);
   grunt.registerTask('default', 'build');
 };

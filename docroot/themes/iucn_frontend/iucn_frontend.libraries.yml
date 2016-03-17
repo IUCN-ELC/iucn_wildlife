@@ -1,9 +1,9 @@
 bootstrap:
   css:
     theme:
-      bootstrap/css/bootstrap.min.css: { minified: true }
+      assets/vendor/bootstrap/css/bootstrap.min.css: { minified: true }
   js:
-    bootstrap/js/bootstrap.min.js: { minified: true }
+    assets/vendor/bootstrap/js/bootstrap.min.js: { minified: true }
 
 bootstrap-overrides:
   css:
@@ -37,6 +37,6 @@ bootstrap-switch:
 global-styling:
   css:
     theme:
-      css/style.min.css: { minified: true }
+      assets/css/style.min.css: { minified: true }
   js:
-    js/application.js: {}
+    js/main.js: {}

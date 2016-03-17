@@ -11,12 +11,12 @@ module.exports = function (grunt) {
         options: {
           outputSourceFiles: true,
           sourceMap: true,
-          sourceMapFilename: 'css/style.css.map',
+          sourceMapFilename: 'assets/css/style.css.map',
           sourceMapURL: 'style.css.map',
           strictMath: true
         },
         files: {
-          'css/style.css': 'less/style.less'
+          'assets/css/style.css': 'less/style.less'
         }
       }
     },
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
         ]
       },
       core: {
-        src: 'css/*.css'
+        src: 'assets/css/*.css'
       }
     },
     csscomb: {
@@ -36,8 +36,8 @@ module.exports = function (grunt) {
         config: 'less/.csscomb.json'
       },
       core: {
-        src: 'css/style.css',
-        dest: 'css/style.css'
+        src: 'assets/css/style.css',
+        dest: 'assets/css/style.css'
       }
     },
     csslint: {
@@ -45,7 +45,7 @@ module.exports = function (grunt) {
         csslintrc: 'less/.csslintrc'
       },
       core: {
-        src: 'css/style.css'
+        src: 'assets/css/style.css'
       }
     },
     cssmin: {
@@ -56,9 +56,9 @@ module.exports = function (grunt) {
       },
       core: {
         expand: true,
-        cwd: 'css',
+        cwd: 'assets/css',
         src: ['*.css', '!*.min.css'],
-        dest: 'css',
+        dest: 'assets/css',
         ext: '.min.css'
       }
     },
@@ -78,7 +78,7 @@ module.exports = function (grunt) {
       options: {
         force: true
       },
-      css: 'css'
+      css: 'assets/css'
     }
   });
 

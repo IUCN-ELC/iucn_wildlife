@@ -28,9 +28,9 @@ bootstrap-switch:
   version: 3.3.2
   css:
     theme:
-      lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css: { minified: true }
+      assets/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css: { minified: true }
   js:
-    lib/bootstrap-switch/dist/js/bootstrap-switch.min.js: { minified: true }
+    assets/vendor/bootstrap-switch/js/bootstrap-switch.min.js: { minified: true }
   dependencies:
     - iucn_frontend/bootstrap
 
@@ -52,8 +52,8 @@ select2:
   version: 4.0.2
   css:
     theme:
-      lib/select2/dist/css/select2.min.css: { minified: true }
+      assets/vendor/select2/css/select2.min.css: { minified: true }
   js:
-    lib/select2/dist/js/select2.min.js: { minified: true }
+    assets/vendor/select2/js/select2.min.js: { minified: true }
   dependencies:
     - core/jquery

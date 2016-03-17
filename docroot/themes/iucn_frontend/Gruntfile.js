@@ -99,6 +99,24 @@ module.exports = function (grunt) {
         dest: 'assets/js/application.min.js'
       }
     },
+    copy: {
+      assets: {
+        files: [
+          {
+            expand: true,
+            cwd: 'node_modules/bootstrap-switch/dist',
+            src: '**',
+            dest: 'assets/vendor/bootstrap-switch'
+          },
+          {
+            expand: true,
+            cwd: 'node_modules/select2/dist',
+            src: '**',
+            dest: 'assets/vendor/select2'
+          }
+        ]
+      }
+    },
     watch: {
       configFiles: {
         options: {
@@ -119,13 +137,20 @@ module.exports = function (grunt) {
       options: {
         force: true
       },
+      assets: [
+        'assets/vendor/bootstrap-switch',
+        'assets/vendor/select2'
+      ],
       css: 'assets/css',
       js: 'assets/js'
     }
   });
 
+  grunt.registerTask('assets', 'copy');
   grunt.registerTask('css', ['less', 'postcss', 'csscomb', 'csslint', 'cssmin']);
   grunt.registerTask('js', [/*'eslint',*/ 'jscs', 'concat', 'uglify']);
-  grunt.registerTask('build', ['css', 'js']);
+
+  grunt.registerTask('build', ['assets', 'css', 'js']);
+
   grunt.registerTask('default', 'build');
 };

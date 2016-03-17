@@ -127,7 +127,10 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #iucn-search-form .form-submit {
   display: none;
 }
-#iucn-search-form .facets .checkbox {
+#iucn-search-form .search-facets {
+  font-size: 14px;
+}
+#iucn-search-form .search-facets .checkbox {
   float: right;
   margin-top: 0;
 }
@@ -149,6 +152,14 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 #iucn-search-form .select-wrapper:after {
   content: none;
+}
+.search-result {
+  margin-bottom: 22px;
+  max-width: 40em;
+}
+.search-result .field--name-field-original-title {
+  font-size: 18px;
+  line-height: 1.2;
 }
 .footer {
   background-color: #eee;

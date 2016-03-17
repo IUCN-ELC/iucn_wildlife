@@ -158,7 +158,8 @@ class IucnSearchForm extends FormBase {
       '#theme' => 'iucn_search_results',
       '#items' => $results,
     ];
-    $form['left-col'] = [
+    $form['#attributes']['class'][] = 'row';
+    $form['results'] = [
 //      'search_text' => [
 //        '#type' => 'textfield',
 //        '#title' => 'Search text',
@@ -170,12 +171,12 @@ class IucnSearchForm extends FormBase {
       'pager' => [
         '#type' => 'pager'
       ],
-      '#prefix' => '<div class="results col-md-8">',
+      '#prefix' => '<div class="col-md-8 search-results">',
       '#suffix' => '</div>',
     ];
     $form['facets'] = [
       'facets' => $this->getRenderedFacets(),
-      '#prefix' => '<div class="facets invisible col-md-4">',
+      '#prefix' => '<div class="col-md-4 search-facets invisible">',
       '#suffix' => '</div>',
     ];
     $form['submit'] = [

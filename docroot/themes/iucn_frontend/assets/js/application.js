@@ -12,7 +12,7 @@
     size: 'mini'
   });
 
-  $('.facets.invisible').removeClass('invisible');
+  $('.search-facets').removeClass('invisible');
 
   function submitSearchForm() {
     $('#iucn-search-form').submit();

@@ -86,7 +86,7 @@ class Facet {
             ],
           ],
           'title' => [
-            '#markup' => "<h3 class='facet-title'>{$this->title}</h3>",
+            '#markup' => "<h4 class='facet-title'>{$this->title}</h4>",
           ],
           $this->field . '_operator' => [
 //            '#title' => $this->operator,

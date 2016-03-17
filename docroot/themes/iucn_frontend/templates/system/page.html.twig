@@ -110,14 +110,14 @@
           <p class="text-primary">{{ site_slogan }}</p>
         {% endif %}
         <form id="search-form" action="/search">
+          {% for key, value in url_query %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+          {% endfor %}
           <div class="form-group has-feedback">
             <input type="text" class="form-control input-lg" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}">
             <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
             <button type="submit" class="btn btn-primary">{{ 'Search'|t }}</button>
           </div>
-          {% for key,value in url_query %}
-            <input type="hidden" name="{{ key }}" value="{{ value }}">
-          {% endfor %}
         </form>
       </div>
     </div>

@@ -39,4 +39,4 @@ global-styling:
     theme:
       assets/css/style.min.css: { minified: true }
   js:
-    js/main.js: {}
+    assets/js/application.min.js: { minified: true }

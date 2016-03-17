@@ -29,10 +29,10 @@ function iucn_frontend_preprocess_field(array &$variables) {
       $variables['title_attributes']['class'][] = 'col-md-3';
 
       if ($variables['multiple']) {
-        $variables['items_attributes']->addClass('col-md-9');
+        $variables['items_attributes']->addClass('col-md-6');
       } else {
         foreach ($variables['items'] as &$item) {
-          $item['attributes']->addClass('col-md-9');
+          $item['attributes']->addClass('col-md-6');
         }
       }
     }

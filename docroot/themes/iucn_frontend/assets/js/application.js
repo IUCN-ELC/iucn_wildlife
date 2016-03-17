@@ -6,6 +6,7 @@
   });
 
   $('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({
+    labelWidth: 9,
     offText: Drupal.t('or'),
     onText: Drupal.t('and'),
     size: 'mini'

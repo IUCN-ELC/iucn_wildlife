@@ -150,6 +150,54 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #iucn-search-form .select-wrapper:after {
   content: none;
 }
+.bootstrap-switch {
+  border-color: #ddd;
+  border-radius: 10px;
+}
+.bootstrap-switch .bootstrap-switch-container {
+  background-color: #ddd;
+}
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-label,
+.bootstrap-switch.bootstrap-switch-inverse.bootstrap-switch-off .bootstrap-switch-label,
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-label,
+.bootstrap-switch.bootstrap-switch-inverse.bootstrap-switch-on .bootstrap-switch-label {
+  border-radius: 50%;
+}
+.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-off,
+.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-on,
+.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-label {
+  line-height: 1.4;
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+  color: #808080;
+  background: transparent;
+}
+.bootstrap-switch.bootstrap-switch-on {
+  border-color: #0077c0;
+}
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-container {
+  background-color: #0077c0;
+}
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-handle-on.bootstrap-switch-default,
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-handle-off.bootstrap-switch-default,
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-handle-off.bootstrap-switch-primary {
+  color: #fff;
+}
+.bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-container {
+  -webkit-transition-property: all;
+          transition-property: all;
+}
+.bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-handle-on.bootstrap-switch-default,
+.bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-handle-off.bootstrap-switch-default,
+.bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-handle-off.bootstrap-switch-primary {
+  -webkit-transition: color .5s;
+          transition: color .5s;
+}
 .footer {
   background-color: #eee;
   border-color: #ddd;

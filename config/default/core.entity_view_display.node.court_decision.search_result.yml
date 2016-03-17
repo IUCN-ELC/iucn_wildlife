@@ -1,9 +1,9 @@
-uuid: 21a684b6-1b90-4367-bd3f-636ddc772b9d
+uuid: 894c18c3-20c1-4b23-b316-228f7a67951d
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.search_index
+    - core.entity_view_mode.node.search_result
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_available_in
     - field.field.node.court_decision.field_country
@@ -37,36 +37,29 @@ dependencies:
     - node.type.court_decision
   module:
     - user
-id: node.court_decision.search_index
+id: node.court_decision.search_result
 targetEntityType: node
 bundle: court_decision
-mode: search_index
+mode: search_result
 content:
   field_country:
     type: entity_reference_label
-    weight: 1
-    label: inline
+    weight: 0
+    label: above
     settings:
       link: false
     third_party_settings: {  }
   field_ecolex_subjects:
     type: entity_reference_label
-    weight: 3
-    label: inline
+    weight: 2
+    label: above
     settings:
       link: false
     third_party_settings: {  }
-  field_original_title:
-    weight: 0
-    label: hidden
-    settings:
-      link_to_entity: true
-    third_party_settings: {  }
-    type: string
   field_type_of_text:
     type: entity_reference_label
-    weight: 2
-    label: inline
+    weight: 1
+    label: above
     settings:
       link: false
     third_party_settings: {  }
@@ -86,6 +79,7 @@ hidden:
   field_justices: true
   field_number_of_pages: true
   field_original_id: true
+  field_original_title: true
   field_reference_number: true
   field_reference_to_cou: true
   field_reference_to_faolex: true

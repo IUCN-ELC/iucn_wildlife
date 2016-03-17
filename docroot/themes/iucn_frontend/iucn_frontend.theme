@@ -17,15 +17,23 @@ function iucn_frontend_theme_suggestions_page_title_alter(array &$suggestions, a
 }
 
 function iucn_frontend_preprocess_field(array &$variables) {
+  if ($variables['multiple']) {
+    $variables['items_attributes'] = new Drupal\Core\Template\Attribute();
+  }
+
   if ($variables['element']['#entity_type'] == 'node' &&
       $variables['element']['#bundle'] == 'court_decision' &&
       $variables['element']['#view_mode'] == 'full') {
-    if ($variables['field_name'] != 'title') {
+    if ($variables['field_name'] != 'title' && !$variables['label_hidden']) {
       $variables['attributes']['class'][] = 'row';
       $variables['title_attributes']['class'][] = 'col-md-3';
 
-      foreach ($variables['items'] as &$item) {
-        $item['attributes']->addClass('col-md-9');
+      if ($variables['multiple']) {
+        $variables['items_attributes']->addClass('col-md-9');
+      } else {
+        foreach ($variables['items'] as &$item) {
+          $item['attributes']->addClass('col-md-9');
+        }
       }
     }
   }

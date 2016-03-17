@@ -1,19 +1,52 @@
+application:
+  version: 1.0.0
+  js:
+    assets/js/application.min.js: { minified: true }
+  dependencies:
+    - iucn_frontend/bootstrap-switch
+    - iucn_frontend/select2
+
 bootstrap:
+  version: 3.3.6
   css:
     theme:
       assets/vendor/bootstrap/css/bootstrap.min.css: { minified: true }
   js:
     assets/vendor/bootstrap/js/bootstrap.min.js: { minified: true }
+  dependencies:
+    - core/jquery
 
 bootstrap-overrides:
+  version: 3.3.6
   css:
     theme:
       /themes/bootstrap/css/3.3.6/overrides.min.css: { minified: true }
+  dependencies:
+    - iucn_frontend/bootstrap
+
+bootstrap-switch:
+  version: 3.3.2
+  css:
+    theme:
+      lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css: { minified: true }
+  js:
+    lib/bootstrap-switch/dist/js/bootstrap-switch.min.js: { minified: true }
+  dependencies:
+    - iucn_frontend/bootstrap
 
 fonts:
   css:
     theme:
       //fonts.googleapis.com/css?family=Noto+Sans:400,700&subset=latin,latin-ext: { type: external }
+
+global-styling:
+  version: 1.0.0
+  css:
+    theme:
+      assets/css/style.min.css: { minified: true }
+  dependencies:
+    - iucn_frontend/bootstrap
+    - iucn_frontend/fonts
 
 select2:
   version: 4.0.2
@@ -24,19 +57,3 @@ select2:
     lib/select2/dist/js/select2.min.js: { minified: true }
   dependencies:
     - core/jquery
-
-bootstrap-switch:
-  css:
-    theme:
-      lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css: { minified: true }
-  js:
-    lib/bootstrap-switch/dist/js/bootstrap-switch.min.js: { minified: true }
-  dependencies:
-    - core/jquery
-
-global-styling:
-  css:
-    theme:
-      assets/css/style.min.css: { minified: true }
-  js:
-    assets/js/application.min.js: { minified: true }

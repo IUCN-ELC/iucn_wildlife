@@ -20,11 +20,12 @@ regions:
   page_bottom: 'Page bottom'
 
 libraries:
+  - iucn_frontend/application
   - iucn_frontend/bootstrap
-  - iucn_frontend/fonts
-  - iucn_frontend/select2
   - iucn_frontend/bootstrap-switch
+  - iucn_frontend/fonts
   - iucn_frontend/global-styling
+  - iucn_frontend/select2
 
 libraries-extend:
   bootstrap/drupal.bootstrap:
@@ -35,4 +36,3 @@ libraries-override:
     css:
       state:
         css/eu_cookie_compliance.css: false
-

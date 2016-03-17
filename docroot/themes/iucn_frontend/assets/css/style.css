@@ -116,14 +116,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
   font-size: 14px;
   padding-top: 3px;
 }
-.page-node-type-court-decision .field {
-  margin-bottom: 11px;
-}
-@media (min-width: 992px) {
-  .page-node-type-court-decision .field--label {
-    text-align: right;
-  }
-}
 #iucn-search-form .form-submit {
   display: none;
 }
@@ -160,6 +152,17 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .search-result .field--name-field-original-title {
   font-size: 18px;
   line-height: 1.2;
+}
+.court-decision .field--name-field-justices .field--item {
+  display: inline;
+}
+.court-decision.full .field {
+  margin-bottom: 11px;
+}
+@media (min-width: 992px) {
+  .court-decision.full .field--label {
+    text-align: right;
+  }
 }
 .footer {
   background-color: #eee;

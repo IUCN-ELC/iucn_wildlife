@@ -148,10 +148,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .search-result {
   margin-bottom: 22px;
 }
-.search-result .field--name-field-original-title {
-  font-size: 18px;
-  line-height: 1.2;
-}
 .court-decision .field--name-field-justices .field--item {
   display: inline;
 }
@@ -163,13 +159,23 @@ fieldset[disabled] #search-form .btn-primary.focus {
     text-align: right;
   }
 }
-.court-decision.search-index {
+.court-decision.search-result {
   font-size: 14px;
 }
-.court-decision.search-index h2 {
+.court-decision.search-result h2 {
   font-size: 18px;
   margin-bottom: 0;
   margin-top: 0;
+}
+.court-decision.search-result .field--label {
+  display: inline-block;
+}
+.court-decision.search-result .field--label:after {
+  content: ":";
+}
+.court-decision.search-result .field--items,
+.court-decision.search-result .field--item {
+  display: inline;
 }
 .footer {
   background-color: #eee;

@@ -20,7 +20,7 @@ class IucnSearchForm extends FormBase {
 
   protected $items_per_page = 10;
 
-  protected $items_viewmode = 'search_index';
+  protected $items_viewmode = 'search_result';
 
   protected $resultCount = 0;
 

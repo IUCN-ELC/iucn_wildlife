@@ -55,17 +55,20 @@ class Facet {
       switch ($this->entity_type) {
         case 'term':
           $entity = \Drupal\taxonomy\Entity\Term::load($id);
-          $display = !empty($entity) ? "{$entity->getName()} ({$count})" : NULL;
+          $entity_name = !empty($entity) ? $entity->getName(): NULL;
           break;
         case 'node':
           $entity = \Drupal\node\Entity\Node::load($id);
-          $display = !empty($entity) ? "{$entity->getTitle()} ({$count})" : NULL;
+          $entity_name = !empty($entity) ? $entity->getTitle() : NULL;
           break;
         default:
-          $entity = $display = NULL;
+          $entity_name = NULL;
       }
-      if ($entity) {
-        $options[$id] = $display;
+      if ($entity_name) {
+        if ($count > 0) {
+          $entity_name .= " ({$count})";
+        }
+        $options[$id] = $entity_name;
       }
     }
     asort($options);

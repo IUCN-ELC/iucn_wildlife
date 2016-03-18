@@ -259,7 +259,16 @@ class IucnSearchForm extends FormBase {
   private function setFacetsValues($facetSet) {
     foreach ($this->facets as &$facet) {
       $solrFacet = $facetSet->getFacet($facet->getField());
-      $facet->setValues($solrFacet->getValues());
+      $values = $solrFacet->getValues();
+      $getVals = explode(',', $_GET[$facet->getField()]);
+      if (!empty($getVals)) {
+        foreach ($getVals as $getVal) {
+          if (!array_key_exists($getVal, $values)) {
+            $values[$getVal] = 0;
+          }
+        }
+      }
+      $facet->setValues($values);
     }
   }
 

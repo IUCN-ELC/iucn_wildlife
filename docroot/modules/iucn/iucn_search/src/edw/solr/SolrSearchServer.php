@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\iucn_search\IUCN;
+namespace Drupal\iucn_search\edw\solr;
 
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
 use Solarium\Client;
 
-class IUCNSolrSearchServer {
+class SolrSearchServer {
 
   protected $index_id = 'default_node_index';
   protected $client = NULL;

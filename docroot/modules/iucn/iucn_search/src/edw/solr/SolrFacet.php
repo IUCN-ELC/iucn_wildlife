@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\iucn_search\Edw\Facets;
+namespace Drupal\iucn_search\edw\solr;
 
 use Drupal\Core\Config\ConfigValueException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 
-class Facet {
+class SolrFacet {
 
   public static $RENDER_CONTEXT_WEB = 'web';
   public static $RENDER_CONTEXT_SOLR = 'solr';

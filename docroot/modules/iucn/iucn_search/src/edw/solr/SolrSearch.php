@@ -5,10 +5,7 @@
  * Contains \Drupal\iucn_search\IUCN\IUCNSearch.
  */
 
-namespace Drupal\iucn_search\IUCN;
-
-use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
-use Drupal\iucn_search\Edw\Facets\Facet;
+namespace Drupal\iucn_search\edw\solr;
 
 
 class SearchResult {
@@ -30,15 +27,15 @@ class SearchResult {
   }
 }
 
-class IUCNSolrSearch {
+class SolrSearch {
 
   /** @var array Request parameters (query) */
   protected $parameters = NULL;
-  /** @var \Drupal\iucn_search\IUCN\IUCNSolrSearchServer */
+  /** @var \Drupal\iucn_search\edw\solr\SolrSearchServer */
   protected $config = NULL;
   protected $facets = array();
 
-  public function __construct(array $parameters, IUCNSolrSearchServer $config) {
+  public function __construct(array $parameters, SolrSearchServer $config) {
     $this->parameters = $parameters;
     $this->config = $config;
     $this->initFacets();
@@ -47,7 +44,7 @@ class IUCNSolrSearch {
   /**
    * @param $page
    * @param $size
-   * @return \Drupal\iucn_search\IUCN\SearchResult
+   * @return \Drupal\iucn_search\edw\solr\SearchResult
    *   Results
    */
   public function search($page, $size) {
@@ -80,10 +77,10 @@ class IUCNSolrSearch {
     $facet_set->setLimit(10);
     $facet_set->setMinCount(1);
     $facet_set->setMissing(FALSE);
-    /** @var Facet $facet */
+    /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
       $solr_field_name = $field_names[$facet->getFacetField()];
-      $facet->render(Facet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters, $solr_field_name);
+      $facet->render(SolrFacet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters, $solr_field_name);
     }
     $resultSet = $this->config->executeSearch($query);
     $this->updateFacetValues($resultSet->getFacetSet());
@@ -166,13 +163,13 @@ class IUCNSolrSearch {
     ];
     foreach ($facets as $id => $config) {
       $config['id'] = $id;
-      $this->facets[$id] = new Facet($id, $config['bundle'], $config);
+      $this->facets[$id] = new SolrFacet($id, $config['bundle'], $config);
     }
   }
 
 
   private function updateFacetValues($facetSet) {
-    /** @var Facet $facet */
+    /** @var SolrFacet $facet */
     foreach ($this->getFacets() as $facet_id => $facet) {
       $solrFacet = $facetSet->getFacet($facet_id);
       $values = $solrFacet->getValues();
@@ -196,9 +193,9 @@ class IUCNSolrSearch {
     if ($q = $this->getParameter('q')) {
       $query['q'] = $q;
     }
-    /** @var Facet $facet */
+    /** @var SolrFacet $facet */
     foreach ($this->getFacets() as $facet_id => $facet) {
-      $query = array_merge($query, $facet->render(Facet::$RENDER_CONTEXT_GET));
+      $query = array_merge($query, $facet->render(SolrFacet::$RENDER_CONTEXT_GET));
     }
     return $query;
   }

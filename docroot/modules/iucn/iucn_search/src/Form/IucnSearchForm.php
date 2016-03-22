@@ -9,10 +9,10 @@ namespace Drupal\iucn_search\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\iucn_search\IUCN\IUCNSolrSearch;
-use Drupal\iucn_search\IUCN\SearchResult;
-use Drupal\iucn_search\IUCN\IUCNSolrSearchServer;
-use Drupal\iucn_search\Edw\Facets\Facet;
+use Drupal\iucn_search\edw\solr\SearchResult;
+use Drupal\iucn_search\edw\solr\SolrSearchServer;
+use Drupal\iucn_search\edw\solr\SolrSearch;
+use Drupal\iucn_search\edw\solr\SolrFacet;
 
 class IucnSearchForm extends FormBase {
 
@@ -24,8 +24,8 @@ class IucnSearchForm extends FormBase {
 
   public function __construct() {
     try {
-      $server_config = new IUCNSolrSearchServer('default_node_index');
-      $this->search = new IUCNSolrSearch($_GET, $server_config);
+      $server_config = new SolrSearchServer('default_node_index');
+      $this->search = new SolrSearch($_GET, $server_config);
     }
     catch (\Exception $e) {
       watchdog_exception('iucn_search', $e);
@@ -99,9 +99,9 @@ class IucnSearchForm extends FormBase {
 
   private function getRenderedFacets() {
     $return = [];
-    /** @var Facet $facet */
+    /** @var SolrFacet $facet */
     foreach ($this->search->getFacets() as $facet_id => $facet) {
-      $return[$facet_id] = $facet->render(Facet::$RENDER_CONTEXT_WEB);
+      $return[$facet_id] = $facet->render(SolrFacet::$RENDER_CONTEXT_WEB);
     }
     return $return;
   }

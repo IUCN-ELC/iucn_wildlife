@@ -86,8 +86,28 @@ class SolrSearchServer {
     return $resultSet;
   }
 
-  public function getSearchedFields() {
+  public function getSearchFields() {
     //@todo: Is this enough?
     return $this->getIndex()->getFulltextFields();
+  }
+
+  public function getQueryFields() {
+    $field_names = $this->getFieldNames();
+    $query_fields = array();
+    $search_fields = $this->getSearchFields();
+    // Index fields contain boost data.
+    $index_fields = $this->getIndexedFields();
+    foreach ($search_fields as $search_field) {
+      /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
+      $document = $index_fields[$search_field];
+      $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
+      $query_fields[] = $field_names[$search_field] . $boost;
+    }
+    return $query_fields;
+  }
+
+  public function getDocumentIdField() {
+    $field_names = $this->getFieldNames();
+    return $field_names['nid'];
   }
 }

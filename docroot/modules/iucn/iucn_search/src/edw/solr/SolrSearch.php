@@ -2,11 +2,14 @@
 
 /**
  * @file
- * Contains \Drupal\iucn_search\IUCN\IUCNSearch.
+ * Contains \Drupal\iucn_search\edw\solr\solrSearch.
  */
 
 namespace Drupal\iucn_search\edw\solr;
 
+
+use Solarium\QueryType\Select\Result\Document;
+use Solarium\QueryType\Select\Result\DocumentInterface;
 
 class SearchResult {
 
@@ -32,12 +35,12 @@ class SolrSearch {
   /** @var array Request parameters (query) */
   protected $parameters = NULL;
   /** @var \Drupal\iucn_search\edw\solr\SolrSearchServer */
-  protected $config = NULL;
+  protected $server = NULL;
   protected $facets = array();
 
   public function __construct(array $parameters, SolrSearchServer $config) {
     $this->parameters = $parameters;
-    $this->config = $config;
+    $this->server = $config;
     $this->initFacets();
   }
 
@@ -49,23 +52,12 @@ class SolrSearch {
    */
   public function search($page, $size) {
     $search_text = $this->getParameter('q');
-    $query = $this->config->createSelectQuery();
-    $field_names = $this->config->getFieldNames();
-    var_dump($field_names);
-    $search_fields = $this->config->getSearchedFields();
-    // Index fields contain boost data.
-    $index_fields = $this->config->getIndexedFields();
+    $query = $this->server->createSelectQuery();
+    $query_fields = $this->server->getQueryFields();
+    $solr_id_field = $this->server->getDocumentIdField();
 
     $query->setQuery($search_text);
     $query->setFields(array('*', 'score'));
-
-    $query_fields = array();
-    foreach ($search_fields as $search_field) {
-      /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
-      $document = $index_fields[$search_field];
-      $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
-      $query_fields[] = $field_names[$search_field] . $boost;
-    }
     $query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
     $offset = $page * $size;
     $query->setStart($offset);
@@ -79,18 +71,18 @@ class SolrSearch {
     $facet_set->setMissing(FALSE);
     /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
-      $solr_field_name = $field_names[$facet->getFacetField()];
-      $facet->render(SolrFacet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters, $solr_field_name);
+      $facet->render(SolrFacet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters);
     }
-    $resultSet = $this->config->executeSearch($query);
+    $resultSet = $this->server->executeSearch($query);
     $this->updateFacetValues($resultSet->getFacetSet());
     $documents = $resultSet->getDocuments();
     $countTotal = $resultSet->getNumFound();
 
     $ret = array();
+    /** @var Document $document */
     foreach ($documents as $document) {
       $fields = $document->getFields();
-      $id = $fields[$field_names['nid']];
+      $id = $fields[$solr_id_field];
       if (is_array($id)) {
         $id = reset($nid);
       }
@@ -161,9 +153,12 @@ class SolrSearch {
 //        'bundle' => 'court_jurisdictions',
 //      ],
     ];
+
+    $field_names = $this->server->getFieldNames();
     foreach ($facets as $id => $config) {
+      $solr_field_name = $field_names[$id];
       $config['id'] = $id;
-      $this->facets[$id] = new SolrFacet($id, $config['bundle'], $config);
+      $this->facets[$id] = new SolrFacet($id, $config['bundle'], $solr_field_name, $config);
     }
   }
 

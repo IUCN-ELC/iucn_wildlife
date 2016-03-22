@@ -19,33 +19,17 @@ class SolrFacet {
   public static $OPERATOR_AND = 'AND';
 
   protected $id;
-  protected $title;
-  protected $placeholder;
-  protected $facet_field;
-  protected $operator;
-  protected $limit;
-  protected $min_count;
-  protected $missing = FALSE;
   protected $values = array();
-  protected $entity_type;
-  protected $bundle;
-  protected $widget = 'select';
   protected $config = array();
 
-  public function __construct($field_id, $bundle, array $config) {
-    $this->id = $field_id;
-    $this->field = $field_id;
+  public function __construct($drupal_field_id, $bundle, $solr_field_id, array $config) {
+    $this->id = $drupal_field_id;
+    $this->solr_field_id = $solr_field_id;
     $this->config = $config;
-    $this->placeholder = $this->getConfigValue('placeholder', '');
-    $this->limit = $this->getConfigValue('limit', -1);
-    $this->min_count = $this->getConfigValue('min_count', 1);
-    $this->widget = $this->getConfigValue('widget', 'select');
-    $this->title = $this->getConfigValue('title', $field_id);
-    $this->operator = $this->getConfigValue('operator', 'OR');
-    $this->missing = $this->getConfigValue('missing', FALSE);
-    $this->bundle = $bundle;
-    if ($info = FieldStorageConfig::loadByName('node', $field_id)) {
-      $this->entity_type = $info->getSetting('target_type');
+    $this->config['bundle'] = $bundle;
+    $this->config['solr_field_id'] = $solr_field_id;
+    if ($info = FieldStorageConfig::loadByName('node', $drupal_field_id)) {
+      $this->config['entity_type'] = $info->getSetting('target_type');
     }
     $this->validate();
   }
@@ -118,7 +102,7 @@ class SolrFacet {
     foreach ($this->values as $id => $count) {
       $id = str_replace('"', '', $id);
       $entity = NULL;
-      switch ($this->entity_type) {
+      switch ($this->getConfigValue('entity_type')) {
         case 'term':
           $entity = \Drupal\taxonomy\Entity\Term::load($id);
           break;
@@ -140,9 +124,9 @@ class SolrFacet {
       case 'checkboxes':
         $ret = array(
           '#type' => $widget,
-          '#title' => $this->title,
+          '#title' => $this->getTitle(),
           '#options' => $options,
-          '#default_value' => !empty($_GET[$this->facet_field]) ? explode(',', $_GET[$this->facet_field]) : [],
+          '#default_value' => !empty($_GET[$this->id]) ? explode(',', $_GET[$this->id]) : [],
         );
         break;
       case 'select':
@@ -154,22 +138,22 @@ class SolrFacet {
             ],
           ],
           'title' => [
-            '#markup' => "<h4 class='facet-title'>{$this->title}</h4>",
+            '#markup' => "<h4 class='facet-title'>{$this->getTitle()}</h4>",
           ],
-          $this->facet_field . '_operator' => [
+          $this->id . '_operator' => [
 //            '#title' => $this->operator,
             '#type' => 'checkbox',
-            '#default_value' => $this->operator == 'AND',
+            '#default_value' => $this->getOperator() == 'AND',
             '#return_value' => 'AND',
           ],
-          $this->facet_field . '_values' => [
+          $this->id . '_values' => [
 //            '#title' => $this->title,
             '#type' => $widget,
             '#options' => $options,
-            '#default_value' => !empty($_GET[$this->facet_field]) ? explode(',', $_GET[$this->facet_field]) : [],
+            '#default_value' => !empty($_GET[$this->id]) ? explode(',', $_GET[$this->id]) : [],
             '#multiple' => TRUE,
             '#attributes' => [
-              'data-placeholder' => $this->placeholder,
+              'data-placeholder' => $this->getConfigValue('placeholder', ''),
             ],
           ],
         );
@@ -181,11 +165,14 @@ class SolrFacet {
     if(empty($this->id)) {
       throw new ConfigValueException('Missing field ID for facet');
     }
-    if(empty($this->bundle)) {
+    if(empty($this->getConfigValue('bundle'))) {
       throw new ConfigValueException('Missing bundle for facet');
     }
-    if(empty($this->entity_type)) {
-      throw new ConfigValueException("Could not determine entity_type for given field {$this->bundle}:{$this->id}");
+    if(empty($this->getConfigValue('entity_type'))) {
+      throw new ConfigValueException("Could not determine entity_type for given field {$this->getConfigValue('bundle')}:{$this->id}");
+    }
+    if(empty($this->getConfigValue('solr_field_id'))) {
+      throw new ConfigValueException("Could not determine entity_type for given field {$this->getConfigValue('bundle')}:{$this->id}");
     }
   }
 
@@ -206,49 +193,53 @@ class SolrFacet {
   }
 
   function getTitle() {
-    return $this->title;
+    return $this->getConfigValue('title', $this->id);
   }
 
   function getPlaceholder() {
-    return $this->placeholder;
+    return $this->getConfigValue('placeholder', '');
   }
 
   function getOperator() {
-    return $this->operator;
+    return $this->getConfigValue('operator', 'OR');
   }
 
   function setOperator($operator) {
     if (!empty($operator)) {
       if (strtoupper($operator) == self::$OPERATOR_OR) {
-        $this->operator = self::$OPERATOR_OR;
+        $this->config['operator'] = self::$OPERATOR_OR;
       }
       if (strtoupper($operator) == self::$OPERATOR_AND) {
-        $this->operator = self::$OPERATOR_AND;
+        $this->config['operator'] = self::$OPERATOR_AND;
       }
     }
   }
 
   function getLimit() {
-    return $this->limit;
+    return $this->getConfigValue('limit', -1);
   }
 
   function getMinCount() {
-    return $this->min_count;
+    return $this->getConfigValue('min_count', 1);
   }
 
   function getWidget() {
-    return $this->widget;
+    return $this->getConfigValue('widget', 'select');
   }
 
   function getConfig() {
     return $this->config;
   }
 
-  function getFacetField() {
-    return $this->facet_field;
+  function getFacetedField() {
+    return $this->id;
+  }
+
+  function getSolrFieldId() {
+    return $this->getConfigValue('solr_field_id');
   }
 
   function getMissing() {
-    return $this->missing;
+    return $this->getConfigValue('missing', FALSE);
   }
 }

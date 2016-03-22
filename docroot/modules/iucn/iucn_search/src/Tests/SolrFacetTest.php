@@ -2,19 +2,9 @@
 
 namespace Drupal\iucn_search\Tests;
 
-use Drupal\iucn_search\Edw\Facets\Facet;
+use Drupal\iucn_search\edw\solr\SolrFacet;
+use Drupal\iucn_search\Tests\mockup\SolrFacetMock;
 use Drupal\simpletest\WebTestBase;
-
-class FacetMock extends Facet {
-
-  public function getEntityType() {
-    return $this->entity_type;
-  }
-
-  public function getBundle() {
-    return $this->bundle;
-  }
-}
 
 /**
  * Test the Facet functionality.
@@ -24,12 +14,12 @@ class FacetMock extends Facet {
  * @ingroup iucn_search
  * @group iucn_search
  */
-class FacetTest extends WebTestBase {
+class SolrFacetTest extends WebTestBase {
 
   /** @var array */
   static public $modules = array('migrate', 'iucn_search');
 
-  public function XtestConstructor() {
+  public function testConstructor() {
     $config = array(
       'title' => 'My English facet',
       'placeholder' => 'My English placeholder',
@@ -40,10 +30,10 @@ class FacetTest extends WebTestBase {
       'missing' => TRUE,
     );
     // Test the constructor
-    $facet = new FacetMock('field_ecolex_subjects', 'court_decision', $config);
+    $facet = new SolrFacetMock('field_ecolex_subjects', 'court_decision', 'solr_field_id', $config);
     $this->assertNotNull($facet);
-    $this->assertEqual($config, $facet->getConfig());
     $this->assertEqual('field_ecolex_subjects', $facet->getId());
+    $this->assertEqual('solr_field_id', $facet->getSolrFieldId());
     $this->assertEqual('My English facet', $facet->getTitle());
     $this->assertEqual('My English placeholder', $facet->getPlaceholder());
     $this->assertEqual('OR', $facet->getOperator());
@@ -54,8 +44,13 @@ class FacetTest extends WebTestBase {
     $this->assertEqual('select', $facet->getWidget());
     $this->assertEqual('taxonomy_term', $facet->getEntityType());
 
-    $facet->setOperator('AND');
-    $this->assertEqual('AND', $facet->getOperator());
+    $config['bundle'] = 'court_decision';
+    $config['solr_field_id'] = 'solr_field_id';
+    $config['entity_type'] = 'taxonomy_term';
+    $this->assertEqual($config, $facet->getConfig());
+
+    $facet->setOperator(SolrFacet::$OPERATOR_AND);
+    $this->assertEqual(SolrFacet::$OPERATOR_AND, $facet->getOperator());
   }
 
   public function testRender() {
@@ -68,35 +63,44 @@ class FacetTest extends WebTestBase {
       'widget' => 'select',
     );
     // Test the constructor
-    $facet = new FacetMock('field_ecolex_subjects', 'court_decision', $config);
-    $result = $facet->render(Facet::$RENDER_CONTEXT_WEB);
-    // @todo:
+    $facet = new SolrFacetMock('field_ecolex_subjects', 'court_decision', 'solr_field_id', $config);
+    $result = $facet->render(SolrFacet::$RENDER_CONTEXT_WEB);
+    $this->fail('Not implemented'); //@todo
   }
 
   /**
    * @throws \Drupal\Core\Config\ConfigValueException
    *   Exception thrown due to invalid configuration.
    */
-  public function XtestInvalidFieldId() {
+  public function testInvalidFieldId() {
     $config = array();
-    new FacetMock(NULL, 'court_decision', $config);
+    new SolrFacetMock(NULL, 'court_decision', 'solr_field_id', $config);
   }
 
   /**
    * @throws \Drupal\Core\Config\ConfigValueException
    *   Exception thrown due to invalid configuration.
    */
-  public function XtestInvalidBundle() {
+  public function testInvalidBundle() {
     $config = array();
-    new FacetMock('field_ecolex_subjects', 'unknown', $config);
+    new SolrFacetMock('field_ecolex_subjects', 'unknown', 'solr_field_id', $config);
   }
 
   /**
    * @throws \Drupal\Core\Config\ConfigValueException
    *   Exception thrown due to invalid configuration.
    */
-  public function XtestInvalidEntityType() {
+  public function testInvalidEntityType() {
     $config = array();
-    new FacetMock('unknown', 'court_decision', $config);
+    new SolrFacetMock('unknown', 'court_decision', 'solr_field_id', $config);
+  }
+
+  /**
+   * @throws \Drupal\Core\Config\ConfigValueException
+   *   Exception thrown due to invalid configuration.
+   */
+  public function testInvalidSolrFieldId() {
+    $config = array();
+    new SolrFacetMock('unknown', 'court_decision', NULL, $config);
   }
 }

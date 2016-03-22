@@ -22,9 +22,6 @@ conf/config.json
 conf/apache.conf
 docroot/sites/simpletest
 
-# Environment-specific config
-config/default/search_api.server.solr_server.yml
-
 # User Generated Content #
 ##########################
 docroot/file

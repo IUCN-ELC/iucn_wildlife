@@ -392,10 +392,10 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
    *  Array with files fids.
    */
   public function createFiles($urls) {
+    if (empty($urls)) {
+      return [];
+    }
     if (!is_array($urls)) {
-      if (empty($urls)) {
-        return;
-      }
       $urls = array($urls);
     }
     $fids = [];
@@ -437,7 +437,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       $row->setSourceProperty('titleOfTextShort', substr($titleOfText, 0, 255));
     }
 
-    // Used str_replace('server2.php/', '', ...) because there is a bug in url's from ELIS
+    // Used str_replace('server2.php/', '', ...) because there is a bug in the urls from ELIS
     $linkToFullText = str_replace('server2.php/', '', $row->getSourceProperty('linkToFullText'));
     $linkToAbstract = str_replace('server2.php/', '', $row->getSourceProperty('linkToAbstract'));
 

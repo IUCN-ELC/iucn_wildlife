@@ -95,7 +95,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
   }
 
-  public function setPath($path) {
+  public function set_path($path) {
     $this->path = $path;
   }
 
@@ -117,6 +117,10 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     }
 
     return $return;
+  }
+
+  public function set_date_period($date_period) {
+    $this->date_period = $date_period;
   }
 
   public function count($refresh = FALSE) {

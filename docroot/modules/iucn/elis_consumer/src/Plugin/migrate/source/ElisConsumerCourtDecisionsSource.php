@@ -95,6 +95,10 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
   }
 
+  public function setPath($path) {
+    $this->path = $path;
+  }
+
   public function hexadecimally_encode_string($str) {
     $unpack = unpack('H*', $str);
     return reset($unpack);

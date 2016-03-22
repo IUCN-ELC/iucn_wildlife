@@ -128,7 +128,6 @@ class ElisConsumerMigrationTest extends WebTestBase {
       $subjects[] = Term::load($subject['target_id'])->getName();
     }
     $this->assertEqual(4, count($subjects));
-    var_dump($subjects);
     $compare = ['Fisheries', 'Sea', 'Subject1_EN', 'Legal questions'];
     $this->assertTrue(array_diff($subjects, $compare) == array_diff($compare, $subjects));
 

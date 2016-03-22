@@ -37,11 +37,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   protected $identifier = '';
 
   /**
-   * The HTTP client.
-   */
-  protected $client;
-
-  /**
    * Date of the first query.
    */
   protected $start_date = '1981-01';
@@ -84,8 +79,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
     $this->path = 'http://www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE';
     $this->identifier = 'id';
-    
-    $this->client = \Drupal::httpClient();
+
     $this->date_period = $this->get_date_period('Y*', '1 year');
 
     if (isset($configuration['files_destination'])) {

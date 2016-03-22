@@ -74,6 +74,12 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     'territorialSubdivision' => 'territorial_subdivisions',
   );
 
+  /**
+   * @var bool
+   *  True if the migration is running within a test.
+   */
+  private $testing_enabled = FALSE;
+
   public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
 
@@ -87,6 +93,11 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     }
     $directory = "public://{$this->files_destination}";
     file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
+  }
+
+  public function enable_testing() {
+    $this->testing_enabled = TRUE;
+    $this->date_period = ['*'];
   }
 
   public function set_path($path) {
@@ -238,6 +249,9 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function getElisXml($url, $spage_query, $spage_first) {
+    if ($this->testing_enabled) {
+      return simplexml_load_file($url);
+    }
     $url = str_replace(
       array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),
       array($spage_query,$spage_first),

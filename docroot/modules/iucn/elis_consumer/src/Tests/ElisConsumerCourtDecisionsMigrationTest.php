@@ -33,7 +33,8 @@ class ElisConsumerMigrationTest extends WebTestBase {
     $log = new DrushLogMigrateMessage();
     $sourcePlugin = $couMigration->getSourcePlugin();
     $path = drupal_get_path('module', 'elis_consumer') . '/src/Tests/data/CourtDecisions.xml';
-    $sourcePlugin->setPath($path);
+    $sourcePlugin->set_path($path);
+    $sourcePlugin->enable_testing();
     $this->migrateExecutable = new MigrateExecutable($couMigration, $log, $options);
   }
 

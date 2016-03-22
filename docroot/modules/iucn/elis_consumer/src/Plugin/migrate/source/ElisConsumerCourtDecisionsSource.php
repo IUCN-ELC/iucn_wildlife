@@ -274,6 +274,9 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       $numberResultsFound = (int)$xml->attributes()->numberResultsFound;
       while (TRUE) {
         foreach ($xml->document as $doc) {
+          if (empty($doc->{$this->identifier})) {
+            continue;
+          }
           $docs[(string) $doc->{$this->identifier}] = (array)$this->getItem($doc);
         }
         $spage_first += 20;
@@ -304,6 +307,9 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       else {
         while (TRUE) {
           foreach ($xml->document as $doc) {
+            if (empty($doc->{$this->identifier})) {
+              continue;
+            }
             $docs[(string) $doc->{$this->identifier}] = (array)$this->getItem($doc);
           }
           $spage_first += 20;
@@ -446,6 +452,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       $message = 'Title cannot be NULL. (' . $row->getSourceProperty('id') . ')';
       \Drupal::logger('elis_consumer_court_decisions')
         ->warning($message);
+      return FALSE;
     }
     else {
       $row->setSourceProperty('titleOfText', $titleOfText);

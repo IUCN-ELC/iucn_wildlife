@@ -21,6 +21,7 @@ docroot/sites/*/settings.local.php
 drush/aliases/aliases.drushrc.php
 conf/config.json
 conf/apache.conf
+docroot/sites/simpletest
 
 # User Generated Content #
 ##########################

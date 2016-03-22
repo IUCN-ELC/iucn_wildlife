@@ -374,14 +374,14 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     if (!is_array($terms)) {
       $terms = array($terms);
     }
-    foreach ($terms as $key => &$term_name) {
+    foreach ($terms as $key => $term_name) {
       if (empty($term_name)) {
         unset($terms[$key]);
       }
-      else {
-        $term_name = htmlspecialchars_decode($term_name);
+    else {
+        $terms[$key] = htmlspecialchars_decode($term_name);
         // Remove multiple spaces
-        $term_name = preg_replace('/\s+/', ' ', $term_name);
+        $terms[$key] = preg_replace('/\s+/', ' ', $term_name);
       }
     }
     if (empty($terms)) {

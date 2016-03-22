@@ -7,6 +7,7 @@ use Drupal\migrate\Entity\Migration;
 use Drupal\migrate_tools\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\node\Entity\Node;
+use \Drupal\taxonomy\Entity\Term;
 
 /**
  * Test migrations from ELIS.
@@ -100,10 +101,13 @@ class ElisConsumerMigrationTest extends WebTestBase {
     $this->assertEqual('COU-143756', $node->field_original_id->getValue()[0]['value']);
     // isisMfn => field_isis_number
     $this->assertEqual('000103', $node->field_isis_number->getValue()[0]['value']);
+
     // dateOfEntry => field_date_of_entry
     $this->assertEqual('2006-11-29', $node->field_date_of_entry->getValue()[0]['value']);
     // dateOfModification => field_date_of_modification
     $this->assertEqual('2016-03-11', $node->field_date_of_modification->getValue()[0]['value']);
+    // dateOfText => field_date_of_text
+    $this->assertEqual('1997-12-04', $node->field_date_of_text->getValue()[0]['value']);
 
     // titleOfTextShort => title
     $this->assertEqual('Montreal Protocol', $node->getTitle());
@@ -117,6 +121,42 @@ class ElisConsumerMigrationTest extends WebTestBase {
     }
     $compare = ['Guinea', 'Saint Vincent and the Grenadines'];
     $this->assertTrue(array_diff($countries, $compare) == array_diff($compare, $countries));
+
+    // subject => field_ecolex_subjects
+    $subjects = [];
+    foreach ($node->field_ecolex_subjects->getValue() as $subject) {
+      $subjects[] = Term::load($subject['target_id'])->getName();
+    }
+    $this->assertEqual(4, count($subjects));
+    var_dump($subjects);
+    $compare = ['Fisheries', 'Sea', 'Subject1_EN', 'Legal questions'];
+    $this->assertTrue(array_diff($subjects, $compare) == array_diff($compare, $subjects));
+
+    // languageOfDocument => field_language_of_document
+    $this->assertEqual('English', Term::load($node->field_language_of_document->getValue()[0]['target_id'])->getName());
+
+    // courtName => field_court_name
+    $this->assertEqual('International Tribunal for the Law of the Sea', $node->field_court_name->getValue()[0]['value']);
+
+
+    // referenceNumber => field_reference_number
+    $this->assertEqual('List of cases No. 1', $node->field_reference_number->getValue()[0]['value']);
+
+    // numberOfPages => field_number_of_pages
+    $this->assertEqual(19, $node->field_number_of_pages->getValue()[0]['value']);
+
+    // availableIn => field_available_in
+    $this->assertEqual('B7 p. 985:22/A', $node->field_available_in->getValue()[0]['value']);
+
+    // linkToFullText => field_url
+    $links = $node->field_url->getValue();
+    $link_values = array(
+      'http://www.ecolex.org/server2neu.php/libcat/docs/TRE/Full/En/TRE-000953.pdf',
+    );
+    $this->assertEqual(1, count($links));
+    foreach($links as $link) {
+      $this->assertTrue(in_array($link['uri'], $link_values));
+    }
   }
 
 }

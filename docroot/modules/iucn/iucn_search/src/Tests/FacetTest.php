@@ -10,6 +10,10 @@ class FacetMock extends Facet {
   public function getEntityType() {
     return $this->entity_type;
   }
+
+  public function getBundle() {
+    return $this->bundle;
+  }
 }
 
 /**
@@ -33,6 +37,7 @@ class FacetTest extends WebTestBase {
       'limit' => 3,
       'min_count' => 5,
       'widget' => 'select',
+      'missing' => TRUE,
     );
     // Test the constructor
     $facet = new FacetMock('field_ecolex_subjects', 'court_decision', $config);
@@ -44,6 +49,8 @@ class FacetTest extends WebTestBase {
     $this->assertEqual('OR', $facet->getOperator());
     $this->assertEqual(3, $facet->getLimit());
     $this->assertEqual(5, $facet->getMinCount());
+    $this->assertTrue($facet->getMissing());
+    $this->assertEqual('court_decision', $facet->getBundle());
     $this->assertEqual('select', $facet->getWidget());
     $this->assertEqual('taxonomy_term', $facet->getEntityType());
 

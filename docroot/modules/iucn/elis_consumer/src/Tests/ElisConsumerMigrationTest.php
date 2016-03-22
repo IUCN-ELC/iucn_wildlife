@@ -15,7 +15,6 @@ use Drupal\migrate\MigrateMessageInterface;
 class ElisConsumerMigrationTest extends WebTestBase {
 
   public static $modules = ['iucn_search'];
-  protected $profile = 'standard';
 
   /**
    * @var \Drupal\migrate\Entity\Migration
@@ -27,9 +26,6 @@ class ElisConsumerMigrationTest extends WebTestBase {
   public function setUp() {
     parent::setUp();
     $this->couMigration = Migration::load('elis_consumer_court_decisions');
-    $options = [
-      'limit' => 10,
-    ];
     $log = new DefaultElisMigrateMessage();
     $sourcePlugin = $this->couMigration->getSourcePlugin();
     $path = drupal_get_path('module', 'elis_consumer') . '/src/Tests/data/CourtDecisions.xml';

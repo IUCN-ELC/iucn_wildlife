@@ -408,10 +408,14 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     }
 
     // Used str_replace('server2.php/', '', ...) because there is a bug in url's from ELIS
-    $row->setSourceProperty('linkToFullText', str_replace('server2.php/', '', $row->getSourceProperty('linkToFullText')));
+    $linkToFullText = str_replace('server2.php/', '', $row->getSourceProperty('linkToFullText'));
+    $linkToAbstract = str_replace('server2.php/', '', $row->getSourceProperty('linkToAbstract'));
+
+    $row->setSourceProperty('linkToFullText', $linkToFullText);
     $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
 
-    $row->setSourceProperty('files', $this->createFiles($row->getSourceProperty('linkToFullText')));
+    $row->setSourceProperty('files', $this->createFiles($linkToFullText));
+    $row->setSourceProperty('linkToAbstract', $this->createFiles($linkToAbstract));
 
     /* Map taxonomy term reference fields */
     $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));

@@ -15,3 +15,5 @@ dependencies:
   - taxonomy
   - node
   - menu_ui
+  - search_api
+  - search_api_solr

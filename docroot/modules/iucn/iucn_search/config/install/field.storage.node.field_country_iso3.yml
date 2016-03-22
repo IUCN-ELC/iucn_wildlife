@@ -1,0 +1,23 @@
+uuid: 36a449bb-9a00-4461-9602-2a25e56b2c39
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: LD9CX9CxqpKCsv6OusiWGop5kNxaxFr5dG6bbg3YG8E
+id: node.field_country_iso3
+field_name: field_country_iso3
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

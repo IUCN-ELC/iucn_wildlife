@@ -1,0 +1,19 @@
+uuid: 32faf9a1-c601-4ea4-b100-aacc5c2d0ef3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reference_to_treaties
+    - node.type.court_decision
+id: node.court_decision.field_reference_to_treaties
+field_name: field_reference_to_treaties
+entity_type: node
+bundle: court_decision
+label: 'Reference to Treaties'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

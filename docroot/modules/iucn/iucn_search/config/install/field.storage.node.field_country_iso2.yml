@@ -1,0 +1,23 @@
+uuid: 265e6f9f-69f8-478e-a200-e92b3a55c3c0
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: Gn9_EONx_9XgpaKTZHkvxbnWpoDSbPqNrn2phEb6ZGU
+id: node.field_country_iso2
+field_name: field_country_iso2
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

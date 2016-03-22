@@ -1,0 +1,19 @@
+uuid: 1d414acb-3766-4147-810e-148963f6478a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_original_id
+    - node.type.court_decision
+id: node.court_decision.field_original_id
+field_name: field_original_id
+entity_type: node
+bundle: court_decision
+label: 'Original id'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

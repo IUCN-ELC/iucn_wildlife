@@ -1,0 +1,19 @@
+uuid: da0d37af-26b2-4d22-942f-4780f62d5e7f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_available_in
+    - node.type.court_decision
+id: node.court_decision.field_available_in
+field_name: field_available_in
+entity_type: node
+bundle: court_decision
+label: 'Available in'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

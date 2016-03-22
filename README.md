@@ -61,3 +61,11 @@ $ npm install grunt-cli -g # install grunt command line interface if not already
 $ npm install
 $ grunt build # or watch
 ```
+
+
+## Running tests
+
+Use the `test.sh` script to run project related test. Example:
+
+* `./test.sh` - Run all tests from the iucn_search group
+* `./test.sh FacetTest` - Run a single test

@@ -1,0 +1,9 @@
+uuid: 73930161-4f8f-4026-841a-2603601056ca
+langcode: en
+status: true
+dependencies: {  }
+name: 'Decision status'
+vid: decision_status
+description: ''
+hierarchy: 0
+weight: 0

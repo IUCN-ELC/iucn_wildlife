@@ -1,0 +1,314 @@
+uuid: 8a017152-3e6e-437b-9b21-33fd55a9f86e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.court_decision.field_abstract
+    - field.field.node.court_decision.field_available_in
+    - field.field.node.court_decision.field_country
+    - field.field.node.court_decision.field_court_jurisdiction
+    - field.field.node.court_decision.field_court_name
+    - field.field.node.court_decision.field_date_of_entry
+    - field.field.node.court_decision.field_date_of_modification
+    - field.field.node.court_decision.field_date_of_text
+    - field.field.node.court_decision.field_decision_status
+    - field.field.node.court_decision.field_ecolex_subjects
+    - field.field.node.court_decision.field_files
+    - field.field.node.court_decision.field_instance
+    - field.field.node.court_decision.field_internet_reference
+    - field.field.node.court_decision.field_isis_number
+    - field.field.node.court_decision.field_justices
+    - field.field.node.court_decision.field_number_of_pages
+    - field.field.node.court_decision.field_official_publication
+    - field.field.node.court_decision.field_original_id
+    - field.field.node.court_decision.field_original_title
+    - field.field.node.court_decision.field_reference_number
+    - field.field.node.court_decision.field_reference_to_cou
+    - field.field.node.court_decision.field_reference_to_faolex
+    - field.field.node.court_decision.field_reference_to_legislation
+    - field.field.node.court_decision.field_reference_to_national_legi
+    - field.field.node.court_decision.field_reference_to_treaties
+    - field.field.node.court_decision.field_region
+    - field.field.node.court_decision.field_related_website
+    - field.field.node.court_decision.field_seat_of_court
+    - field.field.node.court_decision.field_subdivision
+    - field.field.node.court_decision.field_territorial_subdivisions
+    - field.field.node.court_decision.field_type_of_text
+    - field.field.node.court_decision.field_url
+    - node.type.court_decision
+  module:
+    - datetime
+    - file
+    - link
+    - path
+    - text
+id: node.court_decision.default
+targetEntityType: node
+bundle: court_decision
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+  field_abstract:
+    weight: 3
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_available_in:
+    weight: 24
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_country:
+    type: entity_reference_autocomplete_tags
+    weight: 4
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_court_jurisdiction:
+    weight: 6
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+  field_court_name:
+    type: string_textfield
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_date_of_entry:
+    type: datetime_default
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+  field_date_of_modification:
+    type: datetime_default
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+  field_date_of_text:
+    type: datetime_default
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+  field_decision_status:
+    weight: 27
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_ecolex_subjects:
+    type: entity_reference_autocomplete_tags
+    weight: 10
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_files:
+    weight: 30
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+  field_instance:
+    weight: 25
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+  field_internet_reference:
+    weight: 26
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_isis_number:
+    type: string_textfield
+    weight: 11
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_justices:
+    weight: 16
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+  field_number_of_pages:
+    type: string_textfield
+    weight: 12
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_official_publication:
+    weight: 37
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_original_id:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_original_title:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_reference_number:
+    type: string_textfield
+    weight: 13
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_reference_to_cou:
+    weight: 19
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_reference_to_faolex:
+    weight: 21
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_reference_to_legislation:
+    weight: 20
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_reference_to_national_legi:
+    weight: 22
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_reference_to_treaties:
+    weight: 23
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_region:
+    weight: 36
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_related_website:
+    weight: 18
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_seat_of_court:
+    weight: 14
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_subdivision:
+    weight: 28
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+  field_territorial_subdivisions:
+    weight: 29
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+  field_type_of_text:
+    type: entity_reference_autocomplete_tags
+    weight: 15
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_url:
+    type: link_default
+    weight: 17
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 35
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 33
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 34
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete_tags
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,27 @@
+uuid: 6c505f26-4c0d-4720-a304-4acc99cf7bbb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_territorial_subdivisions
+    - node.type.court_decision
+    - taxonomy.vocabulary.territorial_subdivisions
+id: node.court_decision.field_territorial_subdivisions
+field_name: field_territorial_subdivisions
+entity_type: node
+bundle: court_decision
+label: 'Territorial subdivisions'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      territorial_subdivisions: territorial_subdivisions
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

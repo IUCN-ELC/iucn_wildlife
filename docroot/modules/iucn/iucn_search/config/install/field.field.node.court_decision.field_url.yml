@@ -1,0 +1,25 @@
+uuid: dae4ab7b-a460-4985-9700-b8f84d052743
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_url
+    - node.type.court_decision
+  module:
+    - link
+_core:
+  default_config_hash: LWeT_pN7aWU9-lCGuxox9DeKe2b7Hsj4YtVJklGvf98
+id: node.court_decision.field_url
+field_name: field_url
+entity_type: node
+bundle: court_decision
+label: 'Link to full text'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

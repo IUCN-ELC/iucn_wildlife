@@ -1,0 +1,21 @@
+uuid: dfdb4f52-e7c0-4235-b300-a816e668494f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_number_of_pages
+    - node.type.court_decision
+_core:
+  default_config_hash: RE9f1UXSRLL5BqZ0fjIplOQvuWQ3ozn2FBbvkMYU2_c
+id: node.court_decision.field_number_of_pages
+field_name: field_number_of_pages
+entity_type: node
+bundle: court_decision
+label: 'Number of pages'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,9 @@
+uuid: b4167b77-7538-4da8-9102-2f8111fac873
+langcode: en
+status: true
+dependencies: {  }
+name: 'Territorial subdivisions'
+vid: territorial_subdivisions
+description: ''
+hierarchy: 0
+weight: 0

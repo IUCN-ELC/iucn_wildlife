@@ -1,0 +1,96 @@
+uuid: 11eb2c36-c2b5-4cd3-b303-3aab5cc195d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.country.field_country_iso2
+    - field.field.node.country.field_country_iso3
+    - field.field.node.country.field_latitude
+    - field.field.node.country.field_longitude
+    - field.field.node.country.field_official_name
+    - field.field.node.country.field_zoom
+    - node.type.country
+  module:
+    - path
+id: node.country.default
+targetEntityType: node
+bundle: country
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+  field_country_iso2:
+    type: string_textfield
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_country_iso3:
+    type: string_textfield
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_latitude:
+    type: number
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_longitude:
+    type: number
+    weight: 5
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_official_name:
+    type: string_textfield
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_zoom:
+    weight: 6
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+  path:
+    type: path
+    weight: 11
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 9
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 10
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 7
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

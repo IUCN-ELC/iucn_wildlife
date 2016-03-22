@@ -3,3 +3,15 @@ name: 'IUCN Search'
 description: 'Holds search functionality'
 package: iucn_search
 core: '8.x'
+dependencies:
+  - elis_consumer
+  - field
+  - path
+  - datetime
+  - file
+  - image
+  - link
+  - file_list
+  - taxonomy
+  - node
+  - menu_ui

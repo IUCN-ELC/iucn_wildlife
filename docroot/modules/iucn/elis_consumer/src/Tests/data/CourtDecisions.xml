@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result db="cou" queryID="" numberResultsFound="5" numberResultsPresented="5">
+  <document>
+    <db>cou</db>
+    <isisMfn>000103</isisMfn>
+    <id>COU-143756</id>
+    <id2><![CDATA[800000+C-997120400+]]></id2>
+    <dateOfEntry>2006-11-29</dateOfEntry>
+    <dateOfModification>2016-03-11</dateOfModification>
+    <titleOfText><![CDATA[The M/V Saiga case]]></titleOfText>
+    <titleOfTextFr><![CDATA[French The M/V Saiga case]]></titleOfTextFr>
+    <titleOfTextShort><![CDATA[Montreal Protocol]]></titleOfTextShort>
+    <titleOfTextShortFr><![CDATA[Montreal Protocol French]]></titleOfTextShortFr>
+    <titleOfTextOther><![CDATA[Bundesminister für soziale Sicherheit]]></titleOfTextOther>
+    <titleOfTextShortOther><![CDATA[Dr Eva Glawischnig v. Bündeskanzler]]></titleOfTextShortOther>
+    <typeOfText>International court
+
+    </typeOfText>
+    <typeOfText_fr_FR>International court FR</typeOfText_fr_FR>
+    <typeOfText_es_ES>International court ES</typeOfText_es_ES>
+    <country><![CDATA[Guinea]]></country>
+    <country_fr_FR><![CDATA[Guinée]]></country_fr_FR>
+    <country_es_ES><![CDATA[Guinea]]></country_es_ES>
+    <country><![CDATA[Saint Vincent and the Grenadines]]></country>
+    <country_fr_FR><![CDATA[Saint-Vincent-et-les Grenadines]]></country_fr_FR>
+    <country_es_ES><![CDATA[San Vicente y las Granadinas]]></country_es_ES>
+    <subject><![CDATA[Fisheries]]></subject>
+    <subject><![CDATA[Sea]]></subject>
+    <subject><![CDATA[Subject1_EN]]></subject>
+    <subject><![CDATA[Legal questions]]></subject>
+    <subject_fr_FR><![CDATA[Pêche]]></subject_fr_FR>
+    <subject_fr_FR><![CDATA[Mer]]></subject_fr_FR>
+    <subject_fr_FR><![CDATA[Subject1_FR]]></subject_fr_FR>
+    <subject_fr_FR><![CDATA[Questions juridiques]]></subject_fr_FR>
+    <subject_es_ES><![CDATA[Pesca]]></subject_es_ES>
+    <subject_es_ES><![CDATA[Mar]]></subject_es_ES>
+    <subject_es_ES><![CDATA[Subject1_ES]]></subject_es_ES>
+    <subject_es_ES><![CDATA[Cuestiones jurídicas]]></subject_es_ES>
+
+    <availableIn><![CDATA[B7 p. 985:22/A]]></availableIn>
+    <languageOfDocument>English</languageOfDocument>
+    <languageOfDocument_fr_FR>Anglais</languageOfDocument_fr_FR>
+    <languageOfDocument_es_ES>Inglés</languageOfDocument_es_ES>
+
+    <languageOfTranslation>French</languageOfTranslation>
+    <languageOfTranslation_fr_FR>Français</languageOfTranslation_fr_FR>
+    <languageOfTranslation_es_ES>Francés</languageOfTranslation_es_ES>
+
+    <courtName><![CDATA[International Tribunal for the Law of the Sea]]></courtName>
+    <seatOfCourt><![CDATA[Hamburg]]></seatOfCourt>
+
+    <linkToFullText><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/TRE/Full/En/TRE-000953.pdf]]></linkToFullText>
+    <linkToFullTextFr><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/TRE/Full/Fr/TRE-000953.pdf]]></linkToFullTextFr>
+    <linkToFullTextSp><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/TRE/Full/Sp/TRE-000953.pdf]]></linkToFullTextSp>
+    <linkToFullTextOther><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/TRE/Full/Other/TRE-000953.pdf]]></linkToFullTextOther>
+
+    <justices><![CDATA[Rao Chandrasekhara]]></justices>
+    <justices><![CDATA[Nelson]]></justices>
+    <dateOfText>1997-12-04</dateOfText>
+    <referenceNumber><![CDATA[List of cases No. 1]]></referenceNumber>
+    <numberOfPages>19</numberOfPages>
+    <internetReference><![CDATA[http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=1&lang=en]]></internetReference>
+    <internetReferenceFr><![CDATA[http://www.unece.org/env/lrtap/full%20text/1988.NOX.f.pdf]]></internetReferenceFr>
+    <internetReferenceSp><![CDATA[http://judis.nic.in/chennai/qrydisp.asp?tfnm=7675]]></internetReferenceSp>
+    <relatedWebSite><![CDATA[http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=1&lang=en]]></relatedWebSite>
+    <keyword><![CDATA[Authorization/permit]]></keyword>
+    <keyword><![CDATA[fishing area]]></keyword>
+    <keyword><![CDATA[fishing vessel]]></keyword>
+    <keyword><![CDATA[international agreement-text]]></keyword>
+    <keyword><![CDATA[marine area]]></keyword>
+    <keyword><![CDATA[marine fisheries]]></keyword>
+    <keyword><![CDATA[maritime zone]]></keyword>
+    <keyword><![CDATA[offences/penalties]]></keyword>
+    <keyword><![CDATA[Keyword1_EN]]></keyword>
+    <keyword_fr_FR><![CDATA[autorisation/permis]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[autorización/permiso]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[zone de pêche]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[zona de pesca]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[navire de pêche]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[embarcación de pesca]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[accord international-texte]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[acuerdo internacional-texto]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[aire marine]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[área marina]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[pêche maritime]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[pesca marítima]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[zone marine]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[zona marítima]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[infractions/sanctions]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[infracciones/sanciones]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[Keyword1_FR]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[Keyword1_ES]]></keyword_es_ES>
+    <abstract>
+      <![CDATA[ABCD]]></abstract>
+    <abstract>
+      <![CDATA[EFG]]></abstract>
+    <abstractFr><![CDATA[La Supreme impugnación?]]></abstractFr>
+    <abstractFr><![CDATA[El último]]></abstractFr>
+    <abstractSp><![CDATA[Cámara]]></abstractSp>
+    <abstractSp><![CDATA[confirmó]]></abstractSp>
+    <referenceToTreaties><![CDATA[TRE-000753]]></referenceToTreaties>
+    <referenceToTreaties><![CDATA[TRE-000754]]></referenceToTreaties>
+    <referenceToNationalLegislation><![CDATA[LEG-12345]]></referenceToNationalLegislation>
+    <referenceToNationalLegislation><![CDATA[LEG-45678]]></referenceToNationalLegislation>
+    <referenceToCourtDecision><![CDATA[COU-143770]]></referenceToCourtDecision>
+    <referenceToCourtDecision><![CDATA[COU-143771]]></referenceToCourtDecision>
+    <subdivision><![CDATA[Chamber of Consults]]></subdivision>
+    <territorialSubdivision><![CDATA[District of Columbia]]></territorialSubdivision>
+    <territorialSubdivision_fr_FR><![CDATA[District au Columbia]]></territorialSubdivision_fr_FR>
+    <territorialSubdivision_es_ES><![CDATA[District de Columbia]]></territorialSubdivision_es_ES>
+    <linkToAbstract><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/COU/Abstracts/COU-AB-EN-143758.rtf]]></linkToAbstract>
+    <statusOfDecision>Unknown</statusOfDecision>
+    <referenceToEULegislation><![CDATA[LEG-142630]]></referenceToEULegislation>
+    <referenceToEULegislation><![CDATA[LEG-142631]]></referenceToEULegislation>
+    <courtJurisdiction>Civil</courtJurisdiction>
+    <instance><![CDATA[Grand Chamber]]></instance>
+    <region><![CDATA[Australia and New Zealand]]></region>
+    <region_fr_FR><![CDATA[Australie et Nouvelle-Zélande]]></region_fr_FR>
+    <region_es_ES><![CDATA[Australia y Nueva Zelandia]]></region_es_ES>
+    <officialPublication>In the High Court of New Zealand Auckland Registry</officialPublication>
+    <referenceToFaolex><![CDATA[LEX-FAOC003172]]></referenceToFaolex>
+    <referenceToFaolex><![CDATA[LEX-FAOC003173]]></referenceToFaolex>
+  </document>
+
+  <document>
+    <db>cou</db>
+    <isisMfn>000104</isisMfn>
+    <id>COU-143757</id>
+    <id2><![CDATA[800000+D-999082700+]]></id2>
+    <dateOfEntry>2006-11-29</dateOfEntry>
+    <dateOfModification>2016-03-11</dateOfModification>
+    <titleOfText><![CDATA[Southern Bluefin Tuna cases (New Zealand v. Japan; Australia v. Japan)]]></titleOfText>
+    <typeOfText>International court
+
+    </typeOfText>
+    <country><![CDATA[New Zealand]]></country>
+    <country_fr_FR><![CDATA[Nouvelle-Zélande]]></country_fr_FR>
+    <country_es_ES><![CDATA[Nueva Zelandia]]></country_es_ES>
+    <country><![CDATA[Australia]]></country>
+    <country_fr_FR><![CDATA[Australie]]></country_fr_FR>
+    <country_es_ES><![CDATA[Australia]]></country_es_ES>
+    <country><![CDATA[Japan]]></country>
+    <country_fr_FR><![CDATA[Japon]]></country_fr_FR>
+    <country_es_ES><![CDATA[Japón]]></country_es_ES>
+    <subject><![CDATA[Fisheries]]></subject>
+    <subject><![CDATA[Sea]]></subject>
+    <subject><![CDATA[Wild species &amp; ecosystems]]></subject>
+    <subject_fr_FR><![CDATA[Pêche]]></subject_fr_FR>
+    <subject_fr_FR><![CDATA[Mer]]></subject_fr_FR>
+    <subject_fr_FR><![CDATA[Espèces sauvages et écosystèmes]]></subject_fr_FR>
+    <subject_es_ES><![CDATA[Pesca]]></subject_es_ES>
+    <subject_es_ES><![CDATA[Mar]]></subject_es_ES>
+    <subject_es_ES><![CDATA[Especies silvestres y ecosistemas]]></subject_es_ES>
+
+    <linkToFullTextSp><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/TRE/Full/Sp/TRE-000953.pdf]]></linkToFullTextSp>
+
+    <languageOfDocument>English</languageOfDocument>
+    <languageOfDocument_fr_FR>Anglais</languageOfDocument_fr_FR>
+    <languageOfDocument_es_ES>Inglés</languageOfDocument_es_ES>
+
+    <languageOfTranslation>French</languageOfTranslation>
+    <languageOfTranslation_fr_FR>Français</languageOfTranslation_fr_FR>
+    <languageOfTranslation_es_ES>Francés</languageOfTranslation_es_ES>
+
+    <courtName><![CDATA[International Tribunal for the Law of the Sea]]></courtName>
+    <seatOfCourt><![CDATA[Hamburg]]></seatOfCourt>
+
+    <justices><![CDATA[Rao Chandrasekhara]]></justices>
+    <justices><![CDATA[Nelson]]></justices>
+    <justices><![CDATA[Caminos]]></justices>
+    <justices><![CDATA[Rangel Marotta]]></justices>
+    <justices><![CDATA[Yankov]]></justices>
+    <justices><![CDATA[Yamamoto]]></justices>
+    <justices><![CDATA[Kolodkin]]></justices>
+    <justices><![CDATA[Park]]></justices>
+    <justices><![CDATA[Engo Bamela]]></justices>
+    <justices><![CDATA[Mensah]]></justices>
+    <justices><![CDATA[Akl]]></justices>
+    <justices><![CDATA[Anderson]]></justices>
+    <justices><![CDATA[Vukas]]></justices>
+    <justices><![CDATA[Wolfrum]]></justices>
+    <justices><![CDATA[Treves]]></justices>
+    <justices><![CDATA[Marsit]]></justices>
+    <justices><![CDATA[Eiriksson]]></justices>
+    <justices><![CDATA[Ndiaye]]></justices>
+    <justices><![CDATA[Warioba]]></justices>
+    <justices><![CDATA[Zhao]]></justices>
+    <justices><![CDATA[Shearer]]></justices>
+    <dateOfText>1999-08-27</dateOfText>
+    <referenceNumber><![CDATA[List of cases Nos. 3 and 4]]></referenceNumber>
+    <numberOfPages>19</numberOfPages>
+    <internetReference><![CDATA[http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=3&lang=en]]></internetReference>
+    <relatedWebSite><![CDATA[http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=3&lang=en]]></relatedWebSite>
+    <keyword><![CDATA[Endangered species]]></keyword>
+    <keyword><![CDATA[fishery management and conservation]]></keyword>
+    <keyword><![CDATA[marine fisheries]]></keyword>
+    <keyword><![CDATA[international agreement-text]]></keyword>
+    <keyword><![CDATA[wild fauna]]></keyword>
+    <keyword_fr_FR><![CDATA[espèces menacées]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[especies en peligro]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[gestion et conservation  des pêches]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[manejo y conservación pesquera]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[pêche maritime]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[pesca marítima]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[accord international-texte]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[acuerdo internacional-texto]]></keyword_es_ES>
+    <keyword_fr_FR><![CDATA[faune sauvage]]></keyword_fr_FR>
+    <keyword_es_ES><![CDATA[fauna silvestre]]></keyword_es_ES>
+    <abstract>
+      <![CDATA[By notification submitted to Japan on 15 July 1999 New Zealand and Australia instituted arbitral proceedings before the International Tribunal for the Law of the Sea as provided for in Annex VII to the United Nations Convention on the Law of the Sea (UNCLOS) in a dispute concerning southern bluefin tuna.]]></abstract>
+    <abstract>
+      <![CDATA[New Zealand and Australia alleged that Japan had failed to comply with its obligation to cooperate in the conservation of the southern bluefin tuna stock by, inter alia, undertaking unilateral experimental fishing for southern bluefin tuna in 1998 and 1999 and had requested an arbitral tribunal to be constituted. The Applicants asked the arbitral tribunal to declare that Japan had breached its obligations under Articles 64 and 116 to 119 of UNCLOS.]]></abstract>
+    <abstract>
+      <![CDATA[As a consequence of the said breaches of UNCLOS, Japan should refrain from authorizing or conducting any further experimental fishing for SBT without the agreement of New Zealand and Australia and negotiate and co-operate in good faith with New Zealand and Australia with a view to agreeing future conservation measures and total allowable catch for southern bluefin tuna necessary for restoring the stock to levels which could produce the maximum sustainable yield.]]></abstract>
+    <abstract>
+      <![CDATA[Pending the constitution of the arbitral tribunal, Australia and New Zealand also requested the Tribunal to prescribe as provisional measures that Japan immediately cease unilateral experimental fishing and that the parties ensure that no action of any kind was taken which might aggravate, extend or render more difficult the solution of the dispute.]]></abstract>
+    <abstract>
+      <![CDATA[Japan contended that the Annex VII tribunal had to have prima facie jurisdiction.  This meant among other things that the dispute had to concern the interpretation or application of UNCLOS and not some other international agreement. The dispute concerned the interpretation of the Convention for the Conservation of Southern Bluefin Tuna of 1993 and did not concern the interpretation of the Convention on the Law of the Sea.]]></abstract>
+    <abstract>
+      <![CDATA[Secondly, Australia and New Zealand had to have attempted in good faith to reach a settlement in accordance with the provisions of UNCLOS Part XV, Section 1.  Australia and New Zealand had satisfied neither condition. The Tribunal was without authority to prescribe any provisional measures. The Request for provisional measures by Australia and New Zealand should be denied.]]></abstract>
+    <abstract>
+      <![CDATA[The Tribunal decided that the fact that the Convention of 1993 applied between the parties did not exclude their right to invoke the provisions of the Convention on the Law of the Sea in regard to the conservation and management of southern bluefin tuna.]]></abstract>
+    <abstract>
+      <![CDATA[Japan also contended that Australia and New Zealand had not exhausted the procedures for amicable dispute settlement under Part XV, section 1, of the Convention, in particular article 281, through negotiations or other agreed peaceful means, before submitting the disputes to a procedure under Part XV, section 2, of the Convention.]]></abstract>
+    <abstract>
+      <![CDATA[The Tribunal found that negotiations and consultations had taken place between the parties. A State Party was not obliged, though, to pursue procedures under Part XV of the Convention when it concluded that the possibilities of settlement had been exhausted.]]></abstract>
+    <abstract>
+      <![CDATA[The Tribunal therefore had to decide whether provisional measures were required pending the constitution of the arbitral tribunal. It took into consideration that Australia and New Zealand contended that further catches of southern bluefin tuna, pending the hearing by an arbitral tribunal, would cause immediate harm to their rights. It also emphasized that the conservation of the living resources of the sea was an element in the protection and preservation of the marine environment, and that the stock of southern bluefin tuna was severely depleted and was at its historically lowest levels and that this was a cause for serious biological concern.]]></abstract>
+    <abstract>
+      <![CDATA[For the above reasons, provisional measures were appropriate in the view of the Tribunal. It prescribed, intern alia, the following measures:]]></abstract>
+    <abstract>
+      <![CDATA[Australia, Japan and New Zealand should each ensure that no action was taken which might aggravate or extend the disputes submitted to the arbitral tribunal.]]></abstract>
+    <abstract>
+      <![CDATA[Australia, Japan and New Zealand should each ensure that no action was taken which might prejudice the carrying out of any decision on the merits which the arbitral tribunal may render.]]></abstract>
+    <abstract>
+      <![CDATA[Australia, Japan and New Zealand should resume negotiations without delay with a view to reaching agreement on measures for the conservation and management of southern bluefin tuna.]]></abstract>
+
+    <referenceToTreaties><![CDATA[TRE-001251]]></referenceToTreaties>
+    <referenceToTreaties><![CDATA[TRE-000753]]></referenceToTreaties>
+  </document>
+
+  <!-- Empty record -->
+  <document>
+  </document>
+
+  <!-- Empty record without the title -->
+  <document>
+    <db>cou</db>
+    <id>COU-88888888</id>
+  </document>
+
+  <!-- Minimal record -->
+  <document>
+    <db>cou</db>
+    <id>COU-99999999</id>
+    <titleOfText><![CDATA[Empty valid court decision]]></titleOfText>
+  </document>
+</result>

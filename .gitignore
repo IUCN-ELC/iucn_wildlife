@@ -13,7 +13,6 @@ docroot/README.txt
 docroot/UPGRADE.txt
 docroot/web.config
 
-
 # Ignore configuration files that may contain sensitive information.
 docroot/sites/*/settings.local.php
 .idea
@@ -22,6 +21,9 @@ drush/aliases/aliases.drushrc.php
 conf/config.json
 conf/apache.conf
 docroot/sites/simpletest
+
+# Environment-specific config
+config/default/search_api.server.solr_server.yml
 
 # User Generated Content #
 ##########################

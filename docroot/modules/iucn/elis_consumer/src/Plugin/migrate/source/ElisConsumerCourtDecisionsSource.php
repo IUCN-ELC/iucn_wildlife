@@ -72,6 +72,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     'statusOfDecision' => 'decision_status',
     'subdivision' => 'subdivisions',
     'territorialSubdivision' => 'territorial_subdivisions',
+    'region' => 'regions',
   );
 
   /**

@@ -3,12 +3,14 @@
 namespace Drupal\iucn_search\Edw\Facets;
 
 use Drupal\Core\Config\ConfigValueException;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 
 class Facet {
 
   public static $RENDER_CONTEXT_WEB = 'web';
   public static $RENDER_CONTEXT_SOLR = 'solr';
+  public static $RENDER_CONTEXT_GET = 'get';
 
   public static $FACET_DEFAULT_LIMIT = 10;
   public static $FACET_DEFAULT_MIN_COUNT = -1;
@@ -57,6 +59,26 @@ class Facet {
     }
     else {
       throw new \Exception("Unknown rendering context: $context");
+    }
+  }
+
+  /**
+   * @param FormStateInterface $form_state
+   */
+  protected function render_get($form_state) {
+    $query = array();
+    $values = array();
+    $id = $this->getId();
+    foreach ($form_state->getValue($id . '_values') as $value => $selected) {
+      if ($selected) {
+        $values[] = $value;
+      }
+    }
+    if (!empty($values)) {
+      $query[$id] = implode(',', $values);
+    }
+    if ($op = $form_state->getValue($id . '_operator')) {
+      $query[$id . '_operator'] = $op;
     }
   }
 

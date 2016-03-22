@@ -7,12 +7,10 @@
 
 namespace Drupal\iucn_search\IUCN;
 
-use Drupal\Component\Utility\SafeMarkup;
-use Drupal\search_api\Backend\BackendInterface;
+use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
 use Solarium\Client;
 use Drupal\iucn_search\Edw\Facets\Facet;
 use Drupal\search_api\Entity\Index;
-
 
 class SearchServerConfiguration {
 
@@ -54,20 +52,70 @@ class SearchServerConfiguration {
 
   public function getFieldNames() {
     $server = $this->getServerInstance();
-    /** @var BackendInterface $backend */
+    /** @var SearchApiSolrBackend $backend */
     $backend = $server->getBackend();
     return $backend->getFieldNames($this->getIndex());
   }
 
+  public function getIndexedFields() {
+    return $this->getIndex()->getFields();
+  }
+
+  public function createSelectQuery() {
+    $client = $this->getSolrClient();
+    return $client->createSelect();
+  }
+
+  /**
+   * @return \Solarium\QueryType\Select\Result\Result
+   */
+  public function executeSearch($query) {
+    // Use the 'postbigrequest' plugin if no specific http method is
+    // configured. The plugin needs to be loaded before the request is
+    // created.
+    $config = $this->getServerConfig();
+    $client = $this->getSolrClient();
+    if ($config['http_method'] == 'AUTO') {
+      $client->getPlugin('postbigrequest');
+    }
+    $request = $client->createRequest($query);
+    if (!empty($config['http_method'])) {
+      $request->setMethod($config['http_method']);
+    }
+    if (strlen($config['http_user']) && strlen($config['http_pass'])) {
+      $request->setAuthentication($config['http_user'], $config['http_pass']);
+    }
+    // Send search request.
+    $response = $client->executeRequest($request);
+    $resultSet = $client->createResult($query, $response);
+    return $resultSet;
+
+  }
 }
 
+class SearchResult {
+
+  private $results = array();
+  private $count = 0;
+
+  public function __construct($results, $count) {
+    $this->results = $results;
+    $this->count = $count;
+  }
+
+  public function getResults() {
+    return $this->results;
+  }
+
+  public function getCount() {
+    return $this->count;
+  }
+}
 
 class IUCNSolrSearch {
 
   /** @var array Request parameters (query) */
   protected $parameters = NULL;
-  /** @var \Solarium\Client */
-  protected $solr = NULL;
   /** @var \Drupal\iucn_search\IUCN\SearchServerConfiguration */
   protected $config = NULL;
   protected $facets = array();
@@ -78,20 +126,26 @@ class IUCNSolrSearch {
     $this->initFacets();
   }
 
+  /**
+   * @param $page
+   * @param $size
+   * @return \Drupal\iucn_search\IUCN\SearchResult
+   *   Results
+   */
   public function search($page, $size) {
-    $nodes = [];
+    $ret = array();
+    $countTotal = 0;
     $search_text = $this->getParameter('q');
     try {
-      $index = $this->config->getIndex();
-      $query = $this->solr->createSelect();
+      $query = $this->config->createSelectQuery();
+      $field_names = $this->config->getFieldNames();
+      $search_fields = $this->config->getIndex()->getFulltextFields();
+      // Index fields contain boost data.
+      $index_fields = $this->config->getIndexedFields();
+
       $query->setQuery($search_text);
       $query->setFields(array('*', 'score'));
 
-      $field_names = $this->config->getFieldNames();
-
-      $search_fields = $this->config->getIndex()->getFulltextFields();
-      // Get the index fields to be able to retrieve boosts.
-      $index_fields = $index->getFields();
       $query_fields = [];
       foreach ($search_fields as $search_field) {
         /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
@@ -100,32 +154,39 @@ class IUCNSolrSearch {
         $query_fields[] = $field_names[$search_field] . $boost;
       }
       $query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
-
       $offset = $page * $size;
       $query->setStart($offset);
       $query->setRows($size);
-      // $this->setFacets($query, $field_names);
-      $resultSet = $this->createSolariumRequest($query);
-      $documents = $resultSet->getDocuments();
-      $this->resultCount = $resultSet->getNumFound();
 
+      // Handle the facets
+      $facet_set = $query->getFacetSet();
+      $facet_set->setSort('count');
+      $facet_set->setLimit(10);
+      $facet_set->setMinCount(1);
+      $facet_set->setMissing(FALSE);
+      /** @var Facet $facet */
+      foreach($this->facets as $facet) {
+        $solr_field_name = $field_names[$facet->getFacetField()];
+        $facet->render(Facet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters, $solr_field_name);
+      }
+      $resultSet = $this->config->executeSearch($query);
+      $documents = $resultSet->getDocuments();
+      $countTotal = $resultSet->getNumFound();
+      $this->updateFacetValues($resultSet->getFacetSet());
       foreach ($documents as $document) {
         $fields = $document->getFields();
-        $nid = $fields[$field_names['nid']];
-        if (is_array($nid)) {
-          $nid = reset($nid);
+        $id = $fields[$field_names['nid']];
+        if (is_array($id)) {
+          $id = reset($nid);
         }
-        $node = \Drupal\node\Entity\Node::load($nid);
-        $nodes[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+        $ret[$id] = array('id' => $id);
       }
-
-      $this->setFacetsValues($resultSet->getFacetSet());
     }
     catch (\Exception $e) {
       watchdog_exception('iucn_search', $e);
       drupal_set_message(t('An error occurred.'), 'error');
     }
-    return $nodes;
+    return new SearchResult($ret, $countTotal);
   }
 
   public function getParameter($name) {
@@ -147,38 +208,47 @@ class IUCNSolrSearch {
       'ecolex_subjects' => [
         'title' => 'Subject',
         'placeholder' => 'Add subjects...',
+        'bundle' => 'ecolex_subjects',
       ],
       'field_country' => [
         'title' => 'Country',
         'placeholder' => 'Add countries...',
+        'bundle' => 'country',
       ],
       'field_type_of_text' => [
         'title' => 'Type of court',
         'placeholder' => 'Add types...',
+        'bundle' => 'document_types',
       ],
       'field_territorial_subdivisions' => [
         'title' => 'Sub-national/state level',
         'placeholder' => 'Add territory...',
+        'bundle' => 'territorial_subdivisions',
       ],
 //      'field_subdivision' => [
 //        'title' => 'Subdivision',
 //        'field' => 'field_subdivision',
+//        'bundle' => 'subdivisions',
 //      ],
 //      'field_justices' => [
 //        'title' => 'Justice',
 //        'field' => 'field_justices',
+//        'bundle' => 'justices',
 //      ],
 //      'field_instance' => [
 //        'title' => 'Instance',
 //        'field' => 'field_instance',
+//        'bundle' => 'instances',
 //      ],
 //      'field_decision_status' => [
 //        'title' => 'Decision status',
 //        'field' => 'field_decision_status',
+//        'bundle' => 'decision_status',
 //      ],
 //      'field_court_jurisdiction' => [
 //        'title' => 'Court jurisdiction',
 //        'field' => 'field_court_jurisdiction',
+//        'bundle' => 'court_jurisdictions',
 //      ],
     ];
     foreach ($facets as $id => $config) {
@@ -187,31 +257,36 @@ class IUCNSolrSearch {
     }
   }
 
-  /**
-   * @return \Solarium\Core\Query\Result\ResultInterface
-   */
-  private function createSolariumRequest($solarium_query) {
-    // Use the 'postbigrequest' plugin if no specific http method is
-    // configured. The plugin needs to be loaded before the request is
-    // created.
-    $config = $this->config->getServerConfig();
-    if ($config['http_method'] == 'AUTO') {
-      $this->solr->getPlugin('postbigrequest');
-    }
-    $request = $this->solr->createRequest($solarium_query);
 
-    if ($config['http_method'] == 'POST') {
-      $request->setMethod(Request::METHOD_POST);
+  private function updateFacetValues($facetSet) {
+    /** @var Facet $facet */
+    foreach ($this->getFacets() as $facet_id => $facet) {
+      $solrFacet = $facetSet->getFacet($facet_id);
+      $values = $solrFacet->getValues();
+      if ($request_parameters = $this->getParameter($facet_id)) {
+        // Preserve user selection - add filters request.
+        $sticky = explode(',', $_GET[$facet_id]);
+        if (!empty($sticky)) {
+          foreach ($sticky as $key) {
+            if (!array_key_exists($key, $values)) {
+              $values[$key] = 0;
+            }
+          }
+        }
+      }
+      $facet->setValues($values);
     }
-    elseif ($config['http_method'] == 'GET') {
-      $request->setMethod(Request::METHOD_GET);
+  }
+
+  public function getHttpQueryParameters() {
+    $query = [];
+    if ($q = $this->getParameter('q')) {
+      $query['q'] = $q;
     }
-    if (strlen($config['http_user']) && strlen($config['http_pass'])) {
-      $request->setAuthentication($config['http_user'], $config['http_pass']);
+    /** @var Facet $facet */
+    foreach ($this->getFacets() as $facet_id => $facet) {
+      $query = array_merge($query, $facet->render(Facet::$RENDER_CONTEXT_GET));
     }
-    // Send search request.
-    $response = $this->solr->executeRequest($request);
-    $resultSet = $this->solr->createResult($solarium_query, $response);
-    return $resultSet;
+    return $query;
   }
 }

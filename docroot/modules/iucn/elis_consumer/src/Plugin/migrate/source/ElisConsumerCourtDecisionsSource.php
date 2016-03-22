@@ -72,7 +72,14 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     'statusOfDecision' => 'decision_status',
     'subdivision' => 'subdivisions',
     'territorialSubdivision' => 'territorial_subdivisions',
+    'region' => 'regions',
   );
+
+  /**
+   * @var bool
+   *  True if the migration is running within a test.
+   */
+  private $testing_enabled = FALSE;
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
@@ -87,6 +94,11 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     }
     $directory = "public://{$this->files_destination}";
     file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
+  }
+
+  public function enable_testing() {
+    $this->testing_enabled = TRUE;
+    $this->date_period = ['*'];
   }
 
   public function set_path($path) {
@@ -238,6 +250,9 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function getElisXml($url, $spage_query, $spage_first) {
+    if ($this->testing_enabled) {
+      return simplexml_load_file($url);
+    }
     $url = str_replace(
       array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),
       array($spage_query,$spage_first),
@@ -248,25 +263,26 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return simplexml_load_string($data);
   }
 
-  public function getDocumentsByMonth($year) {
-    $date_period = $this->get_date_period('Ym', '1 month', $year . '-01', ($year + 1) . '-01');
+  public function getPaginatedData($url, $spage_query, $numberResultsFound) {
     $docs = [];
-    foreach ($date_period as $date) {
-      $query = $this->spage_query_default_string . ' AND DM:' . $date;
-      $spage_query = $this->hexadecimally_encode_string($query);
-      $spage_first = 0;
-      $xml = $this->getElisXml($this->path, $spage_query, $spage_first);
-      $numberResultsFound = (int)$xml->attributes()->numberResultsFound;
+    $spage_first = 0;
+    try {
+      $xml = $this->getElisXml($url, $spage_query, $spage_first);
       while (TRUE) {
         foreach ($xml->document as $doc) {
+          if (empty($doc->{$this->identifier})) {
+            continue;
+          }
           $docs[(string) $doc->{$this->identifier}] = (array)$this->getItem($doc);
         }
         $spage_first += 20;
         if ($spage_first >= $numberResultsFound) {
           break;
         }
-        $xml = $this->getElisXml($this->path, $spage_query, $spage_first);
+        $xml = $this->getElisXml($url, $spage_query, $spage_first);
       }
+    } catch (RequestException $e) {
+      throw new MigrateException($e->getMessage(), $e->getCode(), $e);
     }
     return $docs;
   }
@@ -279,7 +295,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       $xml = $this->getElisXml($url, $spage_query, $spage_first);
       $numberResultsFound = (int)$xml->attributes()->numberResultsFound;
       $numberResultsPresented = (int)$xml->attributes()->numberResultsPresented;
-      $docs = [];
       $json = json_encode($xml->attributes());
       // The TRUE setting means decode the response into an associative array.
       $array = json_decode($json, TRUE);
@@ -287,22 +302,27 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
         $docs = $this->getDocumentsByMonth(substr(current($this->date_period), 0, 4));
       }
       else {
-        while (TRUE) {
-          foreach ($xml->document as $doc) {
-            $docs[(string) $doc->{$this->identifier}] = (array)$this->getItem($doc);
-          }
-          $spage_first += 20;
-          if ($spage_first >= $numberResultsFound) {
-            break;
-          }
-          $xml = $this->getElisXml($url, $spage_query, $spage_first);
-        }
+        $docs = $this->getPaginatedData($url, $spage_query, $numberResultsFound);
       }
       $array['documents'] = $docs;
       return $array;
     } catch (RequestException $e) {
       throw new MigrateException($e->getMessage(), $e->getCode(), $e);
     }
+  }
+
+  public function getDocumentsByMonth($year) {
+    $date_period = $this->get_date_period('Ym', '1 month', $year . '-01', ($year + 1) . '-01');
+    $docs = [];
+    foreach ($date_period as $date) {
+      $query = $this->spage_query_default_string . ' AND DM:' . $date;
+      $spage_query = $this->hexadecimally_encode_string($query);
+      $spage_first = 0;
+      $xml = $this->getElisXml($this->path, $spage_query, $spage_first);
+      $numberResultsFound = (int)$xml->attributes()->numberResultsFound;
+      $docs = $this->getPaginatedData($url, $spage_query, $numberResultsFound);
+    }
+    return $docs;
   }
 
   public function next() {
@@ -354,14 +374,14 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     if (!is_array($terms)) {
       $terms = array($terms);
     }
-    foreach ($terms as $key => &$term_name) {
+    foreach ($terms as $key => $term_name) {
       if (empty($term_name)) {
         unset($terms[$key]);
       }
-      else {
-        $term_name = htmlspecialchars_decode($term_name);
+    else {
+        $terms[$key] = htmlspecialchars_decode($term_name);
         // Remove multiple spaces
-        $term_name = preg_replace('/\s+/', ' ', $term_name);
+        $terms[$key] = preg_replace('/\s+/', ' ', $term_name);
       }
     }
     if (empty($terms)) {
@@ -431,6 +451,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       $message = 'Title cannot be NULL. (' . $row->getSourceProperty('id') . ')';
       \Drupal::logger('elis_consumer_court_decisions')
         ->warning($message);
+      return FALSE;
     }
     else {
       $row->setSourceProperty('titleOfText', $titleOfText);

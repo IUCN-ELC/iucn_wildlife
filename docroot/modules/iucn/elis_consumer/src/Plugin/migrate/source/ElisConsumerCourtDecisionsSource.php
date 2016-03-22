@@ -61,6 +61,24 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
    */
   protected $files_destination = 'court_decisions';
 
+  /**
+   * Fields that will be stored in taxonomies.
+   *
+   * @var array
+   *  The key is the source field name and the value is the vocabulary machine name.
+   */
+  protected $taxonomy_fields = array(
+    'subject' => 'ecolex_subjects',
+    'typeOfText' => 'document_types',
+    'languageOfDocument' => 'document_languages',
+    'justices' => 'justices',
+    'courtJurisdiction' => 'court_jurisdictions',
+    'instance' => 'instances',
+    'statusOfDecision' => 'decision_status',
+    'subdivision' => 'subdivisions',
+    'territorialSubdivision' => 'territorial_subdivisions',
+  );
+
   public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
 
@@ -201,6 +219,12 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
           $ob->titleOfText_original = $value;
         }
         $ob->{$field_name} = $value;
+      }
+    }
+    /* Map taxonomy term reference fields */
+    foreach ($this->taxonomy_fields as $field_name => $vocabulary) {
+      if (!empty($ob->{$field_name})) {
+        $ob->{$field_name} = $this->map_taxonomy_terms_by_name($ob->{$field_name}, $vocabulary);
       }
     }
     $ob->abstract = $abstract;
@@ -422,17 +446,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
     $row->setSourceProperty('files', $this->createFiles($linkToFullText));
     $row->setSourceProperty('linkToAbstract', $this->createFiles($linkToAbstract));
-
-    /* Map taxonomy term reference fields */
-    $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));
-    $row->setSourceProperty('typeOfText', $this->map_taxonomy_terms_by_name($row->getSourceProperty('typeOfText'), 'document_types'));
-    $row->setSourceProperty('languageOfDocument', $this->map_taxonomy_terms_by_name($row->getSourceProperty('languageOfDocument'), 'document_languages'));
-    $row->setSourceProperty('justices', $this->map_taxonomy_terms_by_name($row->getSourceProperty('justices'), 'justices'));
-    $row->setSourceProperty('courtJurisdiction', $this->map_taxonomy_terms_by_name($row->getSourceProperty('courtJurisdiction'), 'court_jurisdictions'));
-    $row->setSourceProperty('instance', $this->map_taxonomy_terms_by_name($row->getSourceProperty('instance'), 'instances'));
-    $row->setSourceProperty('statusOfDecision', $this->map_taxonomy_terms_by_name($row->getSourceProperty('statusOfDecision'), 'decision_status'));
-    $row->setSourceProperty('subdivision', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subdivision'), 'subdivisions'));
-    $row->setSourceProperty('territorialSubdivision', $this->map_taxonomy_terms_by_name($row->getSourceProperty('territorialSubdivision'), 'territorial_subdivisions'));
   }
 
 }

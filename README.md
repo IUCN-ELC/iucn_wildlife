@@ -31,6 +31,27 @@
 3. Download drush aliases from Acquia (https://docs.acquia.com/cloud/drush-aliases).
 4. Run `./install.sh`
 
+### Configuration management
+
+#### Export
+
+```
+$ drush config-export vcs # shared between environments
+$ drush config-get <config-name> > config/<env>/<config-name>.yml # environment-specific overrides
+```
+
+**config-name:** The config object name, for example "system.site".
+**env:** The environment name, for example "local", "dev", "prod".
+
+#### Import
+
+```
+$ drush config-import vcs # shared between environments
+$ drush config-import <env> --partial # environment-specific overrides
+```
+
+**env:** The environment name, for example "local", "dev", "prod".
+
 ### Theme development
 
 CSS files (the `css` directory) are generated from LESS sources (the `less` directory). Don't edit the CSS files directly, use `grunt` to recompile.

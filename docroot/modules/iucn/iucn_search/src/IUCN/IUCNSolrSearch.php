@@ -8,107 +8,25 @@
 namespace Drupal\iucn_search\IUCN;
 
 use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
-use Solarium\Client;
 use Drupal\iucn_search\Edw\Facets\Facet;
-use Drupal\search_api\Entity\Index;
 
-class SearchServerConfiguration {
-
-  protected $index_id = 'default_node_index';
-  protected $client = NULL;
-
-
-  public function __construct($index_id) {
-    $this->index_id = $index_id;
-  }
-
-  /** @return \Drupal\search_api\Entity\Index search_index */
-  public function getIndex() {
-    return Index::load($this->index_id);
-  }
-
-  protected function getServerInstance() {
-    return $this->getIndex()->getServerInstance();
-  }
-
-  public function getServerConfig() {
-    $server = $this->getServerInstance();
-    return $server->getBackendConfig() + array('key' => $server->id());
-  }
-
-  /**
-   * @return \Solarium\Client
-   * @throws \Exception
-   *    When search server cannot be instantiated.
-   */
-  public function getSolrClient() {
-    if (empty($this->client)) {
-      $this->client = new Client();
-      $server_config = $this->getServerConfig();
-      $this->client->createEndpoint($server_config, TRUE);
-    }
-    return $this->client;
-  }
-
-  public function getFieldNames() {
-    $server = $this->getServerInstance();
-    /** @var SearchApiSolrBackend $backend */
-    $backend = $server->getBackend();
-    return $backend->getFieldNames($this->getIndex());
-  }
-
-  public function getIndexedFields() {
-    return $this->getIndex()->getFields();
-  }
-
-  public function createSelectQuery() {
-    $client = $this->getSolrClient();
-    return $client->createSelect();
-  }
-
-  /**
-   * @return \Solarium\QueryType\Select\Result\Result
-   */
-  public function executeSearch($query) {
-    // Use the 'postbigrequest' plugin if no specific http method is
-    // configured. The plugin needs to be loaded before the request is
-    // created.
-    $config = $this->getServerConfig();
-    $client = $this->getSolrClient();
-    if ($config['http_method'] == 'AUTO') {
-      $client->getPlugin('postbigrequest');
-    }
-    $request = $client->createRequest($query);
-    if (!empty($config['http_method'])) {
-      $request->setMethod($config['http_method']);
-    }
-    if (strlen($config['http_user']) && strlen($config['http_pass'])) {
-      $request->setAuthentication($config['http_user'], $config['http_pass']);
-    }
-    // Send search request.
-    $response = $client->executeRequest($request);
-    $resultSet = $client->createResult($query, $response);
-    return $resultSet;
-
-  }
-}
 
 class SearchResult {
 
   private $results = array();
-  private $count = 0;
+  private $countTotal = 0;
 
   public function __construct($results, $count) {
     $this->results = $results;
-    $this->count = $count;
+    $this->countTotal = $count;
   }
 
   public function getResults() {
     return $this->results;
   }
 
-  public function getCount() {
-    return $this->count;
+  public function getCountTotal() {
+    return $this->countTotal;
   }
 }
 
@@ -116,11 +34,11 @@ class IUCNSolrSearch {
 
   /** @var array Request parameters (query) */
   protected $parameters = NULL;
-  /** @var \Drupal\iucn_search\IUCN\SearchServerConfiguration */
+  /** @var \Drupal\iucn_search\IUCN\IUCNSolrSearchServer */
   protected $config = NULL;
   protected $facets = array();
 
-  public function __construct(array $parameters, SearchServerConfiguration $config) {
+  public function __construct(array $parameters, IUCNSolrSearchServer $config) {
     $this->parameters = $parameters;
     $this->config = $config;
     $this->initFacets();
@@ -133,58 +51,53 @@ class IUCNSolrSearch {
    *   Results
    */
   public function search($page, $size) {
-    $ret = array();
-    $countTotal = 0;
     $search_text = $this->getParameter('q');
-    try {
-      $query = $this->config->createSelectQuery();
-      $field_names = $this->config->getFieldNames();
-      $search_fields = $this->config->getIndex()->getFulltextFields();
-      // Index fields contain boost data.
-      $index_fields = $this->config->getIndexedFields();
+    $query = $this->config->createSelectQuery();
+    $field_names = $this->config->getFieldNames();
+    var_dump($field_names);
+    $search_fields = $this->config->getSearchedFields();
+    // Index fields contain boost data.
+    $index_fields = $this->config->getIndexedFields();
 
-      $query->setQuery($search_text);
-      $query->setFields(array('*', 'score'));
+    $query->setQuery($search_text);
+    $query->setFields(array('*', 'score'));
 
-      $query_fields = [];
-      foreach ($search_fields as $search_field) {
-        /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
-        $document = $index_fields[$search_field];
-        $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
-        $query_fields[] = $field_names[$search_field] . $boost;
-      }
-      $query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
-      $offset = $page * $size;
-      $query->setStart($offset);
-      $query->setRows($size);
-
-      // Handle the facets
-      $facet_set = $query->getFacetSet();
-      $facet_set->setSort('count');
-      $facet_set->setLimit(10);
-      $facet_set->setMinCount(1);
-      $facet_set->setMissing(FALSE);
-      /** @var Facet $facet */
-      foreach($this->facets as $facet) {
-        $solr_field_name = $field_names[$facet->getFacetField()];
-        $facet->render(Facet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters, $solr_field_name);
-      }
-      $resultSet = $this->config->executeSearch($query);
-      $documents = $resultSet->getDocuments();
-      $countTotal = $resultSet->getNumFound();
-      $this->updateFacetValues($resultSet->getFacetSet());
-      foreach ($documents as $document) {
-        $fields = $document->getFields();
-        $id = $fields[$field_names['nid']];
-        if (is_array($id)) {
-          $id = reset($nid);
-        }
-        $ret[$id] = array('id' => $id);
-      }
+    $query_fields = array();
+    foreach ($search_fields as $search_field) {
+      /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
+      $document = $index_fields[$search_field];
+      $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
+      $query_fields[] = $field_names[$search_field] . $boost;
     }
-    catch (\Exception $e) {
-      watchdog_exception('iucn_search', $e);
-      drupal_set_message(t('An error occurred.'), 'error');
+    $query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
+    $offset = $page * $size;
+    $query->setStart($offset);
+    $query->setRows($size);
+
+    // Handle the facets
+    $facet_set = $query->getFacetSet();
+    $facet_set->setSort('count');
+    $facet_set->setLimit(10);
+    $facet_set->setMinCount(1);
+    $facet_set->setMissing(FALSE);
+    /** @var Facet $facet */
+    foreach ($this->facets as $facet) {
+      $solr_field_name = $field_names[$facet->getFacetField()];
+      $facet->render(Facet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters, $solr_field_name);
+    }
+    $resultSet = $this->config->executeSearch($query);
+    $this->updateFacetValues($resultSet->getFacetSet());
+    $documents = $resultSet->getDocuments();
+    $countTotal = $resultSet->getNumFound();
+
+    $ret = array();
+    foreach ($documents as $document) {
+      $fields = $document->getFields();
+      $id = $fields[$field_names['nid']];
+      if (is_array($id)) {
+        $id = reset($nid);
+      }
+      $ret[$id] = array('id' => $id);
     }
     return new SearchResult($ret, $countTotal);
   }
@@ -205,7 +118,7 @@ class IUCNSolrSearch {
   protected function initFacets() {
     // @ToDo: Translate facet titles
     $facets = [
-      'ecolex_subjects' => [
+      'field_ecolex_subjects' => [
         'title' => 'Subject',
         'placeholder' => 'Add subjects...',
         'bundle' => 'ecolex_subjects',

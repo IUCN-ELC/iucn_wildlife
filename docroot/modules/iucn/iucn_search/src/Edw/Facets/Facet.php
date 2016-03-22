@@ -55,7 +55,7 @@ class Facet {
     if (method_exists($this, $call)) {
       $args = func_get_args();
       array_shift($args);
-      return $call($args);
+      return call_user_func(array($this, $call), $args);
     }
     else {
       throw new \Exception("Unknown rendering context: $context");
@@ -82,7 +82,7 @@ class Facet {
     }
   }
 
-  protected function render_solr(&$solarium_query, $facet_set, $parameters, $solr_field_name) {
+  protected function render_solr(&$solarium_query, &$facet_set, $parameters, $solr_field_name) {
     $operator = $this->getOperator();
     if (!empty($parameters[$solr_field_name])) {
       $values = explode(',', $parameters[$solr_field_name]);

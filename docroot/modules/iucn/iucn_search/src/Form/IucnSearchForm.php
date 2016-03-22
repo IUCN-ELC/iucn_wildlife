@@ -11,7 +11,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_search\IUCN\IUCNSolrSearch;
 use Drupal\iucn_search\IUCN\SearchResult;
-use Drupal\iucn_search\IUCN\SearchServerConfiguration;
+use Drupal\iucn_search\IUCN\IUCNSolrSearchServer;
 use Drupal\iucn_search\Edw\Facets\Facet;
 
 class IucnSearchForm extends FormBase {
@@ -24,7 +24,7 @@ class IucnSearchForm extends FormBase {
 
   public function __construct() {
     try {
-      $server_config = new SearchServerConfiguration('default_node_index');
+      $server_config = new IUCNSolrSearchServer('default_node_index');
       $this->search = new IUCNSolrSearch($_GET, $server_config);
     }
     catch (\Exception $e) {
@@ -48,7 +48,7 @@ class IucnSearchForm extends FormBase {
 
     /** @var SearchResult $result */
     $result = $this->search->search($current_page, $this->items_per_page);
-    pager_default_initialize($result->getCount(), $this->items_per_page);
+    pager_default_initialize($result->getCountTotal(), $this->items_per_page);
 
     $rows = $result->getResults();
     $rendered_rows = array();

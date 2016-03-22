@@ -9,25 +9,36 @@ use Solarium\Client;
 class SolrSearchServer {
 
   protected $index_id = 'default_node_index';
-  protected $client = NULL;
+  /** @var \Drupal\search_api\Entity\Index */
+  protected $index = NULL;
+  protected $solrClient = NULL;
+  protected $server = NULL;
+  protected $server_config = array();
+  protected $field_names = array();
 
 
   public function __construct($index_id) {
     $this->index_id = $index_id;
+    $this->index = Index::load($this->index_id);
+    $server = $this->index->getServerInstance();
+    $this->server = $server;
+    $this->server_config = $server->getBackendConfig() + array('key' => $server->id());
+    $this->solrClient = new Client();
+    $this->solrClient->createEndpoint($this->server_config, TRUE);
+
+    /** @var SearchApiSolrBackend $backend */
+    $backend = $server->getBackend();
+    $this->field_names = $backend->getFieldNames($this->getIndex());
   }
 
   /** @return \Drupal\search_api\Entity\Index search_index */
   public function getIndex() {
-    return Index::load($this->index_id);
+    return $this->index;
   }
 
-  protected function getServerInstance() {
-    return $this->getIndex()->getServerInstance();
-  }
-
+  /** @return array */
   public function getServerConfig() {
-    $server = $this->getServerInstance();
-    return $server->getBackendConfig() + array('key' => $server->id());
+    return $this->server_config;
   }
 
   /**
@@ -36,23 +47,11 @@ class SolrSearchServer {
    *    When search server cannot be instantiated.
    */
   public function getSolrClient() {
-    if (empty($this->client)) {
-      $this->client = new Client();
-      $server_config = $this->getServerConfig();
-      $this->client->createEndpoint($server_config, TRUE);
-    }
-    return $this->client;
+    return $this->solrClient;
   }
 
   public function getFieldNames() {
-    $server = $this->getServerInstance();
-    /** @var SearchApiSolrBackend $backend */
-    $backend = $server->getBackend();
-    return $backend->getFieldNames($this->getIndex());
-  }
-
-  public function getIndexedFields() {
-    return $this->getIndex()->getFields();
+    return $this->field_names;
   }
 
   public function createSelectQuery() {
@@ -96,7 +95,7 @@ class SolrSearchServer {
     $query_fields = array();
     $search_fields = $this->getSearchFields();
     // Index fields contain boost data.
-    $index_fields = $this->getIndexedFields();
+    $index_fields = $this->getIndex()->getFields();
     foreach ($search_fields as $search_field) {
       /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
       $document = $index_fields[$search_field];

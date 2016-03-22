@@ -1,0 +1,131 @@
+uuid: c39b2493-bdfb-4045-b200-c8517ff04658
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.server.solr_server
+    - field.field.node.court_decision.field_abstract
+    - field.field.node.court_decision.field_country
+    - field.field.node.court_decision.field_court_jurisdiction
+    - field.field.node.court_decision.field_decision_status
+    - field.field.node.court_decision.field_ecolex_subjects
+    - field.field.node.court_decision.field_files
+    - field.field.node.court_decision.field_instance
+    - field.field.node.court_decision.field_justices
+    - field.field.node.court_decision.field_subdivision
+    - field.field.node.court_decision.field_territorial_subdivisions
+    - field.field.node.court_decision.field_type_of_text
+  module:
+    - search_api
+    - node
+_core:
+  default_config_hash: jnvkAE1hYsM03J9bo8VW3URRXUxfe7k7X3e8cZJ39_I
+id: default_node_index
+name: 'Default node index'
+description: ''
+read_only: false
+field_settings:
+  search_api_language:
+    label: 'Item language'
+    datasource_id: null
+    property_path: search_api_language
+    type: string
+    indexed_locked: true
+    type_locked: true
+  type:
+    label: Type
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+  field_abstract:
+    label: Abstract
+    datasource_id: 'entity:node'
+    property_path: field_abstract
+    type: text
+  field_type_of_text:
+    label: 'Type of text'
+    datasource_id: 'entity:node'
+    property_path: field_type_of_text
+    type: integer
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+  field_country:
+    label: Country
+    datasource_id: 'entity:node'
+    property_path: field_country
+    type: integer
+  nid:
+    label: 'Node ID'
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+  field_files:
+    label: Files
+    datasource_id: 'entity:node'
+    property_path: field_files
+    type: integer
+  field_territorial_subdivisions:
+    label: 'Territorial subdivisions'
+    datasource_id: 'entity:node'
+    property_path: field_territorial_subdivisions
+    type: integer
+  field_subdivision:
+    label: Subdivision
+    datasource_id: 'entity:node'
+    property_path: field_subdivision
+    type: integer
+  field_justices:
+    label: Justices
+    datasource_id: 'entity:node'
+    property_path: field_justices
+    type: integer
+  field_instance:
+    label: Instance
+    datasource_id: 'entity:node'
+    property_path: field_instance
+    type: integer
+  field_ecolex_subjects:
+    label: 'ECOLEX subject(s)'
+    datasource_id: 'entity:node'
+    property_path: field_ecolex_subjects
+    type: integer
+  field_decision_status:
+    label: 'Decision status'
+    datasource_id: 'entity:node'
+    property_path: field_decision_status
+    type: integer
+  field_court_jurisdiction:
+    label: 'Court jurisdiction'
+    datasource_id: 'entity:node'
+    property_path: field_court_jurisdiction
+    type: integer
+processor_settings:
+  add_url:
+    plugin_id: add_url
+    settings: {  }
+  language:
+    plugin_id: language
+    settings: {  }
+options:
+  index_directly: false
+  cron_limit: 50
+datasource_settings:
+  'entity:node':
+    plugin_id: 'entity:node'
+    settings:
+      default: '0'
+      bundles:
+        court_decision: court_decision
+        article: '0'
+        country: '0'
+        page: '0'
+      languages:
+        - en
+tracker_settings:
+  default:
+    plugin_id: default
+    settings: {  }
+server: solr_server

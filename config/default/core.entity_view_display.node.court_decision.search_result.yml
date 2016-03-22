@@ -78,6 +78,7 @@ hidden:
   field_isis_number: true
   field_justices: true
   field_number_of_pages: true
+  field_official_publication: true
   field_original_id: true
   field_original_title: true
   field_reference_number: true
@@ -86,6 +87,7 @@ hidden:
   field_reference_to_legislation: true
   field_reference_to_national_legi: true
   field_reference_to_treaties: true
+  field_region: true
   field_related_website: true
   field_seat_of_court: true
   field_subdivision: true

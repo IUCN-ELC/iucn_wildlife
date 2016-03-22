@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.court_decision.field_abstract
+    - field.field.node.court_decision.field_abstract_files
     - field.field.node.court_decision.field_available_in
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court_jurisdiction
@@ -39,6 +40,7 @@ dependencies:
     - node.type.court_decision
   module:
     - datetime
+    - file
     - file_list
     - link
     - text
@@ -54,6 +56,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_abstract_files:
+    weight: 33
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
   field_available_in:
     weight: 19
     label: above

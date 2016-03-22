@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.court_decision.field_abstract
+    - field.field.node.court_decision.field_abstract_files
     - field.field.node.court_decision.field_available_in
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court_jurisdiction
@@ -60,6 +61,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+  field_abstract_files:
+    weight: 39
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
   field_available_in:
     weight: 24
     settings:

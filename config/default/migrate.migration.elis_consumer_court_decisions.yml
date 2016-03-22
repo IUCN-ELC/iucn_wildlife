@@ -12,7 +12,6 @@ migration_tags: null
 label: 'Elis court decisions'
 source:
   plugin: elis_consumer_court_decisions
-  files_destination: field_files/court_decisions
 process:
   type:
     plugin: default_value
@@ -21,6 +20,7 @@ process:
   title: titleOfTextShort
   field_original_title: titleOfText
   field_abstract: abstract
+  field_abstract_files: linkToAbstract
   field_country: country
   field_court_name: courtName
   field_date_of_entry: dateOfEntry
@@ -47,6 +47,9 @@ process:
   field_decision_status: statusOfDecision
   field_subdivision: subdivision
   field_territorial_subdivisions: territorialSubdivision
+  field_region: region
+  field_official_publication: officialPublication
+  field_language_of_document: languageOfDocument
   field_files: files
 destination:
   plugin: 'entity:node'

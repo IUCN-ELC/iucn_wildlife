@@ -35,12 +35,42 @@ class ElisConsumerMigrationTest extends WebTestBase {
     $this->migrateExecutable = new MigrateExecutable($this->couMigration, $log, $options);
   }
 
-  public function testCouMigration1() {
+  public function testCouMigration() {
     $this->migrateExecutable->import();
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'court_decision');
     $nids = $query->execute();
     $this->assertEqual(count($nids), 3);
+
+    $query = \Drupal::database()
+      ->select('migrate_map_elis_consumer_court_decisions', 'map')
+      ->fields('map', ['destid1'])
+      ->condition('map.sourceid1', 'COU-143756');
+    $nid = reset($query->execute()->fetchCol());
+
+    $node = \Drupal\node\Entity\Node::load($nid);
+
+    // id => field_original_id
+    $this->assertEqual('COU-143756', $node->field_original_id->getValue()[0]['value']);
+    // isisMfn => field_isis_number
+    $this->assertEqual('000103', $node->field_isis_number->getValue()[0]['value']);
+    // dateOfEntry => field_date_of_entry
+    $this->assertEqual('2006-11-29', date('Y-m-d', $node->field_date_of_entry->getValue()[0]['value']));
+    // dateOfModification => field_date_of_modification
+    $this->assertEqual('2016-03-11', date('Y-m-d', $node->field_date_of_modification->getValue()[0]['value']));
+
+    // titleOfTextShort => title
+    $this->assertEqual('Montreal Protocol', $node->getTitle());
+    // titleOfText => field_original_title
+    $this->assertEqual('The M/V Saiga case', $node->field_original_title->getValue()[0]['value']);
+
+    // country => field_country
+    $countries = [];
+    foreach ($node->field_country->getValue() as $country) {
+      $countries[] = \Drupal\node\Entity\Node::load($country['target_id'])->getTitle();
+    }
+    $compare = ['Guinea', 'Saint Vincent and the Grenadines'];
+    $this->assertTrue(array_diff($countries, $compare) == array_diff($compare, $countries));
   }
 
 }

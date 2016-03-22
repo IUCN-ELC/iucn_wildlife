@@ -420,6 +420,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     /* Map taxonomy term reference fields */
     $row->setSourceProperty('subject', $this->map_taxonomy_terms_by_name($row->getSourceProperty('subject'), 'ecolex_subjects'));
     $row->setSourceProperty('typeOfText', $this->map_taxonomy_terms_by_name($row->getSourceProperty('typeOfText'), 'document_types'));
+    $row->setSourceProperty('languageOfDocument', $this->map_taxonomy_terms_by_name($row->getSourceProperty('languageOfDocument'), 'document_languages'));
     $row->setSourceProperty('justices', $this->map_taxonomy_terms_by_name($row->getSourceProperty('justices'), 'justices'));
     $row->setSourceProperty('courtJurisdiction', $this->map_taxonomy_terms_by_name($row->getSourceProperty('courtJurisdiction'), 'court_jurisdictions'));
     $row->setSourceProperty('instance', $this->map_taxonomy_terms_by_name($row->getSourceProperty('instance'), 'instances'));

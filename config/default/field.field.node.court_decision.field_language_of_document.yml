@@ -1,0 +1,27 @@
+uuid: 3c5fb073-1819-42c7-8612-182ac516082f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_language_of_document
+    - node.type.court_decision
+    - taxonomy.vocabulary.document_languages
+id: node.court_decision.field_language_of_document
+field_name: field_language_of_document
+entity_type: node
+bundle: court_decision
+label: 'Language of document'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      document_languages: document_languages
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

@@ -43,4 +43,5 @@ process:
   field_territorial_subdivisions: territorialSubdivision
   field_region: region
   field_official_publication: officialPublication
+  field_language_of_document: languageOfDocument
   field_files: files

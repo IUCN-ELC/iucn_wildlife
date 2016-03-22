@@ -1,0 +1,9 @@
+uuid: a710c649-35b1-4b79-9706-6e5a9f1e0e2c
+langcode: en
+status: true
+dependencies: {  }
+name: 'Document languages'
+vid: document_languages
+description: ''
+hierarchy: 0
+weight: 0

@@ -387,23 +387,29 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return $fids;
   }
 
+  public function getTitle(Row $row) {
+    if (empty($titleOfText = $row->getSourceProperty('titleOfText')) &&
+        empty($titleOfText = $row->getSourceProperty('titleOfTextSp')) &&
+        empty($titleOfText = $row->getSourceProperty('titleOfTextFr')) &&
+        empty($titleOfText = $row->getSourceProperty('titleOfTextOther'))) {
+      return NULL;
+    }
+    return $titleOfText;
+  }
+
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
+    $titleOfText = $this->getTitle($row);
+    if (empty($titleOfText)) {
+      $this->idMap->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
+      $message = 'Title cannot be NULL. (' . $row->getSourceProperty('id') . ')';
+      \Drupal::logger('elis_consumer_court_decisions')
+        ->warning($message);
+    }
+    else {
+      $row->setSourceProperty('titleOfText', $titleOfText);
+    }
     if (empty($row->getSourceProperty('titleOfTextShort'))) {
-      if (empty($titleOfText = $row->getSourceProperty('titleOfText'))) {
-        if (
-          empty($titleOfText = $row->getSourceProperty('titleOfTextSp')) &&
-          empty($titleOfText = $row->getSourceProperty('titleOfTextFr')) &&
-          empty($titleOfText = $row->getSourceProperty('titleOfTextOther'))
-        ) {
-          $this->idMap->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
-          $message = 'Title cannot be NULL. (' . $row->getSourceProperty('id') . ')';
-          \Drupal::logger('elis_consumer_court_decisions')
-            ->warning($message);
-          return FALSE;
-        }
-        $row->setSourceProperty('titleOfText', $titleOfText);
-      }
       $row->setSourceProperty('titleOfTextShort', substr($titleOfText, 0, 255));
     }
 

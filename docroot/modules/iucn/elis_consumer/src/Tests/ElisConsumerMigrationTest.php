@@ -6,6 +6,7 @@ use Drupal\simpletest\WebTestBase;
 use Drupal\migrate\Entity\Migration;
 use Drupal\migrate_tools\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Test migrations from ELIS.
@@ -23,6 +24,49 @@ class ElisConsumerMigrationTest extends WebTestBase {
 
   private $migrateExecutable;
 
+  public function createNeededCountries() {
+    $node = Node::create(array(
+      'type' => 'country',
+      'title' => 'Guinea',
+      'langcode' => 'en',
+      'uid' => '1',
+      'status' => 1,
+    ));
+    $node->save();
+    $node = Node::create(array(
+      'type' => 'country',
+      'title' => 'Saint Vincent and the Grenadines',
+      'langcode' => 'en',
+      'uid' => '1',
+      'status' => 1,
+    ));
+    $node->save();
+    $node = Node::create(array(
+      'type' => 'country',
+      'title' => 'New Zealand',
+      'langcode' => 'en',
+      'uid' => '1',
+      'status' => 1,
+    ));
+    $node->save();
+    $node = Node::create(array(
+      'type' => 'country',
+      'title' => 'Australia',
+      'langcode' => 'en',
+      'uid' => '1',
+      'status' => 1,
+    ));
+    $node->save();
+    $node = Node::create(array(
+      'type' => 'country',
+      'title' => 'Japan',
+      'langcode' => 'en',
+      'uid' => '1',
+      'status' => 1,
+    ));
+    $node->save();
+  }
+
   public function setUp() {
     parent::setUp();
     $this->couMigration = Migration::load('elis_consumer_court_decisions');
@@ -33,6 +77,8 @@ class ElisConsumerMigrationTest extends WebTestBase {
     $sourcePlugin->enable_testing();
     $options = [];
     $this->migrateExecutable = new MigrateExecutable($this->couMigration, $log, $options);
+
+    $this->createNeededCountries();
   }
 
   public function testCouMigration() {
@@ -48,16 +94,16 @@ class ElisConsumerMigrationTest extends WebTestBase {
       ->condition('map.sourceid1', 'COU-143756');
     $nid = reset($query->execute()->fetchCol());
 
-    $node = \Drupal\node\Entity\Node::load($nid);
+    $node = Node::load($nid);
 
     // id => field_original_id
     $this->assertEqual('COU-143756', $node->field_original_id->getValue()[0]['value']);
     // isisMfn => field_isis_number
     $this->assertEqual('000103', $node->field_isis_number->getValue()[0]['value']);
     // dateOfEntry => field_date_of_entry
-    $this->assertEqual('2006-11-29', date('Y-m-d', $node->field_date_of_entry->getValue()[0]['value']));
+    $this->assertEqual('2006-11-29', $node->field_date_of_entry->getValue()[0]['value']);
     // dateOfModification => field_date_of_modification
-    $this->assertEqual('2016-03-11', date('Y-m-d', $node->field_date_of_modification->getValue()[0]['value']));
+    $this->assertEqual('2016-03-11', $node->field_date_of_modification->getValue()[0]['value']);
 
     // titleOfTextShort => title
     $this->assertEqual('Montreal Protocol', $node->getTitle());
@@ -67,7 +113,7 @@ class ElisConsumerMigrationTest extends WebTestBase {
     // country => field_country
     $countries = [];
     foreach ($node->field_country->getValue() as $country) {
-      $countries[] = \Drupal\node\Entity\Node::load($country['target_id'])->getTitle();
+      $countries[] = Node::load($country['target_id'])->getTitle();
     }
     $compare = ['Guinea', 'Saint Vincent and the Grenadines'];
     $this->assertTrue(array_diff($countries, $compare) == array_diff($compare, $countries));

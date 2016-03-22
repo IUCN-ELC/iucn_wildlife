@@ -9,8 +9,8 @@ namespace Drupal\iucn_search\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\search_api\Entity\Index;
 use Drupal\iucn_search\Edw\Facets\Facet;
+use Drupal\search_api\Entity\Index;
 use Solarium\Client;
 use Solarium\Core\Client\Request;
 
@@ -18,7 +18,7 @@ class IucnSearchForm extends FormBase {
 
   protected $search_url_param = 'q';
 
-  protected $items_per_page = 10;
+  protected $items_per_page = 5;
 
   protected $items_viewmode = 'search_result';
 
@@ -153,36 +153,42 @@ class IucnSearchForm extends FormBase {
     $text = !empty($_GET[$this->search_url_param]) ? $_GET[$this->search_url_param] : '';
     $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
     $results = $this->getSeachResults($text, $current_page);
+
     pager_default_initialize($this->resultCount, $this->items_per_page);
-    $elements = [
-      '#theme' => 'iucn_search_results',
-      '#items' => $results,
-    ];
-    $form['#attributes']['class'][] = 'row';
-    $form['facets'] = [
-      'facets' => $this->getRenderedFacets(),
-      '#prefix' => '<div class="col-md-3 col-md-push-9 search-facets invisible">',
-      '#suffix' => '</div>',
-    ];
-    $form['results'] = [
-//      'search_text' => [
-//        '#type' => 'textfield',
-//        '#title' => 'Search text',
-//        '#default_value' => $text,
-//      ],
-      'nodes' => [
-        '#markup' => \Drupal::service('renderer')->render($elements)
-      ],
-      'pager' => [
-        '#type' => 'pager'
-      ],
-      '#prefix' => '<div class="col-md-6 col-md-pull-3 search-results">',
-      '#suffix' => '</div>',
-    ];
-    $form['submit'] = [
+
+    $form['row'] = array(
+      '#attributes' => array(
+        'class' => array('row')
+      ),
+      '#type' => 'container'
+    );
+
+    $form['row'][] = array(
+      '#attributes' => array(
+        'class' => array('col-md-3', 'col-md-push-9', 'search-facets', 'invisible')
+      ),
+      '#type' => 'container'
+    );
+
+    $form['row'][] = array(
+      '#attributes' => array(
+        'class' => array('col-md-6', 'col-md-pull-3', 'search-results')
+      ),
+      '#type' => 'container'
+    );
+
+    $form['row'][0]['facets'] = $this->getRenderedFacets();
+    $form['row'][1]['results'] = $results;
+
+    $form['pager'] = array(
+      '#type' => 'pager'
+    );
+
+    $form['submit'] = array(
       '#type' => 'submit',
-      '#value' => 'Search',
-    ];
+      '#value' => t('Search')
+    );
+
     return $form;
   }
 

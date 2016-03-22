@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.court_decision.field_isis_number
     - field.field.node.court_decision.field_justices
     - field.field.node.court_decision.field_number_of_pages
+    - field.field.node.court_decision.field_official_publication
     - field.field.node.court_decision.field_original_id
     - field.field.node.court_decision.field_original_title
     - field.field.node.court_decision.field_reference_number
@@ -162,6 +163,13 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_official_publication:
+    weight: 37
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
   field_original_id:
     weight: 0
     settings:

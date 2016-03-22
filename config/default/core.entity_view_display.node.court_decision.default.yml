@@ -27,6 +27,7 @@ dependencies:
     - field.field.node.court_decision.field_reference_to_legislation
     - field.field.node.court_decision.field_reference_to_national_legi
     - field.field.node.court_decision.field_reference_to_treaties
+    - field.field.node.court_decision.field_region
     - field.field.node.court_decision.field_related_website
     - field.field.node.court_decision.field_seat_of_court
     - field.field.node.court_decision.field_subdivision
@@ -211,6 +212,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+  field_region:
+    weight: 30
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_related_website:
     weight: 15
     label: above

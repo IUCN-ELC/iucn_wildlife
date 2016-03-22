@@ -40,4 +40,5 @@ process:
   field_decision_status: statusOfDecision
   field_subdivision: subdivision
   field_territorial_subdivisions: territorialSubdivision
+  field_region: region
   field_files: files

@@ -157,28 +157,39 @@ class IucnSearchForm extends FormBase {
     pager_default_initialize($this->resultCount, $this->items_per_page);
 
     $form['row'] = array(
-      '#attributes' => array(
-        'class' => array('row')
-      ),
+      '#attributes' => array('class' => array('row')),
       '#type' => 'container'
     );
 
     $form['row'][] = array(
-      '#attributes' => array(
-        'class' => array('col-md-3', 'col-md-push-9', 'search-facets', 'invisible')
-      ),
-      '#type' => 'container'
+      '#attributes' => array('class' => array('col-md-3', 'col-md-push-9', 'search-facets', 'invisible')),
+      '#type' => 'container',
+      array(
+        '#attributes' => array('class' => array('panel', 'panel-default')),
+        '#type' => 'container',
+        array(
+          '#attributes' => array('class' => array('panel-heading')),
+          '#type' => 'container',
+          array(
+            '#attributes' => array('class' => array('panel-title')),
+            '#tag' => 'h3',
+            '#type' => 'html_tag',
+            '#value' => t('Search filters')
+          )
+        ),
+        array(
+          '#attributes' => array('class' => array('panel-body')),
+          '#type' => 'container',
+          $this->getRenderedFacets()
+        )
+      )
     );
 
     $form['row'][] = array(
-      '#attributes' => array(
-        'class' => array('col-md-6', 'col-md-pull-3', 'search-results')
-      ),
-      '#type' => 'container'
+      '#attributes' => array('class' => array('col-md-6', 'col-md-pull-3', 'search-results')),
+      '#type' => 'container',
+      $results
     );
-
-    $form['row'][0]['facets'] = $this->getRenderedFacets();
-    $form['row'][1]['results'] = $results;
 
     $form['pager'] = array(
       '#type' => 'pager'

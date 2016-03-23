@@ -85,7 +85,7 @@ class SolrSearch {
       $fields = $document->getFields();
       $id = $fields[$solr_id_field];
       if (is_array($id)) {
-        $id = reset($nid);
+        $id = reset($id);
       }
       $ret[$id] = array('id' => $id);
     }
@@ -108,20 +108,21 @@ class SolrSearch {
   private function updateFacetValues($facetSet) {
     /** @var SolrFacet $facet */
     foreach ($this->getFacets() as $facet_id => $facet) {
-      $solrFacet = $facetSet->getFacet($facet_id);
-      $values = $solrFacet->getValues();
-      if ($request_parameters = $this->getParameter($facet_id)) {
-        // Preserve user selection - add filters request.
-        $sticky = explode(',', $_GET[$facet_id]);
-        if (!empty($sticky)) {
-          foreach ($sticky as $key) {
-            if (!array_key_exists($key, $values)) {
-              $values[$key] = 0;
+      if ($solrFacet = $facetSet->getFacet($facet_id)) {
+        $values = $solrFacet->getValues();
+        if ($request_parameters = $this->getParameter($facet_id)) {
+          // Preserve user selection - add filters request.
+          $sticky = explode(',', $_GET[$facet_id]);
+          if (!empty($sticky)) {
+            foreach ($sticky as $key) {
+              if (!array_key_exists($key, $values)) {
+                $values[$key] = 0;
+              }
             }
           }
         }
+        $facet->setValues($values);
       }
-      $facet->setValues($values);
     }
   }
 

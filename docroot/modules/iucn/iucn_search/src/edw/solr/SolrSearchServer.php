@@ -100,26 +100,40 @@ class SolrSearchServer {
     return $resultSet;
   }
 
-  public function getSearchFields() {
-    //@todo: Is this enough?
-    return $this->getIndex()->getFulltextFields();
-  }
-
-  public function getQueryFields() {
-    $field_names = $this->getSolrFieldsMappings();
-    $query_fields = array();
-    $search_fields = $this->getSearchFields();
-    // Index fields contain boost data.
+  /**
+   * Mapping between Drupal field and Solr field, only for full-text (searched) fields.
+   *
+   * array (
+   *   'field_abstract' => 'tm_5f_field_5f_abstract^1'
+   *   'title' => 'tm_5f_title^1'
+   * )
+   *
+   * @param bool $getBoost
+   *    Return boost info in solr field name
+   *
+   * @return array
+   *    Mapping for Drupal-Solr fields (with boost)
+   */
+  public function getSearchFieldsMappings($getBoost = TRUE) {
+    $ret = array();
+    $mappings = $this->getSolrFieldsMappings();
+    $ft_fields = $this->getIndex()->getFulltextFields();
     $index_fields = $this->getIndex()->getFields();
-    foreach ($search_fields as $search_field) {
+
+    foreach($ft_fields as $drupal_field_name) {
       /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
-      $document = $index_fields[$search_field];
-      $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
-      $query_fields[] = $field_names[$search_field] . $boost;
+      $document = $index_fields[$drupal_field_name];
+      $boost = $getBoost && $document->getBoost() ? '^' . $document->getBoost() : '';
+      $ret[$drupal_field_name] = $mappings[$drupal_field_name] . $boost;
     }
-    return $query_fields;
+    return $ret;
   }
 
+  /**
+   * Get the Solr field corresponding to nid Drupal field
+   *
+   * @return string
+   */
   public function getDocumentIdField() {
     $field_names = $this->getSolrFieldsMappings();
     return $field_names['nid'];

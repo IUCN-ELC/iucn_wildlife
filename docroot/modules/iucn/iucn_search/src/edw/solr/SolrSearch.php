@@ -53,7 +53,7 @@ class SolrSearch {
   public function search($page, $size) {
     $search_text = $this->getParameter('q');
     $query = $this->server->createSelectQuery();
-    $query_fields = $this->server->getQueryFields();
+    $query_fields = array_values($this->server->getSearchFieldsMappings());
     $solr_id_field = $this->server->getDocumentIdField();
 
     $query->setQuery($search_text);

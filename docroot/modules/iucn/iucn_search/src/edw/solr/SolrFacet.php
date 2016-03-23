@@ -60,6 +60,14 @@ class SolrFacet {
   public function alterSolrQuery(Query &$solarium_query, array $parameters) {
     if (!empty($parameters[$this->id])) {
       $operator = $this->getOperator();
+      // Check if default operator is over written in parameters.
+      if (!empty($parameters[$this->id . '_operator'])) {
+        $overwrite_operator = $parameters[$this->id . '_operator'];
+        // Make sure that operator is OR or AND.
+        if (in_array($overwrite_operator, array(self::$OPERATOR_AND, self::$OPERATOR_OR))) {
+          $operator = $overwrite_operator;
+        }
+      }
       $values = explode(',', $parameters[$this->id]);
       $filter = (count($values) > 1) ? '(' . implode(" {$operator} ", $values) . ')' : reset($values);
       $solarium_query->createFilterQuery(array(

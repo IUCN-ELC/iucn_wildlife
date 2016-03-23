@@ -15,7 +15,7 @@ use Drupal\search_api\Entity\Index;
  */
 class SolrSearchTest extends WebTestBase {
 
-  static public $modules = array('iucn_search', 'iucn_search_test_search');
+  static public $modules = array('iucn_search_test_search');
 
   protected $profile = 'minimal';
 
@@ -25,8 +25,8 @@ class SolrSearchTest extends WebTestBase {
     $default_index = Index::load('default_node_index');
     $default_index->set('server', 'iucn_search_test');
     $default_index->save();
-    // Clear existing items.
-    $default_index->getServerInstance()->removeIndex();
+//     Clear existing items.
+    $default_index->getServerInstance()->removeIndex($default_index);
   }
 
   private function createNodes() {

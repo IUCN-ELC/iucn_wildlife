@@ -110,7 +110,7 @@ processor_settings:
     plugin_id: language
     settings: {  }
 options:
-  index_directly: false
+  index_directly: true
   cron_limit: 50
 datasource_settings:
   'entity:node':

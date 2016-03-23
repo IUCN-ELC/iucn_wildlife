@@ -58,18 +58,15 @@ class SolrFacet {
    * @param array $parameters
    */
   public function alterSolrQuery(Query &$solarium_query, array $parameters) {
-    $operator = $this->getOperator();
     if (!empty($parameters[$this->id])) {
+      $operator = $this->getOperator();
       $values = explode(',', $parameters[$this->id]);
-      if (count($values) > 1) {
-        $val = '(' . implode(" {$operator} ", $values) . ')';
-      }
-      else {
-        $val = reset($values);
-      }
-      $solarium_query->createFilterQuery("facet:{$this->id}")
-        ->setTags(["facet:{$this->id}"])
-        ->setQuery("{$this->solr_field_id}:$val");
+      $filter = (count($values) > 1) ? '(' . implode(" {$operator} ", $values) . ')' : reset($values);
+      $solarium_query->createFilterQuery(array(
+          'key' => "facet:{$this->id}",
+          'tags' => array("facet:{$this->id}"),
+          'query' => "{$this->solr_field_id}:$filter"
+      ));
     }
   }
 

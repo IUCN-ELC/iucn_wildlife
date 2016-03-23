@@ -57,13 +57,7 @@ class IucnSearchForm extends FormBase {
       }
     }
     catch(\Exception $e) {
-      drupal_set_message(
-        strtr('An error occured: !message', array('!message' => $e->getMessage())),
-        'error'
-      );
-      if (function_exists('dpm')) {
-        dpm($e->__toString());
-      }
+      return $this->handleError($e);
     }
 
     $form['row'] = [
@@ -118,5 +112,33 @@ class IucnSearchForm extends FormBase {
       $return[$facet_id] = $facet->renderAsWidget($_GET);
     }
     return $return;
+  }
+
+  private function handleError(\Exception $e) {
+    $message = $e->getMessage();
+    if (empty($message)) {
+      $message = $this->t('Backend error');
+    }
+    $message = $this->t('Search was interrupted: @message', array('@message' => $message));
+    watchdog_exception('iucn_search', $e, $message);
+    drupal_set_message($message, 'error');
+    $ret['error-message'] = array(
+      '#type' => 'item',
+      '#markup' => $this->t('<p>An internal error has occurred during page load and the process was interrupted.</p><p>We apologise for the inconvenience</p>')
+    );
+    if (function_exists('dpm')) {
+      $ret['error-message-details'] = array(
+        '#title' => 'Technical details',
+        '#type' => 'item',
+        '#markup' => $e->getMessage()
+      );
+      $ret['error-message-stack'] = array(
+        '#type' => 'item',
+        '#prefix' => '<pre>',
+        '#markup' => trim($e->getTraceAsString()),
+        '#suffix' => '</pre>'
+      );
+    }
+    return $ret;
   }
 }

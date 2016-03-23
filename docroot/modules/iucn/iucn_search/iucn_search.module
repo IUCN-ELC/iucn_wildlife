@@ -13,3 +13,64 @@ function iucn_search_theme($existing, $type, $theme, $path) {
   ];
   return $return;
 }
+
+/**
+ * Implements hook_edw_search_solr_facet_info().
+ */
+function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\SolrSearchServer $server) {
+  $ret = array();
+  // @ToDo: Translate facet titles
+  $facets = [
+    'field_ecolex_subjects' => [
+      'title' => 'Subject',
+      'placeholder' => 'Add subjects...',
+      'bundle' => 'ecolex_subjects',
+    ],
+    'field_country' => [
+      'title' => 'Country',
+      'placeholder' => 'Add countries...',
+      'bundle' => 'country',
+    ],
+    'field_type_of_text' => [
+      'title' => 'Type of court',
+      'placeholder' => 'Add types...',
+      'bundle' => 'document_types',
+    ],
+    'field_territorial_subdivisions' => [
+      'title' => 'Sub-national/state level',
+      'placeholder' => 'Add territory...',
+      'bundle' => 'territorial_subdivisions',
+    ],
+//      'field_subdivision' => [
+//        'title' => 'Subdivision',
+//        'field' => 'field_subdivision',
+//        'bundle' => 'subdivisions',
+//      ],
+//      'field_justices' => [
+//        'title' => 'Justice',
+//        'field' => 'field_justices',
+//        'bundle' => 'justices',
+//      ],
+//      'field_instance' => [
+//        'title' => 'Instance',
+//        'field' => 'field_instance',
+//        'bundle' => 'instances',
+//      ],
+//      'field_decision_status' => [
+//        'title' => 'Decision status',
+//        'field' => 'field_decision_status',
+//        'bundle' => 'decision_status',
+//      ],
+//      'field_court_jurisdiction' => [
+//        'title' => 'Court jurisdiction',
+//        'field' => 'field_court_jurisdiction',
+//        'bundle' => 'court_jurisdictions',
+//      ],
+  ];
+  $mappings = $server->getSolrFieldsMappings();
+  foreach ($facets as $id => $config) {
+    $solr_field_name = $mappings[$id];
+    $ret[$id] = new \Drupal\iucn_search\edw\solr\SolrFacet($id, $config['bundle'], $solr_field_name, $config);
+  }
+  return $ret;
+}

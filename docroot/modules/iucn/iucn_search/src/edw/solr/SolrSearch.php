@@ -41,7 +41,8 @@ class SolrSearch {
   public function __construct(array $parameters, SolrSearchServer $config) {
     $this->parameters = $parameters;
     $this->server = $config;
-    $this->initFacets();
+    $this->facets = \Drupal::service('module_handler')->invokeAll('edw_search_solr_facet_info', array('server' => $this->server));
+    \Drupal::service('module_handler')->alter('edw_search_solr_facet_info', $this->facets, $this->server);
   }
 
   /**
@@ -103,65 +104,6 @@ class SolrSearch {
   public function getFacets() {
     return $this->facets;
   }
-
-  protected function initFacets() {
-    // @ToDo: Translate facet titles
-    $facets = [
-      'field_ecolex_subjects' => [
-        'title' => 'Subject',
-        'placeholder' => 'Add subjects...',
-        'bundle' => 'ecolex_subjects',
-      ],
-      'field_country' => [
-        'title' => 'Country',
-        'placeholder' => 'Add countries...',
-        'bundle' => 'country',
-      ],
-      'field_type_of_text' => [
-        'title' => 'Type of court',
-        'placeholder' => 'Add types...',
-        'bundle' => 'document_types',
-      ],
-      'field_territorial_subdivisions' => [
-        'title' => 'Sub-national/state level',
-        'placeholder' => 'Add territory...',
-        'bundle' => 'territorial_subdivisions',
-      ],
-//      'field_subdivision' => [
-//        'title' => 'Subdivision',
-//        'field' => 'field_subdivision',
-//        'bundle' => 'subdivisions',
-//      ],
-//      'field_justices' => [
-//        'title' => 'Justice',
-//        'field' => 'field_justices',
-//        'bundle' => 'justices',
-//      ],
-//      'field_instance' => [
-//        'title' => 'Instance',
-//        'field' => 'field_instance',
-//        'bundle' => 'instances',
-//      ],
-//      'field_decision_status' => [
-//        'title' => 'Decision status',
-//        'field' => 'field_decision_status',
-//        'bundle' => 'decision_status',
-//      ],
-//      'field_court_jurisdiction' => [
-//        'title' => 'Court jurisdiction',
-//        'field' => 'field_court_jurisdiction',
-//        'bundle' => 'court_jurisdictions',
-//      ],
-    ];
-
-    $field_names = $this->server->getSolrFieldsMappings();
-    foreach ($facets as $id => $config) {
-      $solr_field_name = $field_names[$id];
-      $config['id'] = $id;
-      $this->facets[$id] = new SolrFacet($id, $config['bundle'], $solr_field_name, $config);
-    }
-  }
-
 
   private function updateFacetValues($facetSet) {
     /** @var SolrFacet $facet */

@@ -34,8 +34,14 @@
     event.stopPropagation();
   });
 
-  $('#iucn-search-form').on('reset', function () {
-    $(this).submit();
+  $('#iucn-search-form').on('reset', function (event) {
+    event.preventDefault();
+
+    var $this = $(this);
+
+    $('select', $this).val('');
+    $this.get(0).reset();
+    $this.submit();
   });
 
   $('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({

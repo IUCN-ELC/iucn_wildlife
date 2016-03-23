@@ -15,6 +15,7 @@ class SolrSearchServer {
   protected $server = NULL;
   protected $server_config = array();
   protected $solr_field_mappings = array();
+  protected $search_field_mappings = array();
 
 
   public function __construct($index_id) {
@@ -29,6 +30,19 @@ class SolrSearchServer {
     /** @var SearchApiSolrBackend $backend */
     $backend = $server->getBackend();
     $this->solr_field_mappings = $backend->getFieldNames($this->getIndex());
+
+
+
+    $mappings = $this->getSolrFieldsMappings();
+    $ft_fields = $this->getIndex()->getFulltextFields();
+    $index_fields = $this->getIndex()->getFields();
+
+    foreach($ft_fields as $drupal_field_name) {
+      /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
+      $document = $index_fields[$drupal_field_name];
+      $boost = $document->getBoost() ? '^' . $document->getBoost() : '';
+      $this->search_field_mappings[$drupal_field_name] = $mappings[$drupal_field_name] . $boost;
+    }
   }
 
   /** @return \Drupal\search_api\Entity\Index search_index */
@@ -115,18 +129,7 @@ class SolrSearchServer {
    *    Mapping for Drupal-Solr fields (with boost)
    */
   public function getSearchFieldsMappings($getBoost = TRUE) {
-    $ret = array();
-    $mappings = $this->getSolrFieldsMappings();
-    $ft_fields = $this->getIndex()->getFulltextFields();
-    $index_fields = $this->getIndex()->getFields();
-
-    foreach($ft_fields as $drupal_field_name) {
-      /** @var \Solarium\QueryType\Update\Query\Document\Document $document */
-      $document = $index_fields[$drupal_field_name];
-      $boost = $getBoost && $document->getBoost() ? '^' . $document->getBoost() : '';
-      $ret[$drupal_field_name] = $mappings[$drupal_field_name] . $boost;
-    }
-    return $ret;
+    return $this->search_field_mappings;
   }
 
   /**

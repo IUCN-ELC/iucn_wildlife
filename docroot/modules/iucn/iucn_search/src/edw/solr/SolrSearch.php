@@ -38,11 +38,11 @@ class SolrSearch {
   protected $server = NULL;
   protected $facets = array();
 
-  public function __construct(array $parameters, SolrSearchServer $config) {
+  public function __construct(array $parameters, SolrSearchServer $server) {
     $this->parameters = $parameters;
-    $this->server = $config;
-    $this->facets = \Drupal::service('module_handler')->invokeAll('edw_search_solr_facet_info', array('server' => $this->server));
-    \Drupal::service('module_handler')->alter('edw_search_solr_facet_info', $this->facets, $this->server);
+    $this->server = $server;
+    $this->facets = \Drupal::service('module_handler')->invokeAll('edw_search_solr_facet_info', array('server' => $server));
+    \Drupal::service('module_handler')->alter('edw_search_solr_facet_info', $this->facets, $server);
   }
 
   /**

@@ -130,7 +130,7 @@ processor_settings:
       weights:
         preprocess_index: '0'
 options:
-  index_directly: false
+  index_directly: true
   cron_limit: 50
 datasource_settings:
   'entity:node':

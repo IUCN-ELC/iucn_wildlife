@@ -1,0 +1,12 @@
+- 'name': 'Agriculture'
+  'vid': 'ecolex_subjects'
+  'tid': 1
+
+- 'name': 'Air & atmosphere'
+  'vid': 'ecolex_subjects'
+  'tid': 2
+
+- 'name': 'Food'
+  'vid': 'ecolex_subjects'
+  'tid': 3
+

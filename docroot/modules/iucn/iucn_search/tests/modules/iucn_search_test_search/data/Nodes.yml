@@ -1,0 +1,27 @@
+- 'title': 'Decision 1'
+  'nid': 1
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+  'field_abstract': 'ABCD'
+  'field_ecolex_subjects': [1, 2]
+#  'field_country': 'Romania'
+#  'field_type_of_text': 'Ceva'
+#  'field_territorial_subdivisions': 'Altceva'
+
+- 'title': 'Decision 2'
+  'nid': 2
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+  'field_ecolex_subjects': 3
+
+- 'title': 'Decision 3'
+  'nid': 3
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+  'field_ecolex_subjects': [1,3]

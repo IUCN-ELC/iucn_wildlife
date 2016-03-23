@@ -49,78 +49,77 @@ class IucnSearchForm extends FormBase {
     try {
       $this->index = Index::load('default_node_index');
       $server = $this->index->getServerInstance();
-      $this->solr_configuration = $server->getBackendConfig() + array('key' => $server->id());
+      $this->solr_configuration = $server->getBackendConfig() + ['key' => $server->id()];
       $this->solr = new Client();
       $this->solr->createEndpoint($this->solr_configuration, TRUE);
-    }
-    catch (\Exception $e) {
+    } catch (\Exception $e) {
       watchdog_exception('iucn_search', $e);
-      drupal_set_message(t('An error occurred.'), 'error');
+      drupal_set_message($this->t('An error occurred.'), 'error');
     }
 
-    // @ToDo: Translate facet titles
     $facets = [
       'Subject' => [
-        'title' => 'Subject',
-        'placeholder' => 'Add subjects...',
+        'title' => $this->t('Subject'),
+        'placeholder' => $this->t('Add subjects&hellip;'),
         'field' => 'field_ecolex_subjects',
         'entity_type' => 'term',
         'bundle' => 'ecolex_subjects',
       ],
       'Country' => [
-        'title' => 'Country',
-        'placeholder' => 'Add countries...',
+        'title' => $this->t('Country'),
+        'placeholder' => $this->t('Add countries&hellip;'),
         'field' => 'field_country',
         'entity_type' => 'node',
         'bundle' => 'country',
       ],
       'Type of court' => [
-        'title' => 'Type of court',
-        'placeholder' => 'Add types...',
+        'title' => $this->t('Type of court'),
+        'placeholder' => $this->t('Add types&hellip;'),
         'field' => 'field_type_of_text',
         'entity_type' => 'term',
         'bundle' => 'document_types',
       ],
       'Territorial subdivision' => [
-        'title' => 'Sub-national/state level',
-        'placeholder' => 'Add territory...',
+        'title' => $this->t('Sub-national/state level'),
+        'placeholder' => $this->t('Add territory&hellip;'),
         'field' => 'field_territorial_subdivisions',
         'entity_type' => 'term',
         'bundle' => 'territorial_subdivisions',
       ],
-//      'Subdivision' => [
-//        'title' => 'Subdivision',
-//        'field' => 'field_subdivision',
-//        'entity_type' => 'term',
-//        'bundle' => 'subdivisions',
-//      ],
-//      'Justice' => [
-//        'title' => 'Justice',
-//        'field' => 'field_justices',
-//        'entity_type' => 'term',
-//        'bundle' => 'justices',
-//      ],
-//      'Instance' => [
-//        'title' => 'Instance',
-//        'field' => 'field_instance',
-//        'entity_type' => 'term',
-//        'bundle' => 'instances',
-//      ],
-//      'Decision status' => [
-//        'title' => 'Decision status',
-//        'field' => 'field_decision_status',
-//        'entity_type' => 'term',
-//        'bundle' => 'decision_status',
-//      ],
-//      'Court jurisdiction' => [
-//        'title' => 'Court jurisdiction',
-//        'field' => 'field_court_jurisdiction',
-//        'entity_type' => 'term',
-//        'bundle' => 'court_jurisdictions',
-//      ],
+     /*'Subdivision' => [
+       'title' => $this->t('Subdivision'),
+       'field' => 'field_subdivision',
+       'entity_type' => 'term',
+       'bundle' => 'subdivisions',
+     ],
+     'Justice' => [
+       'title' => $this->t('Justice'),
+       'field' => 'field_justices',
+       'entity_type' => 'term',
+       'bundle' => 'justices',
+     ],
+     'Instance' => [
+       'title' => $this->t('Instance'),
+       'field' => 'field_instance',
+       'entity_type' => 'term',
+       'bundle' => 'instances',
+     ],
+     'Decision status' => [
+       'title' => $this->t('Decision status'),
+       'field' => 'field_decision_status',
+       'entity_type' => 'term',
+       'bundle' => 'decision_status',
+     ],
+     'Court jurisdiction' => [
+       'title' => $this->t('Court jurisdiction'),
+       'field' => 'field_court_jurisdiction',
+       'entity_type' => 'term',
+       'bundle' => 'court_jurisdictions',
+     ],*/
     ];
+
     foreach ($facets as $facet) {
-      $placeholder = !empty($facet['placeholder']) ? $facet['placeholder'] : 'Add...';
+      $placeholder = !empty($facet['placeholder']) ? $facet['placeholder'] : $this->t('Add&hellip;');
       $operator = !empty($_GET[$facet['field'] . '_operator']) ? $_GET[$facet['field'] . '_operator'] : 'OR';
       $limit = !empty($facet['limit']) ? $facet['limit'] : '-1';
       $min_count = !empty($facet['min_count']) ? $facet['min_count'] : '1';
@@ -156,35 +155,35 @@ class IucnSearchForm extends FormBase {
 
     pager_default_initialize($this->resultCount, $this->items_per_page);
 
-    $form['row'] = array(
-      '#attributes' => array('class' => array('row')),
+    $form['row'] = [
+      '#attributes' => ['class' => ['row']],
       '#type' => 'container'
-    );
+    ];
 
-    $form['row'][] = array(
-      '#attributes' => array('class' => array('col-md-3', 'col-md-push-9', 'search-facets', 'invisible')),
+    $form['row'][] = [
+      '#attributes' => ['class' => ['col-md-3', 'col-md-push-9', 'search-facets', 'invisible']],
       '#type' => 'container',
-      array(
-        '#title' => t('Search filters'),
+      [
+        '#title' => $this->t('Search filters'),
         '#type' => 'fieldset',
         $this->getRenderedFacets()
-      )
-    );
+      ]
+    ];
 
-    $form['row'][] = array(
-      '#attributes' => array('class' => array('col-md-6', 'col-md-pull-3', 'search-results')),
+    $form['row'][] = [
+      '#attributes' => ['class' => ['col-md-6', 'col-md-pull-3', 'search-results']],
       '#type' => 'container',
       $results
-    );
+    ];
 
-    $form['pager'] = array(
+    $form['pager'] = [
       '#type' => 'pager'
-    );
+    ];
 
-    $form['submit'] = array(
+    $form['submit'] = [
       '#type' => 'submit',
-      '#value' => t('Search')
-    );
+      '#value' => $this->t('Search')
+    ];
 
     return $form;
   }
@@ -315,7 +314,7 @@ class IucnSearchForm extends FormBase {
     try {
       $solarium_query = $this->solr->createSelect();
       $solarium_query->setQuery($search_text);
-      $solarium_query->setFields(array('*', 'score'));
+      $solarium_query->setFields(['*', 'score']);
 
       $field_names = $this->index->getServerInstance()->getBackend()->getFieldNames($this->index);
       $search_fields = $this->index->getFulltextFields();
@@ -356,7 +355,7 @@ class IucnSearchForm extends FormBase {
     }
     catch (\Exception $e) {
       watchdog_exception('iucn_search', $e);
-      drupal_set_message(t('An error occurred.'), 'error');
+      drupal_set_message($this->t('An error occurred.'), 'error');
     }
     return $nodes;
   }

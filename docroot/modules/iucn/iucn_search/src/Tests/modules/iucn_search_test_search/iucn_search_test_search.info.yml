@@ -1,0 +1,11 @@
+type: module
+name: 'IUCN Search Test search'
+description: 'Support module for Iucn Search - search tests.'
+package: 'iucn_search'
+dependencies:
+  - iucn_search
+  - search_api_solr
+  - search_api
+
+# core: 8.x
+hidden: true

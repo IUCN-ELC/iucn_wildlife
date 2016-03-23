@@ -1,0 +1,36 @@
+id: iucn_search_test
+name: 'SOLR Server'
+description: ''
+backend: search_api_solr
+backend_config:
+  site_hash: true
+  scheme: http
+  host: localhost
+  port: '8983'
+  path: /solr/iucn_test
+  http:
+      http_user: ''
+      http_pass: ''
+  advanced:
+      excerpt: 1
+      retrieve_data: 1
+      highlight_data: 1
+      skip_schema_check: 1
+      solr_version: ''
+      http_method: AUTO
+  http_user: ''
+  http_pass: ''
+  excerpt: true
+  retrieve_data: true
+  highlight_data: true
+  skip_schema_check: true
+  solr_version: ''
+  http_method: AUTO
+  autocorrect_spell: true
+  autocorrect_suggest_words: true
+status: true
+langcode: en
+dependencies:
+  module:
+    - iucn_search
+

@@ -1,5 +1,30 @@
 (function ($) {
+  $.fn.select2.amd.define('select2/data/custom', [
+    'select2/data/array',
+    'select2/selection/placeholder',
+    'select2/utils'
+  ], function (ArrayData, Placeholder, Utils) {
+    var CustomData = function ($element, options) {
+      CustomData.__super__.constructor.call(this, $element, options);
+    };
+
+    Utils.Extend(CustomData, ArrayData);
+
+    Placeholder.prototype.update = function (decorated, data) {
+      var $placeholder = this.createPlaceholder(this.placeholder);
+
+      this.$selection.find('.select2-selection__rendered').append($placeholder);
+
+      return decorated.call(this, data);
+    };
+
+    return CustomData;
+  });
+
+  var CustomData = $.fn.select2.amd.require(('select2/data/custom'));
+
   $('select').select2({
+    dataAdapter: CustomData,
     placeholder: function () {
       $(this).data('placeholder');
     }

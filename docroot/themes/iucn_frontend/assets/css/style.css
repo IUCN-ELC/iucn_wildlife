@@ -75,11 +75,17 @@ fieldset[disabled] #search-form .btn-primary.focus {
   background-color: #fff;
   color: #0077c0;
 }
-.panel {
+.panel-default > .panel-heading {
+  background-color: transparent;
+}
+.panel-tour {
   border-width: 2px;
 }
 .panel-tour .tour-title {
   margin-top: 22px;
+}
+.panel-resources {
+  border-width: 2px;
 }
 .panel-resources .list-resources {
   margin-bottom: 0;

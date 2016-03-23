@@ -32,9 +32,9 @@ class SolrSearchServerTest extends WebTestBase {
     /** @see SolrSearchServer::getSolrClient() */
     $this->assertNotNull($server->getSolrClient());
 
-    /** @see SolrSearchServer::getFieldNames() */
-    $this->assertNotNull($server->getFieldNames());
-    $this->assertTrue(count($server->getFieldNames()) > 0);
+    /** @see getSolrFieldsMappings::getSolrFieldMappings() */
+    $this->assertNotNull($server->getSolrFieldsMappings());
+    $this->assertTrue(count($server->getSolrFieldsMappings()) > 0);
 
     /** @see SolrSearchServer::createSelectQuery() */
     $this->assertNotNull($server->createSelectQuery());

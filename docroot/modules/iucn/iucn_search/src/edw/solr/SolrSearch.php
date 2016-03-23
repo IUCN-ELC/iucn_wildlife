@@ -154,7 +154,7 @@ class SolrSearch {
 //      ],
     ];
 
-    $field_names = $this->server->getFieldNames();
+    $field_names = $this->server->getSolrFieldsMappings();
     foreach ($facets as $id => $config) {
       $solr_field_name = $field_names[$id];
       $config['id'] = $id;

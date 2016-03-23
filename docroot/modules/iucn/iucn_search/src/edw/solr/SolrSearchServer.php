@@ -14,7 +14,7 @@ class SolrSearchServer {
   protected $solrClient = NULL;
   protected $server = NULL;
   protected $server_config = array();
-  protected $field_names = array();
+  protected $solr_field_mappings = array();
 
 
   public function __construct($index_id) {
@@ -28,7 +28,7 @@ class SolrSearchServer {
 
     /** @var SearchApiSolrBackend $backend */
     $backend = $server->getBackend();
-    $this->field_names = $backend->getFieldNames($this->getIndex());
+    $this->solr_field_mappings = $backend->getFieldNames($this->getIndex());
   }
 
   /** @return \Drupal\search_api\Entity\Index search_index */
@@ -50,8 +50,23 @@ class SolrSearchServer {
     return $this->solrClient;
   }
 
-  public function getFieldNames() {
-    return $this->field_names;
+  /**
+   * Get the mapping between Drupal field and corresponding Solr schema field.
+   *
+   * <code>
+   * array(
+   *    'search_api_id' => 'item_id',
+   *    'search_api_relevance' => 'score',
+   *    'type' => 'sm_5f_type',
+   *    'field_country' => 'im_5f_field_5f_country',
+   * )
+   * </code>
+   *
+   * @return array
+   *   Array keyed by field name
+   */
+  public function getSolrFieldsMappings() {
+    return $this->solr_field_mappings;
   }
 
   public function createSelectQuery() {
@@ -91,7 +106,7 @@ class SolrSearchServer {
   }
 
   public function getQueryFields() {
-    $field_names = $this->getFieldNames();
+    $field_names = $this->getSolrFieldsMappings();
     $query_fields = array();
     $search_fields = $this->getSearchFields();
     // Index fields contain boost data.
@@ -106,7 +121,7 @@ class SolrSearchServer {
   }
 
   public function getDocumentIdField() {
-    $field_names = $this->getFieldNames();
+    $field_names = $this->getSolrFieldsMappings();
     return $field_names['nid'];
   }
 }

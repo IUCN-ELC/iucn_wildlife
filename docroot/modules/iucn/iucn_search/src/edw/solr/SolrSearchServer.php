@@ -31,8 +31,6 @@ class SolrSearchServer {
     $backend = $server->getBackend();
     $this->solr_field_mappings = $backend->getFieldNames($this->getIndex());
 
-
-
     $mappings = $this->getSolrFieldsMappings();
     $ft_fields = $this->getIndex()->getFulltextFields();
     $index_fields = $this->getIndex()->getFields();
@@ -50,12 +48,18 @@ class SolrSearchServer {
     return $this->index;
   }
 
-  /** @return array */
+  /**
+   * Retrieve the Solr server configuration.
+   *
+   * @return array
+   */
   public function getServerConfig() {
     return $this->server_config;
   }
 
   /**
+   * Return the Solr client that executes the actual request (i.e. Solarium).
+   *
    * @return \Solarium\Client
    * @throws \Exception
    *    When search server cannot be instantiated.
@@ -83,15 +87,25 @@ class SolrSearchServer {
     return $this->solr_field_mappings;
   }
 
-  public function createSelectQuery() {
-    $client = $this->getSolrClient();
-    return $client->createSelect();
+  /**
+   * Create a new Solr query object.
+   *
+   * @param array $options
+   *    Options passed to the Query interface
+   *
+   * @return \Solarium\QueryType\Select\Query\Query
+   */
+  public function createSelectQuery($options = array()) {
+    return $this->getSolrClient()->createSelect($options);
   }
 
   /**
+   * Do a search on the Solr server.
+   * @param \Solarium\QueryType\Select\Query\Query $query
+   *
    * @return \Solarium\QueryType\Select\Result\Result
    */
-  public function executeSearch($query) {
+  public function executeSearch(\Solarium\QueryType\Select\Query\Query $query) {
     // Use the 'postbigrequest' plugin if no specific http method is
     // configured. The plugin needs to be loaded before the request is
     // created.
@@ -122,18 +136,15 @@ class SolrSearchServer {
    *   'title' => 'tm_5f_title^1'
    * )
    *
-   * @param bool $getBoost
-   *    Return boost info in solr field name
-   *
    * @return array
    *    Mapping for Drupal-Solr fields (with boost)
    */
-  public function getSearchFieldsMappings($getBoost = TRUE) {
+  public function getSearchFieldsMappings() {
     return $this->search_field_mappings;
   }
 
   /**
-   * Get the Solr field corresponding to nid Drupal field
+   * Get the Solr field corresponding to nid Drupal field.
    *
    * @return string
    */

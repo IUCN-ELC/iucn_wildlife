@@ -30,6 +30,10 @@
     }
   });
 
+  $('.select2-selection').on('click', '.select2-selection__choice__remove', function (event) {
+    event.stopPropagation();
+  });
+
   $('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({
     labelWidth: 9,
     offText: Drupal.t('or'),

@@ -34,16 +34,23 @@
     event.stopPropagation();
   });
 
-  $('#iucn-search-form').on('reset', function (event) {
-    event.preventDefault();
+  $('#iucn-search-form').on({
+    reset: function (event) {
+      event.preventDefault();
 
-    var $this = $(this);
+      var $this = $(this);
 
-    $('.form-select', $this).val('').trigger('change.select2');
-    $('.form-checkbox', $this).bootstrapSwitch('state', false, true);
+      $('.form-select', $this).val('').trigger('change.select2');
+      $('.form-checkbox', $this).bootstrapSwitch('state', false, true);
 
-    $this.get(0).reset();
-    $this.submit();
+      $this.get(0).reset();
+      $this.submit();
+    },
+    submit: function () {
+      var offset = $(window).scrollTop();
+
+      window.sessionStorage.setItem('offset', offset);
+    }
   });
 
   $('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({
@@ -55,10 +62,18 @@
 
   $('.search-facets').removeClass('invisible');
 
-  function submitSearchForm() {
-    $('#iucn-search-form').submit();
+  var offset = window.sessionStorage.getItem('offset');
+
+  if (offset) {
+    window.sessionStorage.removeItem('offset');
+
+    $(window).scrollTop(offset);
   }
 
-  $('select', '#iucn-search-form').change(submitSearchForm);
-  $('input[type="checkbox"]', '#iucn-search-form').on('switchChange.bootstrapSwitch', submitSearchForm);
+  var submit = function () {
+    $('#iucn-search-form').submit();
+  };
+
+  $('select', '#iucn-search-form').change(submit);
+  $('input[type="checkbox"]', '#iucn-search-form').on('switchChange.bootstrapSwitch', submit);
 })(jQuery);

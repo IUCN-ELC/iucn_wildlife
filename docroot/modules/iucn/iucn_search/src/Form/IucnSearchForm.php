@@ -165,23 +165,9 @@ class IucnSearchForm extends FormBase {
       '#attributes' => array('class' => array('col-md-3', 'col-md-push-9', 'search-facets', 'invisible')),
       '#type' => 'container',
       array(
-        '#attributes' => array('class' => array('panel', 'panel-default')),
-        '#type' => 'container',
-        array(
-          '#attributes' => array('class' => array('panel-heading')),
-          '#type' => 'container',
-          array(
-            '#attributes' => array('class' => array('panel-title')),
-            '#tag' => 'h3',
-            '#type' => 'html_tag',
-            '#value' => t('Search filters')
-          )
-        ),
-        array(
-          '#attributes' => array('class' => array('panel-body')),
-          '#type' => 'container',
-          $this->getRenderedFacets()
-        )
+        '#title' => t('Search filters'),
+        '#type' => 'fieldset',
+        $this->getRenderedFacets()
       )
     );
 

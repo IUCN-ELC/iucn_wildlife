@@ -41,8 +41,10 @@ module:
   quickedit: 0
   rdf: 0
   search_api: 0
+  search_api_attachments: 0
   search_api_solr: 0
   shortcut: 0
+  simpletest: 0
   system: 0
   taxonomy: 0
   text: 0

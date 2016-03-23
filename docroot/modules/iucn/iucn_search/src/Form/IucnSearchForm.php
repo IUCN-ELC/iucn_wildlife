@@ -19,7 +19,6 @@ class IucnSearchForm extends FormBase {
   protected $items_per_page = 10;
   protected $items_viewmode = 'search_result';
   protected $resultCount = 0;
-
   protected $search = NULL;
 
   public function __construct() {
@@ -29,7 +28,7 @@ class IucnSearchForm extends FormBase {
     }
     catch (\Exception $e) {
       watchdog_exception('iucn_search', $e);
-      drupal_set_message(t('An error occurred.'), 'error');
+      drupal_set_message($this->t('An error occurred.'), 'error');
     }
   }
 
@@ -67,34 +66,30 @@ class IucnSearchForm extends FormBase {
       }
     }
 
-    $elements = [
-      '#theme' => 'iucn_search_results',
-      '#items' => $results,
+    $form['row'] = [
+      '#attributes' => ['class' => ['row']],
+      '#type' => 'container'
     ];
-    $form['#attributes']['class'][] = 'row';
-    $form['facets'] = [
-      'facets' => $this->getRenderedFacets(),
-      '#prefix' => '<div class="col-md-3 col-md-push-9 search-facets invisible">',
-      '#suffix' => '</div>',
+    $form['row'][] = [
+      '#attributes' => ['class' => ['col-md-3', 'col-md-push-9', 'search-facets', 'invisible']],
+      '#type' => 'container',
+      [
+        '#title' => $this->t('Search filters'),
+        '#type' => 'fieldset',
+        $this->getRenderedFacets()
+      ]
     ];
-    $form['results'] = [
-//      'search_text' => [
-//        '#type' => 'textfield',
-//        '#title' => 'Search text',
-//        '#default_value' => $text,
-//      ],
-      'nodes' => [
-        '#markup' => \Drupal::service('renderer')->render($elements)
-      ],
-      'pager' => [
-        '#type' => 'pager'
-      ],
-      '#prefix' => '<div class="col-md-6 col-md-pull-3 search-results">',
-      '#suffix' => '</div>',
+    $form['row'][] = [
+      '#attributes' => ['class' => ['col-md-6', 'col-md-pull-3', 'search-results']],
+      '#type' => 'container',
+      $results
+    ];
+    $form['pager'] = [
+      '#type' => 'pager'
     ];
     $form['submit'] = [
       '#type' => 'submit',
-      '#value' => 'Search',
+      '#value' => $this->t('Search')
     ];
     return $form;
   }

@@ -75,6 +75,7 @@ class SolrSearch {
       $facet->alterSolrQuery($query, $this->parameters);
       $facet->createSolrFacet($facetSet);
     }
+    \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
     $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());
     $documents = $resultSet->getDocuments();
@@ -90,6 +91,7 @@ class SolrSearch {
       }
       $ret[$id] = array('id' => $id);
     }
+    \Drupal::service('module_handler')->alter('edw_search_solr_results', $ret);
     return new SearchResult($ret, $countTotal);
   }
 

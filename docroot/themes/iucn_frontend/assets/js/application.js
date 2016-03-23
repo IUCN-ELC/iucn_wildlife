@@ -34,6 +34,10 @@
     event.stopPropagation();
   });
 
+  $('#iucn-search-form').on('reset', function () {
+    $(this).submit();
+  });
+
   $('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({
     labelWidth: 9,
     offText: Drupal.t('or'),

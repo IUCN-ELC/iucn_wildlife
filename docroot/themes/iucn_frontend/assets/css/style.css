@@ -116,33 +116,33 @@ fieldset[disabled] #search-form .btn-primary.focus {
   font-size: 14px;
   padding-top: 3px;
 }
-#iucn-search-form .form-submit {
-  display: none;
-}
-#iucn-search-form .search-facets {
+.iucn-search-form {
   font-size: 14px;
 }
-#iucn-search-form .search-facets .checkbox {
+.iucn-search-form .form-submit {
+  display: none;
+}
+.iucn-search-form .search-facets .checkbox {
   float: right;
   margin-top: 0;
 }
-#iucn-search-form .facet-title {
+.iucn-search-form .facet-title {
   float: left;
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 4px;
   margin-top: 4px;
 }
-#iucn-search-form .select2 .select2-selection {
+.iucn-search-form .select2 .select2-selection {
   border: none;
 }
-#iucn-search-form .select2 .select2-selection__rendered {
+.iucn-search-form .select2 .select2-selection__rendered {
   padding: 0;
 }
-#iucn-search-form .select2 .select2-selection__choice {
+.iucn-search-form .select2 .select2-selection__choice {
   clear: left;
 }
-#iucn-search-form .select-wrapper:after {
+.iucn-search-form .select-wrapper:after {
   content: none;
 }
 .search-result {
@@ -158,9 +158,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
   .court-decision.full .field--label {
     text-align: right;
   }
-}
-.court-decision.search-result {
-  font-size: 14px;
 }
 .court-decision.search-result h2 {
   font-size: 18px;

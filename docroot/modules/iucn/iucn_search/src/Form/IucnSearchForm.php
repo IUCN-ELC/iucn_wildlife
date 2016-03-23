@@ -77,6 +77,15 @@ class IucnSearchForm extends FormBase {
         '#title' => $this->t('Search filters'),
         '#type' => 'fieldset',
         $this->getRenderedFacets()
+      ],
+      [
+        '#attributes' => [
+          'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block'],
+          'type' => 'reset'
+        ],
+        '#tag' => 'button',
+        '#type' => 'html_tag',
+        '#value' => $this->t('Reset all filters')
       ]
     ];
     $form['row'][] = [

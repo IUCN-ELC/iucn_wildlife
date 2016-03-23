@@ -74,7 +74,7 @@ class SolrSearch {
     foreach ($this->facets as $facet) {
       $facet->render(SolrFacet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters);
     }
-    $resultSet = $this->server->executeSearch($query);
+    $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());
     $documents = $resultSet->getDocuments();
     $countTotal = $resultSet->getNumFound();

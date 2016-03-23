@@ -105,7 +105,7 @@ class SolrSearchServer {
    *
    * @return \Solarium\QueryType\Select\Result\Result
    */
-  public function executeSearch(\Solarium\QueryType\Select\Query\Query $query) {
+  public function executeQuery(\Solarium\QueryType\Select\Query\Query $query) {
     // Use the 'postbigrequest' plugin if no specific http method is
     // configured. The plugin needs to be loaded before the request is
     // created.

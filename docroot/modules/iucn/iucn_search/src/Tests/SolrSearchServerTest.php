@@ -74,7 +74,14 @@ class SolrSearchServerTest extends WebTestBase {
     $this->assertEqual('im_5f_nid', $server->getDocumentIdField());
   }
 
-  public function disabled_testExecuteSearch() {
+  /**
+   * Note: Cmplex search queries are covered by SolrSearchTest.
+   */
+  public function testExecuteSearch() {
+    $server = new SolrSearchServer('default_node_index');
+    $query = $server->createSelectQuery();
 
+    $result = $server->executeQuery($query);
+    $this->assertEqual(200, $result->getResponse()->getStatusCode());
   }
 }

@@ -90,7 +90,7 @@ class SolrFacet {
     // @todo: $field->setMissing($this->getMissing());
   }
 
-  public function renderAsWidget() {
+  public function renderAsWidget($params) {
     $ret = array();
     $options = array();
     foreach ($this->values as $id => $count) {
@@ -114,6 +114,8 @@ class SolrFacet {
     }
     asort($options);
     $widget = $this->getWidget();
+    $request_param_name = $this->id . '_operator';
+    $operator_default_value = !empty($params[$request_param_name]) && strtoupper($params[$request_param_name]) === self::$OPERATOR_AND;
     switch ($widget) {
       case 'checkboxes':
         $ret = array(
@@ -134,10 +136,10 @@ class SolrFacet {
           'title' => [
             '#markup' => "<h4 class='facet-title'>{$this->getTitle()}</h4>",
           ],
-          $this->id . '_operator' => [
+          $request_param_name => [
 //            '#title' => $this->operator,
             '#type' => 'checkbox',
-            '#default_value' => $this->getOperator() == 'AND',
+            '#default_value' => $operator_default_value,
             '#return_value' => 'AND',
           ],
           $this->id . '_values' => [

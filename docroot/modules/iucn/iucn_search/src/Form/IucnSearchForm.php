@@ -45,21 +45,28 @@ class IucnSearchForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
-
+    $results = array();
     /** @var SearchResult $result */
-    $result = $this->search->search($current_page, $this->items_per_page);
-    pager_default_initialize($result->getCountTotal(), $this->items_per_page);
-
-    $rows = $result->getResults();
-    $rendered_rows = array();
-    foreach($rows as $nid => $data) {
-      $node = \Drupal\node\Entity\Node::load($nid);
-      $rendered_rows[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+    try {
+      if ($result = $this->search->search($current_page, $this->items_per_page)) {
+        pager_default_initialize($result->getCountTotal(), $this->items_per_page);
+        $rows = $result->getResults();
+        foreach($rows as $nid => $data) {
+          $node = \Drupal\node\Entity\Node::load($nid);
+          $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+        }
+      }
+    }
+    catch(\Exception $e) {
+      drupal_set_message(
+        strtr('An error occured: !message', array('!message' => $e->getMessage())),
+        'error'
+      );
     }
 
     $elements = [
       '#theme' => 'iucn_search_results',
-      '#items' => $rendered_rows,
+      '#items' => $results,
     ];
     $form['#attributes']['class'][] = 'row';
     $form['facets'] = [

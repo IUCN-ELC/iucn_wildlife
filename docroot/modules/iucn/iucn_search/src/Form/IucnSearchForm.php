@@ -62,6 +62,9 @@ class IucnSearchForm extends FormBase {
         strtr('An error occured: !message', array('!message' => $e->getMessage())),
         'error'
       );
+      if (function_exists('dpm')) {
+        dpm($e->__toString());
+      }
     }
 
     $elements = [

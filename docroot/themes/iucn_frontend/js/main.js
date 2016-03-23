@@ -39,7 +39,9 @@
 
     var $this = $(this);
 
-    $('select', $this).val('');
+    $('.form-select', $this).val('').trigger('change.select2');
+    $('.form-checkbox', $this).bootstrapSwitch('state', false, true);
+
     $this.get(0).reset();
     $this.submit();
   });

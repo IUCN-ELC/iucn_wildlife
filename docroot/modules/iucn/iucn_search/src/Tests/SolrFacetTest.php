@@ -64,7 +64,7 @@ class SolrFacetTest extends WebTestBase {
     );
     // Test the constructor
     $facet = new SolrFacetMock('field_ecolex_subjects', 'court_decision', 'solr_field_id', $config);
-    $result = $facet->render(SolrFacet::$RENDER_CONTEXT_WEB);
+    $result = $facet->renderAsWidget();
     $this->fail('Not implemented'); //@todo
   }
 

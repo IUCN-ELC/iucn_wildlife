@@ -108,7 +108,7 @@ class IucnSearchForm extends FormBase {
     $return = [];
     /** @var SolrFacet $facet */
     foreach ($this->search->getFacets() as $facet_id => $facet) {
-      $return[$facet_id] = $facet->render(SolrFacet::$RENDER_CONTEXT_WEB);
+      $return[$facet_id] = $facet->renderAsWidget();
     }
     return $return;
   }

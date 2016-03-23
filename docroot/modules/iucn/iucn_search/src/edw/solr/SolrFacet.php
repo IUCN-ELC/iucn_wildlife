@@ -10,10 +10,6 @@ use Solarium\QueryType\Select\Query\Query;
 
 class SolrFacet {
 
-  public static $RENDER_CONTEXT_WEB = 'web';
-  public static $RENDER_CONTEXT_SOLR = 'solr';
-  public static $RENDER_CONTEXT_GET = 'get';
-
   public static $FACET_DEFAULT_LIMIT = 10;
   public static $FACET_DEFAULT_MIN_COUNT = -1;
 
@@ -34,18 +30,6 @@ class SolrFacet {
       $this->config['entity_type'] = $info->getSetting('target_type');
     }
     $this->validate();
-  }
-
-  public function render($context) {
-    $call = 'render_' . $context;
-    if (method_exists($this, $call)) {
-      $args = func_get_args();
-      array_shift($args);
-      return call_user_func(array($this, $call), $args);
-    }
-    else {
-      throw new \Exception("Unknown rendering context: $context");
-    }
   }
 
   /**
@@ -103,7 +87,7 @@ class SolrFacet {
     // @todo: $field->setMissing($this->getMissing());
   }
 
-  protected function render_web() {
+  public function renderAsWidget() {
     $ret = array();
     $options = array();
     foreach ($this->values as $id => $count) {

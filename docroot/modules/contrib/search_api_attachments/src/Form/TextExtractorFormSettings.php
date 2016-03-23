@@ -138,16 +138,18 @@ class TextExtractorFormSettings extends ConfigFormBase {
 
     // Test the extraction.
     $file = $this->getTestFile();
-    $error = 'Unknown error';
+    $error = $this->t('Unknown error');
     $extracted_data = NULL;
     try {
       $extracted_data = $extractor_plugin->extract($file);
     } catch(\Exception $e) {
-      $error = $e->getMessage();
+      if (!empty($e->getMessage())) {
+        $error = $e->getMessage();
+      }
     }
     $file->delete();
     if (empty($extracted_data)) {
-      $data = $this->t("Unfortunately, the extraction doesn't seem to work with this configuration! ($error)");
+      $data = $this->t("Unfortunately, the extraction doesn't seem to work with this configuration! (#error)", array('#error' => $error));
     }
     else {
       $data = $this->t('Extracted data: %extracted_data', array('%extracted_data' => $extracted_data));

@@ -55,24 +55,30 @@ class SolrFacet {
 
   /**
    * @param Query $solarium_query
-   * @param FacetSet $facetSet
    * @param array $parameters
    */
-  public function renderAsSolrQuery(Query &$solarium_query, FacetSet &$facetSet, array $parameters) {
+  public function alterSolrQuery(Query &$solarium_query, array $parameters) {
     $operator = $this->getOperator();
-    if (!empty($parameters[$this->solr_field_id])) {
-      $values = explode(',', $parameters[$this->solr_field_id]);
+    if (!empty($parameters[$this->id])) {
+      $values = explode(',', $parameters[$this->id]);
       if (count($values) > 1) {
         $val = '(' . implode(" {$operator} ", $values) . ')';
       }
       else {
         $val = reset($values);
       }
-      $solarium_query->createFilterQuery("facet:{$this->solr_field_id}")
-        ->setTags(["facet:{$this->solr_field_id}"])
+      $solarium_query->createFilterQuery("facet:{$this->id}")
+        ->setTags(["facet:{$this->id}"])
         ->setQuery("{$this->solr_field_id}:$val");
     }
-    $field = $facetSet->createFacetField($this->solr_field_id)->setField($this->solr_field_id);
+  }
+
+  /**
+   * @param FacetSet $facetSet
+   */
+  public function createSolrFacet(FacetSet &$facetSet) {
+    $field = $facetSet->createFacetField($this->id)->setField($this->solr_field_id);
+    $operator = $this->getOperator();
     if (!empty($operator) && strtoupper($operator) === 'OR') {
       $field->setExcludes(["facet:{$this->solr_field_id}"]);
     }

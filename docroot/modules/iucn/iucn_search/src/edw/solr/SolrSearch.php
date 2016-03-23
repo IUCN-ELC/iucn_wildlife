@@ -72,7 +72,8 @@ class SolrSearch {
     $facetSet->setMissing(FALSE);
     /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
-      $facet->renderAsSolrQuery($query, $facetSet, $this->parameters);
+      $facet->alterSolrQuery($query, $this->parameters);
+      $facet->createSolrFacet($facetSet);
     }
     $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());
@@ -112,7 +113,7 @@ class SolrSearch {
     /** @var SolrFacet $facet */
     foreach ($this->getFacets() as $facet_id => $facet) {
       /** @var \Solarium\QueryType\Select\Result\Facet\Field $solrFacet */
-      if ($solrFacet = $facetSet->getFacet($facet->getSolrFieldId())) {
+      if ($solrFacet = $facetSet->getFacet($facet_id)) {
         $values = $solrFacet->getValues();
         if ($request_parameters = $this->getParameter($facet_id)) {
           // Preserve user selection - add filters request.

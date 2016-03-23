@@ -5,6 +5,8 @@ namespace Drupal\iucn_search\edw\solr;
 use Drupal\Core\Config\ConfigValueException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Solarium\QueryType\Select\Query\Component\FacetSet;
+use Solarium\QueryType\Select\Query\Query;
 
 class SolrFacet {
 
@@ -49,7 +51,7 @@ class SolrFacet {
   /**
    * @param FormStateInterface $form_state
    */
-  protected function render_get($form_state) {
+  public function renderAsGetRequest($form_state) {
     $query = array();
     $values = array();
     $id = $this->getId();
@@ -64,36 +66,41 @@ class SolrFacet {
     if ($op = $form_state->getValue($id . '_operator')) {
       $query[$id . '_operator'] = $op;
     }
+    return $query;
   }
 
-  protected function render_solr(&$solarium_query, &$facet_set, $parameters, $solr_field_name) {
+  /**
+   * @param Query $solarium_query
+   * @param FacetSet $facetSet
+   * @param array $parameters
+   */
+  public function renderAsSolrQuery(Query &$solarium_query, FacetSet &$facetSet, array $parameters) {
     $operator = $this->getOperator();
-    if (!empty($parameters[$solr_field_name])) {
-      $values = explode(',', $parameters[$solr_field_name]);
+    if (!empty($parameters[$this->solr_field_id])) {
+      $values = explode(',', $parameters[$this->solr_field_id]);
       if (count($values) > 1) {
         $val = '(' . implode(" {$operator} ", $values) . ')';
       }
       else {
         $val = reset($values);
       }
-      $solarium_query->createFilterQuery("facet:{$solr_field_name}")
-        ->setTags(["facet:{$solr_field_name}"])
-        ->setQuery("{$solr_field_name}:$val");
+      $solarium_query->createFilterQuery("facet:{$this->solr_field_id}")
+        ->setTags(["facet:{$this->solr_field_id}"])
+        ->setQuery("{$this->solr_field_id}:$val");
     }
-    $facet_field = $facet_set->createFacetField($solr_field_name)
-      ->setField($solr_field_name);
+    $field = $facetSet->createFacetField($this->solr_field_id)->setField($this->solr_field_id);
     if (!empty($operator) && strtoupper($operator) === 'OR') {
-      $facet_field->setExcludes(["facet:{$solr_field_name}"]);
+      $field->setExcludes(["facet:{$this->solr_field_id}"]);
     }
     // Set limit, unless it's the default.
     if ($this->getLimit() != self::$FACET_DEFAULT_LIMIT) {
-      $facet_field->setLimit($this->getLimit());
+      $field->setLimit($this->getLimit());
     }
     // Set mincount, unless it's the default.
     if ($this->getMinCount() != self::$FACET_DEFAULT_MIN_COUNT) {
-      $facet_field->setMinCount($this->getMinCount());
+      $field->setMinCount($this->getMinCount());
     }
-    $facet_field->setMissing($this->getMissing());
+    // @todo: $field->setMissing($this->getMissing());
   }
 
   protected function render_web() {
@@ -103,14 +110,14 @@ class SolrFacet {
       $id = str_replace('"', '', $id);
       $entity = NULL;
       switch ($this->getConfigValue('entity_type')) {
-        case 'term':
+        case 'taxonomy_term':
           $entity = \Drupal\taxonomy\Entity\Term::load($id);
           break;
         case 'node':
           $entity = \Drupal\node\Entity\Node::load($id);
           break;
       }
-      $label = $entity->getTitle();
+      $label = $entity->label();
       if ($label) {
         if ($count > 0) {
           $label .= " ({$count})";
@@ -220,7 +227,7 @@ class SolrFacet {
   }
 
   function getMinCount() {
-    return $this->getConfigValue('min_count', 1);
+    return $this->getConfigValue('min_count', self::$FACET_DEFAULT_MIN_COUNT);
   }
 
   function getWidget() {

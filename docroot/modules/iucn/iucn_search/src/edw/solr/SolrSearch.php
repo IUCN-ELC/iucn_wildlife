@@ -7,9 +7,9 @@
 
 namespace Drupal\iucn_search\edw\solr;
 
-
+use Solarium\QueryType\Select\Query\Component\FacetSet;
 use Solarium\QueryType\Select\Result\Document;
-use Solarium\QueryType\Select\Result\DocumentInterface;
+
 
 class SearchResult {
 
@@ -65,14 +65,14 @@ class SolrSearch {
     $query->setRows($size);
 
     // Handle the facets
-    $facet_set = $query->getFacetSet();
-    $facet_set->setSort('count');
-    $facet_set->setLimit(10);
-    $facet_set->setMinCount(1);
-    $facet_set->setMissing(FALSE);
+    $facetSet = $query->getFacetSet();
+    $facetSet->setSort('count');
+    $facetSet->setLimit(10);
+    $facetSet->setMinCount(1);
+    $facetSet->setMissing(FALSE);
     /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
-      $facet->render(SolrFacet::$RENDER_CONTEXT_SOLR, $query, $facet_set, $this->parameters);
+      $facet->renderAsSolrQuery($query, $facetSet, $this->parameters);
     }
     $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());
@@ -105,10 +105,14 @@ class SolrSearch {
     return $this->facets;
   }
 
-  private function updateFacetValues($facetSet) {
+  /**
+   * @param \Solarium\QueryType\Select\Result\FacetSet $facetSet
+   */
+  private function updateFacetValues(\Solarium\QueryType\Select\Result\FacetSet $facetSet) {
     /** @var SolrFacet $facet */
     foreach ($this->getFacets() as $facet_id => $facet) {
-      if ($solrFacet = $facetSet->getFacet($facet_id)) {
+      /** @var \Solarium\QueryType\Select\Result\Facet\Field $solrFacet */
+      if ($solrFacet = $facetSet->getFacet($facet->getSolrFieldId())) {
         $values = $solrFacet->getValues();
         if ($request_parameters = $this->getParameter($facet_id)) {
           // Preserve user selection - add filters request.
@@ -126,14 +130,14 @@ class SolrSearch {
     }
   }
 
-  public function getHttpQueryParameters() {
+  public function getHttpQueryParameters($form_state) {
     $query = [];
     if ($q = $this->getParameter('q')) {
       $query['q'] = $q;
     }
     /** @var SolrFacet $facet */
     foreach ($this->getFacets() as $facet_id => $facet) {
-      $query = array_merge($query, $facet->render(SolrFacet::$RENDER_CONTEXT_GET));
+      $query = array_merge($query, $facet->renderAsGetRequest($form_state));
     }
     return $query;
   }

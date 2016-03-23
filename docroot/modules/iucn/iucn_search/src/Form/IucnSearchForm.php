@@ -100,7 +100,7 @@ class IucnSearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $query = $this->search->getHttpQueryParameters();
+    $query = $this->search->getHttpQueryParameters($form_state);
     $form_state->setRedirect('iucn.search', [], ['query' => $query]);
   }
 

@@ -146,7 +146,21 @@ fieldset[disabled] #search-form .btn-primary.focus {
   padding: 0;
 }
 .iucn-search-form .select2 .select2-selection__choice {
+  background-color: #eee;
+  border-color: #ddd;
   clear: left;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+.iucn-search-form .select2 .select2-selection__choice .badge {
+  background-color: #333;
+  vertical-align: baseline;
+}
+.iucn-search-form .select2 .select2-selection__choice + .select2-search {
+  margin-top: 5px;
+}
+.iucn-search-form .select2 .select2-selection__choice__remove {
+  margin-right: 0;
 }
 .iucn-search-form .select-wrapper:after {
   content: none;
@@ -304,11 +318,11 @@ fieldset[disabled] #search-form .btn-primary.focus {
   }
 }
 .bootstrap-switch {
-  border-color: #ddd;
+  border-color: #eee;
   border-radius: 10px;
 }
 .bootstrap-switch .bootstrap-switch-container {
-  background-color: #ddd;
+  background-color: #eee;
 }
 .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-label,
 .bootstrap-switch.bootstrap-switch-inverse.bootstrap-switch-off .bootstrap-switch-label,

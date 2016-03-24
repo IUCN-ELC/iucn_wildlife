@@ -27,6 +27,12 @@
     dataAdapter: CustomData,
     placeholder: function () {
       $(this).data('placeholder');
+    },
+    templateSelection: function (data, container) {
+      var s = data.text.split(' (');
+      var html = ' ' + s[0] + ' <sup class="badge">' + s[1].split(')')[0] + '</sup>';
+
+      return $.parseHTML(html);
     }
   });
 

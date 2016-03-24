@@ -8,7 +8,11 @@ if [ -z $@ ]; then
   echo "Running all project-related tests ..."
   what="iucn_search"
 else
-  what="--class Drupal\\iucn_search\\Tests\\$@"
+  if [ "$@" == *\\* ]; then
+    what="--class $@"
+  else
+    what="--class Drupal\\iucn_search\\Tests\\$@"
+  fi
 fi
 
 $php docroot/core/scripts/run-tests.sh --non-html --color --verbose $what

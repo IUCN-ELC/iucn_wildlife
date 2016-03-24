@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.search_result
   module:
     - node
     - taxonomy
@@ -223,7 +223,8 @@ display:
       row:
         type: 'entity:node'
         options:
-          view_mode: teaser
+          relationship: none
+          view_mode: search_result
       header:
         entity_taxonomy_term:
           id: entity_taxonomy_term

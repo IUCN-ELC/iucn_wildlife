@@ -10,3 +10,52 @@
   'vid': 'ecolex_subjects'
   'tid': 3
 
+- 'name': 'Land & soil'
+  'vid': 'ecolex_subjects'
+  'tid': 4
+
+- 'name': 'Livestock'
+  'vid': 'ecolex_subjects'
+  'tid': 5
+
+- 'name': 'National - higher court'
+  'vid': 'document_types'
+  'tid': 6
+
+- 'name': 'National - lower court'
+  'vid': 'document_types'
+  'tid': 7
+
+- 'name': 'National - no court'
+  'vid': 'document_types'
+  'tid': 8
+
+- 'name': 'International'
+  'vid': 'document_types'
+  'tid': 9
+
+- 'name': 'Interstellar'
+  'vid': 'document_types'
+  'tid': 10
+
+- 'name': 'Eastern Europe'
+  'vid': 'territorial_subdivisions'
+  'tid': 11
+
+- 'name': 'Central Europe'
+  'vid': 'territorial_subdivisions'
+  'tid': 12
+
+- 'name': 'South Africa'
+  'vid': 'territorial_subdivisions'
+  'tid': 13
+
+- 'name': 'South America'
+  'vid': 'territorial_subdivisions'
+  'tid': 14
+
+- 'name': 'Middle of Nowhere'
+  'vid': 'territorial_subdivisions'
+  'tid': 15
+
+

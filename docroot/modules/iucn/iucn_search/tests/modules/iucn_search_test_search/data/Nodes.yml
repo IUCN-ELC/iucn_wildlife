@@ -1,27 +1,93 @@
-- 'title': 'Decision 1'
-  'nid': 1
+- 'title': 'The M/V Saiga case'
+  'nid': null
   'type': 'court_decision'
   'uid': 1
   'status': TRUE
   'promote': 0
   'field_abstract': 'ABCD'
-  'field_ecolex_subjects': [1, 2]
-#  'field_country': 'Romania'
-#  'field_type_of_text': 'Ceva'
-#  'field_territorial_subdivisions': 'Altceva'
+  'field_ecolex_subjects': [1,2]
+  'field_country': 1
+  'field_type_of_text': 6
+  'field_territorial_subdivisions': 12
 
-- 'title': 'Decision 2'
-  'nid': 2
+- 'title': 'Southern Bluefin Tuna cases (New Zealand v. Japan; Australia v. Japan)'
+  'nid': null
   'type': 'court_decision'
   'uid': 1
   'status': TRUE
   'promote': 0
+  'field_abstract': 'Something else'
   'field_ecolex_subjects': 3
+  'field_country': [1,2]
+  'field_type_of_text': [6,8]
+  'field_territorial_subdivisions': [14, 15]
 
-- 'title': 'Decision 3'
-  'nid': 3
+- 'title': 'Court'
+  'nid': null
   'type': 'court_decision'
   'uid': 1
   'status': TRUE
   'promote': 0
+  'field_abstract': 'Random content'
   'field_ecolex_subjects': [1,3]
+  'field_country': 2
+  'field_type_of_text': [8,10]
+  'field_territorial_subdivisions':
+
+- 'title': 'Endangered species'
+  'nid': null
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+  'field_abstract': 'Some text manually generated'
+  'field_ecolex_subjects': 4
+  'field_country': [1,2,4]
+  'field_type_of_text': 9
+  'field_territorial_subdivisions':
+
+- 'title': 'Generic title'
+  'nid': null
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+  'field_abstract': 'Some text rand generated'
+  'field_ecolex_subjects': [3,4]
+  'field_country': [2,3]
+  'field_type_of_text': [9,10]
+  'field_territorial_subdivisions': [11,13]
+
+- 'title': 'Decision 6'
+  'nid': null
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+  'field_ecolex_subjects': [1,2]
+  'field_country': 1
+  'field_type_of_text':
+  'field_territorial_subdivisions': 10
+
+- 'title': 'Random decision title'
+  'nid': null
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+  'field_abstract': 'Australia, Japan and New Zealand should each ensure that no action was taken which might aggravate or extend the disputes submitted to the arbitral tribunal'
+  'field_ecolex_subjects':
+  'field_country':
+  'field_type_of_text': [7,9]
+  'field_territorial_subdivisions': 11
+
+- 'title': 'Title court'
+  'nid': null
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+  'field_ecolex_subjects': 2
+  'field_country': 4
+  'field_type_of_text':
+  'field_territorial_subdivisions': [11, 12]

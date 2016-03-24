@@ -1,0 +1,36 @@
+- 'title': 'Romania'
+  'nid': 1
+  'type': 'country'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+
+- 'title': 'France'
+  'nid': 2
+  'type': 'country'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+
+- 'title': 'Germany'
+  'nid': 3
+  'type': 'country'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+
+- 'title': 'Myanmar'
+  'nid': 4
+  'type': 'country'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+
+- 'title': 'Spain'
+  'nid': 5
+  'type': 'country'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+
+

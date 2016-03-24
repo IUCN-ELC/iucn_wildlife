@@ -1,0 +1,27 @@
+uuid: dc404aba-5ed5-4014-8400-d772e6f180e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_offences
+    - node.type.court_decision
+    - taxonomy.vocabulary.offences
+id: node.court_decision.field_offences
+field_name: field_offences
+entity_type: node
+bundle: court_decision
+label: Offences
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      offences: offences
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

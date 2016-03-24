@@ -10,6 +10,7 @@
     "replace": {
         "drupal/core": "~8.0",
         "drupal/webprofiler": "8.*",
+        "drupal/pathauto": "8.*",
         "drupal/search_api_solr": "8.*"
     },
     "minimum-stability": "dev",
@@ -27,6 +28,7 @@
             "include": [
                 "core/composer.json",
                 "modules/contrib/devel/webprofiler/composer.json",
+                "modules/contrib/pathauto/composer.json",
                 "modules/contrib/search_api_solr/composer.json"
             ],
             "recurse": false,

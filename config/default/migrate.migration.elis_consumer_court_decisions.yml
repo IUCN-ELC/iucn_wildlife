@@ -51,6 +51,7 @@ process:
   field_official_publication: officialPublication
   field_language_of_document: languageOfDocument
   field_files: files
+  field_keywords: keyword
 destination:
   plugin: 'entity:node'
 template: null

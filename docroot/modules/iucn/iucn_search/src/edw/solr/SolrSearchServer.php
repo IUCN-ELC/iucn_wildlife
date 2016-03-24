@@ -112,7 +112,8 @@ class SolrSearchServer {
     $config = $this->getServerConfig();
     $client = $this->getSolrClient();
     if ($config['http_method'] == 'AUTO') {
-      $client->getPlugin('postbigrequest');
+      // Set larger query limit - it might not be enough.
+      $client->getPlugin('postbigrequest')->setMaxQueryStringLength(2048);
     }
     $config['http_method'] = 'GET';
     $request = $client->createRequest($query);

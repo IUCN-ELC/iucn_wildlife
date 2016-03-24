@@ -28,9 +28,20 @@
     placeholder: function () {
       $(this).data('placeholder');
     },
+    templateResult: function (data) {
+      var splits = data.text.split(' (');
+
+      if (splits.length === 1) {
+        return data.text;
+      }
+
+      var html = ' <span class="counter">' + splits[1].split(')')[0] + '</span>' + splits[0];
+
+      return $.parseHTML(html);
+    },
     templateSelection: function (data, container) {
-      var s = data.text.split(' (');
-      var html = ' ' + s[0] + ' <sup class="badge">' + s[1].split(')')[0] + '</sup>';
+      var splits = data.text.split(' (');
+      var html = ' ' + splits[0] + ' <sup class="badge">' + splits[1].split(')')[0] + '</sup>';
 
       return $.parseHTML(html);
     }

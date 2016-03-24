@@ -103,7 +103,6 @@
 }
 .court-decision.search-result {
   margin-bottom: 22px;
-  max-width: 750px;
 }
 .court-decision.search-result h2 {
   font-size: 18px;
@@ -229,7 +228,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .iucn-search-form .form-submit {
   display: none;
 }
-.iucn-search-form .search-facets .checkbox {
+.iucn-search-form .search-filters .checkbox {
   float: right;
   margin-top: 0;
 }

@@ -77,7 +77,7 @@
     size: 'mini'
   });
 
-  $('.search-facets').removeClass('invisible');
+  $('.search-filters').removeClass('invisible');
 
   var offset = window.sessionStorage.getItem('offset');
 

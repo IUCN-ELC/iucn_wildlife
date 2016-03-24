@@ -65,16 +65,17 @@ class IucnSearchForm extends FormBase {
       '#type' => 'container'
     ];
     $form['row'][] = [
-      '#attributes' => ['class' => ['col-md-3', 'col-md-push-9', 'search-facets', 'invisible']],
+      '#attributes' => ['class' => ['col-md-4', 'col-md-push-8', 'search-options']],
       '#type' => 'container',
       [
+        '#attributes' => ['class' => ['search-filters', 'invisible']],
         '#title' => $this->t('Search filters'),
         '#type' => 'fieldset',
         $this->getRenderedFacets()
       ],
       [
         '#attributes' => [
-          'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block'],
+          'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block', 'search-reset'],
           'type' => 'reset'
         ],
         '#tag' => 'button',
@@ -83,7 +84,7 @@ class IucnSearchForm extends FormBase {
       ]
     ];
     $form['row'][] = [
-      '#attributes' => ['class' => ['col-md-9', 'col-md-pull-3', 'search-results']],
+      '#attributes' => ['class' => ['col-md-8', 'col-md-pull-4', 'search-results']],
       '#type' => 'container',
       $results
     ];

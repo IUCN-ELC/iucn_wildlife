@@ -18,6 +18,14 @@ class ElisConsumerMigrationTest extends WebTestBase {
 
   public static $modules = ['iucn_search'];
 
+  private $countries =  [
+    'Guinea',
+    'Saint Vincent and the Grenadines',
+    'New Zealand',
+    'Australia',
+    'Japan',
+  ];
+
   /**
    * @var \Drupal\migrate\Entity\Migration
    */
@@ -26,46 +34,16 @@ class ElisConsumerMigrationTest extends WebTestBase {
   private $migrateExecutable;
 
   public function createNeededCountries() {
-    $node = Node::create(array(
-      'type' => 'country',
-      'title' => 'Guinea',
-      'langcode' => 'en',
-      'uid' => '1',
-      'status' => 1,
-    ));
-    $node->save();
-    $node = Node::create(array(
-      'type' => 'country',
-      'title' => 'Saint Vincent and the Grenadines',
-      'langcode' => 'en',
-      'uid' => '1',
-      'status' => 1,
-    ));
-    $node->save();
-    $node = Node::create(array(
-      'type' => 'country',
-      'title' => 'New Zealand',
-      'langcode' => 'en',
-      'uid' => '1',
-      'status' => 1,
-    ));
-    $node->save();
-    $node = Node::create(array(
-      'type' => 'country',
-      'title' => 'Australia',
-      'langcode' => 'en',
-      'uid' => '1',
-      'status' => 1,
-    ));
-    $node->save();
-    $node = Node::create(array(
-      'type' => 'country',
-      'title' => 'Japan',
-      'langcode' => 'en',
-      'uid' => '1',
-      'status' => 1,
-    ));
-    $node->save();
+    foreach ($this->countries as $country) {
+      $node = Node::create(array(
+        'type' => 'country',
+        'title' => $country,
+        'langcode' => 'en',
+        'uid' => '1',
+        'status' => 1,
+      ));
+      $node->save();
+    }
   }
 
   public function setUp() {

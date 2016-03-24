@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.court_decision.field_internet_reference
     - field.field.node.court_decision.field_isis_number
     - field.field.node.court_decision.field_justices
+    - field.field.node.court_decision.field_keywords
     - field.field.node.court_decision.field_language_of_document
     - field.field.node.court_decision.field_number_of_pages
     - field.field.node.court_decision.field_official_publication
@@ -164,6 +165,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
+  field_keywords:
+    weight: 40
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   field_language_of_document:
     weight: 38
     settings:

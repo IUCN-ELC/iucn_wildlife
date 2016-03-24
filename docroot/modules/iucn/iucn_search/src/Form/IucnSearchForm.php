@@ -83,7 +83,7 @@ class IucnSearchForm extends FormBase {
       ]
     ];
     $form['row'][] = [
-      '#attributes' => ['class' => ['col-md-6', 'col-md-pull-3', 'search-results']],
+      '#attributes' => ['class' => ['col-md-9', 'col-md-pull-3', 'search-results']],
       '#type' => 'container',
       $results
     ];

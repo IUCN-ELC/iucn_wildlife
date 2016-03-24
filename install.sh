@@ -15,6 +15,9 @@ drush sql-sync "@iucnwildlifed8.$env" @self -y
 echo "Importing 'default' configuration..."
 drush cim vcs -y
 
+echo "Importing 'local' configuration..."
+drush cim local --partial -y
+
 echo "Running database pending updates ..."
 drush updatedb
 drush cr

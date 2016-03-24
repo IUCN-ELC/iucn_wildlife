@@ -178,4 +178,32 @@
 
 .search-result {
   margin-bottom: 22px;
+  max-width: 750px;
+}
+
+.field--name-field-type-of-text,
+.field--name-field-country,
+.field--name-field-court-name,
+.field--name-field-date-of-entry,
+.field--name-field-isis-number {
+  display: inline-block;
+}
+
+.field--name-field-type-of-text {
+  color: #090;
+}
+
+.field--name-field-country,
+.field--name-field-court-name,
+.field--name-field-date-of-entry,
+.field--name-field-isis-number {
+  color: #999;
+
+  &:before {
+    content: "\2013";
+  }
+}
+
+.field--name-field-abstract {
+  margin-top: 2px;
 }

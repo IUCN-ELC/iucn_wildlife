@@ -194,6 +194,32 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .search-result {
   margin-bottom: 22px;
+  max-width: 750px;
+}
+.field--name-field-type-of-text,
+.field--name-field-country,
+.field--name-field-court-name,
+.field--name-field-date-of-entry,
+.field--name-field-isis-number {
+  display: inline-block;
+}
+.field--name-field-type-of-text {
+  color: #090;
+}
+.field--name-field-country,
+.field--name-field-court-name,
+.field--name-field-date-of-entry,
+.field--name-field-isis-number {
+  color: #999;
+}
+.field--name-field-country:before,
+.field--name-field-court-name:before,
+.field--name-field-date-of-entry:before,
+.field--name-field-isis-number:before {
+  content: "\2013";
+}
+.field--name-field-abstract {
+  margin-top: 2px;
 }
 .court-decision .field--name-field-justices .field--item {
   display: inline;
@@ -208,7 +234,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .court-decision.search-result h2 {
   font-size: 18px;
-  margin-bottom: 0;
+  margin-bottom: 1px;
   margin-top: 0;
 }
 .court-decision.search-result .field--label {

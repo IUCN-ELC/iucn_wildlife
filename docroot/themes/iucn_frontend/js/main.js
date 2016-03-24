@@ -35,7 +35,7 @@
         return data.text;
       }
 
-      var html = ' <span class="counter">' + splits[1].split(')')[0] + '</span>' + splits[0];
+      var html = '<span class="counter">' + splits[1].split(')')[0] + '</span>' + splits[0];
 
       return $.parseHTML(html);
     },

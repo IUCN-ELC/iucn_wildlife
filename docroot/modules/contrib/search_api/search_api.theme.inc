@@ -25,7 +25,13 @@ use Drupal\search_api\Utility;
  */
 function theme_search_api_admin_fields_table($variables) {
   $form = $variables['element'];
-  $header = array(t('Field'), t('Machine name'), t('Type'), t('Boost'), t('Remove'));
+  $header = array(
+    t('Field'),
+    t('Machine name'),
+    t('Type'),
+    t('Boost'),
+    t('Remove'),
+  );
 
   $rows = array();
   if (!empty($form['fields'])) {
@@ -141,11 +147,11 @@ function theme_search_api_server($variables) {
   // Check if the server is enabled.
   if ($server->status()) {
     $class = 'ok';
-    $info = t('enabled (<a href=":url">disable</a>)', array(':url' => $server->url('disable')));
+    $info = t('enabled (<a href=":url">disable</a>)', array(':url' => $server->toUrl('disable')->toString()));
   }
   else {
     $class = 'warning';
-    $info = t('disabled (<a href=":url">enable</a>)', array(':url' => $server->url('enable')));
+    $info = t('disabled (<a href=":url">enable</a>)', array(':url' => $server->toUrl('enable')->toString()));
   }
   // Append the row and reset variables.
   $label = t('Status');
@@ -177,7 +183,7 @@ function theme_search_api_server($variables) {
   foreach ($server->getIndexes() as $index) {
     $indexes['#links'][] = array(
       'title' => $index->label(),
-      'url' => $index->urlInfo('canonical'),
+      'url' => $index->toUrl('canonical')->toString(),
     );
   }
   // Check if the indexes variable contains links.
@@ -259,12 +265,12 @@ function theme_search_api_index($variables) {
   // Check if the index is enabled.
   if ($index->status()) {
     $class = 'ok';
-    $info = t('enabled (<a href=":url">disable</a>)', array(':url' => $index->url('disable')));
+    $info = t('enabled (<a href=":url">disable</a>)', array(':url' => $index->toUrl('disable')->toString()));
   }
   // Check if a server is available and enabled.
   elseif ($server && $server->status()) {
     $class = 'warning';
-    $info = t('disabled (<a href=":url">enable</a>)', array(':url' => $index->url('enable')));
+    $info = t('disabled (<a href=":url">enable</a>)', array(':url' => $index->toUrl('enable')->toString()));
   }
   else {
     $class = 'warning';
@@ -306,7 +312,7 @@ function theme_search_api_index($variables) {
   // Check if a server is available.
   if ($server) {
     $label = t('Server');
-    $info = $server->link(NULL, 'canonical');
+    $info = $server->toLink(NULL, 'canonical')->toString();
     $rows[] = Utility::deepCopy($row);
   }
   elseif ($index->getServerId()) {
@@ -328,6 +334,9 @@ function theme_search_api_index($variables) {
       // @todo Add a cleaner way for doing this (i.e., skipping preprocessing).
       $query = $index->query();
       $query->range(0, 0);
+      // Tag this special query to allow backend plugins to treat this query
+      // differently if required.
+      $query->addTag('server_index_status');
       $label = t('Server index status');
       try {
         $response = $server->search($query);
@@ -337,7 +346,7 @@ function theme_search_api_index($variables) {
         // Build the server index status info.
         $info = \Drupal::translation()->formatPlural($count, 'There is 1 item indexed on the server for this index. (<a href=":url">More information</a>)', 'There are @count items indexed on the server for this index. (<a href=":url">More information</a>)', $vars);
       }
-      catch(SearchApiException $e) {
+      catch (SearchApiException $e) {
         $info = t('Error while checking server index status: @message', array('@message' => $e->getMessage()));
         $class = 'error';
       }

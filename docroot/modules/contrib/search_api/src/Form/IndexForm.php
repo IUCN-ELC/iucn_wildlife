@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api\Form\IndexForm.
- */
-
 namespace Drupal\search_api\Form;
 
 use Drupal\Component\Utility\Html;
@@ -163,7 +158,8 @@ class IndexForm extends EntityForm {
       $form['#title'] = $this->t('Add search index');
     }
     else {
-    $form['#title'] = $this->t('Edit search index %label', array('%label' => $index->label()));
+      $arguments = array('%label' => $index->label());
+      $form['#title'] = $this->t('Edit search index %label', $arguments);
     }
 
     $this->buildEntityForm($form, $form_state, $index);
@@ -195,6 +191,7 @@ class IndexForm extends EntityForm {
         'exists' => array($this->getIndexStorage(), 'load'),
         'source' => array('name'),
       ),
+      '#disabled' => !$index->isNew(),
     );
 
     // If the user changed the datasources or the tracker, notify them that they
@@ -319,7 +316,7 @@ class IndexForm extends EntityForm {
       //   the description.
       '#states' => array(
         'invisible' => array(
-          ':input[name="server"]' => array('value' => '')
+          ':input[name="server"]' => array('value' => ''),
         ),
       ),
     );
@@ -417,6 +414,7 @@ class IndexForm extends EntityForm {
    * Takes care of changes in the selected datasources.
    */
   public function submitAjaxDatasourceConfigForm($form, FormStateInterface $form_state) {
+    $form_state->setValue('id', NULL);
     $form_state->setRebuild();
   }
 
@@ -433,6 +431,7 @@ class IndexForm extends EntityForm {
    * Takes care of changes in the selected tracker plugin.
    */
   public function submitAjaxTrackerConfigForm($form, FormStateInterface $form_state) {
+    $form_state->setValue('id', NULL);
     $form_state->setRebuild();
   }
 

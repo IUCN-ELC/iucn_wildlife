@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\search_api\Plugin\Processor\HighlightTest.
- */
-
 namespace Drupal\Tests\search_api\Unit\Plugin\Processor;
 
 use Drupal\search_api\Plugin\search_api\processor\Highlight;
-use Drupal\search_api\Tests\Processor\TestItemsTrait;
 use Drupal\search_api\Utility;
 use Drupal\Tests\UnitTestCase;
 
@@ -378,7 +372,7 @@ class HighlightTest extends UnitTestCase {
   }
 
   /**
-   * Tests whether highlighting works with a changed excerpt length
+   * Tests whether highlighting works with a changed excerpt length.
    */
   public function testPostprocessSearchResultsWithChangedExcerptLength() {
     $this->processor->setConfiguration(array('excerpt_length' => 64));
@@ -515,7 +509,7 @@ class HighlightTest extends UnitTestCase {
       'entity:node/body' => array(
         'type' => 'text',
         'values' => array(
-          'This foo text bar will get baz riddled with &lt;strong&gt; tags.'
+          'This foo text bar will get baz riddled with &lt;strong&gt; tags.',
         ),
       ),
     );

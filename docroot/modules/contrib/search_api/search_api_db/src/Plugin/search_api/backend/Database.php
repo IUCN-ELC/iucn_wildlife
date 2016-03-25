@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_db\Plugin\search_api\backend\Database.
- */
-
 namespace Drupal\search_api_db\Plugin\search_api\backend;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -14,6 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Database as CoreDatabase;
 use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\KeyValueStore\KeyValueStoreInterface;
@@ -21,6 +17,7 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Render\Element;
 use Drupal\search_api\Backend\BackendPluginBase;
+use Drupal\search_api\DataType\DataTypePluginManager;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\FieldInterface;
@@ -34,6 +31,8 @@ use Drupal\search_api_db\DatabaseCompatibility\GenericDatabase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
+ * Indexes items in a database.
+ *
  * @SearchApiBackend(
  *   id = "search_api_db",
  *   label = @Translation("Database"),
@@ -107,6 +106,13 @@ class Database extends BackendPluginBase {
    * @var \Drupal\Component\Transliteration\TransliterationInterface
    */
   protected $transliterator;
+
+  /**
+   * The date formatter.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface|null
+   */
+  protected $dateFormatter;
 
   /**
    * The keywords ignored during the current search query.
@@ -201,9 +207,10 @@ class Database extends BackendPluginBase {
    * Returns the module handler to use for this plugin.
    *
    * @return \Drupal\Core\Extension\ModuleHandlerInterface
+   *   The module handler.
    */
   public function getModuleHandler() {
-    return $this->moduleHandler ? : \Drupal::moduleHandler();
+    return $this->moduleHandler ?: \Drupal::moduleHandler();
   }
 
   /**
@@ -223,9 +230,10 @@ class Database extends BackendPluginBase {
    * Returns the config factory to use for this plugin.
    *
    * @return \Drupal\Core\Config\ConfigFactoryInterface
+   *   The config factory.
    */
   public function getConfigFactory() {
-    return $this->configFactory ? : \Drupal::configFactory();
+    return $this->configFactory ?: \Drupal::configFactory();
   }
 
   /**
@@ -259,7 +267,7 @@ class Database extends BackendPluginBase {
    *
    * @return $this
    */
-  public function setDataTypePluginManager($data_type_plugin_manager) {
+  public function setDataTypePluginManager(DataTypePluginManager $data_type_plugin_manager) {
     $this->dataTypePluginManager = $data_type_plugin_manager;
     return $this;
   }
@@ -294,19 +302,42 @@ class Database extends BackendPluginBase {
    *   The key-value store.
    */
   public function getKeyValueStore() {
-    return $this->keyValueStore ? : \Drupal::keyValue(self::INDEXES_KEY_VALUE_STORE_ID);
+    return $this->keyValueStore ?: \Drupal::keyValue(self::INDEXES_KEY_VALUE_STORE_ID);
   }
 
   /**
    * Sets the key-value store to use.
    *
-   * @param \Drupal\Core\KeyValueStore\KeyValueStoreInterface $keyValueStore
+   * @param \Drupal\Core\KeyValueStore\KeyValueStoreInterface $key_value_store
    *   The key-value store.
    *
    * @return $this
    */
-  public function setKeyValueStore(KeyValueStoreInterface $keyValueStore) {
-    $this->keyValueStore = $keyValueStore;
+  public function setKeyValueStore(KeyValueStoreInterface $key_value_store) {
+    $this->keyValueStore = $key_value_store;
+    return $this;
+  }
+
+  /**
+   * Retrieves the date formatter.
+   *
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
+   *   The date formatter.
+   */
+  public function getDateFormatter() {
+    return $this->dateFormatter ?: \Drupal::service('date.formatter');
+  }
+
+  /**
+   * Sets the date formatter.
+   *
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
+   *   The new date formatter.
+   *
+   * @return $this
+   */
+  public function setDateFormatter(DateFormatterInterface $date_formatter) {
+    $this->dateFormatter = $date_formatter;
     return $this;
   }
 
@@ -330,6 +361,7 @@ class Database extends BackendPluginBase {
     return array(
       'database' => NULL,
       'min_chars' => 1,
+      'partial_matches' => FALSE,
       'autocomplete' => array(
         'suggest_suffix' => TRUE,
         'suggest_words' => TRUE,
@@ -355,8 +387,7 @@ class Database extends BackendPluginBase {
         $form['database'] = array(
           '#type' => 'select',
           '#title' => $this->t('Database'),
-          '#description' => $this->t('Select the database key and target to use for storing indexing information in. ' .
-              'Cannot be changed after creation.'),
+          '#description' => $this->t('Select the database key and target to use for storing indexing information in. Cannot be changed after creation.'),
           '#options' => $options,
           '#default_value' => 'default:default',
           '#required' => TRUE,
@@ -388,8 +419,18 @@ class Database extends BackendPluginBase {
       '#type' => 'select',
       '#title' => $this->t('Minimum word length'),
       '#description' => $this->t('The minimum number of characters a word must consist of to be indexed'),
-      '#options' => array_combine(array(1, 2, 3, 4, 5, 6), array(1, 2, 3, 4, 5, 6)),
+      '#options' => array_combine(
+        array(1, 2, 3, 4, 5, 6),
+        array(1, 2, 3, 4, 5, 6)
+      ),
       '#default_value' => $this->configuration['min_chars'],
+    );
+
+    $form['partial_matches'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Search on parts of a word'),
+      '#description' => $this->t('Find keywords in parts of a word, too. (E.g., find results with "database" when searching for "base"). <strong>Caution:</strong> This can make searches much slower on large sites!'),
+      '#default_value' => $this->configuration['partial_matches'],
     );
 
     if ($this->getModuleHandler()->moduleExists('search_api_autocomplete')) {
@@ -488,7 +529,12 @@ class Database extends BackendPluginBase {
   public function preDelete() {
     $schema = $this->database->schema();
 
-    foreach ($this->getKeyValueStore()->getAll() as $db_info) {
+    $key_value_store = $this->getKeyValueStore();
+    foreach ($key_value_store->getAll() as $index_id => $db_info) {
+      if ($db_info['server'] != $this->server->id()) {
+        continue;
+      }
+
       // Delete the regular field tables.
       foreach ($db_info['field_tables'] as $field) {
         if ($schema->tableExists($field['table'])) {
@@ -500,8 +546,9 @@ class Database extends BackendPluginBase {
       if ($schema->tableExists($db_info['index_table'])) {
         $schema->dropTable($db_info['index_table']);
       }
+
+      $key_value_store->delete($index_id);
     }
-    $this->getKeyValueStore()->deleteAll();
   }
 
   /**
@@ -514,6 +561,7 @@ class Database extends BackendPluginBase {
       $this->createFieldTable(NULL, array('table' => $index_table), 'index');
 
       $db_info = array();
+      $db_info['server'] = $this->server->id();
       $db_info['field_tables'] = array();
       $db_info['index_table'] = $index_table;
       $this->getKeyValueStore()->set($index->id(), $db_info);
@@ -523,8 +571,8 @@ class Database extends BackendPluginBase {
         return;
       }
     }
-      // The database operations might throw PDO or other exceptions, so we catch
-      // them all and re-wrap them appropriately.
+    // The database operations might throw PDO or other exceptions, so we catch
+    // them all and re-wrap them appropriately.
     catch (\Exception $e) {
       throw new SearchApiException($e->getMessage(), $e->getCode(), $e);
     }
@@ -689,8 +737,8 @@ class Database extends BackendPluginBase {
     //
     // In SQLite, indexes and tables can't have the same name, which is
     // the case for Search API DB. We have following situation:
-    //  - a table named search_api_db_default_index_search_api_language
-    //  - a table named search_api_db_default_index
+    // - a table named search_api_db_default_index_search_api_language
+    // - a table named search_api_db_default_index
     //
     // The last table has an index on the search_api_language column,
     // which results in an index with the same as the first table, which
@@ -703,7 +751,7 @@ class Database extends BackendPluginBase {
     // solution in the original core issue).
     //
     // @todo: Remove when #2625664 lands in Core. See #2625722 for a patch that
-    //   implements this.
+    // implements this.
     try {
       $this->database->schema()->addIndex($db['table'], '_' . $column, $index_spec, $table_spec);
     }
@@ -745,13 +793,16 @@ class Database extends BackendPluginBase {
       case 'string':
       case 'uri':
         return array('type' => 'varchar', 'length' => 255);
+
       case 'integer':
       case 'duration':
       case 'date':
         // 'datetime' sucks. Therefore, we just store the timestamp.
         return array('type' => 'int', 'size' => 'big');
+
       case 'decimal':
         return array('type' => 'float');
+
       case 'boolean':
         return array('type' => 'int', 'size' => 'tiny');
 
@@ -999,8 +1050,8 @@ class Database extends BackendPluginBase {
 
       $this->getKeyValueStore()->delete($index->id());
     }
-      // The database operations might throw PDO or other exceptions, so we catch
-      // them all and re-wrap them appropriately.
+    // The database operations might throw PDO or other exceptions, so we catch
+    // them all and re-wrap them appropriately.
     catch (\Exception $e) {
       throw new SearchApiException($e->getMessage(), $e->getCode(), $e);
     }
@@ -1105,6 +1156,12 @@ class Database extends BackendPluginBase {
           continue;
         }
 
+        // If the field contains more than one value, we remember that the field
+        // can be multi-valued.
+        if (count($values) > 1) {
+          $db_info['field_tables'][$field_id]['multi-valued'] = TRUE;
+        }
+
         if (Utility::isTextType($type, array('text', 'tokenized_text'))) {
           // Remember the text table the first time we encounter it.
           if (!isset($text_table)) {
@@ -1204,6 +1261,10 @@ class Database extends BackendPluginBase {
         }
         $query->execute();
       }
+
+      // In case any new fields were detected as multi-valued, we re-save the
+      // index's DB info.
+      $this->getKeyValueStore()->set($index->id(), $db_info);
     }
     catch (\Exception $e) {
       $transaction->rollback();
@@ -1258,7 +1319,7 @@ class Database extends BackendPluginBase {
       case 'text':
         // For dates, splitting the timestamp makes no sense.
         if ($original_type == 'date') {
-          $value = format_date($value, 'custom', 'Y y F M n m j d l D');
+          $value = $this->getDateFormatter()->format($value, 'custom', 'Y y F M n m j d l D');
         }
         $ret = array();
         foreach (preg_split('/[^\p{L}\p{N}]+/u', $value, -1, PREG_SPLIT_NO_EMPTY) as $v) {
@@ -1273,7 +1334,7 @@ class Database extends BackendPluginBase {
             );
           }
         }
-        // This used to fall through the tokenized case
+        // This used to fall through the tokenized case.
         return $ret;
 
       case 'tokenized_text':
@@ -1380,9 +1441,12 @@ class Database extends BackendPluginBase {
     try {
       $db_info = $this->getIndexDbInfo($index);
 
-      foreach ($db_info['field_tables'] as $field) {
+      foreach ($db_info['field_tables'] as $field_id => $field) {
         $this->database->truncate($field['table'])->execute();
+        unset($db_info['field_tables'][$field_id]['multi-valued']);
       }
+      $this->getKeyValueStore()->set($index->id(), $db_info);
+
       $this->database->truncate($db_info['index_table'])->execute();
     }
     catch (\Exception $e) {
@@ -1507,9 +1571,9 @@ class Database extends BackendPluginBase {
 
     // Only filter by fulltext keys if there are any real keys present.
     if ($keys && (!is_array($keys) || count($keys) > 2 || (!isset($keys['#negation']) && count($keys) > 1))) {
-      // Special case: if the outermost $keys array has "#negation" set, we can't
-      // handle it like other negated subkeys. To avoid additional complexity
-      // later, we just wrap $keys so it becomes a subkey.
+      // Special case: if the outermost $keys array has "#negation" set, we
+      // can't handle it like other negated subkeys. To avoid additional
+      // complexity later, we just wrap $keys so it becomes a subkey.
       if (!empty($keys['#negation'])) {
         $keys = array(
           '#conjunction' => 'AND',
@@ -1641,7 +1705,12 @@ class Database extends BackendPluginBase {
       $words = preg_split('/[^\p{L}\p{N}]+/u', $processed_keys, -1, PREG_SPLIT_NO_EMPTY);
       if (count($words) > 1) {
         $processed_keys = $this->splitKeys($words);
-        $processed_keys['#conjunction'] = 'AND';
+        if ($processed_keys) {
+          $processed_keys['#conjunction'] = 'AND';
+        }
+        else {
+          $processed_keys = NULL;
+        }
       }
       return $processed_keys;
     }
@@ -1724,6 +1793,8 @@ class Database extends BackendPluginBase {
     $db_query = NULL;
     $mul_words = FALSE;
     $neg_nested = $neg && $conj == 'AND';
+    $match_parts = !empty($this->configuration['partial_matches']);
+    $keyword_hits = array();
 
     foreach ($keys as $i => $key) {
       if (!Element::child($i)) {
@@ -1744,14 +1815,15 @@ class Database extends BackendPluginBase {
         $negated[] = $key;
       }
     }
-    $subs = count($words) + count($nested);
+    $word_count = count($words);
+    $subs = $word_count + count($nested);
     $not_nested = ($subs <= 1 && count($fields) == 1) || ($neg && $conj == 'OR' && !$negated);
 
     if ($words) {
       // All text fields in the index share a table. Get name from the first.
       $field = reset($fields);
       $db_query = $this->database->select($field['table'], 't');
-      $mul_words = count($words) > 1;
+      $mul_words = ($word_count > 1);
       if ($neg_nested) {
         $db_query->fields('t', array('item_id', 'word'));
       }
@@ -1764,18 +1836,63 @@ class Database extends BackendPluginBase {
       else {
         $db_query->fields('t', array('item_id', 'score', 'word'));
       }
-      $db_query->condition('word', $words, 'IN');
+
+      if (!$match_parts) {
+        $db_query->condition('word', $words, 'IN');
+      }
+      else {
+        $db_or = new Condition('OR');
+        // GROUP BY all existing non-grouped, non-aggregated columns – except
+        // "word", which we remove since it will be useless to us in this case.
+        $columns = &$db_query->getFields();
+        unset($columns['word']);
+        foreach (array_keys($columns) as $column) {
+          $db_query->groupBy($column);
+        }
+
+        foreach ($words as $i => $word) {
+          $db_or->condition('t.word', '%' . $this->database->escapeLike($word) . '%', 'LIKE');
+
+          // Add an expression for each keyword that shows whether the indexed
+          // word matches that particular keyword. That way we don't return a
+          // result multiple times if a single indexed word (partially) matches
+          // multiple keywords. We also remember the column name so we can
+          // afterwards verify that each word matched at least once.
+          $alias = 'w' . $i;
+          $alias = $db_query->addExpression("t.word LIKE '%" . $this->database->escapeLike($word) . "%'", $alias);
+          $db_query->groupBy($alias);
+          $keyword_hits[] = $alias;
+        }
+        // Also add expressions for any nested queries.
+        for ($i = $word_count; $i < $subs; ++$i) {
+          $alias = 'w' . $i;
+          $alias = $db_query->addExpression('0', $alias);
+          $db_query->groupBy($alias);
+          $keyword_hits[] = $alias;
+        }
+        $db_query->condition($db_or);
+      }
+
       $db_query->condition('field_name', array_map(array(__CLASS__, 'getTextFieldName'), array_keys($fields)), 'IN');
     }
 
     if ($nested) {
       $word = '';
-      foreach ($nested as $k) {
+      foreach ($nested as $i => $k) {
         $query = $this->createKeysQuery($k, $fields, $all_fields, $index);
         if (!$neg) {
-          $word .= ' ';
-          $var = ':word' . strlen($word);
-          $query->addExpression($var, 'word', array($var => $word));
+          if (!$match_parts) {
+            $word .= ' ';
+            $var = ':word' . strlen($word);
+            $query->addExpression($var, 'word', array($var => $word));
+          }
+          else {
+            $i += $word_count;
+            for ($j = 0; $j < $subs; ++$j) {
+              $alias = isset($keyword_hits[$j]) ? $keyword_hits[$j] : "w$j";
+              $keyword_hits[$j] = $query->addExpression($i == $j ? '1' : '0', $alias);
+            }
+          }
         }
         if (!isset($db_query)) {
           $db_query = $query;
@@ -1801,11 +1918,18 @@ class Database extends BackendPluginBase {
         if (!$db_query->getGroupBy()) {
           $db_query->groupBy('t.item_id');
         }
-        if ($mul_words) {
-          $db_query->having('COUNT(DISTINCT t.word) >= ' . $var, array($var => $subs));
+        if (!$match_parts) {
+          if ($mul_words) {
+            $db_query->having('COUNT(DISTINCT t.word) >= ' . $var, array($var => $subs));
+          }
+          else {
+            $db_query->having('COUNT(t.word) >= ' . $var, array($var => $subs));
+          }
         }
         else {
-          $db_query->having('COUNT(t.word) >= ' . $var, array($var => $subs));
+          foreach ($keyword_hits as $alias) {
+            $db_query->having("SUM($alias) >= 1");
+          }
         }
       }
     }
@@ -1876,7 +2000,6 @@ class Database extends BackendPluginBase {
     $db_condition = new Condition($conditions->getConjunction());
     $db_info = $this->getIndexDbInfo($index);
 
-    $empty = TRUE;
     // Store whether a JOIN already occurred for a field, so we don't JOIN
     // repeatedly for OR filters.
     $first_join = array();
@@ -1886,12 +2009,10 @@ class Database extends BackendPluginBase {
       if ($condition instanceof ConditionGroupInterface) {
         $sub_condition = $this->createDbCondition($condition, $fields, $db_query, $index);
         if ($sub_condition) {
-          $empty = FALSE;
           $db_condition->condition($sub_condition);
         }
       }
       else {
-        $empty = FALSE;
         $field = $condition->getField();
         $operator = $condition->getOperator();
         $value = $condition->getValue();
@@ -1918,31 +2039,31 @@ class Database extends BackendPluginBase {
         $field_info = $fields[$field];
         // For NULL values, we can just use the single-values table, since we
         // only need to know if there's any value at all for that field.
-        if ($value === NULL) {
+        if ($value === NULL || empty($field_info['multi-valued'])) {
           if (empty($tables[NULL])) {
             $table = array('table' => $db_info['index_table']);
             $tables[NULL] = $this->getTableAlias($table, $db_query);
           }
           $column = $tables[NULL] . '.' . $field_info['column'];
-          $method = $not_equals ? 'isNotNull' : 'isNull';
-          $db_condition->$method($column);
+          if ($value === NULL) {
+            $method = $not_equals ? 'isNotNull' : 'isNull';
+            $db_condition->$method($column);
+          }
+          else {
+            $db_condition->condition($column, $value, $operator);
+          }
           continue;
         }
         if (Utility::isTextType($field_info['type'])) {
           $keys = $this->prepareKeys($value);
+          if (!isset($keys)) {
+            continue;
+          }
           $query = $this->createKeysQuery($keys, array($field => $field_info), $fields, $index);
-          // We don't need the score, so we remove it. The score might either be
-          // an expression or a field.
-          $query_expressions = &$query->getExpressions();
-          if ($query_expressions) {
-            $query_expressions = array();
-          }
-          else {
-            $query_fields = &$query->getFields();
-            unset($query_fields['score']);
-            unset($query_fields);
-          }
-          unset($query_expressions);
+          // We only want the item IDs, so we use the keys query as a nested
+          // query.
+          $query = $this->database->select($query, 't')
+            ->fields('t', array('item_id'));
           $db_condition->condition('t.item_id', $query, $not_equals ? 'NOT IN' : 'IN');
         }
         else {
@@ -1951,7 +2072,7 @@ class Database extends BackendPluginBase {
             $tables[$field] = $this->getTableAlias($field_info, $db_query, $new_join);
             $first_join[$field] = TRUE;
           }
-          $column = $tables[$field] . '.' . 'value';
+          $column = $tables[$field] . '.value';
           if ($not_equals) {
             // The situation is more complicated for multi-valued fields, since
             // we must make sure that results are excluded if ANY of the field's
@@ -1967,7 +2088,7 @@ class Database extends BackendPluginBase {
         }
       }
     }
-    return $empty ? NULL : $db_condition;
+    return $db_condition->count() ? $db_condition : NULL;
   }
 
   /**
@@ -2052,10 +2173,10 @@ class Database extends BackendPluginBase {
       $alias = $this->getTableAlias($field, $select, TRUE, $facet['missing'] ? 'leftJoin' : 'innerJoin');
       $select->addField($alias, $is_text_type ? 'word' : 'value', 'value');
       if ($is_text_type) {
-        $select->condition("$alias.field_name", $this->getTextFieldName($facet['field']));
+        $select->condition($alias . '.field_name', $this->getTextFieldName($facet['field']));
       }
       if (!$facet['missing'] && !$is_text_type) {
-        $select->isNotNull($alias . '.' . 'value');
+        $select->isNotNull($alias . '.value');
       }
       $select->addExpression('COUNT(DISTINCT t.item_id)', 'num');
       $select->groupBy('value');
@@ -2138,15 +2259,21 @@ class Database extends BackendPluginBase {
     }
     $expressions = &$db_query->getExpressions();
     $expressions = array();
+
+    // If there's a GROUP BY for item_id, we leave that, all others need to be
+    // discarded.
+    $group_by = &$db_query->getGroupBy();
+    $group_by = array_intersect_key($group_by, array('t.item_id' => TRUE));
+
     $db_query->distinct();
     if (!$db_query->preExecute()) {
       return FALSE;
     }
     $args = $db_query->getArguments();
     try {
-      $result = $this->database->queryTemporary((string)$db_query, $args);
+      $result = $this->database->queryTemporary((string) $db_query, $args);
     }
-    catch(\PDOException $e) {
+    catch (\PDOException $e) {
       watchdog_exception('search_api', $e, '%type while trying to create a temporary table: @message in %function (line %line of %file).');
       return FALSE;
     }
@@ -2215,8 +2342,8 @@ class Database extends BackendPluginBase {
         $query->keys($user_input);
       }
       // To avoid suggesting incomplete words, we have to temporarily disable
-      // the "partial_matches" option. (There should be no way we'll save the
-      // server during the createDbQuery() call, so this should be safe.)
+      // the "partial_matches" option. There should be no way we'll save the
+      // server during the createDbQuery() call, so this should be safe.
       $options = $this->options;
       $this->options['partial_matches'] = FALSE;
       $db_query = $this->createDbQuery($query, $fields);
@@ -2310,16 +2437,20 @@ class Database extends BackendPluginBase {
   }
 
   /**
-   * Retrieve the database info for the given index, or some data from it.
+   * Retrieves the database info for the given index.
    *
    * @param \Drupal\search_api\IndexInterface $index
    *   The search index.
    *
-   * @return array|string
-   *   The requested data from the key-value store.
+   * @return array
+   *   The index data from the key-value store.
    */
   protected function getIndexDbInfo(IndexInterface $index) {
-    return $this->getKeyValueStore()->get($index->id(), array());
+    $db_info = $this->getKeyValueStore()->get($index->id(), array());
+    if ($db_info && $db_info['server'] != $this->server->id()) {
+      return array();
+    }
+    return $db_info;
   }
 
   /**

@@ -16,16 +16,17 @@ class SearchPageController extends ControllerBase {
 
   protected $items_per_page = 5;
   protected $items_viewmode = 'search_result';
-  protected $search = NULL;
+  protected static $search = NULL;
+
+  public static function getSearch() {
+    if (empty(self::$search)) {
+        $server_config = new SolrSearchServer('default_node_index');
+        self::$search = new SolrSearch($_GET, $server_config);
+    }
+    return self::$search;
+  }
 
   public function __construct() {
-    try {
-      $server_config = new SolrSearchServer('default_node_index');
-      $this->search = new SolrSearch($_GET, $server_config);
-    } catch (\Exception $e) {
-      watchdog_exception('iucn_search', $e);
-      drupal_set_message($this->t('An error occurred.'), 'error');
-    }
   }
 
   public function searchPage() {
@@ -34,7 +35,7 @@ class SearchPageController extends ControllerBase {
 
     /** @var SearchResult $result */
     try {
-      if ($result = $this->search->search($current_page, $this->items_per_page)) {
+      if ($result = self::getSearch()->search($current_page, $this->items_per_page)) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
         $rows = $result->getResults();
 

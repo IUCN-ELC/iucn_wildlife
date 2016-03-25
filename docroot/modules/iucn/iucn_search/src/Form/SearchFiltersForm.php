@@ -9,24 +9,10 @@ namespace Drupal\iucn_search\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\iucn_search\edw\solr\SearchResult;
+use Drupal\iucn_search\Controller\SearchPageController;
 use Drupal\iucn_search\edw\solr\SolrFacet;
-use Drupal\iucn_search\edw\solr\SolrSearch;
-use Drupal\iucn_search\edw\solr\SolrSearchServer;
 
 class SearchFiltersForm extends FormBase {
-
-  protected $search = NULL;
-
-  public function __construct() {
-    try {
-      $server_config = new SolrSearchServer('default_node_index');
-      $this->search = new SolrSearch($_GET, $server_config);
-    } catch (\Exception $e) {
-      watchdog_exception('iucn_search', $e);
-      drupal_set_message($this->t('An error occurred.'), 'error');
-    }
-  }
 
   /**
    * {@inheritdoc}
@@ -39,7 +25,8 @@ class SearchFiltersForm extends FormBase {
    * {@inheritdoc}.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $fqParams = $this->search->getFilterQueryParameters();
+    // @todo: handle exception
+    $fqParams = SearchPageController::getSearch()->getFilterQueryParameters();
     $fqReset = [];
     foreach ($fqParams as $field => $value) {
       $term = \Drupal\taxonomy\Entity\Term::load($value);
@@ -79,19 +66,19 @@ class SearchFiltersForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $query = $this->search->getHttpQueryParameters($form_state);
+    $query = SearchPageController::getSearch()->getHttpQueryParameters($form_state);
     $form_state->setRedirect('iucn.search', [], ['query' => $query]);
   }
 
   private function getRenderedFacets() {
     $return = [];
 
+    // @todo: handle exception
     /** @var SolrFacet $facet */
-    foreach ($this->search->getFacets() as $facet_id => $facet) {
+    foreach (SearchPageController::getSearch()->getFacets() as $facet_id => $facet) {
       $return[$facet_id] = $facet->renderAsWidget($_GET);
     }
 
     return $return;
   }
-
 }

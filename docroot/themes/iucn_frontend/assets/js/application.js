@@ -82,6 +82,7 @@
     size: 'mini'
   });
 
+  $('.search-submit').hide();
   $('.search-filters').removeClass('invisible');
 
   var offset = window.sessionStorage.getItem('offset');

@@ -76,6 +76,11 @@ class IucnSearchForm extends FormBase {
         $this->getRenderedFacets()
       ],
       [
+        '#attributes' => ['class' => ['btn-block', 'search-submit']],
+        '#type' => 'submit',
+        '#value' => $this->t('Search')
+      ],
+      [
         '#attributes' => [
           'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block', 'search-reset'],
           'type' => 'reset'
@@ -92,10 +97,6 @@ class IucnSearchForm extends FormBase {
     ];
     $form['pager'] = [
       '#type' => 'pager'
-    ];
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Search')
     ];
     return $form;
   }

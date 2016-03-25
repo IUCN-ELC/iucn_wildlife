@@ -225,9 +225,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .iucn-search-form {
   font-size: 14px;
 }
-.iucn-search-form .form-submit {
-  display: none;
-}
 .iucn-search-form .search-filters .checkbox {
   float: right;
   margin-top: 0;

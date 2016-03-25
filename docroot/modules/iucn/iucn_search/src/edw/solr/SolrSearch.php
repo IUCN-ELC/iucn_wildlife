@@ -37,14 +37,12 @@ class SolrSearch {
   /** @var \Drupal\iucn_search\edw\solr\SolrSearchServer */
   protected $server = NULL;
   protected $facets = array();
-  protected $filterQueryFields = array();
 
   public function __construct(array $parameters, SolrSearchServer $server) {
     $this->parameters = $parameters;
     $this->server = $server;
     $this->facets = \Drupal::service('module_handler')->invokeAll('edw_search_solr_facet_info', array('server' => $server));
     \Drupal::service('module_handler')->alter('edw_search_solr_facet_info', $this->facets, $server);
-    $this->filterQueryFields = \Drupal::service('module_handler')->invokeAll('edw_search_solr_filter_query_fields_info');
   }
 
   /**
@@ -76,19 +74,23 @@ class SolrSearch {
     $facetSet->setMissing(FALSE);
     /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
-      $facet->alterSolrQuery($query, $this->parameters);
       $facet->createSolrFacet($facetSet);
     }
-    foreach ($this->filterQueryFields as $field) {
-      // Add the filter only if the field is not faceted.
-      if (!array_key_exists($field, $this->facets)) {
-        $value = $this->getParameter($field);
-        if ($value) {
-          $fq = $query->createFilterQuery(array(
-            'key' => $solr_field_mappings[$field],
-            'query' => "{$solr_field_mappings[$field]}:{$value}",
-          ));
-          $query->addFilterQuery($fq);
+    foreach ($this->parameters as $field) {
+      // Add the filter only if the field in indexed and is not faceted.
+      if (array_key_exists($field, $this->facets)) {
+        $this->facets[$field]->alterSolrQuery($query, $this->parameters);
+      }
+      else {
+        if (!empty($solr_field_mappings[$field])) {
+          $value = $this->getParameter($field);
+          if ($value) {
+            $fq = $query->createFilterQuery(array(
+              'key' => $solr_field_mappings[$field],
+              'query' => "{$solr_field_mappings[$field]}:{$value}",
+            ));
+            $query->addFilterQuery($fq);
+          }
         }
       }
     }

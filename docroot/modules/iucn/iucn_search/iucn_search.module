@@ -99,3 +99,23 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
   }
   return $ret;
 }
+
+/**
+ * Implements hook_edw_search_solr_filter_query_fields_info().
+ */
+function iucn_search_edw_search_solr_filter_query_fields_info() {
+  // All taxonomy fields should be filtered in search.
+  $fields = [];
+  $ids = \Drupal::entityQuery('field_config')
+    ->condition('id', 'node.court_decision.', 'STARTS_WITH')
+    ->execute();
+  $field_configs = Drupal\field\Entity\FieldConfig::loadMultiple($ids);
+  foreach ($field_configs as $field_instance) {
+    // Get all court_decision taxonomy fields.
+    if ($field_instance->getType() == 'entity_reference' &&
+      $field_instance->getSetting('target_type') == 'taxonomy_term') {
+      $fields[] = $field_instance->getName();
+    }
+  }
+  return $fields;
+}

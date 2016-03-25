@@ -37,12 +37,14 @@ class SolrSearch {
   /** @var \Drupal\iucn_search\edw\solr\SolrSearchServer */
   protected $server = NULL;
   protected $facets = array();
+  protected $filterQueryFields = array();
 
   public function __construct(array $parameters, SolrSearchServer $server) {
     $this->parameters = $parameters;
     $this->server = $server;
     $this->facets = \Drupal::service('module_handler')->invokeAll('edw_search_solr_facet_info', array('server' => $server));
     \Drupal::service('module_handler')->alter('edw_search_solr_facet_info', $this->facets, $server);
+    $this->filterQueryFields = \Drupal::service('module_handler')->invokeAll('edw_search_solr_filter_query_fields_info');
   }
 
   /**
@@ -52,7 +54,7 @@ class SolrSearch {
    * @return \Drupal\iucn_search\edw\solr\SearchResult
    *   Results
    */
-  public function search($page, $size, $filterQueryFields = []) {
+  public function search($page, $size) {
     $search_text = $this->getParameter('q');
     $query = $this->server->createSelectQuery();
     $query_fields = array_values($this->server->getSearchFieldsMappings());
@@ -77,14 +79,18 @@ class SolrSearch {
       $facet->alterSolrQuery($query, $this->parameters);
       $facet->createSolrFacet($facetSet);
     }
-    foreach ($filterQueryFields as $field) {
+    foreach ($this->filterQueryFields as $field) {
       // Add the filter only if the field is not faceted.
-      $value = $this->getParameter($field);
-      $fq = $query->createFilterQuery(array(
-        'key' => $solr_field_mappings[$field],
-        'query' => "{$solr_field_mappings[$field]}:{$value}",
-      ));
-      $query->addFilterQuery($fq);
+      if (!array_key_exists($field, $this->facets)) {
+        $value = $this->getParameter($field);
+        if ($value) {
+          $fq = $query->createFilterQuery(array(
+            'key' => $solr_field_mappings[$field],
+            'query' => "{$solr_field_mappings[$field]}:{$value}",
+          ));
+          $query->addFilterQuery($fq);
+        }
+      }
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
     $resultSet = $this->server->executeQuery($query);

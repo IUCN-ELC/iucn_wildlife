@@ -31,7 +31,6 @@ function hook_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\SolrSearch
   );
 }
 
-
 /**
  * Lets modules alter facets.
  *
@@ -41,6 +40,19 @@ function hook_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\SolrSearch
  *   The Search server to pull information from about the indexed fields.
  */
 function hook_edw_search_solr_facet_info_alter(array $facets, \Drupal\iucn_search\edw\solr\SolrSearchServer $server) {
+}
+
+/**
+ * Lets modules alter the filter query fields.
+ *
+ * @return array
+ *   Array of fields.
+ */
+function hook_edw_search_solr_filter_query_fields_info() {
+  return array(
+    'field_country',
+    'field_region',
+  );
 }
 
 /**

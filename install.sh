@@ -4,7 +4,7 @@
 cd docroot/
 drush sql-drop -y
 
-env="prod"
+env="test"
 if [ ! -z "$1" ]; then
   env=$1
 fi
@@ -20,5 +20,9 @@ drush cim local --partial -y
 
 echo "Running database pending updates ..."
 drush updatedb
+
+echo "Resetting admin password..."
+drush user-password admin --password="password"
+
 drush cr
 echo "Done"

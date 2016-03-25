@@ -50,9 +50,11 @@ class IucnSearchForm extends FormBase {
       if ($result = $this->search->search($current_page, $this->items_per_page)) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
         $rows = $result->getResults();
-        foreach($rows as $nid => $data) {
+        foreach ($rows as $nid => $data) {
           $node = \Drupal\node\Entity\Node::load($nid);
-          $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+          if (!empty($node)) {
+            $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+          }
         }
       }
     }

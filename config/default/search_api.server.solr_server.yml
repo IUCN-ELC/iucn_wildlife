@@ -22,7 +22,7 @@ backend_config:
     excerpt: 1
     retrieve_data: 1
     highlight_data: 1
-    skip_schema_check: 1
+    skip_schema_check: 0
     solr_version: ''
     http_method: AUTO
     site_hash: 0
@@ -31,7 +31,7 @@ backend_config:
   excerpt: 1
   retrieve_data: 1
   highlight_data: 1
-  skip_schema_check: 1
+  skip_schema_check: 0
   solr_version: ''
   http_method: AUTO
   site_hash: 0

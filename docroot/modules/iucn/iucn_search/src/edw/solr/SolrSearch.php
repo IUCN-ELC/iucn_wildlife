@@ -75,21 +75,14 @@ class SolrSearch {
     /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
       $facet->createSolrFacet($facetSet);
+      $facet->alterSolrQuery($query, $this->parameters);
     }
-    foreach ($this->parameters as $field => $value) {
-      // Add the filter only if the field in indexed and is not faceted.
-      if (array_key_exists($field, $this->facets)) {
-        $this->facets[$field]->alterSolrQuery($query, $this->parameters);
-      }
-      else {
-        if (!empty($solr_field_mappings[$field])) {
-          $fq = $query->createFilterQuery(array(
-            'key' => $solr_field_mappings[$field],
-            'query' => "{$solr_field_mappings[$field]}:{$value}",
-          ));
-          $query->addFilterQuery($fq);
-        }
-      }
+    foreach ($this->getFilterQueryParameters() as $field => $value) {
+      $fq = $query->createFilterQuery(array(
+        'key' => $solr_field_mappings[$field],
+        'query' => "{$solr_field_mappings[$field]}:{$value}",
+      ));
+      $query->addFilterQuery($fq);
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
     $resultSet = $this->server->executeQuery($query);
@@ -116,6 +109,18 @@ class SolrSearch {
     if (!empty($this->parameters[$name])) {
       $ret = $this->parameters[$name];
       // @todo: Security check input parameters
+    }
+    return $ret;
+  }
+
+  public function getFilterQueryParameters() {
+    $ret = [];
+    $solr_field_mappings = $this->server->getSolrFieldsMappings();
+    foreach ($this->parameters as $field => $value) {
+      // Add the filter only if the field in indexed and is not faceted.
+      if (!empty($solr_field_mappings[$field] && !array_key_exists($field, $this->facets))) {
+        $ret[$field] = $value;
+      }
     }
     return $ret;
   }

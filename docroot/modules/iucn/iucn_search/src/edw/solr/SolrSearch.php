@@ -163,6 +163,7 @@ class SolrSearch {
     foreach ($this->getFacets() as $facet_id => $facet) {
       $query = array_merge($query, $facet->renderAsGetRequest($form_state));
     }
+    $query = array_merge($query, $this->getFilterQueryParameters());
     return $query;
   }
 }

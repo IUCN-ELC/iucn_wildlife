@@ -42,3 +42,23 @@ function hook_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\SolrSearch
  */
 function hook_edw_search_solr_facet_info_alter(array $facets, \Drupal\iucn_search\edw\solr\SolrSearchServer $server) {
 }
+
+/**
+ * Last chance to alter the Solr query before is sent to execution.
+ *
+ * @param array $facets
+ *   Array with existing facets
+ * @param \Solarium\QueryType\Select\Query\Query $query
+ *   Solr query object
+ */
+function hook_edw_search_solr_query_alter(\Solarium\QueryType\Select\Query\Query $query) {
+}
+
+/**
+ * Alter the search results immediately after the search
+ *
+ * @param array $results
+ *   Array with results keyed by nid
+ */
+function hook_edw_search_solr_results_alter(array $results) {
+}

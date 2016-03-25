@@ -2,17 +2,23 @@
 
 # Go to docroot/
 cd docroot/
-
 drush sql-drop -y
 
-drush sql-sync @iucnwildlifed8.prod @self -y
+env="prod"
+if [ ! -z "$1" ]; then
+  env=$1
+fi
 
-echo "Importing configuration..."
+echo "Getting '$env' environment database ..."
+drush sql-sync "@iucnwildlifed8.$env" @self -y
+
+echo "Importing 'default' configuration..."
 drush cim vcs -y
 
-echo "Updating database..."
+echo "Importing 'local' configuration..."
+drush cim local --partial -y
+
+echo "Running database pending updates ..."
 drush updatedb
-
 drush cr
-
 echo "Done"

@@ -1,124 +1,13 @@
-#search-form {
-  .form-control {
-    border-radius: 5px;
-    font-size: 16px;
-    padding-right: 120px;
-  }
-
-  .has-feedback {
-    .form-control {
-      padding-left: 45px;
-    }
-  }
-
-  .form-control-feedback {
-    color: #666;
-    left: 0;
-    right: auto;
-  }
-
-  .btn {
-    line-height: 27px;
-    position: absolute;
-    right: 4px;
-    top: 4px;
-    width: 100px;
-  }
-
-  .btn-primary {
-    .button-variant(#fff, #0077c0, #0077c0);
-  }
-}
-
-.panel {
-  border-width: 2px;
-}
-
-.panel-tour {
-  .tour-title {
-    margin-top: 22px;
-  }
-}
-
-.panel-resources {
-  .list-resources {
+.other-resources {
+  .resources-list {
     margin-bottom: 0;
 
     > dd {
       margin-bottom: 11px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
-}
-
-@media (max-width: 991px) {
-  .panel-tour {
-    &:last-child {
-      margin-bottom: 22px;
-    }
-  }
-}
-
-@media (min-width: 992px) {
-  .row-flex,
-  .col-flex {
-    display: flex;
-  }
-
-  .panel-tour {
-    align-items: center;
-    display: flex;
-  }
-}
-
-.field--label {
-  color: #212121;
-  font-size: 14px;
-  padding-top: 3px;
-}
-
-#iucn-search-form {
-  .form-submit {
-    display: none;
-  }
-
-  .search-facets {
-    font-size: 14px;
-
-    .checkbox {
-      float: right;
-      margin-top: 0;
-    }
-  }
-
-  .facet-title {
-    float: left;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    margin-top: 4px;
-  }
-
-  .select2 {
-    .select2-selection {
-      border: none;
-    }
-
-    .select2-selection__rendered {
-      padding: 0;
-    }
-
-    .select2-selection__choice {
-      clear: left;
-    }
-  }
-
-  .select-wrapper {
-    &:after {
-      content: none;
-    }
-  }
-}
-
-.search-result {
-  margin-bottom: 22px;
 }

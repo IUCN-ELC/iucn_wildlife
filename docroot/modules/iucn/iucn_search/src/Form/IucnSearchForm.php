@@ -57,13 +57,7 @@ class IucnSearchForm extends FormBase {
       }
     }
     catch(\Exception $e) {
-      drupal_set_message(
-        strtr('An error occured: !message', array('!message' => $e->getMessage())),
-        'error'
-      );
-      if (function_exists('dpm')) {
-        dpm($e->__toString());
-      }
+      return $this->handleError($e);
     }
 
     $form['row'] = [
@@ -71,16 +65,26 @@ class IucnSearchForm extends FormBase {
       '#type' => 'container'
     ];
     $form['row'][] = [
-      '#attributes' => ['class' => ['col-md-3', 'col-md-push-9', 'search-facets', 'invisible']],
+      '#attributes' => ['class' => ['col-md-4', 'col-md-push-8', 'search-options']],
       '#type' => 'container',
       [
+        '#attributes' => ['class' => ['search-filters', 'invisible']],
         '#title' => $this->t('Search filters'),
         '#type' => 'fieldset',
         $this->getRenderedFacets()
+      ],
+      [
+        '#attributes' => [
+          'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block', 'search-reset'],
+          'type' => 'reset'
+        ],
+        '#tag' => 'button',
+        '#type' => 'html_tag',
+        '#value' => $this->t('Reset all filters')
       ]
     ];
     $form['row'][] = [
-      '#attributes' => ['class' => ['col-md-6', 'col-md-pull-3', 'search-results']],
+      '#attributes' => ['class' => ['col-md-8', 'col-md-pull-4', 'search-results']],
       '#type' => 'container',
       $results
     ];
@@ -109,5 +113,33 @@ class IucnSearchForm extends FormBase {
       $return[$facet_id] = $facet->renderAsWidget($_GET);
     }
     return $return;
+  }
+
+  private function handleError(\Exception $e) {
+    $message = $e->getMessage();
+    if (empty($message)) {
+      $message = $this->t('Backend error');
+    }
+    $message = $this->t('Search was interrupted: @message', array('@message' => $message));
+    watchdog_exception('iucn_search', $e, $message);
+    drupal_set_message($message, 'error');
+    $ret['error-message'] = array(
+      '#type' => 'item',
+      '#markup' => $this->t('<p>An internal error has occurred during page load and the process was interrupted.</p><p>We apologise for the inconvenience</p>')
+    );
+    if (function_exists('dpm')) {
+      $ret['error-message-details'] = array(
+        '#title' => 'Technical details',
+        '#type' => 'item',
+        '#markup' => $e->getMessage()
+      );
+      $ret['error-message-stack'] = array(
+        '#type' => 'item',
+        '#prefix' => '<pre>',
+        '#markup' => trim($e->getTraceAsString()),
+        '#suffix' => '</pre>'
+      );
+    }
+    return $ret;
   }
 }

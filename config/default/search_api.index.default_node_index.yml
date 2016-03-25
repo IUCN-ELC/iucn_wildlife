@@ -12,6 +12,11 @@ dependencies:
     - field.field.node.court_decision.field_files
     - field.field.node.court_decision.field_instance
     - field.field.node.court_decision.field_justices
+    - field.field.node.court_decision.field_keywords
+    - field.field.node.court_decision.field_language_of_document
+    - field.field.node.court_decision.field_offences
+    - field.field.node.court_decision.field_region
+    - field.field.node.court_decision.field_species
     - field.field.node.court_decision.field_subdivision
     - field.field.node.court_decision.field_territorial_subdivisions
     - field.field.node.court_decision.field_type_of_text
@@ -108,6 +113,31 @@ field_settings:
     datasource_id: null
     property_path: search_api_attachments_field_files
     type: text
+  field_language_of_document:
+    label: 'Language of document'
+    datasource_id: 'entity:node'
+    property_path: field_language_of_document
+    type: integer
+  field_keywords:
+    label: Keywords
+    datasource_id: 'entity:node'
+    property_path: field_keywords
+    type: integer
+  field_offences:
+    label: Offences
+    datasource_id: 'entity:node'
+    property_path: field_offences
+    type: integer
+  field_region:
+    label: Region
+    datasource_id: 'entity:node'
+    property_path: field_region
+    type: integer
+  field_species:
+    label: Species
+    datasource_id: 'entity:node'
+    property_path: field_species
+    type: integer
 processor_settings:
   add_url:
     plugin_id: add_url
@@ -130,7 +160,7 @@ processor_settings:
       weights:
         preprocess_index: '0'
 options:
-  index_directly: false
+  index_directly: true
   cron_limit: 50
 datasource_settings:
   'entity:node':

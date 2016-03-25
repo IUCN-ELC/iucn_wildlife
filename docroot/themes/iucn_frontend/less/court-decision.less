@@ -18,25 +18,44 @@
   }
 
   &.search-result {
-    font-size: 14px;
+    margin-bottom: 22px;
 
     h2  {
       font-size: 18px;
-      margin-bottom: 0;
+      margin-bottom: 1px;
       margin-top: 0;
     }
 
-    .field--label {
-      display: inline-block;
-
-      &:after {
-        content: ':';
+    .field--name-field-type-of-text,
+    .field--name-field-country,
+    .field--name-field-court-name,
+    .field--name-field-date-of-entry,
+    .field--name-field-isis-number {
+      &,
+      .field--items,
+      .field--item {
+        display: inline;
       }
     }
 
-    .field--items,
-    .field--item {
-      display: inline;
+    .field--name-field-type-of-text {
+      color: #090;
+    }
+
+    .field--name-field-country,
+    .field--name-field-court-name,
+    .field--name-field-date-of-entry,
+    .field--name-field-isis-number {
+      color: #808080;
+
+      &:before {
+        color: #ccc;
+        content: "\2013";
+      }
+    }
+
+    .field--name-field-abstract {
+      margin-top: 2px;
     }
   }
 }

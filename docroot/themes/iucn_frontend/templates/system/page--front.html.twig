@@ -51,8 +51,7 @@
  * - page.highlighted: Items for the highlighted content region.
  * - page.help: Dynamic help text, mostly for admin pages.
  * - page.content: The main content of the current page.
- * - page.sidebar_first: Items for the first sidebar.
- * - page.sidebar_second: Items for the second sidebar.
+ * - page.sidebar: Items for the sidebar.
  * - page.footer: Items for the footer region.
  *
  * @see template_preprocess_page()
@@ -65,80 +64,25 @@
 
 {% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
 
-{# Main #}
-{% block main %}
-  <div role="main" class="main-container {{ container }} js-quickedit-main-content">
-    <div class="row row-flex">
-      {# Tour Box #}
-      <aside class="col-md-3 col-flex" role="complementary">
-        <div class="panel panel-primary panel-tour">
-          <div class="panel-body text-center">
-            <p><img src="{{ base_path ~ directory }}/assets/img/icon-directions.png" alt=""></p>
-            <h4 class="tour-title">Take a tour of the prototype</h4>
-            <p>See all the great features of this prototype and learn about what we have in mind for the final product.</p>
-            <p>We wish to offer end users a similar tour to help them get acquainted to the new interface.</p>
-            <p><a href="#" class="btn btn-primary">Start tour</a></p>
-          </div>
-        </div>
-      </aside>
-
-      {# Content #}
-      {%
-        set content_classes = [
-          'col-md-9',
-          'col-flex'
-        ]
-      %}
-      <section{{ content_attributes.addClass(content_classes) }}>
-        {# Highlighted #}
-        {% if page.highlighted %}
-          {% block highlighted %}
-            <div class="highlighted">{{ page.highlighted }}</div>
-          {% endblock %}
-        {% endif %}
-
-        {# Breadcrumbs #}
-        {% if breadcrumb %}
-          {% block breadcrumb %}
-            {{ breadcrumb }}
-          {% endblock %}
-        {% endif %}
-
-        {# Action Links #}
-        {% if action_links %}
-          {% block action_links %}
-            <ul class="action-links">{{ action_links }}</ul>
-          {% endblock %}
-        {% endif %}
-
-        {# Help #}
-        {% if page.help %}
-          {% block help %}
-            {{ page.help }}
-          {% endblock %}
-        {% endif %}
-
-        {# Content #}
-        {% block content %}
-          <a id="main-content"></a>
-          <div class="panel panel-default panel-resources">
-            <div class="panel-body">
-              <h4>Other resources</h4>
-              <p>For further read, please consult these websites.</p>
-              <dl class="list-resources">
-                <dt><a href="#">Protected Areas Law</a></dt>
-                <dd>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Environmental Law, and the IUCN Academy of Environmental Law, working with the World Commission on Protected Areas, the IUCN Global Protected Areas Programme, and IUCN regional offices for Eastern and Southern Africa (ESARO), West and Central Africa (PACO), and Mexico, Central America and the Caribbean (ORMACC). It is generously supported by the Aage V. Jensen Charity Foundation.</dd>
-                <dt><a href="#">Law for Sustainability</a></dt>
-                <dd>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Environmental Law, and the IUCN Academy of Environmental Law. It is generously supported by the German Federal Ministry for Economic Cooperation and Development (BMZ).</dd>
-                <dt><a href="#">Water Law &amp; Governance Support Platform</a></dt>
-                <dd>The Water Law and Governance Support Platform (WLGSP) offers legal expertise and ad hoc technical support on water governance issues in transboundary basins.</dd>
-                <dt><a href="#">Mesolex</a></dt>
-                <dd>This database has been designed as a regional platform ECOLEX. Here you will find updated information related to environmental governance instruments that affect natural resources information.</dd>
-              </dl>
-            </div>
-          </div>
-        {% endblock %}
-      </section>
+{# Content #}
+{% block content %}
+  <a id="main-content"></a>
+  <div class="panel panel-default other-resources">
+    <div class="panel-heading">
+      <h3 class="panel-title">Other resources</h3>
+    </div>
+    <div class="panel-body">
+      <p>For further read, please consult these websites.</p>
+      <dl class="resources-list">
+        <dt><a href="#">Protected Areas Law</a></dt>
+        <dd>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Environmental Law, and the IUCN Academy of Environmental Law, working with the World Commission on Protected Areas, the IUCN Global Protected Areas Programme, and IUCN regional offices for Eastern and Southern Africa (ESARO), West and Central Africa (PACO), and Mexico, Central America and the Caribbean (ORMACC). It is generously supported by the Aage V. Jensen Charity Foundation.</dd>
+        <dt><a href="#">Law for Sustainability</a></dt>
+        <dd>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Environmental Law, and the IUCN Academy of Environmental Law. It is generously supported by the German Federal Ministry for Economic Cooperation and Development (BMZ).</dd>
+        <dt><a href="#">Water Law &amp; Governance Support Platform</a></dt>
+        <dd>The Water Law and Governance Support Platform (WLGSP) offers legal expertise and ad hoc technical support on water governance issues in transboundary basins.</dd>
+        <dt><a href="#">Mesolex</a></dt>
+        <dd>This database has been designed as a regional platform ECOLEX. Here you will find updated information related to environmental governance instruments that affect natural resources information.</dd>
+      </dl>
     </div>
   </div>
 {% endblock %}

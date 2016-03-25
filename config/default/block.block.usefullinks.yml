@@ -1,0 +1,25 @@
+uuid: 86b91d4e-bfa7-4b94-b200-f47aa22cdd9a
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:e52b7abf-29c5-4721-a100-fb74c86d3aaa'
+  module:
+    - block_content
+  theme:
+    - iucn_frontend
+id: usefullinks
+theme: iucn_frontend
+region: sidebar_second
+weight: -7
+provider: null
+plugin: 'block_content:e52b7abf-29c5-4721-a100-fb74c86d3aaa'
+settings:
+  id: 'block_content:e52b7abf-29c5-4721-a100-fb74c86d3aaa'
+  label: 'Useful links'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

@@ -48,14 +48,16 @@ class SolrSearch {
   /**
    * @param $page
    * @param $size
+   * @param $filterQueryFields array
    * @return \Drupal\iucn_search\edw\solr\SearchResult
    *   Results
    */
-  public function search($page, $size) {
+  public function search($page, $size, $filterQueryFields = []) {
     $search_text = $this->getParameter('q');
     $query = $this->server->createSelectQuery();
     $query_fields = array_values($this->server->getSearchFieldsMappings());
     $solr_id_field = $this->server->getDocumentIdField();
+    $solr_field_mappings = $this->server->getSolrFieldsMappings();
 
     $query->setQuery($search_text);
     $query->setFields(array('*', 'score'));
@@ -74,6 +76,15 @@ class SolrSearch {
     foreach ($this->facets as $facet) {
       $facet->alterSolrQuery($query, $this->parameters);
       $facet->createSolrFacet($facetSet);
+    }
+    foreach ($filterQueryFields as $field) {
+      // Add the filter only if the field is not faceted.
+      $value = $this->getParameter($field);
+      $fq = $query->createFilterQuery(array(
+        'key' => $solr_field_mappings[$field],
+        'query' => "{$solr_field_mappings[$field]}:{$value}",
+      ));
+      $query->addFilterQuery($fq);
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
     $resultSet = $this->server->executeQuery($query);

@@ -41,6 +41,11 @@
     },
     templateSelection: function (data, container) {
       var splits = data.text.split(' (');
+
+      if (splits.length === 1) {
+        return data.text;
+      }
+
       var html = ' ' + splits[0] + ' <sup class="badge">' + splits[1].split(')')[0] + '</sup>';
 
       return $.parseHTML(html);

@@ -413,6 +413,15 @@ class SolrSearchTest extends WebTestBase {
     $result = $search->search(0, 10);
     $this->assertEqual(1, $result->getCountTotal(), $test_case);
 
+    $test_case = 'Search word in title and field_abstract';
+    $params = array(
+      'q' => 'Bluefin Tuna',
+    );
+    $search = new SolrSearch($params, $search_server);
+    $result = $search->search(0, 10);
+    $this->assertEqual(2, $result->getCountTotal(), $test_case);
+
+
 
   }
 }

@@ -118,7 +118,7 @@ class SolrSearch {
     $solr_field_mappings = $this->server->getSolrFieldsMappings();
     foreach ($this->parameters as $field => $value) {
       // Add the filter only if the field in indexed and is not faceted.
-      if (!empty($solr_field_mappings[$field] && !array_key_exists($field, $this->facets))) {
+      if (!empty($solr_field_mappings[$field]) && !array_key_exists($field, $this->facets)) {
         $ret[$field] = $value;
       }
     }

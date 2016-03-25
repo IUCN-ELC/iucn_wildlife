@@ -1,7 +1,15 @@
 iucn.search:
   path: '/search'
   defaults:
-    _form: 'Drupal\iucn_search\Form\IucnSearchForm'
+    _form: '\Drupal\iucn_search\Form\IucnSearchForm'
+    _title: 'Search'
+  requirements:
+    _permission: 'access content'
+
+iucn.search_page_controller:
+  path: '/search_page'
+  defaults:
+    _controller: '\Drupal\iucn_search\Controller\SearchPageController::searchPage'
     _title: 'Search'
   requirements:
     _permission: 'access content'

@@ -21,6 +21,8 @@ use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Backend\BackendPluginBase;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\Utility as SearchApiUtility;
+use Drupal\search_api_solr\SearchApiSolrException;
+use Drupal\search_api_solr\SolrBackendInterface;
 use Drupal\search_api_solr\Utility\Utility as SearchApiSolrUtility;
 use Drupal\search_api_solr\Solr\SolrHelper;
 use Solarium\Client;
@@ -41,7 +43,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Index items using an Apache Solr search server.")
  * )
  */
-class SearchApiSolrBackend extends BackendPluginBase {
+class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInterface {
 
   /**
    * The date format that Solr uses, in PHP date() syntax.
@@ -282,6 +284,8 @@ class SearchApiSolrBackend extends BackendPluginBase {
         '1' => '1.4',
         '3' => '3.x',
         '4' => '4.x',
+        '5' => '5.x',
+        '6' => '6.x',
       ),
       '#default_value' => $this->configuration['solr_version'],
     );
@@ -303,13 +307,6 @@ class SearchApiSolrBackend extends BackendPluginBase {
       ),
     );
 
-    $description = $this->t('Automatically filter all searches to only retrieve results from this Drupal site. This enables you to use the same Solr server (and core) with multiple sites. Disable if you want to retrieve results from multiple sites at once.');
-    $form['advanced']['site_hash'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Multi-site compatibility'),
-      '#description' => $description,
-      '#default_value' => $this->configuration['site_hash'],
-    );
 
     if ($this->moduleHandler->moduleExists('search_api_autocomplete')) {
       $form['advanced']['autocomplete'] = array(
@@ -331,6 +328,20 @@ class SearchApiSolrBackend extends BackendPluginBase {
         '#default_value' => $this->configuration['autocorrect_suggest_words'],
       );
     }
+
+    $form['multisite'] = array(
+      '#type' => 'fieldset',
+      '#title' => $this->t('Multi-site compatibility'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $description = $this->t('Automatically filter all searches to only retrieve results from this Drupal site. By default a Solr server (and core) is able to index the data of multiple sites. Disable if you want to retrieve results from multiple sites at once.');
+    $form['multisite']['site_hash'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Retrieve results for this site only'),
+      '#description' => $description,
+      '#default_value' => $this->configuration['site_hash'],
+    );
 
     return $form;
   }
@@ -355,8 +366,8 @@ class SearchApiSolrBackend extends BackendPluginBase {
     // unnecessary dependency on internal implementation.)
     $values += $values['http'];
     $values += $values['advanced'];
+    $values += $values['multisite'];
     $values += !empty($values['autocomplete']) ? $values['autocomplete'] : array();
-    unset($values['http'], $values['advanced'], $values['autocomplete']);
 
     // Highlighting retrieved data only makes sense when we retrieve data.
     $values['highlight_data'] &= $values['retrieve_data'];
@@ -373,6 +384,11 @@ class SearchApiSolrBackend extends BackendPluginBase {
       $form_state->setValue($key, $value);
     }
 
+    // Clean-up the form to avoid redundant entries in the stored configuration.
+    $form_state->unsetValue('http');
+    $form_state->unsetValue('advanced');
+    $form_state->unsetValue('multisite');
+    $form_state->unsetValue('autocomplete');
     // The server description is a #type item element, which means it has a
     // value, do not save it.
     $form_state->unsetValue('server_description');
@@ -391,6 +407,7 @@ class SearchApiSolrBackend extends BackendPluginBase {
       //'search_api_facets_operator_or',
       //'search_api_grouping',
       'search_api_mlt',
+      'search_api_random_sort',
       'search_api_spellcheck',
       //'search_api_data_type_location',
       //'search_api_data_type_geohash',
@@ -522,6 +539,44 @@ class SearchApiSolrBackend extends BackendPluginBase {
     }
 
     return $info;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function updateIndex(IndexInterface $index) {
+    if ($this->indexFieldsUpdated($index)) {
+      $index->reindex();
+    }
+  }
+
+  /**
+   * Checks if the recently updated index had any fields changed.
+   *
+   * @param \Drupal\search_api\IndexInterface $index
+   *
+   * @return bool
+   */
+  protected function indexFieldsUpdated(IndexInterface $index) {
+    // Get the original index, before the update. If it cannot be found, err on
+    // the side of caution.
+    if (!isset($index->original)) {
+      return TRUE;
+    }
+    /** @var \Drupal\search_api\IndexInterface $original */
+    $original = $index->original;
+
+    $old_fields = $original->getFields();
+    $new_fields = $index->getFields();
+    if (!$old_fields && !$new_fields) {
+      return FALSE;
+    }
+    if (array_diff_key($old_fields, $new_fields) || array_diff_key($new_fields, $old_fields)) {
+      return TRUE;
+    }
+    $old_field_names = $this->getFieldNames($original, FALSE, TRUE);
+    $new_field_names = $this->getFieldNames($index, FALSE, TRUE);
+    return $old_field_names != $new_field_names;
   }
 
   /**
@@ -660,7 +715,7 @@ class SearchApiSolrBackend extends BackendPluginBase {
       $this->solr->execute($this->getUpdateQuery());
     }
     catch (ExceptionInterface $e) {
-      throw new SearchApiException($e->getMessage(), $e->getCode(), $e);
+      throw new SearchApiSolrException($e->getMessage(), $e->getCode(), $e);
     }
   }
 
@@ -701,6 +756,13 @@ class SearchApiSolrBackend extends BackendPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * Options on $query prefixed by 'solr_param_' will be passed natively to Solr
+   * as query parameter without the prefix. For example you can set the "Minimum
+   * Should Match" parameter 'mm' to '75%' like this:
+   * @code
+   *   $query->setOption('solr_param_mm', '75%');
+   * @endcode
    */
   public function search(QueryInterface $query) {
     // Reset request handler.
@@ -811,6 +873,12 @@ class SearchApiSolrBackend extends BackendPluginBase {
       $solarium_query->getSpellcheck();
     }
 
+    foreach ($options as $option => $value) {
+      if (strpos($option, 'solr_param_') === 0) {
+        $solarium_query->addParam(substr($option, 11), $value);
+      }
+    }
+
     /**
      * @todo Make this more configurable so that views can choose which fields
      * it wants to fetch
@@ -874,20 +942,24 @@ class SearchApiSolrBackend extends BackendPluginBase {
 
       return $results;
     }
-    catch (SearchApiException $e) {
-      throw new SearchApiException(t('An error occurred while trying to search with Solr: @msg.', array('@msg' => $e->getMessage())));
+    catch (\Exception $e) {
+      throw new SearchApiSolrException($this->t('An error occurred while trying to search with Solr: @msg.', array('@msg' => $e->getMessage())), $e->getCode(), $e);
     }
   }
 
   /**
-   * @return \Drupal\search_api_solr\Solr\SolrHelper
+   * {@inheritdoc}
    */
   public function getSolrHelper() {
+    // Make sure that the SolrHelper has a connection which is required for some
+    // of its functions.
+    $this->connect();
+
     return $this->solrHelper;
   }
 
   /**
-   * @param \Drupal\search_api_solr\Solr\SolrHelper $solrHelper
+   * {@inheritdoc}
    */
   public function setSolrHelper($solrHelper) {
     $this->solrHelper = $solrHelper;
@@ -905,10 +977,7 @@ class SearchApiSolrBackend extends BackendPluginBase {
   }
 
   /**
-   * Returns the Solarium client.
-   *
-   * @return \Solarium\Client
-   *   The solarium instance object.
+   * {@inheritdoc}
    */
   public function getSolr() {
     return $this->solr;
@@ -927,21 +996,7 @@ class SearchApiSolrBackend extends BackendPluginBase {
   }
 
   /**
-   * Creates a list of all indexed field names mapped to their Solr field names.
-   *
-   * @param \Drupal\search_api\IndexInterface $index
-   *   The Search Api index.
-   * @param bool $single_value_name
-   *   (optional) Whether to return names for fields which store only the first
-   *   value of the field. Defaults to FALSE.
-   * @param bool $reset
-   *   (optional) Whether to reset the static cache.
-   *
-   * The special fields "search_api_id" and "search_api_relevance" are also
-   * included. Any Solr fields that exist on search results are mapped back to
-   * to their local field names in the final result set.
-   *
-   * @see SearchApiSolrBackend::search()
+   * {@inheritdoc}
    */
   public function getFieldNames(IndexInterface $index, $single_value_name = FALSE, $reset = FALSE) {
     // @todo The field name mapping should be cached per index because custom
@@ -952,6 +1007,7 @@ class SearchApiSolrBackend extends BackendPluginBase {
       $ret = array(
         'search_api_id' => 'item_id',
         'search_api_relevance' => 'score',
+        'search_api_random' => 'random',
       );
 
       // Add the names of any fields configured on the index.
@@ -1175,12 +1231,11 @@ class SearchApiSolrBackend extends BackendPluginBase {
    *   An array describing facets that apply to the current results.
    */
   protected function extractFacets(QueryInterface $query, Result $resultset) {
-    $facets = array();
-
     if (!$resultset->getFacetSet()) {
-      return $facets;
+      return array();
     }
 
+    $facets = array();
     $index = $query->getIndex();
     $field_names = $this->getFieldNames($index);
     $fields = $index->getFields();
@@ -1278,11 +1333,12 @@ class SearchApiSolrBackend extends BackendPluginBase {
   protected function createFilterQueries(ConditionGroupInterface $conditions, array $solr_fields, array $index_fields) {
     $or = $conditions->getConjunction() == 'OR';
     $fq = array();
+    $prefix = '';
     foreach ($conditions->getConditions() as $condition) {
       if ($condition instanceof ConditionInterface) {
         $field = $condition->getField();
         if (!isset($index_fields[$field])) {
-          throw new SearchApiException(t('Filter term on unknown or unindexed field @field.', array('@field' => $field)));
+          throw new SearchApiException($this->t('Filter term on unknown or unindexed field @field.', array('@field' => $field)));
         }
         $value = $condition->getValue();
         if ($value !== '') {
@@ -1291,17 +1347,30 @@ class SearchApiSolrBackend extends BackendPluginBase {
       }
       else {
         $q = $this->createFilterQueries($condition, $solr_fields, $index_fields);
-        if ($conditions->getConjunction() != $condition->getConjunction()) {
+        if ($conditions->getConjunction() != $condition->getConjunction() && count($q) > 1) {
           // $or == TRUE means the nested filter has conjunction AND, and vice versa
           $sep = $or ? ' ' : ' OR ';
-          $fq[] = count($q) == 1 ? reset($q) : '((' . implode(')' . $sep . '(', $q) . '))';
+          $fq[] = '((' . implode(')' . $sep . '(', $q) . '))';
         }
         else {
           $fq = array_merge($fq, $q);
         }
       }
     }
-    return ($or && count($fq) > 1) ? array('((' . implode(') OR (', $fq) . '))') : $fq;
+    foreach ($conditions->getTags() as $tag) {
+      $prefix = "{!tag=$tag}";
+      // We can only apply one tag per filter.
+      break;
+    }
+    if ($or && count($fq) > 1) {
+      $fq = array('((' . implode(') OR (', $fq) . '))');
+    }
+    if ($prefix) {
+      foreach ($fq as $i => $filters) {
+        $fq[$i] = $prefix . $filters;
+      }
+    }
+    return $fq;
   }
 
   /**
@@ -1355,35 +1424,29 @@ class SearchApiSolrBackend extends BackendPluginBase {
    * Helper method for creating the facet field parameters.
    */
   protected function setFacets(array $facets, array $field_names, Query $solarium_query) {
-    $fq = array();
-    if (!$facets) {
+    if (empty($facets)) {
       return;
     }
+
     $facet_set = $solarium_query->getFacetSet();
     $facet_set->setSort('count');
     $facet_set->setLimit(10);
     $facet_set->setMinCount(1);
     $facet_set->setMissing(FALSE);
 
-    $taggedFields = array();
     foreach ($facets as $info) {
       if (empty($field_names[$info['field']])) {
         continue;
       }
-      // String fields have their own corresponding facet fields.
       $field = $field_names[$info['field']];
-      // Check for the "or" operator.
-      if (isset($info['operator']) && $info['operator'] === 'or') {
-        // Remember that filters for this field should be tagged.
-        $escaped = SearchApiSolrUtility::escapeFieldName($field_names[$info['field']]);
-        $taggedFields[$escaped] = "{!tag=$escaped}";
-        // Add the facet field.
-        $facet_field = $facet_set->createFacetField($field)->setField("{!ex=$escaped}$field");
+      // Create the Solarium facet field object.
+      $facet_field = $facet_set->createFacetField($field)->setField($field);
+
+      // For "OR" facets, add the expected tag for exclusion.
+      if (isset($info['operator']) && strtolower($info['operator']) === 'or') {
+        $facet_field->setExcludes(array('facet:' . $info['field']));
       }
-      else {
-        // Add the facet field.
-        $facet_field = $facet_set->createFacetField($field)->setField($field);
-      }
+
       // Set limit, unless it's the default.
       if ($info['limit'] != 10) {
         $limit = $info['limit'] ? $info['limit'] : -1;
@@ -1393,28 +1456,14 @@ class SearchApiSolrBackend extends BackendPluginBase {
       if ($info['min_count'] != 1) {
         $facet_field->setMinCount($info['min_count']);
       }
+
       // Set missing, if specified.
       if ($info['missing']) {
         $facet_field->setMissing(TRUE);
       }
-    }
-    // Tag filters of fields with "OR" facets.
-    foreach ($taggedFields as $field => $tag) {
-      $regex = '#(?<![^( ])' . preg_quote($field, '#') . ':#';
-      foreach ($fq as $i => $conditions) {
-        // Solr can't handle two tags on the same filter, so we don't add two.
-        // Another option here would even be to remove the other tag, too,
-        // since we can be pretty sure that this filter does not originate from
-        // a facet – however, wrong results would still be possible, and this is
-        // definitely an edge case, so don't bother.
-        if (preg_match($regex, $conditions) && substr($conditions, 0, 6) != '{!tag=') {
-          $fq[$i] = $tag . $conditions;
-        }
+      else {
+        $facet_field->setMissing(FALSE);
       }
-    }
-
-    foreach ($fq as $key => $conditions_query) {
-      $solarium_query->createFilterQuery('facets_' . $key)->setQuery($conditions_query);
     }
   }
 
@@ -1422,6 +1471,7 @@ class SearchApiSolrBackend extends BackendPluginBase {
    * Sets the request handler.
    *
    * This should also make the needed adjustments to the request parameters.
+   * @todo SearchApiSolrConnectionInterface doesn't exist!
    *
    * @param $handler
    *   Name of the handler to set.
@@ -1673,9 +1723,7 @@ class SearchApiSolrBackend extends BackendPluginBase {
   }
 
   /**
-   * Ping the Solr server to tell whether it can be accessed.
-   *
-   * Uses the admin/ping request handler.
+   * {@inheritdoc}
    */
   public function ping() {
     $this->connect();
@@ -1690,16 +1738,13 @@ class SearchApiSolrBackend extends BackendPluginBase {
       }
     }
     catch (HttpException $e) {
-      // @todo Show a message with the exception?
+      watchdog_exception('search_api_solr', $e);
     }
     return FALSE;
   }
 
   /**
-   * Gets the currently used Solr connection object.
-   *
-   * @return \Solarium\Client
-   *   The solr connection object used by this server.
+   * {@inheritdoc}
    */
   public function getSolrConnection() {
     $this->connect();
@@ -1707,34 +1752,16 @@ class SearchApiSolrBackend extends BackendPluginBase {
   }
 
   /**
-   * Get metadata about fields in the Solr/Lucene index.
-   *
-   * @param int $num_terms
-   *   Number of 'top terms' to return.
-   *
-   * @return array
-   *   An array of SearchApiSolrField objects.
-   *
-   * @see SearchApiSolrConnectionInterface::getFields()
+   * {@inheritdoc}
    */
   public function getFields($num_terms = 0) {
     $this->connect();
+    // @todo getFields() is not defined.
     return $this->solr->getFields($num_terms);
   }
 
   /**
-   * Retrieves a config file or file list from the Solr server.
-   *
-   * Uses the admin/file request handler.
-   *
-   * @param string|null $file
-   *   (optional) The name of the file to retrieve. If the file is a directory,
-   *   the directory contents are instead listed and returned. NULL represents
-   *   the root config directory.
-   *
-   * @return \Solarium\Core\Client\Response
-   *   A Solarium response object containing either the file contents or a file
-   *   list.
+   * {@inheritdoc}
    */
   public function getFile($file = NULL) {
     $this->connect();
@@ -1746,7 +1773,12 @@ class SearchApiSolrBackend extends BackendPluginBase {
       $query->addParam('file', $file);
     }
 
-    return $this->solr->execute($query)->getResponse();
+    try {
+      return $this->solr->execute($query)->getResponse();
+    }
+    catch (HttpException $e) {
+      throw new SearchApiSolrException($this->t('Solr server core @core not found.', ['@core' => $this->solr->getEndpoint()->getBaseUri()]), $e->getCode(), $e);
+    }
   }
 
   /**

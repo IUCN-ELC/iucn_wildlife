@@ -9,9 +9,11 @@ namespace Drupal\search_api_solr\Solr;
 
 use Drupal\Core\Url;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\search_api_solr\SearchApiSolrException;
 use Solarium\Client;
 use Drupal\search_api_solr\Utility\Utility as SearchApiSolrUtility;
 use Solarium\Core\Query\Helper as SolariumHelper;
+use Solarium\Exception\HttpException;
 use Solarium\QueryType\Select\Query\Query;
 use Drupal\search_api\Utility as SearchApiUtility;
 
@@ -70,6 +72,10 @@ class SolrHelper {
       $host = $_SERVER['SERVER_NAME'];
     }
     $url_path = $this->configuration['scheme'] . '://' . $host . ':' . $this->configuration['port'] . $this->configuration['path'];
+
+    if (isset($this->configuration['core'])) {
+      $url_path .= $this->configuration['core'];
+    }
     $url = Url::fromUri($url_path);
 
     return \Drupal::l($url_path, $url);
@@ -187,14 +193,17 @@ class SolrHelper {
   /**
    * Gets the current Solr version.
    *
-   * @return int
-   *   1, 3 or 4. Does not give a more detailed version, for that you need to
-   *   use getSystemInfo().
+   * @return string
+   *   The full Solr version string.
    */
   public function getSolrVersion() {
     // Allow for overrides by the user.
     if (!empty($this->configuration['solr_version'])) {
-      return $this->configuration['solr_version'];
+      // In most cases the already stored solr_version is just the major version
+      // number as integer. In this case we will expand it to the minimum
+      // corresponding full version string.
+      $version = explode('.', $this->configuration['solr_version']) + ['0' ,'0', '0'];
+      return implode('.', $version);
     }
 
     $system_info = $this->getSystemInfo();
@@ -202,7 +211,35 @@ class SolrHelper {
     if (isset($system_info['lucene']['solr-spec-version'])) {
       return $system_info['lucene']['solr-spec-version'];
     }
-    return 0;
+
+    return '0.0.0';
+  }
+
+  /**
+   * Gets the current Solr major version.
+   *
+   * @param string $version
+   *   An optional Solr version string.
+   *
+   * @return integer
+   *   The Solr major version.
+   */
+  public function getSolrMajorVersion($version = '') {
+    list($major, , ) = explode('.', $version ?: $this->getSolrVersion());
+    return $major;
+  }
+
+  /**
+   * Gets the current Solr branch name.
+   *
+   * @param string $version
+   *   An optional Solr version string.
+   *
+   * @return string
+   *   The Solr branch string.
+   */
+  public function getSolrBranch($version = '') {
+    return $this->getSolrMajorVersion($version) . '.x';
   }
 
   /**
@@ -210,6 +247,8 @@ class SolrHelper {
    *
    * @return object
    *   A response object with system information.
+   *
+   * @throws \Drupal\search_api_solr\SearchApiSolrException
    */
   public function getSystemInfo() {
     // @todo Add back persistent cache?
@@ -217,7 +256,12 @@ class SolrHelper {
       // @todo Finish https://github.com/basdenooijer/solarium/pull/155 and stop
       // abusing the ping query for this.
       $query = $this->solr->createPing(array('handler' => 'admin/system'));
-      $this->systemInfo = $this->solr->execute($query)->getData();
+      try {
+        $this->systemInfo = $this->solr->execute($query)->getData();
+      }
+      catch (HttpException $e) {
+        throw new SearchApiSolrException(t('Solr server core @core not found.', ['@core' => $this->solr->getEndpoint()->getBaseUri()]), $e->getCode(), $e);
+      }
     }
 
     return $this->systemInfo;
@@ -228,18 +272,27 @@ class SolrHelper {
    *
    * @return object
    *   A response object filled with data from Solr's Luke.
+   *
+   * @throws \Drupal\search_api_solr\SearchApiSolrException
    */
   public function getLuke() {
     // @todo Write a patch for Solarium to have a separate Luke query and stop
     // abusing the ping query for this.
     $query = $this->solr->createPing(array('handler' => 'admin/luke'));
-    return $this->solr->execute($query)->getData();
+    try {
+      return $this->solr->execute($query)->getData();
+    }
+    catch (HttpException $e) {
+      throw new SearchApiSolrException(t('Solr server core @core not found.', ['@core' => $this->solr->getEndpoint()->getBaseUri()]), $e->getCode(), $e);
+    }
   }
 
   /**
    * Gets summary information about the Solr Core.
    *
    * @return array
+   *
+   * @throws \Drupal\search_api_solr\SearchApiSolrException
    */
   public function getStatsSummary() {
     $summary = array(
@@ -262,48 +315,54 @@ class SolrHelper {
     }
     else {
       $query->setHandler('admin/stats.jsp');
+      $query->setResultClass('\Drupal\search_api_solr\Solr\StatsJspResult');
     }
-    $stats = $this->solr->execute($query)->getData();
-    if (!empty($stats)) {
-      if (version_compare($solr_version, '3', '<=')) {
-        // @todo Needs to be updated by someone who has a Solr 3.x setup.
-        /*
-        $docs_pending_xpath = $stats->xpath('//stat[@name="docsPending"]');
-        $summary['@pending_docs'] = (int) trim(current($docs_pending_xpath));
-        $max_time_xpath = $stats->xpath('//stat[@name="autocommit maxTime"]');
-        $max_time = (int) trim(current($max_time_xpath));
-        // Convert to seconds.
-        $summary['@autocommit_time_seconds'] = $max_time / 1000;
-        $summary['@autocommit_time'] = \Drupal::service('date')->formatInterval($max_time / 1000);
-        $deletes_id_xpath = $stats->xpath('//stat[@name="deletesById"]');
-        $summary['@deletes_by_id'] = (int) trim(current($deletes_id_xpath));
-        $deletes_query_xpath = $stats->xpath('//stat[@name="deletesByQuery"]');
-        $summary['@deletes_by_query'] = (int) trim(current($deletes_query_xpath));
-        $summary['@deletes_total'] = $summary['@deletes_by_id'] + $summary['@deletes_by_query'];
-        $schema = $stats->xpath('/solr/schema[1]');
-        $summary['@schema_version'] = trim($schema[0]);
-        $core = $stats->xpath('/solr/core[1]');
-        $summary['@core_name'] = trim($core[0]);
-        $size_xpath = $stats->xpath('//stat[@name="indexSize"]');
-        $summary['@index_size'] = trim(current($size_xpath));
-        */
+    try {
+      $stats = $this->solr->execute($query)->getData();
+      if (!empty($stats)) {
+        if (version_compare($solr_version, '3', '<=')) {
+          // @todo Needs to be updated by someone who has a Solr 3.x setup.
+          /*
+          $docs_pending_xpath = $stats->xpath('//stat[@name="docsPending"]');
+          $summary['@pending_docs'] = (int) trim(current($docs_pending_xpath));
+          $max_time_xpath = $stats->xpath('//stat[@name="autocommit maxTime"]');
+          $max_time = (int) trim(current($max_time_xpath));
+          // Convert to seconds.
+          $summary['@autocommit_time_seconds'] = $max_time / 1000;
+          $summary['@autocommit_time'] = \Drupal::service('date')->formatInterval($max_time / 1000);
+          $deletes_id_xpath = $stats->xpath('//stat[@name="deletesById"]');
+          $summary['@deletes_by_id'] = (int) trim(current($deletes_id_xpath));
+          $deletes_query_xpath = $stats->xpath('//stat[@name="deletesByQuery"]');
+          $summary['@deletes_by_query'] = (int) trim(current($deletes_query_xpath));
+          $summary['@deletes_total'] = $summary['@deletes_by_id'] + $summary['@deletes_by_query'];
+          $schema = $stats->xpath('/solr/schema[1]');
+          $summary['@schema_version'] = trim($schema[0]);
+          $core = $stats->xpath('/solr/core[1]');
+          $summary['@core_name'] = trim($core[0]);
+          $size_xpath = $stats->xpath('//stat[@name="indexSize"]');
+          $summary['@index_size'] = trim(current($size_xpath));
+          */
+        }
+        else {
+          $update_handler_stats = $stats['solr-mbeans']['UPDATEHANDLER']['updateHandler']['stats'];
+          $summary['@pending_docs'] = (int) $update_handler_stats['docsPending'];
+          $max_time = (int) $update_handler_stats['autocommit maxTime'];
+          // Convert to seconds.
+          $summary['@autocommit_time_seconds'] = $max_time / 1000;
+          $summary['@autocommit_time'] = \Drupal::service('date.formatter')->formatInterval($max_time / 1000);
+          $summary['@deletes_by_id'] = (int) $update_handler_stats['deletesById'];
+          $summary['@deletes_by_query'] = (int) $update_handler_stats['deletesByQuery'];
+          $summary['@deletes_total'] = $summary['@deletes_by_id'] + $summary['@deletes_by_query'];
+          $summary['@schema_version'] = $this->getSystemInfo()['core']['schema'];
+          $summary['@core_name'] = $stats['solr-mbeans']['CORE']['core']['stats']['coreName'];
+          $summary['@index_size'] = $stats['solr-mbeans']['QUERYHANDLER']['/replication']['stats']['indexSize'];
+        }
       }
-      else {
-        $update_handler_stats = $stats['solr-mbeans']['UPDATEHANDLER']['updateHandler']['stats'];
-        $summary['@pending_docs'] = (int) $update_handler_stats['docsPending'];
-        $max_time = (int) $update_handler_stats['autocommit maxTime'];
-        // Convert to seconds.
-        $summary['@autocommit_time_seconds'] = $max_time / 1000;
-        $summary['@autocommit_time'] = \Drupal::service('date.formatter')->formatInterval($max_time / 1000);
-        $summary['@deletes_by_id'] = (int) $update_handler_stats['deletesById'];
-        $summary['@deletes_by_query'] = (int) $update_handler_stats['deletesByQuery'];
-        $summary['@deletes_total'] = $summary['@deletes_by_id'] + $summary['@deletes_by_query'];
-        $summary['@schema_version'] = $this->getSystemInfo()['core']['schema'];
-        $summary['@core_name'] = $stats['solr-mbeans']['CORE']['core']['stats']['coreName'];
-        $summary['@index_size'] = $stats['solr-mbeans']['QUERYHANDLER']['/replication']['stats']['indexSize'];
-      }
+      return $summary;
     }
-    return $summary;
+    catch (HttpException $e) {
+      throw new SearchApiSolrException(t('Solr server core @core not found.', ['@core' => $this->solr->getEndpoint()->getBaseUri()]), $e->getCode(), $e);
+    }
   }
 
   /**
@@ -362,7 +421,7 @@ class SolrHelper {
       // in MLT queries.
       // Date fields don't seem to be supported at all.
       $version = $this->getSolrVersion();
-      if ($fields[$mlt_field][0] === 'd' || ($version == 4 && in_array($fields[$mlt_field][0], array('i', 'f')))) {
+      if ($fields[$mlt_field][0] === 'd' || (version_compare($version, '4', '==') && in_array($fields[$mlt_field][0], array('i', 'f')))) {
         continue;
       }
 
@@ -485,10 +544,23 @@ class SolrHelper {
 
   public function setSorts(Query $solarium_query, QueryInterface $query, $field_names_single_value = array()) {
     foreach ($query->getSorts() as $field => $order) {
-      $f = $field_names_single_value[$field];
-      if (substr($f, 0, 3) == 'ss_') {
-        $f = 'sort_' . substr($f, 3);
+      // The default Solr schema provides a virtual field named "random_SEED"
+      // that can be used to randomly sort the results; the field is available
+      // only at query-time.
+      if ($field == 'search_api_random') {
+        $params = $query->getOption('search_api_random_sort', array());
+        // Random seed: getting the value from parameters or computing a new
+        // one.
+        $seed = !empty($params['seed']) ? $params['seed'] : mt_rand();
+        $f = 'random_' . $seed;
       }
+      else {
+        $f = $field_names_single_value[$field];
+        if (substr($f, 0, 3) == 'ss_') {
+          $f = 'sort_' . substr($f, 3);
+        }
+      }
+
       $solarium_query->addSort($f, strtolower($order));
     }
   }
@@ -507,7 +579,7 @@ class SolrHelper {
     foreach ($grouping_options['fields'] as $collapse_field) {
       $type = $index_fields[$collapse_field]['type'];
       // Only single-valued fields are supported.
-      if ($this->getSolrVersion() < 4) {
+      if (version_compare($this->getSolrVersion(), '4', '<')) {
         // For Solr 3.x, only string and boolean fields are supported.
         if (!SearchApiUtility::isTextType($type, array('string', 'boolean', 'uri'))) {
           $warnings[] = $this->t('Grouping is not supported for field @field. ' .

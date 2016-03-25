@@ -5,14 +5,13 @@ Place the search_api_solr module either directly under the /modules directory
 at the root of your Drupal installation, or place it under /modules/contrib
 directory instead, to group all contributed modules together.
 
-Next, run composer update from within the module's root directory in order to
-install all dependencies the module requires to work properly. Alternatively,
-you can use the composer_manager [1] module to install dependencies.
+Next, you need to install the module's composer dependencies, there are
+multiple ways to do this; you can read more in the documentation[1] on d.o.
 
 You can now visit the /admin/modules page on your site and install the Solr
 search module.
 
-[1] https://www.drupal.org/project/composer_manager
+[1] https://www.drupal.org/documentation/install/composer-dependencies
 
 Solr search
 -----------
@@ -24,6 +23,15 @@ module, you'll have to follow the instructions given in INSTALL.txt first.
 For more detailed documentation, see the handbook [2].
 
 [2] https://drupal.org/node/1999280
+
+Running the test suite
+----------------------
+
+This module comes with a suite of automated tests. To execute those, you just
+need to have a (correctly configured) Solr instance running at the following
+address:
+  http://localhost:8983/solr/d8
+(This represents a core named "d8" in a default installation of Solr.)
 
 Supported optional features
 ---------------------------

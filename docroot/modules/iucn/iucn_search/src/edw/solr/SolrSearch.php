@@ -76,21 +76,18 @@ class SolrSearch {
     foreach ($this->facets as $facet) {
       $facet->createSolrFacet($facetSet);
     }
-    foreach ($this->parameters as $field) {
+    foreach ($this->parameters as $field => $value) {
       // Add the filter only if the field in indexed and is not faceted.
       if (array_key_exists($field, $this->facets)) {
         $this->facets[$field]->alterSolrQuery($query, $this->parameters);
       }
       else {
         if (!empty($solr_field_mappings[$field])) {
-          $value = $this->getParameter($field);
-          if ($value) {
-            $fq = $query->createFilterQuery(array(
-              'key' => $solr_field_mappings[$field],
-              'query' => "{$solr_field_mappings[$field]}:{$value}",
-            ));
-            $query->addFilterQuery($fq);
-          }
+          $fq = $query->createFilterQuery(array(
+            'key' => $solr_field_mappings[$field],
+            'query' => "{$solr_field_mappings[$field]}:{$value}",
+          ));
+          $query->addFilterQuery($fq);
         }
       }
     }

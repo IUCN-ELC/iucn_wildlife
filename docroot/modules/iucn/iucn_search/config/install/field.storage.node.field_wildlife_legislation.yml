@@ -1,0 +1,20 @@
+uuid: 20b3cf8f-cfeb-4561-a815-21b9efe84f89
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_wildlife_legislation
+field_name: field_wildlife_legislation
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

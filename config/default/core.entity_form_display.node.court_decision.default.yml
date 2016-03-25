@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.court_decision.field_abstract_files
     - field.field.node.court_decision.field_available_in
     - field.field.node.court_decision.field_country
+    - field.field.node.court_decision.field_court
     - field.field.node.court_decision.field_court_jurisdiction
     - field.field.node.court_decision.field_court_name
     - field.field.node.court_decision.field_date_of_entry
@@ -40,6 +41,7 @@ dependencies:
     - field.field.node.court_decision.field_territorial_subdivisions
     - field.field.node.court_decision.field_type_of_text
     - field.field.node.court_decision.field_url
+    - field.field.node.court_decision.field_wildlife_legislation
     - node.type.court_decision
   module:
     - datetime
@@ -85,6 +87,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_court:
+    weight: 43
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   field_court_jurisdiction:
     weight: 6
     settings:
@@ -322,6 +332,14 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+  field_wildlife_legislation:
+    weight: 44
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   path:
     type: path
     weight: 35

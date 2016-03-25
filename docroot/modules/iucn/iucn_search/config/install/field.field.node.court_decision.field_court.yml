@@ -1,0 +1,27 @@
+uuid: af800691-5442-419a-9808-8f47ba6e78fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_court
+    - node.type.court_decision
+    - taxonomy.vocabulary.court_levels
+id: node.court_decision.field_court
+field_name: field_court
+entity_type: node
+bundle: court_decision
+label: Court
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      court_levels: court_levels
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

@@ -112,12 +112,14 @@ class SolrFacet {
           $entity = \Drupal\node\Entity\Node::load($id);
           break;
       }
-      $label = $entity->label();
-      if ($label) {
-        if ($count > 0) {
-          $label .= " ({$count})";
+      if (!empty($entity)) {
+        $label = $entity->label();
+        if ($label) {
+          if ($count > 0) {
+            $label .= " ({$count})";
+          }
+          $options[$id] = $label;
         }
-        $options[$id] = $label;
       }
     }
     asort($options);

@@ -1,5 +1,9 @@
 #Patches
 
+## drupal
+ - composer update not working
+ - issue: https://www.drupal.org/node/2664274#comment-10942761
+ - file: patches/drupal/2664274-19-fix-composer.patch
 
 ## drupal
  - Search API not working on Acquia Cloud

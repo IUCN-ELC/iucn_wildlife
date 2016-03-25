@@ -39,10 +39,24 @@ class SearchFiltersForm extends FormBase {
    * {@inheritdoc}.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $fqParams = $this->search->getFilterQueryParameters();
+    $fqReset = [];
+    foreach ($fqParams as $field => $value) {
+      $term = \Drupal\taxonomy\Entity\Term::load($value);
+      if ($term) {
+        $getCopy = $_GET;
+        unset($getCopy[$field]);
+        //@ToDo: \Drupal::l() is deprecated, see how to render a \Drupal\Core\Link.
+        $l = \Drupal::l('x', \Drupal\Core\Url::fromRoute('iucn.search', [], ['query' => $getCopy]));
+        //@ToDo: Think of a better message.
+        $fqReset[] = ['#markup' => "Results are filtered by '{$term->getName()}' {$l}"];
+      }
+    }
     $form = [[
       '#attributes' => ['class' => ['search-filters', 'invisible']],
       '#title' => $this->t('Search filters'),
       '#type' => 'fieldset',
+      'fqReset' => $fqReset,
       $this->getRenderedFacets()
     ], [
       '#attributes' => ['class' => ['btn-block', 'search-submit']],

@@ -56,7 +56,9 @@
     event.stopPropagation();
   });
 
-  $('#iucn-search-form').on({
+  var $searchFilters = $('#iucn-search-filters');
+
+  $searchFilters.on({
     reset: function (event) {
       event.preventDefault();
 
@@ -75,15 +77,15 @@
     }
   });
 
-  $('input[type="checkbox"]', '#iucn-search-form').bootstrapSwitch({
+  $('input[type="checkbox"]', $searchFilters).bootstrapSwitch({
     labelWidth: 9,
     offText: Drupal.t('or'),
     onText: Drupal.t('and'),
     size: 'mini'
   });
 
-  $('.search-submit').hide();
-  $('.search-filters').removeClass('invisible');
+  $('.search-submit', $searchFilters).hide();
+  $('.search-filters', $searchFilters).removeClass('invisible');
 
   var offset = window.sessionStorage.getItem('offset');
 
@@ -94,9 +96,9 @@
   }
 
   var submit = function () {
-    $('#iucn-search-form').submit();
+    $searchFilters.submit();
   };
 
-  $('select', '#iucn-search-form').change(submit);
-  $('input[type="checkbox"]', '#iucn-search-form').on('switchChange.bootstrapSwitch', submit);
+  $('select', $searchFilters).change(submit);
+  $('input[type="checkbox"]', $searchFilters).on('switchChange.bootstrapSwitch', submit);
 })(jQuery);

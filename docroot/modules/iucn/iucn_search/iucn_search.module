@@ -21,26 +21,51 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
   $ret = array();
   // @ToDo: Translate facet titles
   $facets = [
-    'field_ecolex_subjects' => [
-      'title' => 'Subject',
-      'placeholder' => 'Add subjects...',
-      'bundle' => 'ecolex_subjects',
+    'field_region' => [
+      'title' => 'Region',
+      'placeholder' => 'Add regions...',
+      'bundle' => 'regions',
     ],
-    'field_country' => [
-      'title' => 'Country',
-      'placeholder' => 'Add countries...',
-      'bundle' => 'country',
+    'field_court' => [
+      'title' => 'Court',
+      'placeholder' => 'Add courts...',
+      'bundle' => 'court_levels',
     ],
-    'field_type_of_text' => [
-      'title' => 'Type of court',
-      'placeholder' => 'Add types...',
-      'bundle' => 'document_types',
+    'field_offences' => [
+      'title' => 'Offence',
+      'placeholder' => 'Add offences...',
+      'bundle' => 'offences',
     ],
-    'field_territorial_subdivisions' => [
-      'title' => 'Sub-national/state level',
-      'placeholder' => 'Add territory...',
-      'bundle' => 'territorial_subdivisions',
+    'field_species' => [
+      'title' => 'Species',
+      'placeholder' => 'Add species...',
+      'bundle' => 'species',
     ],
+    'field_wildlife_legislation' => [
+      'title' => 'Wildlife legislation',
+      'placeholder' => 'Add wildlife legislations...',
+      'bundle' => 'wildlife_legislations',
+    ],
+//    'field_ecolex_subjects' => [
+//      'title' => 'Subject',
+//      'placeholder' => 'Add subjects...',
+//      'bundle' => 'ecolex_subjects',
+//    ],
+//    'field_country' => [
+//      'title' => 'Country',
+//      'placeholder' => 'Add countries...',
+//      'bundle' => 'country',
+//    ],
+//    'field_type_of_text' => [
+//      'title' => 'Type of court',
+//      'placeholder' => 'Add types...',
+//      'bundle' => 'document_types',
+//    ],
+//    'field_territorial_subdivisions' => [
+//      'title' => 'Sub-national/state level',
+//      'placeholder' => 'Add territory...',
+//      'bundle' => 'territorial_subdivisions',
+//    ],
 //      'field_subdivision' => [
 //        'title' => 'Subdivision',
 //        'field' => 'field_subdivision',

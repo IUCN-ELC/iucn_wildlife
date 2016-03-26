@@ -21,9 +21,12 @@ search_api_attachments.admin_config:
       type: mapping
       label: 'Solr extractor configuration'
       mapping:
-        'solr_server':
+        solr_server:
           type: string
           label: 'Solr server'
+        solr_tika_path:
+          type: string
+          label: 'URL to Solr extractor servlet (e.g. update/extract)'
     python_pdf2txt_extractor_configuration:
       type: mapping
       label: 'Python Pdf2txt extractor configuration'
@@ -40,3 +43,9 @@ search_api_attachments.admin_config:
     preserve_cache:
       type: boolean
       label: 'Preserve cached extractions across cache clears.'
+    langcode:
+      type: string
+      label: 'Language code'
+    _core:
+      type: _core_config_info
+

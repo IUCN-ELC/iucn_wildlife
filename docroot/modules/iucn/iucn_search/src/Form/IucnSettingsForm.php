@@ -28,7 +28,7 @@ class IucnSettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'iucn.settings',
+      'iucn_search.settings',
     ];
   }
 
@@ -36,7 +36,7 @@ class IucnSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('iucn.settings');
+    $config = $this->config('iucn_search.settings');
 
     $form['reference_to_legislation_pattern'] = array(
       '#type' => 'textfield',
@@ -52,7 +52,7 @@ class IucnSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->config('iucn.settings')
+    $this->config('iucn_search.settings')
       ->set('reference_to_legislation_pattern', $form_state->getValue('reference_to_legislation_pattern'))
       ->save();
 

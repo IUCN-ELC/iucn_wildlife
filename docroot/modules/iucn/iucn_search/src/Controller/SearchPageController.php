@@ -8,6 +8,8 @@
 namespace Drupal\iucn_search\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
 use Drupal\iucn_search\edw\solr\SearchResult;
 use Drupal\iucn_search\edw\solr\SolrSearch;
 use Drupal\iucn_search\edw\solr\SolrSearchServer;
@@ -86,8 +88,8 @@ class SearchPageController extends ControllerBase {
       else {
         $getCopy['sort'] = $sort['field'];
         $getCopy['sortOrder'] = $sort['order'];
-        //@ToDo: \Drupal::l() is deprecated, see how to render a \Drupal\Core\Link.
-        $markup = \Drupal::l('Sort by ' . $sort['text'], \Drupal\Core\Url::fromRoute('iucn.search', [], ['query' => $getCopy]));
+        $url = Url::fromRoute('iucn.search', [], ['query' => $getCopy]);
+        $markup = Link::fromTextAndUrl('Sort by ' . $sort['text'], $url)->toString();
       }
       $sortMarkup[$key] = [
         '#type' => 'item',

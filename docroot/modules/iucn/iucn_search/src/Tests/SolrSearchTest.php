@@ -336,7 +336,7 @@ class SolrSearchTest extends WebTestBase {
     $params = array();
     $this->drupalGet($search, array('query' => $params));
     // Check for search box.
-//    $this->assertField('q');
+    $this->assertField('q');
     // Check that all facets are shown.
     $this->assertField('field_region_values[]');
     $this->assertField('field_species_values[]');
@@ -361,7 +361,6 @@ class SolrSearchTest extends WebTestBase {
     $this->assertRaw('>Robbery (3)</option>');
     $this->assertRaw('>WL 1 (3)</option>');
     $this->assertRaw('>WL 2 (1)</option>');
-
     // Check that 10 nodes per page are shown.
     $this->assertEqual(10, count($this->parse()->xpath('//article')));
     // Check pagination.

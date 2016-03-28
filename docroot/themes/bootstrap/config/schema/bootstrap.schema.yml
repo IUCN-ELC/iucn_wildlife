@@ -4,183 +4,179 @@ bootstrap.settings:
   type: theme_settings
   label: 'Bootstrap settings'
   mapping:
-#    schema:
-#      type: integer
-#      label: 'Schema'
+    schema:
+      type: integer
+      label: 'Schema'
     cdn_custom_css:
       type: string
-      label: 'CDN CSS'
+      label: 'Bootstrap CSS URL'
     include_deprecated:
       type: integer
-      label: 'CDN CSS'
+      label: 'Include deprecated functions'
     suppress_deprecated_warnings:
       type: integer
-      label: 'CDN CSS'
+      label: 'Suppress deprecated warnings'
     cdn_provider:
       type: string
       label: 'CDN Provider'
     cdn_custom_css_min:
       type: string
-      label: 'CDN CSS MIN'
+      label: 'Minified Bootstrap CSS URL'
     cdn_custom_js:
       type: string
-      label: 'XXXX'
+      label: 'Bootstrap JavaScript URL'
     cdn_custom_js_min:
       type: string
-      label: 'XXXX'
+      label: 'Minified Bootstrap JavaScript URL'
     cdn_jsdelivr_version:
       type: string
-      label: 'XXXX'
+      label: 'Version'
     cdn_jsdelivr_theme:
       type: string
-      label: 'XXXX'
+      label: 'Theme'
     breadcrumb:
       type: string
-      label: 'XXXX'
+      label: 'Breadcrumb visibility'
     breadcrumb_home:
       type: integer
-      label: 'XXXX'
+      label: 'Show Home breadcrumb link'
     breadcrumb_title:
       type: integer
-      label: 'XXXX'
+      label: 'Show current page title at end'
     navbar_inverse:
       type: integer
-      label: 'XXXX'
+      label: 'Inverse navbar style'
     navbar_position:
       type: string
-      label: 'XXXX'
+      label: 'Navbar Position'
     region_wells:
       type: sequence
-      label: ‘YYYY’
+      label: ‘Region Wells’
       sequence:
         type: region_wells.[%key]
     button_colorize:
       type: integer
-      label: 'XXXX'
+      label: 'Colorize Buttons'
     button_iconize:
       type: integer
-      label: 'XXXX'
+      label: 'Iconize Buttons'
     button_size:
       type: string
-      label: 'XXXX'
+      label: 'Default button size'
     fluid_container:
       type: integer
-      label: 'XXXX'
+      label: 'Fluid container'
     forms_has_error_value_toggle:
       type: integer
-      label: 'XXXX'
+      label: 'Automatically remove error classes when values have been entered'
     forms_required_has_error:
       type: integer
-      label: 'XXXX'
+      label: 'Make required elements display as an error'
     forms_smart_descriptions:
       type: integer
-      label: 'XXXX'
+      label: 'Smart form descriptions (via Tooltips)'
     forms_smart_descriptions_limit:
       type: string
-      label: 'XXXX'
+      label: 'Smart form descriptions maximum character limit'
     forms_smart_descriptions_allowed_tags:
       type: string
-      label: 'XXXX'
+      label: 'Smart form descriptions allowed (HTML) tags'
     image_responsive:
       type: integer
-      label: 'XXXX'
+      label: 'Responsive Images'
     image_shape:
       type: string
-      label: 'XXXX'
+      label: 'Default image shape'
     table_bordered:
       type: integer
-      label: 'XXXX'
+      label: 'Bordered table'
     table_condensed:
       type: integer
-      label: 'XXXX'
+      label: 'Condensed table'
     table_hover:
       type: integer
-      label: 'XXXX'
+      label: 'Hover rows'
     table_responsive:
       type: integer
-      label: 'XXXX'
+      label: 'Responsive tables'
     table_striped:
       type: integer
-      label: 'XXXX'
+      label: 'Striped rows'
     modal_enabled:
       type: integer
-      label: 'XXXX'
+      label: 'Enable Bootstrap Modals'
     modal_animation:
       type: integer
-      label: 'XXXX'
+      label: 'animation'
     modal_backdrop:
       type: string
-      label: 'XXXX'
+      label: 'backdrop'
     modal_keyboard:
       type: integer
-      label: 'XXXX'
+      label: 'keyboard'
     modal_show:
       type: integer
-      label: 'XXXX'
+      label: 'show'
     modal_size:
       type: string
-      label: 'XXXX'
+      label: 'size'
     popover_enabled:
       type: integer
-      label: 'XXXX'
+      label: 'Enable Bootstrap Popovers'
     popover_animation:
       type: integer
-      label: 'XXXX'
+      label: 'animation'
     popover_container:
       type: string
-      label: 'XXXX'
+      label: 'container'
     popover_content:
       type: string
-      label: 'XXXX'
+      label: 'content'
     popover_delay:
       type: string
-      label: 'XXXX'
+      label: 'delay'
     popover_html:
       type: integer
-      label: 'XXXX'
+      label: 'html'
     popover_placement:
       type: string
-      label: 'XXXX'
+      label: 'placement'
     popover_selector:
       type: string
-      label: 'XXXX'
+      label: 'selector'
     popover_title:
       type: string
-      label: 'XXXX'
+      label: 'title'
     popover_trigger:
       type: string
-      label: 'XXXX'
+      label: 'trigger'
     popover_trigger_autoclose:
       type: integer
-      label: 'XXXX'
+      label: 'Auto-close on document click'
     tooltip_enabled:
       type: integer
-      label: 'XXXX'
+      label: 'Enable Bootstrap Tooltips'
     tooltip_animation:
       type: integer
-      label: 'XXXX'
+      label: 'animation'
     tooltip_container:
       type: string
-      label: 'XXXX'
+      label: 'container'
     tooltip_delay:
       type: string
-      label: 'XXXX'
+      label: 'delay'
     tooltip_html:
       type: integer
-      label: 'XXXX'
-    tooltip_delay:
-      type: string
-      label: 'XXXX'
+      label: 'html'
     tooltip_placement:
       type: string
-      label: 'XXXX'
+      label: 'placement'
     tooltip_selector:
       type: string
-      label: 'XXXX'
+      label: 'selector'
     tooltip_trigger:
       type: string
-      label: 'XXXX'
+      label: 'trigger'
 
 region_wells.*:
  type: string
- label: ‘VVVV’

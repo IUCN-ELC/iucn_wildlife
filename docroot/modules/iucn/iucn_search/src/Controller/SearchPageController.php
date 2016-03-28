@@ -66,7 +66,7 @@ class SearchPageController extends ControllerBase {
 
     $found = $found == 0 ? 'no' : $found;
     $numFound = [
-      '#markup' => "Found {$found} Court Decisions",
+      '#markup' => $this->formatPlural($found, 'Found 1 result', 'Found @count results')
     ];
 
     $sorts = [
@@ -107,19 +107,20 @@ class SearchPageController extends ControllerBase {
     }
 
     $content = [
-      'numFound' => [
+      'meta' => [
+        '#attributes' => ['class' => ['clearfix']],
         '#type' => 'container',
-        '#attributes' => [
-          'class' => ['num-found'],
+        [
+          '#attributes' => ['class' => ['pull-left']],
+          '#type' => 'container',
+          $numFound
         ],
-        'numFound' => $numFound,
-      ],
-      'sorts' => [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => ['sorting-container'],
-        ],
-        'links' => $sortMarkup,
+        [
+          '#attributes' => ['class' => ['list-inline', 'pull-right']],
+          '#items' => $sortMarkup,
+          '#list_type' => 'ul',
+          '#theme' => 'item_list'
+        ]
       ],
       'results' => $results,
       'pager' => ['#type' => 'pager'],

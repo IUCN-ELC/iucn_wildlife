@@ -60,10 +60,7 @@ class SearchPageController extends ControllerBase {
       return $this->handleError($e);
     }
 
-    $found = $found == 0 ? 'no' : $found;
-    $numFound = [
-      '#markup' => $this->formatPlural($found, 'Found 1 result', 'Found @count results')
-    ];
+    $numFound = $this->formatPlural($found, 'Found 1 result', 'Found @count results');
 
     $sorts = [
       'relevance' => [
@@ -88,7 +85,7 @@ class SearchPageController extends ControllerBase {
     $sortMarkup = [];
     foreach ($sorts as $key => $sort) {
       if ($activeSort == $sort['field'] && $activeOrder == $sort['order']) {
-        $markup = 'Sorted by ' . $sort['text'];
+        $markup = '<strong>Sorted by ' . $sort['text'] . '</strong>';
       }
       else {
         $getCopy['sort'] = $sort['field'];
@@ -104,12 +101,13 @@ class SearchPageController extends ControllerBase {
 
     $content = [
       'meta' => [
-        '#attributes' => ['class' => ['clearfix']],
+        '#attributes' => ['class' => ['search-header']],
         '#type' => 'container',
         [
           '#attributes' => ['class' => ['pull-left']],
-          '#type' => 'container',
-          $numFound
+          '#tag' => 'div',
+          '#type' => 'html_tag',
+          '#value' => $numFound
         ],
         [
           '#attributes' => ['class' => ['list-inline', 'pull-right']],

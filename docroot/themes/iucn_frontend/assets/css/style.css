@@ -240,6 +240,21 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #iucn-search-filters .select-wrapper:after {
   content: none;
 }
+.search-header {
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+.search-header:before,
+.search-header:after {
+  content: " ";
+  display: table;
+}
+.search-header:after {
+  clear: both;
+}
+.search-header strong {
+  color: #212121;
+}
 .footer {
   background-color: #eee;
   border-color: #ddd;

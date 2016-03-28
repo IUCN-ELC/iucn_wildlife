@@ -35,11 +35,13 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
       'title' => 'Offence',
       'placeholder' => 'Add offences...',
       'bundle' => 'offences',
+      'exposeOperator' => TRUE,
     ],
     'field_species' => [
       'title' => 'Species',
       'placeholder' => 'Add species...',
       'bundle' => 'species',
+      'exposeOperator' => TRUE,
     ],
     'field_wildlife_legislation' => [
       'title' => 'Wildlife legislation',

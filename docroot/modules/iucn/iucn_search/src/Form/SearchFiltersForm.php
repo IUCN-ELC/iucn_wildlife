@@ -9,6 +9,8 @@ namespace Drupal\iucn_search\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
 use Drupal\iucn_search\Controller\SearchPageController;
 use Drupal\iucn_search\edw\solr\SolrFacet;
 
@@ -33,10 +35,10 @@ class SearchFiltersForm extends FormBase {
       if ($term) {
         $getCopy = $_GET;
         unset($getCopy[$field]);
-        //@ToDo: \Drupal::l() is deprecated, see how to render a \Drupal\Core\Link.
-        $l = \Drupal::l('x', \Drupal\Core\Url::fromRoute('iucn.search', [], ['query' => $getCopy]));
+        $url = Url::fromRoute('iucn.search', [], ['query' => $getCopy]);
+        $markup = Link::fromTextAndUrl('x', $url)->toString();
         //@ToDo: Think of a better message.
-        $fqReset[] = ['#markup' => "Results are filtered by '{$term->getName()}' {$l}"];
+        $fqReset[] = ['#markup' => "Results are filtered by '{$term->getName()}' {$markup}"];
       }
     }
     $form = [[

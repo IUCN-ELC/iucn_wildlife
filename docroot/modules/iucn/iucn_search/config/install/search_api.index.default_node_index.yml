@@ -8,6 +8,9 @@ dependencies:
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
     - field.field.node.court_decision.field_court_jurisdiction
+    - field.field.node.court_decision.field_date_of_entry
+    - field.field.node.court_decision.field_date_of_modification
+    - field.field.node.court_decision.field_date_of_text
     - field.field.node.court_decision.field_decision_status
     - field.field.node.court_decision.field_ecolex_subjects
     - field.field.node.court_decision.field_files
@@ -150,6 +153,21 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: field_wildlife_legislation
     type: integer
+  field_date_of_entry:
+    label: 'Date of entry'
+    datasource_id: 'entity:node'
+    property_path: field_date_of_entry
+    type: date
+  field_date_of_modification:
+    label: 'Date of modification'
+    datasource_id: 'entity:node'
+    property_path: field_date_of_modification
+    type: date
+  field_date_of_text:
+    label: 'Date of text'
+    datasource_id: 'entity:node'
+    property_path: field_date_of_text
+    type: date
 processor_settings:
   add_url:
     plugin_id: add_url

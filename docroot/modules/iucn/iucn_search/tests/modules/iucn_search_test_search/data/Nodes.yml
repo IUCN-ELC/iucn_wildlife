@@ -10,6 +10,7 @@
   'field_court': 6
   'field_region': 12
   'field_wildlife_legislation': 21
+  'field_date_of_entry': '2016-01-15'
 
 
 - 'title': 'Southern Bluefin Tuna cases (New Zealand v. Japan; Australia v. Japan)'
@@ -24,6 +25,7 @@
   'field_court': 8
   'field_region': [14, 15]
   'field_wildlife_legislation': 22
+  'field_date_of_entry': '2016-01-16'
 
 - 'title': 'Court'
   'nid': null
@@ -37,6 +39,7 @@
   'field_court': 10
   'field_region':
   'field_wildlife_legislation': 21
+  'field_date_of_entry': '2016-01-16'
 
 - 'title': 'Endangered species'
   'nid': null
@@ -50,6 +53,7 @@
   'field_court': 9
   'field_region':
   'field_wildlife_legislation': 21
+  'field_date_of_entry': '2016-01-17'
 
 - 'title': 'Generic title'
   'nid': null
@@ -63,6 +67,7 @@
   'field_court': 10
   'field_region': 13
   'field_wildlife_legislation':
+  'field_date_of_entry': '2016-01-28'
 
 - 'title': 'Decision 6'
   'nid': null
@@ -75,6 +80,8 @@
   'field_court':
   'field_region': 14
   'field_wildlife_legislation':
+  'field_date_of_entry': '2016-01-20'
+
 
 - 'title': 'Random decision title'
   'nid': null
@@ -88,6 +95,7 @@
   'field_court': 7
   'field_region': 11
   'field_wildlife_legislation':
+  'field_date_of_entry': '2016-01-22'
 
 - 'title': 'Title court'
   'nid': null
@@ -100,6 +108,7 @@
   'field_court':
   'field_region': 12
   'field_wildlife_legislation':
+  'field_date_of_entry': '2016-01-23'
 
 - 'title': 'XXXX'
   'nid': null
@@ -107,6 +116,7 @@
   'uid': 1
   'status': TRUE
   'promote': 0
+  'field_date_of_entry': '2016-01-19'
 
 - 'title': 'YYYY'
   'nid': null
@@ -114,6 +124,7 @@
   'uid': 1
   'status': TRUE
   'promote': 0
+  'field_date_of_entry': '2016-01-22'
 
 - 'title': 'ZZZZ'
   'nid': null
@@ -121,3 +132,4 @@
   'uid': 1
   'status': TRUE
   'promote': 0
+  'field_date_of_entry': '2016-01-24'

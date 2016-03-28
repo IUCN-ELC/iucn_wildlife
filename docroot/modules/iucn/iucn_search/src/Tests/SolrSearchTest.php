@@ -361,6 +361,10 @@ class SolrSearchTest extends WebTestBase {
     $this->assertRaw('>Robbery (3)</option>');
     $this->assertRaw('>WL 1 (3)</option>');
     $this->assertRaw('>WL 2 (1)</option>');
+    // Check that sort links are shown.
+    $this->assertLinkByHref('/search?sort=field_date_of_entry&sortOrder=desc');
+    $this->assertLinkByHref('/search?sort=field_date_of_entry&sortOrder=asc');
+    $this->assertText('Sorted by relevance');
     // Check that 10 nodes per page are shown.
     $this->assertEqual(10, count($this->parse()->xpath('//article')));
     // Check pagination.
@@ -447,6 +451,27 @@ class SolrSearchTest extends WebTestBase {
     $this->setRawContent($this->drupalGet($search, array('query' => $params)));
     $this->assertEqual(2, count($this->parse()->xpath('//article')));
     $this->assertNoLinkByHref('?page=0');
+
+    $test_case = 'Search by least recent';
+    $params = array(
+      'sort' => 'field_date_of_entry',
+      'sortOrder' => 'asc',
+    );
+    $this->setRawContent($this->drupalGet($search, array('query' => $params)));
+    $this->assertText('The M/V Saiga case');
+    $this->assertNoText('Generic title');
+    $this->assertNoLinkByHref('?page=0');
+
+    $test_case = 'Search by lmost';
+    $params = array(
+      'sort' => 'field_date_of_entry',
+      'sortOrder' => 'desc',
+    );
+    $this->setRawContent($this->drupalGet($search, array('query' => $params)));
+    $this->assertText('Generic title');
+    $this->assertNoText('The M/V Saiga case');
+    $this->assertNoLinkByHref('?page=0');
+
 
   }
 }

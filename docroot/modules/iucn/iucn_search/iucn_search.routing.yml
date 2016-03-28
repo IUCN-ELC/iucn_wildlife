@@ -5,3 +5,20 @@ iucn.search:
     _title: 'Search'
   requirements:
     _access: 'TRUE'
+
+iucn.admin_config_iucn:
+  path: '/admin/config/iucn'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'IUCN'
+  requirements:
+    _permission: 'access administration pages'
+
+iucn.settings:
+  path: '/admin/config/iucn/iucn-settings'
+  parent: iucn.admin_config_iucn
+  defaults:
+    _form: '\Drupal\iucn_search\Form\IucnSettingsForm'
+    _title: 'IUCN Settings'
+  requirements:
+    _permission: 'administer site configuration'

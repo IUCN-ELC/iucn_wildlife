@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_abstract_files
     - field.field.node.court_decision.field_available_in
+    - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
     - field.field.node.court_decision.field_court_jurisdiction
     - field.field.node.court_decision.field_court_name
@@ -78,6 +79,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+  field_country:
+    weight: 45
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   field_court:
     weight: 43
     settings:

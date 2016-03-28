@@ -1,61 +1,88 @@
-- 'name': 'Agriculture'
-  'vid': 'ecolex_subjects'
+- 'name': 'Rico'
+  'vid': 'species'
   'tid': 1
 
-- 'name': 'Air & atmosphere'
-  'vid': 'ecolex_subjects'
+- 'name': 'Private'
+  'vid': 'species'
   'tid': 2
 
-- 'name': 'Food'
-  'vid': 'ecolex_subjects'
+- 'name': 'King Julien'
+  'vid': 'species'
   'tid': 3
 
-- 'name': 'Land & soil'
-  'vid': 'ecolex_subjects'
+- 'name': 'Kowalski'
+  'vid': 'species'
   'tid': 4
 
-- 'name': 'Livestock'
-  'vid': 'ecolex_subjects'
+- 'name': 'Maurice'
+  'vid': 'species'
   'tid': 5
 
 - 'name': 'National - higher court'
-  'vid': 'document_types'
+  'vid': 'court_levels'
   'tid': 6
 
 - 'name': 'National - lower court'
-  'vid': 'document_types'
+  'vid': 'court_levels'
   'tid': 7
 
 - 'name': 'National - no court'
-  'vid': 'document_types'
+  'vid': 'court_levels'
   'tid': 8
 
-- 'name': 'International'
-  'vid': 'document_types'
+- 'name': 'International court'
+  'vid': 'court_levels'
   'tid': 9
 
-- 'name': 'Interstellar'
-  'vid': 'document_types'
+- 'name': 'Interstellar court'
+  'vid': 'court_levels'
   'tid': 10
 
 - 'name': 'Eastern Europe'
-  'vid': 'territorial_subdivisions'
+  'vid': 'regions'
   'tid': 11
 
 - 'name': 'Central Europe'
-  'vid': 'territorial_subdivisions'
+  'vid': 'regions'
   'tid': 12
 
 - 'name': 'South Africa'
-  'vid': 'territorial_subdivisions'
+  'vid': 'regions'
   'tid': 13
 
 - 'name': 'South America'
-  'vid': 'territorial_subdivisions'
+  'vid': 'regions'
   'tid': 14
 
 - 'name': 'Middle of Nowhere'
-  'vid': 'territorial_subdivisions'
+  'vid': 'regions'
   'tid': 15
 
+- 'name': 'Robbery'
+  'vid': 'offences'
+  'tid': 16
+
+- 'name': 'Murder'
+  'vid': 'offences'
+  'tid': 17
+
+- 'name': 'Pollution'
+  'vid': 'offences'
+  'tid': 18
+
+- 'name': 'Lie'
+  'vid': 'offences'
+  'tid': 19
+
+- 'name': 'Pickpocketing'
+  'vid': 'offences'
+  'tid': 20
+
+- 'name': 'WL 1'
+  'vid': 'wildlife_legislations'
+  'tid': 21
+
+- 'name': 'WL 2'
+  'vid': 'wildlife_legislations'
+  'tid': 22
 

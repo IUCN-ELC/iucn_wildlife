@@ -5,10 +5,12 @@
   'status': TRUE
   'promote': 0
   'field_abstract': 'ABCD'
-  'field_ecolex_subjects': [1,2]
-  'field_country': 1
-  'field_type_of_text': 6
-  'field_territorial_subdivisions': 12
+  'field_species': [1,2]
+  'field_offences': 16
+  'field_court': 6
+  'field_region': 12
+  'field_wildlife_legislation': 21
+
 
 - 'title': 'Southern Bluefin Tuna cases (New Zealand v. Japan; Australia v. Japan)'
   'nid': null
@@ -17,10 +19,11 @@
   'status': TRUE
   'promote': 0
   'field_abstract': 'Something else'
-  'field_ecolex_subjects': 3
-  'field_country': [1,2]
-  'field_type_of_text': [6,8]
-  'field_territorial_subdivisions': [14, 15]
+  'field_species': 3
+  'field_offences': [16,17]
+  'field_court': 8
+  'field_region': [14, 15]
+  'field_wildlife_legislation': 22
 
 - 'title': 'Court'
   'nid': null
@@ -29,10 +32,11 @@
   'status': TRUE
   'promote': 0
   'field_abstract': 'Random content'
-  'field_ecolex_subjects': [1,3]
-  'field_country': 2
-  'field_type_of_text': [8,10]
-  'field_territorial_subdivisions':
+  'field_species': [1,3]
+  'field_offences': 17
+  'field_court': 10
+  'field_region':
+  'field_wildlife_legislation': 21
 
 - 'title': 'Endangered species'
   'nid': null
@@ -41,10 +45,11 @@
   'status': TRUE
   'promote': 0
   'field_abstract': 'Some text manually generated'
-  'field_ecolex_subjects': 4
-  'field_country': [1,2,4]
-  'field_type_of_text': 9
-  'field_territorial_subdivisions':
+  'field_species': 4
+  'field_offences': [16,17,18]
+  'field_court': 9
+  'field_region':
+  'field_wildlife_legislation': 21
 
 - 'title': 'Generic title'
   'nid': null
@@ -53,10 +58,11 @@
   'status': TRUE
   'promote': 0
   'field_abstract': 'Some text rand generated Red Tuna'
-  'field_ecolex_subjects': [3,4]
-  'field_country': [2,3]
-  'field_type_of_text': [9,10]
-  'field_territorial_subdivisions': [11,13]
+  'field_species': [3,4]
+  'field_offences': [18,19]
+  'field_court': 10
+  'field_region': 13
+  'field_wildlife_legislation':
 
 - 'title': 'Decision 6'
   'nid': null
@@ -64,10 +70,11 @@
   'uid': 1
   'status': TRUE
   'promote': 0
-  'field_ecolex_subjects': [1,2]
-  'field_country': 1
-  'field_type_of_text':
-  'field_territorial_subdivisions': 10
+  'field_species': [1,2]
+  'field_offences': 20
+  'field_court':
+  'field_region': 14
+  'field_wildlife_legislation':
 
 - 'title': 'Random decision title'
   'nid': null
@@ -76,10 +83,11 @@
   'status': TRUE
   'promote': 0
   'field_abstract': 'Australia, Japan and New Zealand (Bluefin Tuna) should each ensure that no action was taken which might aggravate or extend the disputes submitted to the arbitral tribunal'
-  'field_ecolex_subjects':
-  'field_country':
-  'field_type_of_text': [7,9]
-  'field_territorial_subdivisions': 11
+  'field_species':
+  'field_offences':
+  'field_court': 7
+  'field_region': 11
+  'field_wildlife_legislation':
 
 - 'title': 'Title court'
   'nid': null
@@ -87,7 +95,29 @@
   'uid': 1
   'status': TRUE
   'promote': 0
-  'field_ecolex_subjects': 2
-  'field_country': 4
-  'field_type_of_text':
-  'field_territorial_subdivisions': [11, 12]
+  'field_species': 2
+  'field_offences': 19
+  'field_court':
+  'field_region': 12
+  'field_wildlife_legislation':
+
+- 'title': 'XXXX'
+  'nid': null
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+
+- 'title': 'YYYY'
+  'nid': null
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0
+
+- 'title': 'ZZZZ'
+  'nid': null
+  'type': 'court_decision'
+  'uid': 1
+  'status': TRUE
+  'promote': 0

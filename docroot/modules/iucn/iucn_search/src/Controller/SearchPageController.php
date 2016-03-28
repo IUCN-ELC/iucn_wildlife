@@ -13,6 +13,7 @@ use Drupal\Core\Link;
 use Drupal\iucn_search\edw\solr\SearchResult;
 use Drupal\iucn_search\edw\solr\SolrSearch;
 use Drupal\iucn_search\edw\solr\SolrSearchServer;
+use Drupal\node\Entity\Node;
 
 class SearchPageController extends ControllerBase {
 
@@ -44,10 +45,18 @@ class SearchPageController extends ControllerBase {
         $rows = $result->getResults();
 
         foreach ($rows as $nid => $data) {
-          $node = \Drupal\node\Entity\Node::load($nid);
-
+          /** @var Node $node */
+          $node = Node::load($nid);
           if (!empty($node)) {
-            $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+            $highlighting = $data['highlighting'];
+            $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
+            $url = Url::fromRoute('entity.node.canonical', ['node' => $nid])->toString();
+            $title = ['#markup' => "<a href='{$url}'>{$title}</a>"];
+            $results[$nid] = [
+              '#type' => 'container',
+              'node_title' => $title,
+              'node' => \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode),
+            ];
           }
         }
       }

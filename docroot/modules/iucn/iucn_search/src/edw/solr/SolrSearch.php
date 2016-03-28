@@ -110,7 +110,8 @@ class SolrSearch {
       if (!empty($highlighting[$fields['id']])){
         foreach ($highlighting[$fields['id']]->getFields() as $field => $value) {
           if ($key = array_search($field, $solr_field_mappings)) {
-            $documentHighlighting[$key] = $value;
+            // @ToDo: check if the highlighting can return an array with multiple values
+            $documentHighlighting[$key] = reset($value);
           }
         }
       }

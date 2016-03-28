@@ -102,6 +102,7 @@
   }
 }
 .court-decision.search-result {
+  font-size: 14px;
   margin-bottom: 22px;
 }
 .court-decision.search-result h2 {

@@ -66,6 +66,8 @@ class SolrSearch {
     $query->setStart($offset);
     $query->setRows($size);
 
+    $this->setQuerySorts($query);
+
     // Handle the facets
     $facetSet = $query->getFacetSet();
     $facetSet->setSort('count');
@@ -85,10 +87,16 @@ class SolrSearch {
       $query->addFilterQuery($fq);
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
+
+    //Highlight results
+    $query->getHighlighting()->setFields('*')->setSimplePrefix('<b>')->setSimplePostfix('</b>');
+
     $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());
     $documents = $resultSet->getDocuments();
     $countTotal = $resultSet->getNumFound();
+
+    $highlighting = $resultSet->getHighlighting()->getResults();
 
     $ret = array();
     /** @var Document $document */
@@ -98,7 +106,19 @@ class SolrSearch {
       if (is_array($id)) {
         $id = reset($id);
       }
-      $ret[$id] = array('id' => $id);
+      $documentHighlighting = [];
+      if (!empty($highlighting[$fields['id']])){
+        foreach ($highlighting[$fields['id']]->getFields() as $field => $value) {
+          if ($key = array_search($field, $solr_field_mappings)) {
+            // @ToDo: check if the highlighting can return an array with multiple values
+            $documentHighlighting[$key] = reset($value);
+          }
+        }
+      }
+      $ret[$id] = array(
+        'id' => $id,
+        'highlighting' => $documentHighlighting,
+      );
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_results', $ret);
     return new SearchResult($ret, $countTotal);
@@ -165,5 +185,21 @@ class SolrSearch {
     }
     $query = array_merge($query, $this->getFilterQueryParameters());
     return $query;
+  }
+
+  public function setQuerySorts(&$query) {
+    $sortField = $this->getParameter('sort');
+    $sortOrder = $this->getParameter('sortOrder');
+    if (empty($sortField)) {
+      $sortField = 'score';
+    }
+    if (empty($sortOrder)) {
+      $sortOrder = 'desc';
+    }
+    $solr_field_mappings = $this->server->getSolrFieldsMappings();
+    if ($sortField != 'score') {
+      $sortField = $solr_field_mappings[$sortField];
+    }
+    $query->addSort($sortField, $sortOrder);
   }
 }

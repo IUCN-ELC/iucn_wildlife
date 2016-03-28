@@ -3,6 +3,7 @@ name: 'IUCN Search'
 description: 'Holds search functionality'
 package: iucn_search
 core: '8.x'
+configure: iucn_search.settings
 dependencies:
   - elis_consumer
   - field

@@ -8,9 +8,12 @@
 namespace Drupal\iucn_search\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
 use Drupal\iucn_search\edw\solr\SearchResult;
 use Drupal\iucn_search\edw\solr\SolrSearch;
 use Drupal\iucn_search\edw\solr\SolrSearchServer;
+use Drupal\node\Entity\Node;
 
 class SearchPageController extends ControllerBase {
 
@@ -32,18 +35,24 @@ class SearchPageController extends ControllerBase {
   public function searchPage() {
     $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
     $results = array();
+    $found = 0;
 
     /** @var SearchResult $result */
     try {
       if ($result = self::getSearch()->search($current_page, $this->items_per_page)) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
+        $found = $result->getCountTotal();
         $rows = $result->getResults();
 
         foreach ($rows as $nid => $data) {
-          $node = \Drupal\node\Entity\Node::load($nid);
-
+          /** @var Node $node */
+          $node = Node::load($nid);
           if (!empty($node)) {
+            $highlighting = $data['highlighting'];
+            $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
+            $url = Url::fromRoute('entity.node.canonical', ['node' => $nid])->toString();
             $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+            $results[$nid]['#node']->label = ['#markup' => $title];
           }
         }
       }
@@ -51,7 +60,67 @@ class SearchPageController extends ControllerBase {
       return $this->handleError($e);
     }
 
-    $content = [$results, ['#type' => 'pager']];
+    $found = $found == 0 ? 'no' : $found;
+    $numFound = [
+      '#markup' => $this->formatPlural($found, 'Found 1 result', 'Found @count results')
+    ];
+
+    $sorts = [
+      'relevance' => [
+        'field' => 'score',
+        'order' => 'desc',
+        'text' => 'relevance',
+      ],
+      'dateOfEntryDesc' => [
+        'field' => 'field_date_of_entry',
+        'order' => 'desc',
+        'text' => 'most recent',
+      ],
+      'dateOfEntryAsc' => [
+        'field' => 'field_date_of_entry',
+        'order' => 'asc',
+        'text' => 'least recent',
+      ],
+    ];
+    $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : 'score';
+    $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'desc';
+    $getCopy = $_GET;
+    $sortMarkup = [];
+    foreach ($sorts as $key => $sort) {
+      if ($activeSort == $sort['field'] && $activeOrder == $sort['order']) {
+        $markup = 'Sorted by ' . $sort['text'];
+      }
+      else {
+        $getCopy['sort'] = $sort['field'];
+        $getCopy['sortOrder'] = $sort['order'];
+        $url = Url::fromRoute('iucn.search', [], ['query' => $getCopy]);
+        $markup = Link::fromTextAndUrl('Sort by ' . $sort['text'], $url)->toString();
+      }
+      $sortMarkup[$key] = [
+        '#type' => 'item',
+        '#markup' => $markup,
+      ];
+    }
+
+    $content = [
+      'meta' => [
+        '#attributes' => ['class' => ['clearfix']],
+        '#type' => 'container',
+        [
+          '#attributes' => ['class' => ['pull-left']],
+          '#type' => 'container',
+          $numFound
+        ],
+        [
+          '#attributes' => ['class' => ['list-inline', 'pull-right']],
+          '#items' => $sortMarkup,
+          '#list_type' => 'ul',
+          '#theme' => 'item_list'
+        ]
+      ],
+      'results' => $results,
+      'pager' => ['#type' => 'pager'],
+    ];
 
     return $content;
   }

@@ -1,5 +1,10 @@
 #Patches
 
+## search_api_attachmetns
+ - save form not working
+ - issue: https://www.drupal.org/node/2695361
+ - file: search_api_attachments/search_api_attachments-save-form-2695361-2-D8.patch
+
 ## search_api_attachments
  - schema issues
  - issue: https://www.drupal.org/node/2694561

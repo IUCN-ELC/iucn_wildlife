@@ -63,11 +63,6 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: title
     type: text
-  field_country:
-    label: Country
-    datasource_id: 'entity:node'
-    property_path: field_country
-    type: integer
   nid:
     label: 'Node ID'
     datasource_id: 'entity:node'
@@ -168,6 +163,11 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: field_date_of_text
     type: date
+  field_country:
+    label: Country
+    datasource_id: 'entity:node'
+    property_path: field_country
+    type: integer
 processor_settings:
   add_url:
     plugin_id: add_url

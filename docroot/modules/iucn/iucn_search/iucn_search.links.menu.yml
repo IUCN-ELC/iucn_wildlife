@@ -1,0 +1,12 @@
+iucn.admin_config_iucn:
+  route_name: iucn.admin_config_iucn
+  parent: system.admin_config
+  title: IUCN
+  weight: -100
+
+iucn.settings:
+  title: 'IUCN settings'
+  parent: iucn.admin_config_iucn
+  description: 'Edit IUCN settings'
+  route_name: iucn.settings
+  weight: -100

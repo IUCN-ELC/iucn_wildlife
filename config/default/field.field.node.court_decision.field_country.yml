@@ -1,13 +1,11 @@
-uuid: 4c0a66b3-9ae7-47ec-9a00-a1fe4948183b
+uuid: 7c775b1d-9bb6-4d9f-a100-c5710aaa2a36
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_country
-    - node.type.country
     - node.type.court_decision
-_core:
-  default_config_hash: lj83kD3ZLS5KJJd0tYOElRJe_mORdx9n_cAoKxXCnz8
+    - taxonomy.vocabulary.countries
 id: node.court_decision.field_country
 field_name: field_country
 entity_type: node
@@ -19,10 +17,11 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      country: country
+      countries: countries
     sort:
       field: _none
+    auto_create: false
 field_type: entity_reference

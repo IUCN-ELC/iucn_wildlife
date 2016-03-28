@@ -1,20 +1,19 @@
-uuid: e458fe55-8ccb-45f1-a113-19e8559ad59f
+uuid: 3bc03170-f942-470b-9f00-ab17df4db72a
 langcode: en
 status: true
 dependencies:
   module:
     - node
-_core:
-  default_config_hash: u7D7l2Hll47tvJ9AXdr7swXGJ32fRa4kOdE_lI6Hb8A
+    - taxonomy
 id: node.field_country
 field_name: field_country
 entity_type: node
 type: entity_reference
 settings:
-  target_type: node
+  target_type: taxonomy_term
 module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

@@ -66,7 +66,7 @@
 
       return $.parseHTML(html);
     }
-  });
+  }).removeClass('select2-hidden-accessible').addClass('sr-only');
 
   $('.select2-selection').on('click', '.select2-selection__choice__remove', function (event) {
     event.stopPropagation();
@@ -122,8 +122,13 @@
   $window.resize(function () {
     if (!timer) {
       timer = setTimeout(function () {
-        $('.form-select', $searchFilters).select2({
-          width: 'resolve'
+        $('.form-select', $searchFilters).each(function () {
+          var $select2 = $(this).data('select2');
+          var width = $select2._resolveWidth($select2.$element, $select2.options.get('width'));
+
+          if (width) {
+            $select2.$container.width(width);
+          }
         });
 
         timer = null;

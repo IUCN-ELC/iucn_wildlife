@@ -66,6 +66,7 @@ class SolrFacet {
         // Make sure that operator is OR or AND.
         if (in_array($overwrite_operator, array(self::$OPERATOR_AND, self::$OPERATOR_OR))) {
           $operator = $overwrite_operator;
+          $this->setOperator($operator);
         }
       }
       $values = explode(',', $parameters[$this->id]);

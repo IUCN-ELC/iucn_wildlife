@@ -74,8 +74,8 @@ class SolrSearch {
     $facetSet->setMissing(FALSE);
     /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
-      $facet->createSolrFacet($facetSet);
       $facet->alterSolrQuery($query, $this->parameters);
+      $facet->createSolrFacet($facetSet);
     }
     foreach ($this->getFilterQueryParameters() as $field => $value) {
       $fq = $query->createFilterQuery(array(

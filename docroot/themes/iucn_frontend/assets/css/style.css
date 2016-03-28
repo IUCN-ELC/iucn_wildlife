@@ -223,6 +223,22 @@ fieldset[disabled] #search-form .btn-primary.focus {
   background-color: #fff;
   color: #0077c0;
 }
+.search-header {
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+.search-header:before,
+.search-header:after {
+  content: " ";
+  display: table;
+}
+.search-header:after {
+  clear: both;
+}
+.search-header strong {
+  color: #212121;
+}
 #iucn-search-filters {
   font-size: 14px;
 }
@@ -239,21 +255,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 #iucn-search-filters .select-wrapper:after {
   content: none;
-}
-.search-header {
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
-}
-.search-header:before,
-.search-header:after {
-  content: " ";
-  display: table;
-}
-.search-header:after {
-  clear: both;
-}
-.search-header strong {
-  color: #212121;
 }
 .footer {
   background-color: #eee;

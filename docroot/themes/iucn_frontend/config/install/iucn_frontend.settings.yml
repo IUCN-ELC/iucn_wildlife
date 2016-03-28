@@ -12,7 +12,7 @@
 # @see \Drupal\bootstrap\ThemeSettings
 
 # Components
-navbar_position: static-top
+#navbar_position: static-top
 
 # Advanced
-cdn_provider: ''
+#cdn_provider: ''

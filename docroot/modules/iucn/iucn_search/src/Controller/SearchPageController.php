@@ -51,12 +51,8 @@ class SearchPageController extends ControllerBase {
             $highlighting = $data['highlighting'];
             $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
             $url = Url::fromRoute('entity.node.canonical', ['node' => $nid])->toString();
-            $title = ['#markup' => "<a href='{$url}'>{$title}</a>"];
-            $results[$nid] = [
-              '#type' => 'container',
-              'node_title' => $title,
-              'node' => \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode),
-            ];
+            $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
+            $results[$nid]['#node']->label = ['#markup' => $title];
           }
         }
       }

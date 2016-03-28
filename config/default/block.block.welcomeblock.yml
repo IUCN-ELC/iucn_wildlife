@@ -1,9 +1,9 @@
-uuid: b670b4c5-38c3-4f08-a239-57bdd3b05fac
+uuid: 9e34c9db-d069-4a06-9200-a1384be59f61
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:73ec85f9-84ac-4682-9f42-663ad435020a'
+    - 'block_content:basic:f8b99306-6bf9-44ff-8e00-eaeb2f32c0f3'
   module:
     - block_content
     - system
@@ -12,11 +12,11 @@ dependencies:
 id: welcomeblock
 theme: iucn_frontend
 region: content
-weight: -8
+weight: -7
 provider: null
-plugin: 'block_content:73ec85f9-84ac-4682-9f42-663ad435020a'
+plugin: 'block_content:f8b99306-6bf9-44ff-8e00-eaeb2f32c0f3'
 settings:
-  id: 'block_content:73ec85f9-84ac-4682-9f42-663ad435020a'
+  id: 'block_content:f8b99306-6bf9-44ff-8e00-eaeb2f32c0f3'
   label: 'Welcome block'
   provider: block_content
   label_display: '0'

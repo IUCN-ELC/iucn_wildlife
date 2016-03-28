@@ -1,5 +1,182 @@
-# Schema for the theme setting configuration file of the IUCN Wildlife theme.
+# Schema for the theme setting configuration file of the Bootstrap base theme.
 
 iucn_frontend.settings:
   type: theme_settings
-  label: 'IUCN Wildlife settings'
+  label: 'Iucn settings'
+  mapping:
+    'schema':
+      type: integer
+      label: 'Schema'
+    cdn_custom_css:
+      type: string
+      label: 'Bootstrap CSS URL'
+    include_deprecated:
+      type: integer
+      label: 'Include deprecated functions'
+    suppress_deprecated_warnings:
+      type: integer
+      label: 'Suppress deprecated warnings'
+    cdn_provider:
+      type: string
+      label: 'CDN Provider'
+    cdn_custom_css_min:
+      type: string
+      label: 'Minified Bootstrap CSS URL'
+    cdn_custom_js:
+      type: string
+      label: 'Bootstrap JavaScript URL'
+    cdn_custom_js_min:
+      type: string
+      label: 'Minified Bootstrap JavaScript URL'
+    cdn_jsdelivr_version:
+      type: string
+      label: 'Version'
+    cdn_jsdelivr_theme:
+      type: string
+      label: 'Theme'
+    breadcrumb:
+      type: string
+      label: 'Breadcrumb visibility'
+    breadcrumb_home:
+      type: integer
+      label: 'Show Home breadcrumb link'
+    breadcrumb_title:
+      type: integer
+      label: 'Show current page title at end'
+    navbar_inverse:
+      type: integer
+      label: 'Inverse navbar style'
+    navbar_position:
+      type: string
+      label: 'Navbar Position'
+    region_wells:
+      type: sequence
+      label: ‘Region Wells’
+      sequence:
+        type: region_wells.[%key]
+    button_colorize:
+      type: integer
+      label: 'Colorize Buttons'
+    button_iconize:
+      type: integer
+      label: 'Iconize Buttons'
+    button_size:
+      type: string
+      label: 'Default button size'
+    fluid_container:
+      type: integer
+      label: 'Fluid container'
+    forms_has_error_value_toggle:
+      type: integer
+      label: 'Automatically remove error classes when values have been entered'
+    forms_required_has_error:
+      type: integer
+      label: 'Make required elements display as an error'
+    forms_smart_descriptions:
+      type: integer
+      label: 'Smart form descriptions (via Tooltips)'
+    forms_smart_descriptions_limit:
+      type: string
+      label: 'Smart form descriptions maximum character limit'
+    forms_smart_descriptions_allowed_tags:
+      type: string
+      label: 'Smart form descriptions allowed (HTML) tags'
+    image_responsive:
+      type: integer
+      label: 'Responsive Images'
+    image_shape:
+      type: string
+      label: 'Default image shape'
+    table_bordered:
+      type: integer
+      label: 'Bordered table'
+    table_condensed:
+      type: integer
+      label: 'Condensed table'
+    table_hover:
+      type: integer
+      label: 'Hover rows'
+    table_responsive:
+      type: integer
+      label: 'Responsive tables'
+    table_striped:
+      type: integer
+      label: 'Striped rows'
+    modal_enabled:
+      type: integer
+      label: 'Enable Bootstrap Modals'
+    modal_animation:
+      type: integer
+      label: 'animation'
+    modal_backdrop:
+      type: string
+      label: 'backdrop'
+    modal_keyboard:
+      type: integer
+      label: 'keyboard'
+    modal_show:
+      type: integer
+      label: 'show'
+    modal_size:
+      type: string
+      label: 'size'
+    popover_enabled:
+      type: integer
+      label: 'Enable Bootstrap Popovers'
+    popover_animation:
+      type: integer
+      label: 'animation'
+    popover_container:
+      type: string
+      label: 'container'
+    popover_content:
+      type: string
+      label: 'content'
+    popover_delay:
+      type: string
+      label: 'delay'
+    popover_html:
+      type: integer
+      label: 'html'
+    popover_placement:
+      type: string
+      label: 'placement'
+    popover_selector:
+      type: string
+      label: 'selector'
+    popover_title:
+      type: string
+      label: 'title'
+    popover_trigger:
+      type: string
+      label: 'trigger'
+    popover_trigger_autoclose:
+      type: integer
+      label: 'Auto-close on document click'
+    tooltip_enabled:
+      type: integer
+      label: 'Enable Bootstrap Tooltips'
+    tooltip_animation:
+      type: integer
+      label: 'animation'
+    tooltip_container:
+      type: string
+      label: 'container'
+    tooltip_delay:
+      type: string
+      label: 'delay'
+    tooltip_html:
+      type: integer
+      label: 'html'
+    tooltip_placement:
+      type: string
+      label: 'placement'
+    tooltip_selector:
+      type: string
+      label: 'selector'
+    tooltip_trigger:
+      type: string
+      label: 'trigger'
+
+region_wells.*:
+ type: string

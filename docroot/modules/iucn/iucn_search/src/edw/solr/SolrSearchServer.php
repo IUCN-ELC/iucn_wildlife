@@ -5,6 +5,8 @@ namespace Drupal\iucn_search\edw\solr;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
 use Solarium\Client;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 class SolrSearchServer {
 
@@ -26,9 +28,7 @@ class SolrSearchServer {
     $this->server_config = $server->getBackendConfig() + array('key' => $server->id());
     $this->solrClient = $server->getBackend()->getSolrConnection();
 
-    /** @var SearchApiSolrBackend $backend */
-    $backend = $server->getBackend();
-    $this->solr_field_mappings = $backend->getFieldNames($this->getIndex());
+    $this->setSolrFieldsMappings();
 
     $mappings = $this->getSolrFieldsMappings();
     $ft_fields = $this->getIndex()->getFulltextFields();
@@ -65,6 +65,28 @@ class SolrSearchServer {
    */
   public function getSolrClient() {
     return $this->solrClient;
+  }
+
+  private function setSolrFieldsMappings() {
+    $mappings = [];
+    /** @var SearchApiSolrBackend $backend */
+    $backend = $this->server->getBackend();
+    $singleFields = $backend->getFieldNames($this->getIndex(), TRUE);
+    $multiFields = $backend->getFieldNames($this->getIndex());
+    $field_configs = FieldStorageConfig::loadMultiple();
+    foreach ($field_configs as $field_storage) {
+      $name = $field_storage->getName();
+      if (array_key_exists($name, $singleFields) || array_key_exists($name, $multiFields)) {
+        $mappings[$name] = $field_storage->getCardinality() == 1 ? $singleFields[$name] : $multiFields[$name];
+      }
+    }
+    foreach ($singleFields as $key => $field) {
+      // Add the rest of the fields (eg: 'search_api_relevance')
+      if (!array_key_exists($key, $mappings)) {
+        $mappings[$key] = $field;
+      }
+    }
+    $this->solr_field_mappings = $mappings;
   }
 
   /**

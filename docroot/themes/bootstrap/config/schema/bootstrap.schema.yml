@@ -3,3 +3,184 @@
 bootstrap.settings:
   type: theme_settings
   label: 'Bootstrap settings'
+  mapping:
+#    schema:
+#      type: integer
+#      label: 'Schema'
+    cdn_custom_css:
+      type: string
+      label: 'CDN CSS'
+    include_deprecated:
+      type: integer
+      label: 'CDN CSS'
+    suppress_deprecated_warnings:
+      type: integer
+      label: 'CDN CSS'
+    cdn_provider:
+      type: string
+      label: 'CDN Provider'
+    cdn_custom_css_min:
+      type: string
+      label: 'CDN CSS MIN'
+    cdn_custom_js:
+      type: string
+      label: 'XXXX'
+    cdn_custom_js_min:
+      type: string
+      label: 'XXXX'
+    cdn_jsdelivr_version:
+      type: string
+      label: 'XXXX'
+    cdn_jsdelivr_theme:
+      type: string
+      label: 'XXXX'
+    breadcrumb:
+      type: string
+      label: 'XXXX'
+    breadcrumb_home:
+      type: integer
+      label: 'XXXX'
+    breadcrumb_title:
+      type: integer
+      label: 'XXXX'
+    navbar_inverse:
+      type: integer
+      label: 'XXXX'
+    navbar_position:
+      type: string
+      label: 'XXXX'
+    region_wells:
+      type: sequence
+      label: ‘YYYY’
+      sequence:
+        type: region_wells.[%key]
+    button_colorize:
+      type: integer
+      label: 'XXXX'
+    button_iconize:
+      type: integer
+      label: 'XXXX'
+    button_size:
+      type: string
+      label: 'XXXX'
+    fluid_container:
+      type: integer
+      label: 'XXXX'
+    forms_has_error_value_toggle:
+      type: integer
+      label: 'XXXX'
+    forms_required_has_error:
+      type: integer
+      label: 'XXXX'
+    forms_smart_descriptions:
+      type: integer
+      label: 'XXXX'
+    forms_smart_descriptions_limit:
+      type: string
+      label: 'XXXX'
+    forms_smart_descriptions_allowed_tags:
+      type: string
+      label: 'XXXX'
+    image_responsive:
+      type: integer
+      label: 'XXXX'
+    image_shape:
+      type: string
+      label: 'XXXX'
+    table_bordered:
+      type: integer
+      label: 'XXXX'
+    table_condensed:
+      type: integer
+      label: 'XXXX'
+    table_hover:
+      type: integer
+      label: 'XXXX'
+    table_responsive:
+      type: integer
+      label: 'XXXX'
+    table_striped:
+      type: integer
+      label: 'XXXX'
+    modal_enabled:
+      type: integer
+      label: 'XXXX'
+    modal_animation:
+      type: integer
+      label: 'XXXX'
+    modal_backdrop:
+      type: string
+      label: 'XXXX'
+    modal_keyboard:
+      type: integer
+      label: 'XXXX'
+    modal_show:
+      type: integer
+      label: 'XXXX'
+    modal_size:
+      type: string
+      label: 'XXXX'
+    popover_enabled:
+      type: integer
+      label: 'XXXX'
+    popover_animation:
+      type: integer
+      label: 'XXXX'
+    popover_container:
+      type: string
+      label: 'XXXX'
+    popover_content:
+      type: string
+      label: 'XXXX'
+    popover_delay:
+      type: string
+      label: 'XXXX'
+    popover_html:
+      type: integer
+      label: 'XXXX'
+    popover_placement:
+      type: string
+      label: 'XXXX'
+    popover_selector:
+      type: string
+      label: 'XXXX'
+    popover_title:
+      type: string
+      label: 'XXXX'
+    popover_trigger:
+      type: string
+      label: 'XXXX'
+    popover_trigger_autoclose:
+      type: integer
+      label: 'XXXX'
+    tooltip_enabled:
+      type: integer
+      label: 'XXXX'
+    tooltip_animation:
+      type: integer
+      label: 'XXXX'
+    tooltip_container:
+      type: string
+      label: 'XXXX'
+    tooltip_delay:
+      type: string
+      label: 'XXXX'
+    tooltip_html:
+      type: integer
+      label: 'XXXX'
+    tooltip_delay:
+      type: string
+      label: 'XXXX'
+    tooltip_placement:
+      type: string
+      label: 'XXXX'
+    tooltip_selector:
+      type: string
+      label: 'XXXX'
+    tooltip_trigger:
+      type: string
+      label: 'XXXX'
+
+region_wells.*:
+ type: string
+ label: ‘VVVV’

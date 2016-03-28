@@ -89,7 +89,7 @@ class SolrSearch {
     \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
 
     //Highlight results
-    $query->getHighlighting()->setFields('*')->setSimplePrefix('<b>')->setSimplePostfix('</b>');
+    $query->getHighlighting()->setFields('*')->setSimplePrefix('<em>')->setSimplePostfix('</em>');
 
     $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());

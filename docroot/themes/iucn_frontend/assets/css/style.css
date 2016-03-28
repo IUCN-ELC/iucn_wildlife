@@ -110,6 +110,10 @@
   margin-bottom: 1px;
   margin-top: 0;
 }
+.court-decision.search-result em {
+  font-style: normal;
+  font-weight: 700;
+}
 .court-decision.search-result .field--name-field-type-of-text,
 .court-decision.search-result .field--name-field-country,
 .court-decision.search-result .field--name-field-court-name,

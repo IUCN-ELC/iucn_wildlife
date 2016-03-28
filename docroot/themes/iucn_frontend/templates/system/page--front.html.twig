@@ -67,22 +67,5 @@
 {# Content #}
 {% block content %}
   <a id="main-content"></a>
-  <div class="panel panel-default other-resources">
-    <div class="panel-heading">
-      <h3 class="panel-title">Other resources</h3>
-    </div>
-    <div class="panel-body">
-      <p>For further read, please consult these websites.</p>
-      <dl class="resources-list">
-        <dt><a href="#">Protected Areas Law</a></dt>
-        <dd>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Environmental Law, and the IUCN Academy of Environmental Law, working with the World Commission on Protected Areas, the IUCN Global Protected Areas Programme, and IUCN regional offices for Eastern and Southern Africa (ESARO), West and Central Africa (PACO), and Mexico, Central America and the Caribbean (ORMACC). It is generously supported by the Aage V. Jensen Charity Foundation.</dd>
-        <dt><a href="#">Law for Sustainability</a></dt>
-        <dd>This project represents a collaboration between the IUCN Environmental Law Centre, the IUCN World Commission on Environmental Law, and the IUCN Academy of Environmental Law. It is generously supported by the German Federal Ministry for Economic Cooperation and Development (BMZ).</dd>
-        <dt><a href="#">Water Law &amp; Governance Support Platform</a></dt>
-        <dd>The Water Law and Governance Support Platform (WLGSP) offers legal expertise and ad hoc technical support on water governance issues in transboundary basins.</dd>
-        <dt><a href="#">Mesolex</a></dt>
-        <dd>This database has been designed as a regional platform ECOLEX. Here you will find updated information related to environmental governance instruments that affect natural resources information.</dd>
-      </dl>
-    </div>
-  </div>
+    {{ page.content }}
 {% endblock %}

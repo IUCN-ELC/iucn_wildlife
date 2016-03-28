@@ -1,0 +1,31 @@
+uuid: b670b4c5-38c3-4f08-a239-57bdd3b05fac
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:73ec85f9-84ac-4682-9f42-663ad435020a'
+  module:
+    - block_content
+    - system
+  theme:
+    - iucn_frontend
+id: welcomeblock
+theme: iucn_frontend
+region: content
+weight: -8
+provider: null
+plugin: 'block_content:73ec85f9-84ac-4682-9f42-663ad435020a'
+settings:
+  id: 'block_content:73ec85f9-84ac-4682-9f42-663ad435020a'
+  label: 'Welcome block'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

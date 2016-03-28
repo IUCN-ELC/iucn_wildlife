@@ -33,9 +33,9 @@ class SolrSearchTest extends WebTestBase {
   public function setUp() {
     parent::setUp();
     // Set front end theme.
-//    $config = \Drupal::service('config.factory')->getEditable('system.theme');
-//    $config->set('default', 'iucn_frontend');
-//    $config->save();
+    \Drupal::service('theme_installer')->install(array('iucn_frontend'), TRUE);
+    $config = \Drupal::service('config.factory')->getEditable('system.theme');
+    $config->set('default', 'iucn_frontend')->save();
 
     // Change the index to use test server.
     $default_index = Index::load('default_node_index');

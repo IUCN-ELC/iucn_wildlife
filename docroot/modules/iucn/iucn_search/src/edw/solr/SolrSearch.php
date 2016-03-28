@@ -66,6 +66,8 @@ class SolrSearch {
     $query->setStart($offset);
     $query->setRows($size);
 
+    $this->setQuerySorts($query);
+
     // Handle the facets
     $facetSet = $query->getFacetSet();
     $facetSet->setSort('count');
@@ -165,5 +167,21 @@ class SolrSearch {
     }
     $query = array_merge($query, $this->getFilterQueryParameters());
     return $query;
+  }
+
+  public function setQuerySorts(&$query) {
+    $sortField = $this->getParameter('sort');
+    $sortOrder = $this->getParameter('sortOrder');
+    if (empty($sortField)) {
+      $sortField = 'score';
+    }
+    if (empty($sortOrder)) {
+      $sortOrder = 'desc';
+    }
+    $solr_field_mappings = $this->server->getSolrFieldsMappings();
+    if ($sortField != 'score') {
+      $sortField = $solr_field_mappings[$sortField];
+    }
+    $query->addSort($sortField, $sortOrder);
   }
 }

@@ -58,8 +58,58 @@ class SearchPageController extends ControllerBase {
       '#markup' => "Found {$found} Court Decisions",
     ];
 
+    $sorts = [
+      'relevance' => [
+        'field' => 'score',
+        'order' => 'desc',
+        'text' => 'relevance',
+      ],
+      'dateOfEntryDesc' => [
+        'field' => 'field_date_of_entry',
+        'order' => 'desc',
+        'text' => 'most recent',
+      ],
+      'dateOfEntryAsc' => [
+        'field' => 'field_date_of_entry',
+        'order' => 'asc',
+        'text' => 'least recent',
+      ],
+    ];
+    $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : 'score';
+    $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'desc';
+    $getCopy = $_GET;
+    $sortMarkup = [];
+    foreach ($sorts as $key => $sort) {
+      if ($activeSort == $sort['field'] && $activeOrder == $sort['order']) {
+        $markup = 'Sorted by ' . $sort['text'];
+      }
+      else {
+        $getCopy['sort'] = $sort['field'];
+        $getCopy['sortOrder'] = $sort['order'];
+        //@ToDo: \Drupal::l() is deprecated, see how to render a \Drupal\Core\Link.
+        $markup = \Drupal::l('Sort by ' . $sort['text'], \Drupal\Core\Url::fromRoute('iucn.search', [], ['query' => $getCopy]));
+      }
+      $sortMarkup[$key] = [
+        '#type' => 'item',
+        '#markup' => $markup,
+      ];
+    }
+
     $content = [
-      'numFound' => $numFound,
+      'numFound' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['num-found'],
+        ],
+        'numFound' => $numFound,
+      ],
+      'sorts' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['sorting-container'],
+        ],
+        'links' => $sortMarkup,
+      ],
       'results' => $results,
       'pager' => ['#type' => 'pager'],
     ];

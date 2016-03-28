@@ -6,7 +6,6 @@ dependencies:
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_abstract_files
     - field.field.node.court_decision.field_available_in
-    - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
     - field.field.node.court_decision.field_court_jurisdiction
     - field.field.node.court_decision.field_court_name
@@ -74,13 +73,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-  field_country:
-    type: entity_reference_label
-    weight: 2
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
   field_court:
     weight: 37
     label: above

@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api\IndexInterface.
- */
-
 namespace Drupal\search_api;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
-use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\FieldInterface;
 use Drupal\search_api\Processor\ProcessorInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -262,7 +256,7 @@ interface IndexInterface extends ConfigEntityInterface {
   public function getServerInstance();
 
   /**
-   * Sets the server the index is attached to
+   * Sets the server the index is attached to.
    *
    * @param \Drupal\search_api\ServerInterface|null $server
    *   The server to move this index to, or NULL.

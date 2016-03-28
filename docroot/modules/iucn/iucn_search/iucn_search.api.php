@@ -31,7 +31,6 @@ function hook_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\SolrSearch
   );
 }
 
-
 /**
  * Lets modules alter facets.
  *

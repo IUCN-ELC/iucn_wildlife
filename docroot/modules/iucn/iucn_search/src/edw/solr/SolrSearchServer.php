@@ -24,8 +24,7 @@ class SolrSearchServer {
     $server = $this->index->getServerInstance();
     $this->server = $server;
     $this->server_config = $server->getBackendConfig() + array('key' => $server->id());
-    $this->solrClient = new Client();
-    $this->solrClient->createEndpoint($this->server_config, TRUE);
+    $this->solrClient = $server->getBackend()->getSolrConnection();
 
     /** @var SearchApiSolrBackend $backend */
     $backend = $server->getBackend();

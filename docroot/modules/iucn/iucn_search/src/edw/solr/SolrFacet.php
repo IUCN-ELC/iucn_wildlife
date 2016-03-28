@@ -66,13 +66,14 @@ class SolrFacet {
         // Make sure that operator is OR or AND.
         if (in_array($overwrite_operator, array(self::$OPERATOR_AND, self::$OPERATOR_OR))) {
           $operator = $overwrite_operator;
+          $this->setOperator($operator);
         }
       }
       $values = explode(',', $parameters[$this->id]);
       $filter = (count($values) > 1) ? '(' . implode(" {$operator} ", $values) . ')' : reset($values);
       $solarium_query->createFilterQuery(array(
           'key' => "facet:{$this->id}",
-          'tags' => array("facet:{$this->id}"),
+          'tag' => "facet:{$this->solr_field_id}",
           'query' => "{$this->solr_field_id}:$filter"
       ));
     }
@@ -125,7 +126,15 @@ class SolrFacet {
     asort($options);
     $widget = $this->getWidget();
     $request_param_name = $this->id . '_operator';
-    $operator_default_value = !empty($params[$request_param_name]) && strtoupper($params[$request_param_name]) === self::$OPERATOR_AND;
+    $exposedOperator = [];
+    if (!empty($this->config['exposeOperator']) && $this->config['exposeOperator'] == TRUE) {
+      $operator_default_value = !empty($params[$request_param_name]) && strtoupper($params[$request_param_name]) === self::$OPERATOR_AND;
+      $exposedOperator = [
+        '#type' => 'checkbox',
+        '#default_value' => $operator_default_value,
+        '#return_value' => 'AND',
+      ];
+    }
     switch ($widget) {
       case 'checkboxes':
         $ret = array(
@@ -146,14 +155,8 @@ class SolrFacet {
           'title' => [
             '#markup' => "<h4 class='facet-title'>{$this->getTitle()}</h4>",
           ],
-          $request_param_name => [
-//            '#title' => $this->operator,
-            '#type' => 'checkbox',
-            '#default_value' => $operator_default_value,
-            '#return_value' => 'AND',
-          ],
+          $request_param_name => $exposedOperator,
           $this->id . '_values' => [
-//            '#title' => $this->title,
             '#type' => $widget,
             '#options' => $options,
             '#default_value' => !empty($_GET[$this->id]) ? explode(',', $_GET[$this->id]) : [],

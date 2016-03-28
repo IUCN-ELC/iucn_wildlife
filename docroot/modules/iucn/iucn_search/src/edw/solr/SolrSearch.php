@@ -48,6 +48,7 @@ class SolrSearch {
   /**
    * @param $page
    * @param $size
+   * @param $filterQueryFields array
    * @return \Drupal\iucn_search\edw\solr\SearchResult
    *   Results
    */
@@ -56,6 +57,7 @@ class SolrSearch {
     $query = $this->server->createSelectQuery();
     $query_fields = array_values($this->server->getSearchFieldsMappings());
     $solr_id_field = $this->server->getDocumentIdField();
+    $solr_field_mappings = $this->server->getSolrFieldsMappings();
 
     $query->setQuery($search_text);
     $query->setFields(array('*', 'score'));
@@ -74,6 +76,13 @@ class SolrSearch {
     foreach ($this->facets as $facet) {
       $facet->alterSolrQuery($query, $this->parameters);
       $facet->createSolrFacet($facetSet);
+    }
+    foreach ($this->getFilterQueryParameters() as $field => $value) {
+      $fq = $query->createFilterQuery(array(
+        'key' => $solr_field_mappings[$field],
+        'query' => "{$solr_field_mappings[$field]}:{$value}",
+      ));
+      $query->addFilterQuery($fq);
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
     $resultSet = $this->server->executeQuery($query);
@@ -100,6 +109,18 @@ class SolrSearch {
     if (!empty($this->parameters[$name])) {
       $ret = $this->parameters[$name];
       // @todo: Security check input parameters
+    }
+    return $ret;
+  }
+
+  public function getFilterQueryParameters() {
+    $ret = [];
+    $solr_field_mappings = $this->server->getSolrFieldsMappings();
+    foreach ($this->parameters as $field => $value) {
+      // Add the filter only if the field in indexed and is not faceted.
+      if (!empty($solr_field_mappings[$field]) && !array_key_exists($field, $this->facets)) {
+        $ret[$field] = $value;
+      }
     }
     return $ret;
   }
@@ -142,6 +163,7 @@ class SolrSearch {
     foreach ($this->getFacets() as $facet_id => $facet) {
       $query = array_merge($query, $facet->renderAsGetRequest($form_state));
     }
+    $query = array_merge($query, $this->getFilterQueryParameters());
     return $query;
   }
 }

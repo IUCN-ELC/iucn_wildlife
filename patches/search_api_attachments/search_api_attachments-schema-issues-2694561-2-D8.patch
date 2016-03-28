@@ -1,0 +1,229 @@
+diff --git a/config/schema/search_api_attachments.processor.schema.yml b/config/schema/search_api_attachments.processor.schema.yml
+new file mode 100644
+index 0000000..5d4d846
+--- /dev/null
++++ b/config/schema/search_api_attachments.processor.schema.yml
+@@ -0,0 +1,25 @@
++plugin.plugin_configuration.search_api_processor.file_attachments:
++  type: mapping
++  label: 'File attachments processor configuration'
++  mapping:
++    excluded_extensions:
++      type: string
++      label: 'Excluded file extensions'
++    number_indexed:
++      type: integer
++      label: 'Number of files indexed per file field'
++    max_filesize:
++      type: integer
++      label: 'Maximum upload size'
++    excluded_private:
++      type: integer
++      label: 'Exclude private files'
++    excluded_mimes:
++      type: string
++      label: 'Excluded mime types'
++    weights:
++      type: sequence
++      label: 'The processor''s weights for the different processing stages'
++      sequence:
++        type: integer
++        label: 'The processor''s weight for this stage'
+diff --git a/config/schema/search_api_attachments.schema.yml b/config/schema/search_api_attachments.schema.yml
+index a38bd8f..716d65d 100644
+--- a/config/schema/search_api_attachments.schema.yml
++++ b/config/schema/search_api_attachments.schema.yml
+@@ -21,9 +21,12 @@ search_api_attachments.admin_config:
+       type: mapping
+       label: 'Solr extractor configuration'
+       mapping:
+-        'solr_server':
++        solr_server:
+           type: string
+           label: 'Solr server'
++        solr_tika_path:
++          type: string
++          label: 'URL to Solr extractor servlet (e.g. update/extract)'
+     python_pdf2txt_extractor_configuration:
+       type: mapping
+       label: 'Python Pdf2txt extractor configuration'
+@@ -40,3 +43,9 @@ search_api_attachments.admin_config:
+     preserve_cache:
+       type: boolean
+       label: 'Preserve cached extractions across cache clears.'
++    langcode:
++      type: string
++      label: 'Language code'
++    _core:
++      type: _core_config_info
++
+diff --git a/src/Tests/ConfigTest.php b/src/Tests/ConfigTest.php
+new file mode 100644
+index 0000000..c979dec
+--- /dev/null
++++ b/src/Tests/ConfigTest.php
+@@ -0,0 +1,22 @@
++<?php
++
++namespace Drupal\search_api_attachments\Tests;
++
++use Drupal\simpletest\WebTestBase;
++
++/**
++ * Test the Facet functionality.
++ *
++ * @see Drupal\KernelTests\KernelTestBase;
++ *
++ * @ingroup search_api_attachments
++ * @group search_api_attachments
++ */
++class ConfigTest extends WebTestBase {
++
++  static public $modules = array('search_api_solr', 'search_api_attachments', 'search_api_attachments_test_solr');
++
++  function testGet() {
++    $this->assertEqual(1, 1);
++  }
++}
+diff --git a/tests/search_api_attachments_test_solr/config/install/search_api.index.solr_search_index.yml b/tests/search_api_attachments_test_solr/config/install/search_api.index.solr_search_index.yml
+new file mode 100644
+index 0000000..49d0cf6
+--- /dev/null
++++ b/tests/search_api_attachments_test_solr/config/install/search_api.index.solr_search_index.yml
+@@ -0,0 +1,91 @@
++id: solr_search_index
++name: 'Test index'
++description: 'An index used for testing'
++read_only: false
++field_settings:
++  id:
++    label: ID
++    type: integer
++    datasource_id: 'entity:entity_test'
++    property_path: id
++  name:
++    label: Name
++    type: text
++    datasource_id: 'entity:entity_test'
++    property_path: name
++    boost: 5.0
++  body:
++    label: Body
++    type: text
++    datasource_id: 'entity:entity_test'
++    property_path: body
++  type:
++    label: Type
++    type: string
++    datasource_id: 'entity:entity_test'
++    property_path: type
++  keywords:
++    label: Keywords
++    type: string
++    datasource_id: 'entity:entity_test'
++    property_path: keywords
++  category:
++    label: Category
++    type: string
++    datasource_id: 'entity:entity_test'
++    property_path: category
++  search_api_language:
++    label: 'Item language'
++    type: string
++    property_path: search_api_language
++    index_locked: true
++    type_locked: true
++processor_settings:
++  add_url:
++    plugin_id: add_url
++    settings:
++      weights:
++        preprocess_index: -30
++  language:
++    plugin_id: language
++    settings:
++      weights:
++        preprocess_index: -50
++  file_attachments:
++    plugin_id: file_attachments
++    settings:
++      excluded_extensions: 'aif art avi bmp gif ico mov oga ogv png psd ra ram rgb flv'
++      number_indexed: 0
++      max_filesize: 0
++      excluded_private: 1
++      excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
++      weights:
++        preprocess_index: 0
++options:
++  cron_limit: -1
++  index_directly: false
++datasource_settings:
++  'entity:entity_test':
++    plugin_id: 'entity:entity_test'
++    settings: {  }
++tracker_settings:
++  'default':
++    plugin_id: default
++    settings: { }
++server: solr_search_server
++status: true
++langcode: en
++dependencies:
++  config:
++    - field.field.entity_test.article.body
++    - field.field.entity_test.article.keywords
++    - field.field.entity_test.article.category
++    - field.field.entity_test.item.body
++    - field.field.entity_test.item.keywords
++    - field.field.entity_test.item.category
++    - field.storage.entity_test.body
++    - field.storage.entity_test.keywords
++    - field.storage.entity_test.category
++    - search_api.server.solr_search_server
++  module:
++    - entity_test
+diff --git a/tests/search_api_attachments_test_solr/config/install/search_api.server.solr_search_server.yml b/tests/search_api_attachments_test_solr/config/install/search_api.server.solr_search_server.yml
+new file mode 100644
+index 0000000..3f1a3f1
+--- /dev/null
++++ b/tests/search_api_attachments_test_solr/config/install/search_api.server.solr_search_server.yml
+@@ -0,0 +1,23 @@
++id: solr_search_server
++name: 'Solr search server'
++description: 'A server used for testing.'
++backend: search_api_solr
++backend_config:
++  site_hash: true
++  scheme: http
++  host: localhost
++  port: '8983'
++  path: /solr/d8
++  http_user: ''
++  http_pass: ''
++  excerpt: false
++  retrieve_data: false
++  highlight_data: false
++  skip_schema_check: false
++  solr_version: ''
++  http_method: AUTO
++status: true
++langcode: en
++dependencies:
++  module:
++    - search_api_solr
+\ No newline at end of file
+diff --git a/tests/search_api_attachments_test_solr/search_api_attachments_test_solr.info.yml b/tests/search_api_attachments_test_solr/search_api_attachments_test_solr.info.yml
+new file mode 100644
+index 0000000..ac3573d
+--- /dev/null
++++ b/tests/search_api_attachments_test_solr/search_api_attachments_test_solr.info.yml
+@@ -0,0 +1,9 @@
++type: module
++name: 'Search API attachments test for Solr search'
++description: 'Support module for Search API Solr search tests.'
++package: 'Search API'
++dependencies:
++  - search_api_test_db
++  - search_api_solr
++core: 8.x
++hidden: true

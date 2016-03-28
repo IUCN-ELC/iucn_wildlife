@@ -222,24 +222,21 @@ fieldset[disabled] #search-form .btn-primary.focus {
   background-color: #fff;
   color: #0077c0;
 }
-.iucn-search-form {
+#iucn-search-filters {
   font-size: 14px;
 }
-.iucn-search-form .form-submit {
-  display: none;
-}
-.iucn-search-form .search-filters .checkbox {
+#iucn-search-filters .search-filters .checkbox {
   float: right;
   margin-top: 0;
 }
-.iucn-search-form .facet-title {
+#iucn-search-filters .facet-title {
   float: left;
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 4px;
   margin-top: 4px;
 }
-.iucn-search-form .select-wrapper:after {
+#iucn-search-filters .select-wrapper:after {
   content: none;
 }
 .footer {

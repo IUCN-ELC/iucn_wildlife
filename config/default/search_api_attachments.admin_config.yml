@@ -10,5 +10,3 @@ tika_extractor_configuration:
 python_pdf2txt_extractor_configuration:
   python_path: python
   python_pdf2txt_script: /usr/bin/pdf2txt
-_core:
-  default_config_hash: kHI7OlneY7oVu9QZqE_pwrAC_rkWA5b6W-YwMk5vrrQ

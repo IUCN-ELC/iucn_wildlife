@@ -179,7 +179,11 @@ function hook_search_api_index_items_alter(\Drupal\search_api\IndexInterface $in
       unset($items[$item_id]);
     }
   }
-  drupal_set_message(t('Indexing items on index %index with the following IDs: @ids', array('%index' => $index->label(), '@ids' => implode(', ', array_keys($items)))));
+  $arguments = array(
+    '%index' => $index->label(),
+    '@ids' => implode(', ', array_keys($items)),
+  );
+  drupal_set_message(t('Indexing items on index %index with the following IDs: @ids', $arguments));
 }
 
 /**
@@ -270,11 +274,11 @@ function hook_search_api_results_TAG_alter(\Drupal\search_api\Query\ResultSetInt
 }
 
 /**
- * React when a search index was scheduled for reindexing
+ * React when a search index was scheduled for reindexing.
  *
  * @param \Drupal\search_api\IndexInterface $index
  *   The index scheduled for reindexing.
- * @param $clear
+ * @param bool $clear
  *   Boolean indicating whether the index was also cleared.
  */
 function hook_search_api_index_reindex(\Drupal\search_api\IndexInterface $index, $clear = FALSE) {

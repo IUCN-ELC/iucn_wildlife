@@ -97,6 +97,7 @@ content:
 hidden:
   field_abstract_files: true
   field_available_in: true
+  field_court: true
   field_court_jurisdiction: true
   field_date_of_modification: true
   field_date_of_text: true
@@ -126,4 +127,5 @@ hidden:
   field_subdivision: true
   field_territorial_subdivisions: true
   field_url: true
+  field_wildlife_legislation: true
   links: true

@@ -1,0 +1,5 @@
+services:
+  iucn_search.route_subscriber:
+    class: '\Drupal\iucn_search\Routing\RouteSubscriber'
+    tags:
+      - { name: event_subscriber }

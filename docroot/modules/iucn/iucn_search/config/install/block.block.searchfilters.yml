@@ -1,11 +1,6 @@
 uuid: 8d4ccc66-4666-490f-9a51-8139647178e0
 langcode: en
 status: true
-#dependencies:
-#  module:
-#    - iucn_search
-#  theme:
-#    - iucn_frontend
 id: searchfilters
 theme: iucn_frontend
 region: sidebar

@@ -32,11 +32,13 @@ class SearchPageController extends ControllerBase {
   public function searchPage() {
     $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
     $results = array();
+    $found = 0;
 
     /** @var SearchResult $result */
     try {
       if ($result = self::getSearch()->search($current_page, $this->items_per_page)) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
+        $found = $result->getCountTotal();
         $rows = $result->getResults();
 
         foreach ($rows as $nid => $data) {
@@ -51,7 +53,16 @@ class SearchPageController extends ControllerBase {
       return $this->handleError($e);
     }
 
-    $content = [$results, ['#type' => 'pager']];
+    $found = $found == 0 ? 'no' : $found;
+    $numFound = [
+      '#markup' => "Found {$found} Court Decisions",
+    ];
+
+    $content = [
+      'numFound' => $numFound,
+      'results' => $results,
+      'pager' => ['#type' => 'pager'],
+    ];
 
     return $content;
   }

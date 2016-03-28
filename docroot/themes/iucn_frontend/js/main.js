@@ -1,14 +1,28 @@
 (function ($) {
   $.fn.select2.amd.define('select2/data/custom', [
     'select2/data/array',
+    'select2/selection/multiple',
     'select2/selection/placeholder',
     'select2/utils'
-  ], function (ArrayData, Placeholder, Utils) {
+  ], function (ArrayData, MultipleSelection, Placeholder, Utils) {
     var CustomData = function ($element, options) {
       CustomData.__super__.constructor.call(this, $element, options);
     };
 
     Utils.Extend(CustomData, ArrayData);
+
+    MultipleSelection.prototype.selectionContainer = function () {
+      var $container = $(
+        '<li class="select2-selection__choice">' +
+          '<span class="select2-selection__choice__remove" role="presentation">' +
+            '&times;' +
+          '</span>' +
+          '&nbsp;' +
+        '</li>'
+      );
+
+      return $container;
+    };
 
     Placeholder.prototype.update = function (decorated, data) {
       var $placeholder = this.createPlaceholder(this.placeholder);
@@ -21,9 +35,11 @@
     return CustomData;
   });
 
+  var $searchFilters = $('#iucn-search-filters');
   var CustomData = $.fn.select2.amd.require(('select2/data/custom'));
+  var $window = $(window);
 
-  $('select').select2({
+  $('.form-select', $searchFilters).select2({
     dataAdapter: CustomData,
     placeholder: function () {
       $(this).data('placeholder');
@@ -46,7 +62,7 @@
         return data.text;
       }
 
-      var html = ' ' + splits[0] + ' <sup class="badge">' + splits[1].split(')')[0] + '</sup>';
+      var html = splits[0] + ' <sup class="badge">' + splits[1].split(')')[0] + '</sup>';
 
       return $.parseHTML(html);
     }
@@ -55,8 +71,6 @@
   $('.select2-selection').on('click', '.select2-selection__choice__remove', function (event) {
     event.stopPropagation();
   });
-
-  var $searchFilters = $('#iucn-search-filters');
 
   $searchFilters.on({
     reset: function (event) {
@@ -71,7 +85,7 @@
       $this.submit();
     },
     submit: function () {
-      var offset = $(window).scrollTop();
+      var offset = $window.scrollTop();
 
       window.sessionStorage.setItem('offset', offset);
     }
@@ -92,7 +106,7 @@
   if (offset) {
     window.sessionStorage.removeItem('offset');
 
-    $(window).scrollTop(offset);
+    $window.scrollTop(offset);
   }
 
   var submit = function () {
@@ -101,4 +115,19 @@
 
   $('select', $searchFilters).change(submit);
   $('input[type="checkbox"]', $searchFilters).on('switchChange.bootstrapSwitch', submit);
+
+  var throttle = 200;
+  var timer;
+
+  $window.resize(function () {
+    if (!timer) {
+      timer = setTimeout(function () {
+        $('.form-select', $searchFilters).select2({
+          width: 'resolve'
+        });
+
+        timer = null;
+      }, throttle);
+    }
+  });
 })(jQuery);

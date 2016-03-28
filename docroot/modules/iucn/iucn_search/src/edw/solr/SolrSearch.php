@@ -87,10 +87,16 @@ class SolrSearch {
       $query->addFilterQuery($fq);
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
+
+    //Highlight results
+    $query->getHighlighting()->setFields('*')->setSimplePrefix('<b>')->setSimplePostfix('</b>');
+
     $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());
     $documents = $resultSet->getDocuments();
     $countTotal = $resultSet->getNumFound();
+
+    $highlighting = $resultSet->getHighlighting()->getResults();
 
     $ret = array();
     /** @var Document $document */
@@ -100,7 +106,18 @@ class SolrSearch {
       if (is_array($id)) {
         $id = reset($id);
       }
-      $ret[$id] = array('id' => $id);
+      $documentHighlighting = [];
+      if (!empty($highlighting[$fields['id']])){
+        foreach ($highlighting[$fields['id']]->getFields() as $field => $value) {
+          if ($key = array_search($field, $solr_field_mappings)) {
+            $documentHighlighting[$key] = $value;
+          }
+        }
+      }
+      $ret[$id] = array(
+        'id' => $id,
+        'highlighting' => $documentHighlighting,
+      );
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_results', $ret);
     return new SearchResult($ret, $countTotal);

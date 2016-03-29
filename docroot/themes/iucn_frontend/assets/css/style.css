@@ -485,16 +485,16 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .select2-container--default .select2-results__option .counter {
   color: #999;
 }
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #f5f5f5;
+  color: inherit;
+}
 .select2-container--default .select2-results__option[aria-selected="true"] {
   background-color: #fafafa;
   font-weight: 700;
 }
 .select2-container--default .select2-results__option[aria-selected="true"] .counter {
   font-weight: normal;
-}
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #f5f5f5;
-  color: inherit;
 }
 .select2-results__option {
   border-top: 1px solid transparent;

@@ -115,17 +115,17 @@
   font-weight: 700;
 }
 .court-decision.search-result .field--name-field-type-of-text,
-.court-decision.search-result .field--name-field-country,
+.court-decision.search-result .field--name-field-region,
 .court-decision.search-result .field--name-field-court-name,
 .court-decision.search-result .field--name-field-date-of-entry,
 .court-decision.search-result .field--name-field-isis-number,
 .court-decision.search-result .field--name-field-type-of-text .field--items,
-.court-decision.search-result .field--name-field-country .field--items,
+.court-decision.search-result .field--name-field-region .field--items,
 .court-decision.search-result .field--name-field-court-name .field--items,
 .court-decision.search-result .field--name-field-date-of-entry .field--items,
 .court-decision.search-result .field--name-field-isis-number .field--items,
 .court-decision.search-result .field--name-field-type-of-text .field--item,
-.court-decision.search-result .field--name-field-country .field--item,
+.court-decision.search-result .field--name-field-region .field--item,
 .court-decision.search-result .field--name-field-court-name .field--item,
 .court-decision.search-result .field--name-field-date-of-entry .field--item,
 .court-decision.search-result .field--name-field-isis-number .field--item {
@@ -134,13 +134,13 @@
 .court-decision.search-result .field--name-field-type-of-text {
   color: #090;
 }
-.court-decision.search-result .field--name-field-country,
+.court-decision.search-result .field--name-field-region,
 .court-decision.search-result .field--name-field-court-name,
 .court-decision.search-result .field--name-field-date-of-entry,
 .court-decision.search-result .field--name-field-isis-number {
   color: #808080;
 }
-.court-decision.search-result .field--name-field-country:before,
+.court-decision.search-result .field--name-field-region:before,
 .court-decision.search-result .field--name-field-court-name:before,
 .court-decision.search-result .field--name-field-date-of-entry:before,
 .court-decision.search-result .field--name-field-isis-number:before {

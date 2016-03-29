@@ -7,8 +7,36 @@
 .other-resources .resources-list > dd:last-child {
   margin-bottom: 0;
 }
+.block {
+  font-size: 14px;
+}
+.block + .block {
+  margin-top: 22px;
+}
 .block-title {
   font-size: 18px;
+  margin-top: 0;
+}
+#block-searchfilters .checkbox {
+  float: right;
+  margin-top: 0;
+}
+#block-searchfilters .facet-title {
+  float: left;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+#block-searchfilters .select-wrapper:after {
+  content: none;
+}
+#block-searchfilters .search-submit {
+  display: none;
+}
+#block-usefullinks ul {
+  list-style: none;
+  padding-left: 0;
 }
 .field--label {
   color: #212121;
@@ -245,23 +273,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .search-header strong {
   color: #212121;
-}
-#iucn-search-filters {
-  font-size: 14px;
-}
-#iucn-search-filters .search-filters .checkbox {
-  float: right;
-  margin-top: 0;
-}
-#iucn-search-filters .facet-title {
-  float: left;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 4px;
-  margin-top: 4px;
-}
-#iucn-search-filters .select-wrapper:after {
-  content: none;
 }
 .footer {
   background-color: #eee;

@@ -98,7 +98,6 @@
     size: 'mini'
   });
 
-  $('.search-submit', $searchFilters).hide();
   $('.search-filters', $searchFilters).removeClass('invisible');
 
   var offset = window.sessionStorage.getItem('offset');

@@ -23,8 +23,11 @@ class SearchFiltersBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $form = \Drupal::formBuilder()->getForm('Drupal\iucn_search\Form\SearchFiltersForm');
+    $config = $this->getConfiguration();
+    $label = $config['label_display'] ? $config['label'] : NULL;
+    $form = \Drupal::formBuilder()->getForm('Drupal\iucn_search\Form\SearchFiltersForm', $label);
     $form['#cache']['max-age'] = 0;
+
     return $form;
   }
 }

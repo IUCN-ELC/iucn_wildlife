@@ -9,7 +9,7 @@ dependencies:
     - system
   theme:
     - iucn_frontend
-id: usefullinks_2
+id: usefullinks
 theme: iucn_frontend
 region: sidebar
 weight: -8

@@ -26,7 +26,7 @@ class SearchFiltersForm extends FormBase {
   /**
    * {@inheritdoc}.
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state, $title = NULL) {
     // @todo: handle exception
     $fqParams = SearchPageController::getSearch()->getFilterQueryParameters();
     $fqReset = [];
@@ -41,25 +41,29 @@ class SearchFiltersForm extends FormBase {
         $fqReset[] = ['#markup' => "Results are filtered by '{$term->getName()}' {$markup}"];
       }
     }
-    $form = [[
-      '#attributes' => ['class' => ['search-filters', 'invisible']],
-      '#title' => $this->t('Search filters'),
-      '#type' => 'fieldset',
-      'fqReset' => $fqReset,
-      $this->getRenderedFacets()
-    ], [
-      '#attributes' => ['class' => ['btn-block', 'search-submit']],
-      '#type' => 'submit',
-      '#value' => $this->t('Search')
-    ], [
-      '#attributes' => [
-        'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block', 'search-reset'],
-        'type' => 'reset'
+    $form = [
+      'panel' => [
+        '#attributes' => ['class' => ['search-filters', 'invisible']],
+        '#title' => $title,
+        '#type' => 'fieldset',
+        'term' => $fqReset,
+        'facets' => $this->getRenderedFacets()
       ],
-      '#tag' => 'button',
-      '#type' => 'html_tag',
-      '#value' => $this->t('Reset all filters')
-    ]];
+      'submit' => [
+        '#attributes' => ['class' => ['btn-block', 'search-submit']],
+        '#type' => 'submit',
+        '#value' => $this->t('Search')
+      ],
+      'reset' => [
+        '#attributes' => [
+          'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block', 'search-reset'],
+          'type' => 'reset'
+        ],
+        '#tag' => 'button',
+        '#type' => 'html_tag',
+        '#value' => $this->t('Reset all filters')
+      ]
+    ];
 
     return $form;
   }

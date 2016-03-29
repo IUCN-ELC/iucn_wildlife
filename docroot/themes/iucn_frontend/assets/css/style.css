@@ -7,6 +7,9 @@
 .other-resources .resources-list > dd:last-child {
   margin-bottom: 0;
 }
+.block-title {
+  font-size: 18px;
+}
 .field--label {
   color: #212121;
   font-size: 14px;
@@ -449,6 +452,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
   font-size: 14px;
 }
 .select2-container .select2-dropdown {
+  border-radius: 0;
   border: 1px solid #ddd;
   box-shadow: 0 0 3px rgba(0, 0, 0, .05);
   color: #333;

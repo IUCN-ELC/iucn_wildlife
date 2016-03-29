@@ -58,9 +58,10 @@ class SearchPageController extends ControllerBase {
           if (!empty($node)) {
             $highlighting = $data['highlighting'];
             $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
-            $url = Url::fromRoute('entity.node.canonical', ['node' => $nid])->toString();
+            $abstract = !empty($highlighting['field_abstract']) ? $highlighting['field_abstract'] : text_summary($node->field_abstract->getValue()[0]['value'], NULL, self::TRIMMED_TEXT_SIZE);
             $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
             $results[$nid]['#node']->label = ['#markup' => $title];
+            $results[$nid]['#node']->highlighted_abstract = ['#markup' => $abstract];
           }
         }
       }

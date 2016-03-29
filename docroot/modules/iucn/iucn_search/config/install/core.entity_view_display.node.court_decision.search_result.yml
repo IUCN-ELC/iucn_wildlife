@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_abstract_files
     - field.field.node.court_decision.field_available_in
+    - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
     - field.field.node.court_decision.field_court_jurisdiction
     - field.field.node.court_decision.field_court_name
@@ -45,20 +46,12 @@ dependencies:
     - node.type.court_decision
   module:
     - datetime
-    - text
     - user
 id: node.court_decision.search_result
 targetEntityType: node
 bundle: court_decision
 mode: search_result
 content:
-  field_abstract:
-    type: text_trimmed
-    weight: 6
-    label: hidden
-    settings:
-      trim_length: 400
-    third_party_settings: {  }
   field_court_name:
     type: string
     weight: 3
@@ -76,10 +69,17 @@ content:
     third_party_settings: {  }
   field_isis_number:
     type: string
-    weight: 5
+    weight: 2
     label: hidden
     settings:
       link_to_entity: false
+    third_party_settings: {  }
+  field_region:
+    type: entity_reference_label
+    weight: 1
+    label: hidden
+    settings:
+      link: false
     third_party_settings: {  }
   field_type_of_text:
     type: entity_reference_label
@@ -89,8 +89,10 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  field_abstract: true
   field_abstract_files: true
   field_available_in: true
+  field_country: true
   field_court: true
   field_court_jurisdiction: true
   field_date_of_modification: true
@@ -114,7 +116,6 @@ hidden:
   field_reference_to_legislation: true
   field_reference_to_national_legi: true
   field_reference_to_treaties: true
-  field_region: true
   field_related_website: true
   field_seat_of_court: true
   field_species: true

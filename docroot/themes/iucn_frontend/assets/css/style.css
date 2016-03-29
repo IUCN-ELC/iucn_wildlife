@@ -453,13 +453,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
   box-shadow: 0 0 3px rgba(0, 0, 0, .05);
   color: #333;
 }
-.select2-container .select2-results__option--highlighted[aria-selected] {
-  background-color: #f5f5f5;
-  color: inherit;
-}
-.select2-container .select2-results__option[aria-selected="true"] {
-  display: none;
-}
 .select2-container--default .select2-selection--multiple {
   border: none;
 }
@@ -486,8 +479,25 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .select2-container--default.select2-container--focus .select2-selection--multiple {
   border: none;
 }
+.select2-container--default .select2-results__option {
+  border-top-color: #fafafa;
+}
+.select2-container--default .select2-results__option .counter {
+  color: #999;
+}
+.select2-container--default .select2-results__option[aria-selected="true"] {
+  background-color: #fafafa;
+  font-weight: 700;
+}
+.select2-container--default .select2-results__option[aria-selected="true"] .counter {
+  font-weight: normal;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #f5f5f5;
+  color: inherit;
+}
 .select2-results__option {
-  border-top: 1px solid #fafafa;
+  border-top: 1px solid transparent;
   line-height: 1;
   padding: 10px 16px;
 }
@@ -495,7 +505,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
   border-top: 0;
 }
 .select2-results__option .counter {
-  color: #999;
   float: right;
 }
 /*# sourceMappingURL=style.css.map */

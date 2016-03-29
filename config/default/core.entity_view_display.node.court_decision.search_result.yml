@@ -46,20 +46,12 @@ dependencies:
     - node.type.court_decision
   module:
     - datetime
-    - text
     - user
 id: node.court_decision.search_result
 targetEntityType: node
 bundle: court_decision
 mode: search_result
 content:
-  field_abstract:
-    type: text_trimmed
-    weight: 5
-    label: hidden
-    settings:
-      trim_length: 400
-    third_party_settings: {  }
   field_court_name:
     type: string
     weight: 3
@@ -97,6 +89,7 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  field_abstract: true
   field_abstract_files: true
   field_available_in: true
   field_country: true

@@ -10,6 +10,7 @@ namespace Drupal\iucn_search\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\Core\Cache\Cache;
 use Drupal\iucn_search\edw\solr\SearchResult;
 use Drupal\iucn_search\edw\solr\SolrSearch;
 use Drupal\iucn_search\edw\solr\SolrSearchServer;
@@ -43,6 +44,7 @@ class SearchPageController extends ControllerBase {
   public function searchPage() {
     $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
     $results = array();
+    $cacheTags = array();
     $found = 0;
 
     /** @var SearchResult $result */
@@ -55,6 +57,7 @@ class SearchPageController extends ControllerBase {
         foreach ($rows as $nid => $data) {
           /** @var Node $node */
           $node = Node::load($nid);
+          $cacheTags = array_merge($cacheTags, $node->getCacheTags());
           if (!empty($node)) {
             $highlighting = $data['highlighting'];
             $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
@@ -68,6 +71,8 @@ class SearchPageController extends ControllerBase {
     } catch(\Exception $e) {
       return $this->handleError($e);
     }
+
+    Cache::invalidateTags($cacheTags);
 
     $numFound = $this->formatPlural($found, 'Found 1 result', 'Found @count results');
 

@@ -19,12 +19,20 @@ class SearchPageController extends ControllerBase {
 
   protected $items_per_page = 5;
   protected $items_viewmode = 'search_result';
+
+  /**
+   * The size of the trimmed text in characters.
+   */
+  const TRIMMED_TEXT_SIZE = 300;
   protected static $search = NULL;
 
   public static function getSearch() {
     if (empty(self::$search)) {
-        $server_config = new SolrSearchServer('default_node_index');
-        self::$search = new SolrSearch($_GET, $server_config);
+      $parameters = [
+        'highlightingFragSize' => self::TRIMMED_TEXT_SIZE,
+      ];
+      $server_config = new SolrSearchServer('default_node_index');
+      self::$search = new SolrSearch($_GET + $parameters, $server_config);
     }
     return self::$search;
   }

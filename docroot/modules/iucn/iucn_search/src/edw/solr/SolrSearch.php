@@ -89,7 +89,10 @@ class SolrSearch {
     \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
 
     //Highlight results
-    $query->getHighlighting()->setFields('*')->setSimplePrefix('<em>')->setSimplePostfix('</em>');
+    /** @var \Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
+    $hl = $query->getHighlighting();
+    $hl->setFields('*')->setSimplePrefix('<em>')->setSimplePostfix('</em>');
+    $hl->setFragSize($this->getParameter('highlightingFragSize') ?: 300);
 
     $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());

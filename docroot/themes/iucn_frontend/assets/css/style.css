@@ -286,8 +286,9 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .footer a:focus {
   color: #666;
 }
-.footer .brand-iucn {
+.footer .logos {
   float: left;
+  margin-bottom: 0;
   margin-top: -1px;
 }
 #block-iucn-frontend-footer {

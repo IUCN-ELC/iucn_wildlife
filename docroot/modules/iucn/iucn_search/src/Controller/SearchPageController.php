@@ -74,7 +74,7 @@ class SearchPageController extends ControllerBase {
 
     Cache::invalidateTags($cacheTags);
 
-    $numFound = $this->formatPlural($found, 'Found 1 result', 'Found @count results');
+    $numFound = $found ? $this->formatPlural($found, 'Found 1 result', 'Found @count results') : $this->t('Found no results');
 
     $sorts = [
       'relevance' => [

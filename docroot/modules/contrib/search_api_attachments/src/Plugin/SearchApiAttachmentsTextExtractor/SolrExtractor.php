@@ -39,6 +39,7 @@ class SolrExtractor extends TextExtractorPluginBase {
     $backend = $server->getBackend();
     // Initialise the Client.
     $client = $backend->getSolrConnection();
+    $client->setAdapter('Solarium\Core\Client\Adapter\Http');
     // Create the Query.
     $query = $client->createExtract();
     // setExtractOnly is only available in solarium 3.3.0 and up.
@@ -58,7 +59,7 @@ class SolrExtractor extends TextExtractorPluginBase {
     // $array_data contains json array with two keys : [filename] that contains
     // the extracted text we need and [filename]_metadata that contains some
     // extra metadata.
-    $xml_data = $array_data[$filepath];
+    $xml_data = $array_data[basename($filepath)];
     // We need to get only what is in body tag.
     $xmlencoder = new XmlEncoder();
     $dom_data = $xmlencoder->decode($xml_data, 'xml');

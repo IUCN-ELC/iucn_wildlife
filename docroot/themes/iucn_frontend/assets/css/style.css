@@ -400,6 +400,51 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .panel-default > .panel-heading {
   background-color: transparent;
 }
+.pagination {
+  border-top: 1px solid #ddd;
+  display: block;
+  font-size: 14px;
+  padding-top: 22px;
+  text-align: center;
+}
+.pagination > li {
+  display: inline-block;
+}
+.pagination > li > a,
+.pagination > li > span {
+  border-color: #ddd;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, .05);
+  color: #333;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  background-color: #eee;
+  border-color: #ddd;
+  color: #333;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: #0077c0;
+  border-color: #0077c0;
+  color: #fff;
+}
+.pagination > .disabled > a,
+.pagination > .disabled > span,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > span:hover,
+.pagination > .disabled > a:focus,
+.pagination > .disabled > span:focus {
+  background-color: #eee;
+  border-color: #ddd;
+  box-shadow: none;
+}
 .bootstrap-switch {
   border-color: #eee;
   border-radius: 10px;

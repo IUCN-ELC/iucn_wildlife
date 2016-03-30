@@ -1,0 +1,51 @@
+.pagination {
+  border-top: 1px solid #ddd;
+  display: block;
+  font-size: 14px;
+  padding-top: 22px;
+  text-align: center;
+
+  > li {
+    display: inline-block;
+
+    > a,
+    > span {
+      border-color: #ddd;
+      border-radius: 3px;
+      box-shadow: 0 0px 3px rgba(0, 0, 0, .05);
+      color: #333;
+    }
+  }
+
+  > li > a,
+  > li > span {
+    &:hover,
+    &:focus {
+      background-color: #eee;
+      border-color: #ddd;
+      color: #333;
+    }
+  }
+
+  > .active > a,
+  > .active > span {
+    &,
+    &:hover,
+    &:focus {
+      background-color: #0077c0;
+      border-color: #0077c0;
+      color: #fff;
+    }
+  }
+
+  > .disabled > a,
+  > .disabled > span {
+    &,
+    &:hover,
+    &:focus {
+      background-color: #eee;
+      border-color: #ddd;
+      box-shadow: none;
+    }
+  }
+}

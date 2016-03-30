@@ -17,7 +17,7 @@ settings:
   id: search_filters
   label: 'Search filters'
   provider: iucn_search
-  label_display: '0'
+  label_display: visible
 visibility:
   request_path:
     id: request_path

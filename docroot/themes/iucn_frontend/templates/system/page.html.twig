@@ -61,7 +61,6 @@
  */
 #}
 {% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
-
 {# Navbar #}
 {% if page.navigation or page.navigation_collapsible %}
   {% block navbar %}
@@ -86,7 +85,6 @@
             </button>
           {% endif %}
         </div>
-
         {# Navigation (collapsible) #}
         {% if page.navigation_collapsible %}
           <div class="navbar-collapse collapse">
@@ -97,7 +95,6 @@
     </header>
   {% endblock %}
 {% endif %}
-
 <div class="jumbotron">
   <div class="{{ container }}">
     <div class="row">
@@ -122,7 +119,6 @@
     </div>
   </div>
 </div>
-
 {# Main #}
 {% block main %}
   <div role="main" class="main-container {{ container }} js-quickedit-main-content">
@@ -134,7 +130,6 @@
         </div>
       {% endblock %}
     {% endif %}
-
     <div class="row">
       {# Content #}
       {%
@@ -150,35 +145,30 @@
             <div class="highlighted">{{ page.highlighted }}</div>
           {% endblock %}
         {% endif %}
-
         {# Breadcrumbs #}
         {% if breadcrumb %}
           {% block breadcrumb %}
             {{ breadcrumb }}
           {% endblock %}
         {% endif %}
-
         {# Action Links #}
         {% if action_links %}
           {% block action_links %}
             <ul class="action-links">{{ action_links }}</ul>
           {% endblock %}
         {% endif %}
-
         {# Help #}
         {% if page.help %}
           {% block help %}
             {{ page.help }}
           {% endblock %}
         {% endif %}
-
         {# Content #}
         {% block content %}
           <a id="main-content"></a>
           {{ page.content }}
         {% endblock %}
       </section>
-
       {# Sidebar #}
       {% if page.sidebar %}
         {% block sidebar %}
@@ -190,11 +180,13 @@
     </div>
   </div>
 {% endblock %}
-
 {% if page.footer %}
   {% block footer %}
     <footer class="footer" role="contentinfo">
       <div class="{{ container }}">
+        <a href="#" class="brand-iucn">
+          <img src="{{ base_path ~ directory }}/assets/img/iucn-sm.png" alt="{{ 'IUCN'|t }}">
+        </a>
         {{ page.footer }}
       </div>
     </footer>

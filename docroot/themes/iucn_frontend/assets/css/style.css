@@ -1,20 +1,17 @@
-.other-resources .resources-list {
-  margin-bottom: 0;
-}
-.other-resources .resources-list > dd {
-  margin-bottom: 11px;
-}
-.other-resources .resources-list > dd:last-child {
-  margin-bottom: 0;
-}
-.block {
-  font-size: 14px;
-}
 .block + .block {
   margin-top: 22px;
 }
 .block-title {
   font-size: 18px;
+}
+#block-otherresources dl {
+  margin-bottom: 0;
+}
+#block-otherresources dl > dd {
+  margin-bottom: 11px;
+}
+#block-otherresources dl > dd:last-child {
+  margin-bottom: 0;
 }
 #block-searchfilters .checkbox {
   float: right;
@@ -32,6 +29,9 @@
 }
 #block-searchfilters .search-submit {
   display: none;
+}
+#block-usefullinks {
+  font-size: 14px;
 }
 #block-usefullinks ul {
   list-style: none;

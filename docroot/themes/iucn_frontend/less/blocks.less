@@ -1,6 +1,4 @@
 .block {
-  font-size: 14px;
-
   + .block {
     margin-top: 22px;
   }
@@ -8,6 +6,20 @@
 
 .block-title {
   font-size: 18px;
+}
+
+#block-otherresources {
+  dl {
+    margin-bottom: 0;
+
+    > dd {
+      margin-bottom: 11px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 #block-searchfilters {
@@ -36,6 +48,8 @@
 }
 
 #block-usefullinks {
+  font-size: 14px;
+
   ul {
     list-style: none;
     padding-left: 0;

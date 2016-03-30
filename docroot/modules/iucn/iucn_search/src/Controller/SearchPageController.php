@@ -113,6 +113,30 @@ class SearchPageController extends ControllerBase {
       ];
     }
 
+    if (empty($results)) {
+      $results = [
+        '#attributes' => ['class' => ['well', 'blankslate']],
+        '#type' => 'container',
+        [
+          '#attributes' => ['class' => ['ecolexicon', 'ecolexicon-court-decision']],
+          '#tag' => 'span',
+          '#type' => 'html_tag'
+        ],
+        [
+          '#attributes' => ['class' => ['blankslate-title']],
+          '#tag' => 'h3',
+          '#type' => 'html_tag',
+          '#value' => $this->t('No court decisions found.')
+        ],
+        [
+          '#attributes' => ['class' => []],
+          '#tag' => 'p',
+          '#type' => 'html_tag',
+          '#value' => $this->t('Use the links above, or try a new search query. The Search filters are also super helpful for quickly finding court decisions most relevant to you.')
+        ]
+      ];
+    }
+
     $content = [
       'meta' => [
         '#attributes' => ['class' => ['search-header']],

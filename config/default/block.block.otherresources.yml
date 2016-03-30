@@ -9,7 +9,7 @@ dependencies:
     - system
   theme:
     - iucn_frontend
-id: otherresources
+id: other_resources
 theme: iucn_frontend
 region: content
 weight: -7

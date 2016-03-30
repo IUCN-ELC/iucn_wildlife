@@ -361,6 +361,10 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .ecolexicon-new-window:before {
   content: "\e60f";
 }
+.navbar .logo {
+  margin-right: 5px;
+  margin-top: 8px;
+}
 .jumbotron {
   margin-bottom: 45px;
   padding-bottom: 30px;

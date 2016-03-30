@@ -403,6 +403,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
   border-top: 1px solid #ddd;
   display: block;
   font-size: 14px;
+  margin-bottom: 0;
   padding-top: 22px;
   text-align: center;
 }
@@ -443,6 +444,14 @@ fieldset[disabled] #search-form .btn-primary.focus {
   background-color: #eee;
   border-color: #ddd;
   box-shadow: none;
+}
+.pagination > .ellipsis > span,
+.pagination > .ellipsis > span:hover,
+.pagination > .ellipsis > span:focus {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: #808080;
 }
 .bootstrap-switch {
   border-color: #eee;

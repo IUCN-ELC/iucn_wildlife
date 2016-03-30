@@ -18,7 +18,7 @@ use Drupal\node\Entity\Node;
 
 class SearchPageController extends ControllerBase {
 
-  protected $items_per_page = 5;
+  protected $items_per_page = 10;
   protected $items_viewmode = 'search_result';
 
   /**

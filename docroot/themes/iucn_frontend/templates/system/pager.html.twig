@@ -34,19 +34,36 @@
 {% if items %}
   <nav class="pager-nav" role="navigation">
     <ul class="pagination js-pager__items">
+      {# Print first item if we are not on the first page. #}
+      {% if items.first %}
+        <li class="pager__item pager__item--first">
+          <a href="{{ items.first.href }}"{{ items.first.attributes|without('href') }}>
+            {{ items.first.text|default('&laquo; First'|t) }}
+          </a>
+        </li>
+      {% else %}
+        <li class="pager__item pager__item--first disabled">
+          <span>{{ '&laquo; First'|t }}</span>
+        </li>
+      {% endif %}
       {# Print previous item if we are not on the first page. #}
       {% if items.previous %}
         <li class="pager__item pager__item--previous">
-          <a href="{{ items.previous.href }}"{{ items.previous.attributes }}>
-            {{ items.previous.text|default('Previous'|t) }}
+          <a href="{{ items.previous.href }}"{{ items.previous.attributes|without('href') }}>
+            {{ items.previous.text|default('&lsaquo; Previous'|t) }}
           </a>
         </li>
       {% else %}
         <li class="pager__item pager__item--previous disabled">
-          <span>{{ 'Previous'|t }}</span>
+          <span>{{ '&lsaquo; Previous'|t }}</span>
         </li>
       {% endif %}
-
+      {# Add an ellipsis if there are further previous pages. #}
+      {% if ellipses.previous %}
+        <li class="pager__item pager__item--ellipsis ellipsis" role="presentation">
+          <span>&hellip;</span>
+        </li>
+      {% endif %}
       {# Now generate the actual pager piece. #}
       {% for key, item in items.pages %}
         {% if current == key %}
@@ -59,17 +76,34 @@
           </li>
         {% endif %}
       {% endfor %}
-
+      {# Add an ellipsis if there are further next pages. #}
+      {% if ellipses.next %}
+        <li class="pager__item pager__item--ellipsis ellipsis" role="presentation">
+          <span>&hellip;</span>
+        </li>
+      {% endif %}
       {# Print next item if we are not on the last page. #}
       {% if items.next %}
         <li class="pager__item pager__item--next">
-          <a href="{{ items.next.href }}"{{ items.next.attributes }}>
-            {{ items.next.text|default('Next'|t) }}
+          <a href="{{ items.next.href }}"{{ items.next.attributes|without('href') }}>
+            {{ items.next.text|default('Next &rsaquo;'|t) }}
           </a>
         </li>
       {% else %}
         <li class="pager__item pager__item--next disabled">
-          <span>{{ 'Next'|t }}</span>
+          <span>{{ 'Next &rsaquo;'|t }}</span>
+        </li>
+      {% endif %}
+      {# Print last item if we are not on the last page. #}
+      {% if items.last %}
+        <li class="pager__item pager__item--last">
+          <a href="{{ items.last.href }}"{{ items.last.attributes|without('href') }}>
+            {{ items.last.text|default('Last &raquo;'|t) }}
+          </a>
+        </li>
+      {% else %}
+        <li class="pager__item pager__item--last disabled">
+          <span>{{ 'Last &raquo;'|t }}</span>
         </li>
       {% endif %}
     </ul>

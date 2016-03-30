@@ -132,7 +132,7 @@ class SearchPageController extends ControllerBase {
           '#attributes' => ['class' => []],
           '#tag' => 'p',
           '#type' => 'html_tag',
-          '#value' => $this->t('Use the links above, or try a new search query. The Search filters are also super helpful for quickly finding court decisions most relevant to you.')
+          '#value' => $this->t('Use the links above to find what you&rsquo;re looking for, or try a new search query. The Search filters are also super helpful for quickly finding court decisions most relevant to you.')
         ]
       ];
     }

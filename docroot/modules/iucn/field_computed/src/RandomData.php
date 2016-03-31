@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\field_computed\TextProcessed.
+ * Contains \Drupal\field_computed\RandomData.
  */
 
 namespace Drupal\field_computed;
@@ -13,7 +13,7 @@ use Drupal\Core\TypedData\TypedData;
 /**
  * A computed property for processing text with a format.
  */
-class TextProcessed extends TypedData {
+class RandomData extends TypedData {
 
   /**
    * {@inheritdoc}

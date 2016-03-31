@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\field_computed\Plugin\Field\FieldType\ParagraphItem.
+ * Contains Drupal\field_computed\Plugin\Field\FieldType\TextItem.
  */
 
 namespace Drupal\field_computed\Plugin\Field\FieldType;
@@ -12,18 +12,18 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
 
 /**
- * Plugin implementation of the 'field_computed_paragraph' field type.
+ * Plugin implementation of the 'field_computed_text' field type.
  *
  * @FieldType(
- *   id = "field_computed_paragraph",
- *   label = @Translation("Random Paragraph"),
+ *   id = "field_computed_text",
+ *   label = @Translation("Random Text"),
  *   module = "field_computed",
- *   description = @Translation("This field prints a paragraph with random data."),
+ *   description = @Translation("This field prints a text with computed data."),
  *   default_widget = "field_computed_text",
  *   default_formatter = "field_computed_default"
  * )
  */
-class ParagraphItem extends FieldItemBase {
+class TextItem extends FieldItemBase {
 
   /**
    * {@inheritdoc}
@@ -54,7 +54,7 @@ class ParagraphItem extends FieldItemBase {
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $properties['value'] = DataDefinition::create('string')
       ->setComputed(TRUE)
-      ->setClass('\Drupal\field_computed\TextProcessed');
+      ->setClass('\Drupal\field_computed\RandomData');
 
     return $properties;
   }

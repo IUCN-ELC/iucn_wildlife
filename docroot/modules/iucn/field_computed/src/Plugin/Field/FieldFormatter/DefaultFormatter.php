@@ -18,7 +18,7 @@ use Drupal\Core\Field\FormatterBase;
  *   module = "field_computed",
  *   label = @Translation("Default"),
  *   field_types = {
- *     "field_computed_paragraph"
+ *     "field_computed_text"
  *   }
  * )
  */
@@ -33,10 +33,9 @@ class DefaultFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       $elements[$delta] = array(
         '#cache' => array('max-age' => 0),
-        '#format' => $item->format,
-        '#langcode' => $item->getLangcode(),
-        '#text' => $item->value,
-        '#type' => 'processed_text'
+        '#tag' => 'p',
+        '#type' => 'html_tag',
+        '#value' => $item->value
       );
     }
 

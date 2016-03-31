@@ -17,9 +17,9 @@ use Drupal\Core\Form\FormStateInterface;
  * @FieldWidget(
  *   id = "field_computed_text",
  *   module = "field_computed",
- *   label = @Translation("Random Paragraph"),
+ *   label = @Translation("Read-only"),
  *   field_types = {
- *     "field_computed_paragraph"
+ *     "field_computed_text"
  *   }
  * )
  */
@@ -30,7 +30,7 @@ class TextWidget extends WidgetBase {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element += array(
-      '#markup' => '<div class="description">' . $this->t('This field prints a paragraph with random data.') . '</div>',
+      '#markup' => '<div class="description">' . $this->t('This field prints a text with computed data.') . '</div>',
       '#type' => 'item'
     );
 

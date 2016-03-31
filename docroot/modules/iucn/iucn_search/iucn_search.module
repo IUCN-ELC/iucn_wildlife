@@ -102,10 +102,18 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
   return $ret;
 }
 
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
 function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() === 'court_decision' && $view_mode === 'search_result') {
-    $build['title'][0]['#template'] = '{{ value|raw }}';
-    $build['title'][0]['#context']['value'] = $build['#node']->_label;
-    $build['field_abstract'][0]['#text'] = $build['#node']->_abstract;
+    if (isset($build['#node']->solr_title)) {
+      $build['title'][0]['#template'] = '{{ value|raw }}';
+      $build['title'][0]['#context']['value'] = $build['#node']->solr_title;
+    }
+
+    if (isset($build['#node']->solr_abstract)) {
+      $build['field_abstract'][0]['#text'] = $build['#node']->solr_abstract;
+    }
   }
 }

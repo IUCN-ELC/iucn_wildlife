@@ -109,14 +109,18 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
  * Implements hook_ENTITY_TYPE_view().
  */
 function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->bundle() === 'court_decision' && $view_mode === 'search_result') {
-    if (isset($build['#node']->solr_title)) {
-      $build['title'][0]['#template'] = '{{ value|raw }}';
-      $build['title'][0]['#context']['value'] = $build['#node']->solr_title;
-    }
+  if ($entity->bundle() === 'court_decision') {
+    $build['title'][0]['#context']['value'] = $build['#node']->field_original_title[0]->value;
 
-    if (isset($build['#node']->solr_abstract)) {
-      $build['field_abstract'][0]['#text'] = $build['#node']->solr_abstract;
+    if ($view_mode === 'search_result') {
+      if (isset($build['#node']->solr_title)) {
+        $build['title'][0]['#template'] = '{{ value|raw }}';
+        $build['title'][0]['#context']['value'] = $build['#node']->solr_title;
+      }
+
+      if (isset($build['#node']->solr_abstract)) {
+        $build['field_abstract'][0]['#text'] = $build['#node']->solr_abstract;
+      }
     }
   }
 }

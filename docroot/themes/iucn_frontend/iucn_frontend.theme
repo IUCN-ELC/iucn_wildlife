@@ -8,6 +8,10 @@ function iucn_frontend_preprocess_page(array &$variables) {
   $get = $_GET;
   unset($get['q']);
   $variables['url_query'] = $get;
+
+  if ($variables['is_front']) {
+    $variables['page']['content']['iucn_frontend_content'] = NULL;
+  }
 }
 
 function iucn_frontend_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {

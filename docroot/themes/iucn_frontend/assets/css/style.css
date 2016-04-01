@@ -408,6 +408,10 @@ fieldset[disabled] #search-form .btn-primary.focus {
     display:         flex;
   }
 }
+.panel-body > hr {
+  margin-left: -15px;
+  margin-right: -15px;
+}
 .panel-default > .panel-heading {
   background-color: transparent;
 }

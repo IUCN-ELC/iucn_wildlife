@@ -13,15 +13,15 @@
   }
 }
 @media (min-width: 992px) {
-  .block-get-started .panel-body {
-    display: table-cell;
-    height: 585px;
-    vertical-align: middle;
-  }
-}
-@media (min-width: 1200px) {
-  .block-get-started .panel-body {
-    height: 496px;
+  .block-get-started.panel {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display:         flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+            align-items: center;
   }
 }
 #block-otherresources dl {
@@ -324,6 +324,26 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #block-iucn-frontend-footer .nav > li > a:hover,
 #block-iucn-frontend-footer .nav > li > a:focus {
   text-decoration: underline;
+}
+@media (min-width: 992px) {
+  .row-eq-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display:         flex;
+  }
+  .row-eq-height > [class*="col-"] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display:         flex;
+  }
+  .region-content {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display:         flex;
+  }
 }
 @font-face {
   font-family: "ecolex-icons";

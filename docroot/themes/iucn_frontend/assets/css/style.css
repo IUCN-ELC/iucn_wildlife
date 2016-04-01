@@ -326,18 +326,8 @@ fieldset[disabled] #search-form .btn-primary.focus {
   text-decoration: underline;
 }
 @media (min-width: 992px) {
-  .row-eq-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display:         flex;
-  }
-  .row-eq-height > [class*="col-"] {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display:         flex;
-  }
+  .row-eq-height,
+  .row-eq-height > [class*="col-"],
   .row-eq-height .region-content {
     display: -webkit-box;
     display: -webkit-flex;

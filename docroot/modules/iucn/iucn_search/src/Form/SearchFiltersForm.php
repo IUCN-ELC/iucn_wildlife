@@ -36,9 +36,8 @@ class SearchFiltersForm extends FormBase {
         $getCopy = $_GET;
         unset($getCopy[$field]);
         $url = Url::fromRoute('iucn.search', [], ['query' => $getCopy]);
-        $markup = Link::fromTextAndUrl('x', $url)->toString();
-        //@ToDo: Think of a better message.
-        $fqReset[] = ['#markup' => "Results are filtered by '{$term->getName()}' {$markup}"];
+        $close = sprintf('<a class="close" href="%s">&times;</a>', $url);
+        $fqReset[] = ['#markup' =>  sprintf('<p>%s <span class="label label-primary">%s %s</span></p><hr>', $this->t('Court decisions filtered by:'), $term->getName(), $close)];
       }
     }
     $form = [

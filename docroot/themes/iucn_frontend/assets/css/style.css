@@ -13,6 +13,9 @@
 #block-otherresources dl > dd:last-child {
   margin-bottom: 0;
 }
+#block-searchfilters {
+  font-size: 14px;
+}
 #block-searchfilters .checkbox {
   float: right;
   margin-top: 0;
@@ -474,6 +477,17 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .blankslate-title {
   font-size: 18px;
+}
+.label .close {
+  color: #fff;
+  float: none;
+  font-size: inherit;
+  opacity: .4;
+  text-shadow: 0 -1px 0 #000;
+}
+.label .close:hover,
+.label .close:focus {
+  opacity: .8;
 }
 .bootstrap-switch {
   border-color: #eee;

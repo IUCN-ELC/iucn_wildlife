@@ -8,6 +8,28 @@
   font-size: 18px;
 }
 
+.block-get-started {
+  &.panel {
+    border-width: 2px;
+
+    @media (max-width: 991px) {
+      margin-bottom: 22px;
+    }
+  }
+
+  .panel-body {
+    @media (min-width: 992px) {
+      display: table-cell;
+      height: 585px;
+      vertical-align: middle;
+    }
+
+    @media (min-width: 1200px) {
+      height: 496px;
+    }
+  }
+}
+
 #block-otherresources {
   dl {
     margin-bottom: 0;

@@ -4,6 +4,26 @@
 .block-title {
   font-size: 18px;
 }
+.block-get-started.panel {
+  border-width: 2px;
+}
+@media (max-width: 991px) {
+  .block-get-started.panel {
+    margin-bottom: 22px;
+  }
+}
+@media (min-width: 992px) {
+  .block-get-started .panel-body {
+    display: table-cell;
+    height: 585px;
+    vertical-align: middle;
+  }
+}
+@media (min-width: 1200px) {
+  .block-get-started .panel-body {
+    height: 496px;
+  }
+}
 #block-otherresources dl {
   margin-bottom: 0;
 }

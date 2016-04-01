@@ -338,7 +338,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
     display: -ms-flexbox;
     display:         flex;
   }
-  .region-content {
+  .row-eq-height .region-content {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;

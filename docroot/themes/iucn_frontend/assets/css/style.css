@@ -564,6 +564,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
   border: 1px solid #ddd;
   box-shadow: 0 0 3px rgba(0, 0, 0, .05);
   color: #333;
+  z-index: 1000;
 }
 .select2-container--default .select2-selection--multiple {
   border: none;
@@ -618,5 +619,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .select2-results__option .counter {
   float: right;
+  margin-left: 10px;
 }
 /*# sourceMappingURL=style.css.map */

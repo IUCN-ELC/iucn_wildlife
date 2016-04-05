@@ -8,6 +8,7 @@ destination:
 migration_tags:
   - ELIS
 process:
+  # node.type field handling
   type:
     plugin: default_value
     default_value: court_decision
@@ -42,7 +43,9 @@ process:
   field_subdivision: subdivision
   field_justices: justices
   field_territorial_subdivisions: territorialSubdivision
-  field_abstract_files: linkToAbstract
+  field_abstract_files:
+    source: linkToAbstract
+    plugin: url_file
   field_decision_status: statusOfDecision
   field_reference_to_legislation: referenceToEULegislation
   field_seat_of_court: seatOfCourt
@@ -51,4 +54,6 @@ process:
   field_official_publication: officialPublication
   field_region: region
   field_reference_to_faolex: referenceToFaolex
-  field_files: files
+  field_files:
+    source: linkToFullText
+    plugin: url_file

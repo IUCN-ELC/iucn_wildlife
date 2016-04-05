@@ -20,7 +20,9 @@ process:
   title: titleOfTextShort
   field_original_title: titleOfText
   field_abstract: abstract
-  field_abstract_files: linkToAbstract
+  field_abstract_files:
+    source: linkToAbstract
+    plugin: url_file
   field_country: country
   field_court_name: courtName
   field_date_of_entry: dateOfEntry
@@ -50,7 +52,9 @@ process:
   field_region: region
   field_official_publication: officialPublication
   field_language_of_document: languageOfDocument
-  field_files: files
+  field_files:
+    source: linkToFullText
+    plugin: url_file
   field_keywords: keyword
 destination:
   plugin: 'entity:node'

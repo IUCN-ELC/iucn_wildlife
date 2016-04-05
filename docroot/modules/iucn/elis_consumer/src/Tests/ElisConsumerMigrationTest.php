@@ -2,7 +2,6 @@
 
 namespace Drupal\elis_consumer\Tests;
 
-use Drupal\elis_consumer\Plugin\migrate\source\ElisConsumerCourtDecisionsSource;
 use Drupal\migrate\Entity\MigrationInterface;
 use Drupal\simpletest\WebTestBase;
 use Drupal\migrate\Entity\Migration;

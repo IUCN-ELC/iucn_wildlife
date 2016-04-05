@@ -69,6 +69,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     if (!empty($configuration['path'])) {
       $path = $configuration['path'];
     }
+
     $encoding = 'iso-8859-15';
     if (!empty($configuration['encoding'])) {
       $encoding = $configuration['encoding'];
@@ -228,31 +229,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return array_keys($data);
   }
 
-  /**
-   * @param array $urls
-   * @return array
-   *  Array with files fids.
-   */
-  public function createFiles($urls) {
-    if (empty($urls)) {
-      return [];
-    }
-    if (!is_array($urls)) {
-      $urls = array($urls);
-    }
-    $fids = [];
-    foreach ($urls as $url) {
-      $filename = basename($url);
-      $destination = "public://{$this->files_destination}/{$filename}";
-      $data = file_get_contents($url);
-      /** @var FileInterface $file */
-      $file = file_save_data($data, $destination, FILE_EXISTS_REPLACE);
-      if (!empty($file)) {
-        $fids[] = $file->id();
-      }
-    }
-    return $fids;
-  }
 
   public function getTitle(Row $row) {
     if (empty($titleOfText = $row->getSourceProperty('titleOfText')) &&
@@ -283,11 +259,9 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
 
     // Used str_replace('server2.php/', '', ...) because there is a bug in the urls from ELIS
     $linkToFullText = str_replace('server2.php/', '', $row->getSourceProperty('linkToFullText'));
-    $linkToAbstract = str_replace('server2.php/', '', $row->getSourceProperty('linkToAbstract'));
-
     $row->setSourceProperty('linkToFullText', $linkToFullText);
-    $row->setSourceProperty('files', $this->createFiles($linkToFullText));
-    $row->setSourceProperty('linkToAbstract', $this->createFiles($linkToAbstract));
+    $linkToAbstract = str_replace('server2.php/', '', $row->getSourceProperty('linkToAbstract'));
+    $row->setSourceProperty('linkToAbstract', $linkToAbstract);
 
     /* Map taxonomy term reference fields */
     foreach ($this->taxonomy_fields as $field_name => $vocabulary) {

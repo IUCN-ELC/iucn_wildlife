@@ -1,0 +1,49 @@
+id: elis_consumer_court_decisions_test
+label: Test import of ELIS court decisions
+# migration_group: elis
+source:
+  plugin: elis_consumer_court_decisions_test
+destination:
+  plugin: entity:node
+migration_tags:
+  - ELIS
+process:
+  type:
+    plugin: default_value
+    default_value: court_decision
+  field_original_id: id
+  title: titleOfTextShort
+  field_original_title: titleOfText
+  field_abstract: abstract
+  field_abstract_files: linkToAbstract
+  field_country: country
+  field_court_name: courtName
+  field_date_of_entry: dateOfEntry
+  field_date_of_modification: dateOfModification
+  field_date_of_text: dateOfText
+  field_ecolex_subjects: subject
+  field_isis_number: isisMfn
+  field_number_of_pages: numberOfPages
+  field_reference_number: referenceNumber
+  field_type_of_text: typeOfText
+  field_url: linkToFullText
+  field_related_website: relatedWebSite
+  field_seat_of_court: seatOfCourt
+  field_justices: justices
+  field_reference_to_cou: referenceToCourtDecision
+  field_reference_to_legislation: referenceToEULegislation
+  field_reference_to_faolex: referenceToFaolex
+  field_reference_to_national_legi: referenceToNationalLegislation
+  field_reference_to_treaties: referenceToTreaties
+  field_available_in: availableIn
+  field_court_jurisdiction: courtJurisdiction
+  field_instance: instance
+  field_internet_reference: internetReference
+  field_decision_status: statusOfDecision
+  field_subdivision: subdivision
+  field_territorial_subdivisions: territorialSubdivision
+  field_region: region
+  field_official_publication: officialPublication
+  field_language_of_document: languageOfDocument
+  field_files: files
+  field_keywords: keyword

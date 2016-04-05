@@ -5,13 +5,19 @@
  * Contains \Drupal\elis_consumer\Plugin\migrate\source\ElisConsumerCourtDecisionsSource.
  */
 
+
 namespace Drupal\elis_consumer\Plugin\migrate\source;
 
+include_once __DIR__ . '/../../../../elis_consumer.xml.inc';
+
+use Drupal\elis_consumer\ElisXMLConsumer;
+use Drupal\file\FileInterface;
+use Drupal\migrate\Annotation\MigrateSource;
+use Drupal\migrate\Entity\MigrationInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
-use Drupal\migrate\MigrateException;
-use GuzzleHttp\Exception\RequestException;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Migrate court decision from ELIS database.
@@ -21,35 +27,6 @@ use GuzzleHttp\Exception\RequestException;
  * )
  */
 class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
-
-  /**
-   * The path to the XML source.
-   *
-   * @var string
-   */
-  protected $path = '';
-
-  /**
-   * The field name that is a unique identifier.
-   *
-   * @var string
-   */
-  protected $identifier = '';
-
-  /**
-   * Date of the first query.
-   */
-  protected $start_date = '1981-01';
-
-  /**
-   * Default query string.
-   */
-  protected $spage_query_default_string = 'ES:I AND STAT:C';
-
-  /**
-   * The dates of all queries.
-   */
-  protected $date_period = array();
 
   /**
    * The directory where files should be stored.
@@ -77,80 +54,53 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     'country' => 'countries',
   );
 
-  /**
-   * @var bool
-   *  True if the migration is running within a test.
-   */
-  private $testing_enabled = FALSE;
+  protected $source = NULL;
+  protected $data = array();
 
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Entity\MigrationInterface $migration) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
-
-    $this->path = 'http://www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE';
-    $this->identifier = 'id';
-
-    $this->date_period = $this->get_date_period('Y*', '1 year');
-
     if (isset($configuration['files_destination'])) {
       $this->files_destination = $configuration['files_destination'];
     }
     $directory = "public://{$this->files_destination}";
     file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
-  }
 
-  public function enable_testing() {
-    $this->testing_enabled = TRUE;
-    $this->date_period = ['*'];
-  }
-
-  public function set_path($path) {
-    $this->path = $path;
-  }
-
-  public function hexadecimally_encode_string($str) {
-    $unpack = unpack('H*', $str);
-    return reset($unpack);
-  }
-
-  public function get_date_period($format, $interval, $start_date = NULL, $end_date = NULL) {
-    $return = array();
-    $begin = $start_date == NULL ? new \DateTime($this->start_date) : new \DateTime($start_date);
-    $end = $end_date == NULL ? new \DateTime() : new \DateTime($end_date);
-
-    $interval = \DateInterval::createFromDateString($interval);
-    $period = new \DatePeriod($begin, $interval, $end);
-
-    foreach ($period as $p) {
-      $return[] = $p->format($format);
+    $path = 'http://www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE';
+    if (!empty($configuration['path'])) {
+      $path = $configuration['path'];
     }
-
-    return $return;
+    $encoding = 'iso-8859-15';
+    if (!empty($configuration['encoding'])) {
+      $encoding = $configuration['encoding'];
+    }
+    $this->source = new ElisXMLConsumer($path, 'id', $encoding, '2014-01', '');
   }
 
-  public function set_date_period($date_period) {
-    $this->date_period = $date_period;
+  protected function getData() {
+    if (empty($this->data)) {
+      $rows = $this->source->getData();
+      foreach($rows as $id => $row) {
+        if (!empty((string)$row->projectInformation) && strtoupper((string)$row->projectInformation) == 'WILD') {
+          $this->data[$id] = $row;
+        }
+      }
+    }
+    return $this->data;
   }
 
   public function count($refresh = FALSE) {
-    $query = $this->spage_query_default_string;
-    $spage_query = $this->hexadecimally_encode_string($query);
-    $spage_first = 0;
-    try {
-      $xml = $this->getElisXml($this->path, $spage_query, $spage_first);
-      return (string)$xml->attributes()->numberResultsFound;
-    } catch (RequestException $e) {
-      throw new MigrateException($e->getMessage(), $e->getCode(), $e);
-    }
+    $data = $this->getData();
+    return count($data);
   }
 
   public function getIds() {
-    $ids = array();
-    $ids[$this->identifier]['type'] = 'string';
-    return $ids;
+    return array(
+      'id' => array('type' => 'string')
+    );
   }
 
   public function __toString() {
-    return 'Migrate court decisions from ELIS.';
+    return 'Migrate court decisions from ELIS having `projectInformation` = `WILD`';
   }
 
   public function fields() {
@@ -182,28 +132,9 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     );
   }
 
-  public function getResponse($url) {
-    try {
-      $client = \Drupal::httpClient();
-      $response = $client->request('GET', $url, [
-        'headers' => [
-          'Accept' => 'application/xml',
-        ],
-        // Uncomment the following to debug the request.
-        //'debug' => true,
-      ]);
-      if ($response->getStatusCode() != 200) {
-        throw new MigrateException('Could not retrieve data from url: ' . $url . '.');
-      }
-      return $response;
-    }
-    catch (RequestException $e) {
-      throw new MigrateException('Error sending the request to: ' . $url . '.');
-    }
-  }
 
   public function getItem($data) {
-    $ob = new \stdClass();
+    $ret = array();
     $parties = array();
     $abstract = '';
     foreach ($data as $field_name => $value) {
@@ -218,149 +149,40 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
         $abstract .= $value . PHP_EOL;
         continue;
       }
-      elseif ($field_name == 'party') {
+      else if ($field_name == 'party') {
         $parties[] = $value;
         continue;
       }
-      elseif (property_exists($ob, $field_name)) {
-        if (is_array($ob->{$field_name})) {
-          $ob->{$field_name}[] = $value;
+      else if (!empty($ret[$field_name])) {
+        if (is_array($ret[$field_name])) {
+          $ret[$field_name][] = $value;
         }
         else {
-          $ob->{$field_name} = array($ob->{$field_name}, $value);
+          $ret[$field_name] = array($ret[$field_name], $value);
         }
       }
       else {
         if ($field_name == 'titleOfText') {
-          $ob->titleOfText_original = $value;
+          $ret['titleOfText_original'] = $value;
         }
-        $ob->{$field_name} = $value;
+        $ret[$field_name] = $value;
       }
     }
-    /* Map taxonomy term reference fields */
-    foreach ($this->taxonomy_fields as $field_name => $vocabulary) {
-      if (!empty($ob->{$field_name})) {
-        $ob->{$field_name} = $this->map_taxonomy_terms_by_name($ob->{$field_name}, $vocabulary);
-      }
-    }
-    $ob->abstract = $abstract;
-    $ob->parties = $parties;
-    if (property_exists($ob, 'obsolete')) {
-      $ob->obsolete = (int) $ob->obsolete;
-    }
-    return $ob;
-  }
-
-  public function getElisXml($url, $spage_query, $spage_first) {
-    if ($this->testing_enabled) {
-      return simplexml_load_file($url);
-    }
-    $url = str_replace(
-      array('SPAGE_QUERY_VALUE', 'SPAGE_FIRST_VALUE'),
-      array($spage_query,$spage_first),
-      $url
-    );
-    $response = $this->getResponse($url);
-    $data = trim(utf8_encode($response->getBody()));
-    return simplexml_load_string($data);
-  }
-
-  public function getPaginatedData($url, $spage_query, $numberResultsFound) {
-    $docs = [];
-    $spage_first = 0;
-    try {
-      $xml = $this->getElisXml($url, $spage_query, $spage_first);
-      while (TRUE) {
-        foreach ($xml->document as $doc) {
-          if (empty($doc->{$this->identifier})) {
-            continue;
-          }
-          $docs[(string) $doc->{$this->identifier}] = (array)$this->getItem($doc);
-        }
-        $spage_first += 20;
-        if ($spage_first >= $numberResultsFound) {
-          break;
-        }
-        $xml = $this->getElisXml($url, $spage_query, $spage_first);
-      }
-    } catch (RequestException $e) {
-      throw new MigrateException($e->getMessage(), $e->getCode(), $e);
-    }
-    return $docs;
-  }
-
-  public function getSourceData($url) {
-    $query = $this->spage_query_default_string . ' AND DM:' . current($this->date_period);
-    $spage_query = $this->hexadecimally_encode_string($query);
-    $spage_first = 0;
-    try {
-      $xml = $this->getElisXml($url, $spage_query, $spage_first);
-      $numberResultsFound = (int)$xml->attributes()->numberResultsFound;
-      $numberResultsPresented = (int)$xml->attributes()->numberResultsPresented;
-      $json = json_encode($xml->attributes());
-      // The TRUE setting means decode the response into an associative array.
-      $array = json_decode($json, TRUE);
-      if ($numberResultsFound > $numberResultsPresented) {
-        $docs = $this->getDocumentsByMonth(substr(current($this->date_period), 0, 4));
-      }
-      else {
-        $docs = $this->getPaginatedData($url, $spage_query, $numberResultsFound);
-      }
-      $array['documents'] = $docs;
-      return $array;
-    } catch (RequestException $e) {
-      throw new MigrateException($e->getMessage(), $e->getCode(), $e);
-    }
-  }
-
-  public function getDocumentsByMonth($year) {
-    $date_period = $this->get_date_period('Ym', '1 month', $year . '-01', ($year + 1) . '-01');
-    $docs = [];
-    foreach ($date_period as $date) {
-      $query = $this->spage_query_default_string . ' AND DM:' . $date;
-      $spage_query = $this->hexadecimally_encode_string($query);
-      $spage_first = 0;
-      $xml = $this->getElisXml($this->path, $spage_query, $spage_first);
-      $numberResultsFound = (int)$xml->attributes()->numberResultsFound;
-      $docs = $this->getPaginatedData($url, $spage_query, $numberResultsFound);
-    }
-    return $docs;
-  }
-
-  public function next() {
-    parent::next();
-    while ($this->currentRow === NULL && key($this->date_period) !== NULL) {
-      $this->iterator = $this->initializeIterator();
-      parent::next();
-    }
+    $ret['abstract'] = $abstract;
+    $ret['parties'] = $parties;
+    $ret['obsolete'] = !empty($data->obsolete) && $data->obsolete == 'true';
+    return $ret;
   }
 
   protected function initializeIterator() {
-    $data = $this->getSourceData($this->path);
-    next($this->date_period);
-    $iterator = new \ArrayIterator($data['documents']);
+    $data = $this->getData();
+    foreach($data as &$doc) {
+      $doc = $this->getItem($doc);
+    }
+    $iterator = new \ArrayIterator($data);
     return $iterator;
   }
 
-  /**
-   * @param $names
-   *  An array with entity names.
-   * @param string $bundle
-   *  The machine name of destination content type.
-   * @return array
-   *  An array with nids.
-   */
-  public function map_nodes_by_name($names, $bundle) {
-    if (!is_array($names)) {
-      $names = array($names);
-    }
-    $db = \Drupal::database();
-    $q = $db->select('node_field_data', 'n')
-      ->fields('n', array('nid'))
-      ->condition('type', $bundle)
-      ->condition('title', $names, 'IN');
-    return $q->execute()->fetchCol();
-  }
 
   /**
    * @param $terms
@@ -376,34 +198,30 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     if (!is_array($terms)) {
       $terms = array($terms);
     }
+    $filtered = array();
+    // Filter
     foreach ($terms as $key => $term_name) {
-      if (empty($term_name)) {
-        unset($terms[$key]);
-      }
-    else {
-        $terms[$key] = htmlspecialchars_decode($term_name);
-        // Remove multiple spaces
-        $terms[$key] = preg_replace('/\s+/', ' ', $term_name);
+      // Cleanup spaces & special characters
+      $name = htmlspecialchars_decode(trim(preg_replace('/\s+/', ' ', $term_name)));
+      if (!empty($name)) {
+        $filtered[] = $name;
       }
     }
-    if (empty($terms)) {
+    if (empty($filtered)) {
       return [];
     }
     $db = \Drupal::database();
-    $q = $db->select('taxonomy_term_field_data', 't')
-      ->fields('t', array('tid', 'name'))
-      ->condition('vid', $vid)
-      ->condition('name', $terms, 'IN');
+    $q = $db->select('taxonomy_term_field_data', 't');
+    $q->fields('t', array('tid', 'name'));
+    $q->condition('vid', $vid);
+    $q->condition('name', $filtered, 'IN');
     $data = $q->execute()->fetchAllKeyed();
-    if (count($data) != count($terms) && $create === TRUE) {
-      foreach ($terms as $term_name) {
-        if (!in_array($term_name, $data)) {
-          $term = \Drupal\taxonomy\Entity\Term::create(array(
-            'name' => $term_name,
-            'vid' => $vid,
-          ));
+    if (count($data) != count($filtered)) {
+      foreach ($filtered as $term_name) {
+        if ($create && !in_array($term_name, $data)) {
+          $term = Term::create(array('name' => $term_name, 'vid' => $vid));
           $term->save();
-          $data[$term->id()] = trim($term_name);
+          $data[$term->id()] = $term_name;
         }
       }
     }
@@ -427,6 +245,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       $filename = basename($url);
       $destination = "public://{$this->files_destination}/{$filename}";
       $data = file_get_contents($url);
+      /** @var FileInterface $file */
       $file = file_save_data($data, $destination, FILE_EXISTS_REPLACE);
       if (!empty($file)) {
         $fids[] = $file->id();
@@ -467,10 +286,17 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $linkToAbstract = str_replace('server2.php/', '', $row->getSourceProperty('linkToAbstract'));
 
     $row->setSourceProperty('linkToFullText', $linkToFullText);
-    $row->setSourceProperty('country', $this->map_nodes_by_name($row->getSourceProperty('country'), 'country'));
-
     $row->setSourceProperty('files', $this->createFiles($linkToFullText));
     $row->setSourceProperty('linkToAbstract', $this->createFiles($linkToAbstract));
-  }
 
+    /* Map taxonomy term reference fields */
+    foreach ($this->taxonomy_fields as $field_name => $vocabulary) {
+      if ($row->hasSourceProperty($field_name) && $unmapped = $row->getSourceProperty($field_name)) {
+        $mapped = $this->map_taxonomy_terms_by_name($unmapped, $vocabulary);
+        $row->setSourceProperty($field_name, $mapped);
+      }
+    }
+
+    return TRUE;
+  }
 }

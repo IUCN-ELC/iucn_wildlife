@@ -1,6 +1,8 @@
 # Sensitive information #
 #########################
 
+docroot/modules/contrib/examples/
+
 docroot/CHANGELOG.txt
 docroot/COPYRIGHT.txt
 docroot/INSTALL.mysql.txt

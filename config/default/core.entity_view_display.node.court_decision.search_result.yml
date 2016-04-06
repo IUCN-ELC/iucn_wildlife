@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
     - field.field.node.court_decision.field_court_jurisdiction
-    - field.field.node.court_decision.field_court_name
     - field.field.node.court_decision.field_date_of_entry
     - field.field.node.court_decision.field_date_of_modification
     - field.field.node.court_decision.field_date_of_text
@@ -63,13 +62,6 @@ content:
     weight: 5
     label: hidden
     settings: {  }
-    third_party_settings: {  }
-  field_court_name:
-    type: string
-    weight: 2
-    label: hidden
-    settings:
-      link_to_entity: false
     third_party_settings: {  }
   field_date_of_entry:
     type: datetime_custom

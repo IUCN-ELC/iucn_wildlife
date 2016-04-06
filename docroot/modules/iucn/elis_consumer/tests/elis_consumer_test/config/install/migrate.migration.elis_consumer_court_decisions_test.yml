@@ -29,7 +29,9 @@ process:
   field_language_of_document:
     source: languageOfDocument
     plugin: taxonomy_term
-  field_court_name: courtName
+  field_court:
+    source: courtName
+    plugin: taxonomy_term
   field_date_of_text: dateOfText
   field_reference_number: referenceNumber
   field_number_of_pages: numberOfPages

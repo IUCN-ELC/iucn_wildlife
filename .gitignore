@@ -2,6 +2,7 @@
 #########################
 
 docroot/modules/contrib/examples/
+config/default/simpletest.settings.yml
 
 docroot/CHANGELOG.txt
 docroot/COPYRIGHT.txt

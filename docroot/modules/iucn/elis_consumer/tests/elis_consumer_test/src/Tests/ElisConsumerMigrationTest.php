@@ -101,8 +101,8 @@ class ElisConsumerMigrationTest extends WebTestBase {
     // languageOfDocument => field_language_of_document
     $this->assertEqual('English', Term::load($node1->field_language_of_document->getValue()[0]['target_id'])->getName());
 
-    // courtName => field_court_name
-    $this->assertEqual('District Court', $node1->field_court_name->getValue()[0]['value']);
+    // courtName => field_court
+    $this->assertEqual('District Court', Term::load($node1->field_court->getValue()[0]['target_id'])->getName());
 
     // dateOfText => field_date_of_text
     $this->assertEqual('2014-09-30', $node1->field_date_of_text->getValue()[0]['value']);

@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
     - field.field.node.court_decision.field_court_jurisdiction
-    - field.field.node.court_decision.field_court_name
     - field.field.node.court_decision.field_date_of_entry
     - field.field.node.court_decision.field_date_of_modification
     - field.field.node.court_decision.field_date_of_text
@@ -115,13 +114,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
-  field_court_name:
-    type: string_textfield
-    weight: 5
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_date_of_entry:
     type: datetime_default
     weight: 7

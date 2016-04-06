@@ -1,0 +1,19 @@
+uuid: b0dbdb8f-9cb3-4cfa-8d1d-297c5c47df44
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_charges
+    - node.type.court_decision
+id: node.court_decision.field_charges
+field_name: field_charges
+entity_type: node
+bundle: court_decision
+label: Charges
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

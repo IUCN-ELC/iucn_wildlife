@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_abstract_files
     - field.field.node.court_decision.field_available_in
+    - field.field.node.court_decision.field_charges
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
     - field.field.node.court_decision.field_court_jurisdiction
@@ -14,6 +15,7 @@ dependencies:
     - field.field.node.court_decision.field_date_of_entry
     - field.field.node.court_decision.field_date_of_modification
     - field.field.node.court_decision.field_date_of_text
+    - field.field.node.court_decision.field_decision
     - field.field.node.court_decision.field_decision_status
     - field.field.node.court_decision.field_ecolex_subjects
     - field.field.node.court_decision.field_files
@@ -23,11 +25,13 @@ dependencies:
     - field.field.node.court_decision.field_justices
     - field.field.node.court_decision.field_keywords
     - field.field.node.court_decision.field_language_of_document
+    - field.field.node.court_decision.field_money_value
     - field.field.node.court_decision.field_number_of_pages
     - field.field.node.court_decision.field_offences
     - field.field.node.court_decision.field_official_publication
     - field.field.node.court_decision.field_original_id
     - field.field.node.court_decision.field_original_title
+    - field.field.node.court_decision.field_penalty
     - field.field.node.court_decision.field_reference_number
     - field.field.node.court_decision.field_reference_to_cou
     - field.field.node.court_decision.field_reference_to_faolex
@@ -40,6 +44,7 @@ dependencies:
     - field.field.node.court_decision.field_species
     - field.field.node.court_decision.field_subdivision
     - field.field.node.court_decision.field_territorial_subdivisions
+    - field.field.node.court_decision.field_transnational
     - field.field.node.court_decision.field_type_of_text
     - field.field.node.court_decision.field_url
     - field.field.node.court_decision.field_wildlife_legislation
@@ -98,11 +103,13 @@ content:
 hidden:
   field_abstract_files: true
   field_available_in: true
+  field_charges: true
   field_country: true
   field_court: true
   field_court_jurisdiction: true
   field_date_of_modification: true
   field_date_of_text: true
+  field_decision: true
   field_decision_status: true
   field_ecolex_subjects: true
   field_files: true
@@ -111,11 +118,13 @@ hidden:
   field_justices: true
   field_keywords: true
   field_language_of_document: true
+  field_money_value: true
   field_number_of_pages: true
   field_offences: true
   field_official_publication: true
   field_original_id: true
   field_original_title: true
+  field_penalty: true
   field_reference_number: true
   field_reference_to_cou: true
   field_reference_to_faolex: true
@@ -127,6 +136,7 @@ hidden:
   field_species: true
   field_subdivision: true
   field_territorial_subdivisions: true
+  field_transnational: true
   field_url: true
   field_wildlife_legislation: true
   links: true

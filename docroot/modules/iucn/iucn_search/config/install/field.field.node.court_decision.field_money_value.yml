@@ -1,0 +1,19 @@
+uuid: 91a29768-c262-4f3f-914b-75e5a7674a1a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_money_value
+    - node.type.court_decision
+id: node.court_decision.field_money_value
+field_name: field_money_value
+entity_type: node
+bundle: court_decision
+label: 'Money value'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -7,14 +7,13 @@ module:
   breakpoint: 0
   ckeditor: 0
   color: 0
-  comment: 0
   composer_manager: 0
-  config: 0
   contact: 0
   contextual: 0
   ctools: 0
   datetime: 0
   dblog: 0
+  devel: 0
   dynamic_page_cache: 0
   editor: 0
   elis_consumer: 0
@@ -26,7 +25,6 @@ module:
   filter: 0
   google_analytics: 0
   help: 0
-  history: 0
   image: 0
   iucn_search: 0
   kint: 0
@@ -40,7 +38,6 @@ module:
   page_cache: 0
   path: 0
   quickedit: 0
-  rdf: 0
   search_api: 0
   search_api_attachments: 0
   search_api_solr: 0

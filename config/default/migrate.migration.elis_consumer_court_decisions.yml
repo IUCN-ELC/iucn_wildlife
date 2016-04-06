@@ -13,7 +13,6 @@ label: 'Elis court decisions'
 source:
   plugin: elis_consumer_court_decisions
 process:
-  # node.type field handling
   type:
     plugin: default_value
     default_value: court_decision
@@ -23,8 +22,6 @@ process:
   field_date_of_modification: dateOfModification
   field_original_title: titleOfText
   title: titleOfTextShort
-  # titleOfTextOther
-  # titleOfTextShortOther
   field_country:
     source: country
     plugin: taxonomy_term
@@ -40,7 +37,6 @@ process:
   field_number_of_pages: numberOfPages
   field_available_in: availableIn
   field_url: linkToFullText
-  # linkToFullTextOther
   field_internet_reference: internetReference
   field_related_website: relatedWebSite
   field_keywords:
@@ -52,7 +48,6 @@ process:
     plugin: taxonomy_term
   field_reference_to_national_legi: referenceToNationalLegislation
   field_reference_to_treaties: referenceToTreaties
-  # languages
   field_reference_to_cou: referenceToCourtDecision
   field_subdivision:
     source: subdivision

@@ -26,6 +26,11 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
       'placeholder' => t('Add keywords…'),
       'bundle' => 'keywords',
     ],
+     'field_country' => [
+       'title' => t('Country'),
+       'placeholder' => t('Add countries…'),
+       'bundle' => 'country',
+     ],
     'field_region' => [
       'title' => t('Region'),
       'placeholder' => t('Add regions…'),
@@ -57,11 +62,6 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
    //   'title' => t('Subject'),
    //   'placeholder' => t('Add subjects…'),
    //   'bundle' => 'ecolex_subjects',
-   // ],
-   // 'field_country' => [
-   //   'title' => t('Country'),
-   //   'placeholder' => t('Add countries…'),
-   //   'bundle' => 'country',
    // ],
    // 'field_type_of_text' => [
    //   'title' => t('Type of court'),

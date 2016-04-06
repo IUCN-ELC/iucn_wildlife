@@ -2,6 +2,7 @@
 
 namespace Drupal\elis_consumer_test\Tests;
 
+use Drupal\file\Entity\File;
 use Drupal\migrate\Entity\MigrationInterface;
 use Drupal\simpletest\WebTestBase;
 use Drupal\migrate\Entity\Migration;
@@ -23,6 +24,10 @@ class ElisConsumerMigrationTest extends WebTestBase {
    * @var \Drupal\migrate\Entity\Migration
    */
   private $migration;
+  /**
+   * @var DefaultElisMigrateMessage
+   */
+  private $log;
 
   /** @var  MigrateExecutable */
   private $migrateExecutable;
@@ -30,8 +35,8 @@ class ElisConsumerMigrationTest extends WebTestBase {
   public function setUp() {
     parent::setUp();
     $this->migration = Migration::load('elis_consumer_court_decisions_test');
-    $log = new DefaultElisMigrateMessage();
-    $this->migrateExecutable = new MigrateExecutable($this->migration, $log);
+    $this->log = new DefaultElisMigrateMessage();
+    $this->migrateExecutable = new MigrateExecutable($this->migration, $this->log);
   }
 
   public function testCouMigration() {
@@ -128,25 +133,90 @@ class ElisConsumerMigrationTest extends WebTestBase {
     // relatedWebSite => field_related_website
     $this->assertEqual('http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=1&lang=en', $node1->field_related_website->getValue()[0]['uri']);
 
-    // @todo: keyword
-    // @todo: abstract
-    // @todo: typeOfText
-    // @todo: referenceToNationalLegislation
-    // @todo: referenceToTreaties
-    // @todo: referenceToCourtDecision
-    // @todo: subdivision
-    // @todo: justices
-    // @todo: territorialSubdivision
-    // @todo: linkToAbstract
-    // @todo: statusOfDecision
-    // @todo: referenceToEULegislation
-    // @todo: seatOfCourt
-    // @todo: courtJurisdiction
-    // @todo: instance
-    // @todo: officialPublication
-    // @todo: region
-    // @todo: referenceToFaolex
-    // @todo: files
+    // keyword => field_keywords
+    $values = [];
+    foreach ($node1->field_keywords->getValue() as $value) {
+      $values[] = Term::load($value['target_id'])->getName();
+    }
+    $compare = ['fishing area', 'fishing vessel'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
+
+    // @todo: abstract => field_abstract
+
+    // typeOfText => field_type_of_text
+    $this->assertEqual('National - lower court', Term::load($node1->field_type_of_text->getValue()[0]['target_id'])->getName());
+
+    // referenceToNationalLegislation => field_reference_to_national_legi
+    $values = [];
+    foreach ($node1->field_reference_to_national_legi->getValue() as $value) {
+      $values[] = $value['value'];
+    }
+    $compare = ['LEG-12345', 'LEG-45678'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
+
+    // referenceToTreaties => field_reference_to_treaties
+    $values = [];
+    foreach ($node1->field_reference_to_treaties->getValue() as $value) {
+      $values[] = $value['value'];
+    }
+    $compare = ['TRE-001251', 'TRE-000753'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
+
+    // referenceToCourtDecision => field_reference_to_cou
+    $values = [];
+    foreach ($node1->field_reference_to_cou->getValue() as $value) {
+      $values[] = $value['value'];
+    }
+    $compare = ['COU-143770', 'COU-143771'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
+
+    // subdivision => field_subdivision
+    $this->assertEqual('Chamber of Consults', Term::load($node1->field_subdivision->getValue()[0]['target_id'])->getName());
+
+    // justices => field_justices
+    $values = [];
+    foreach ($node1->field_justices->getValue() as $value) {
+      $values[] = Term::load($value['target_id'])->getName();
+    }
+    $compare = ['Kassonso, P.D.M.', 'Nelson'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
+
+    // territorialSubdivision => field_territorial_subdivisions
+    $this->assertEqual('District of Columbia', Term::load($node1->field_territorial_subdivisions->getValue()[0]['target_id'])->getName());
+
+    // statusOfDecision => field_decision_status
+    $this->assertEqual('Unknown', Term::load($node1->field_decision_status->getValue()[0]['target_id'])->getName());
+
+    // referenceToEULegislation => field_reference_to_legislation
+    $values = [];
+    foreach ($node1->field_reference_to_legislation->getValue() as $value) {
+      $values[] = $value['value'];
+    }
+    $compare = ['LEG-142630', 'LEG-142631'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
+
+    // seatOfCourt => field_seat_of_court
+    $this->assertEqual('Bunda', $node1->field_seat_of_court->getValue()[0]['value']);
+
+    // courtJurisdiction => field_court_jurisdiction
+    $this->assertEqual('General', Term::load($node1->field_court_jurisdiction->getValue()[0]['target_id'])->getName());
+
+    // instance => field_instance
+    $this->assertEqual('Grand Chamber', Term::load($node1->field_instance->getValue()[0]['target_id'])->getName());
+
+    // officialPublication => field_official_publication
+    $this->assertEqual('In the High Court of New Zealand Auckland Registry', $node1->field_official_publication->getValue()[0]['value']);
+
+    // region => field_region
+    $this->assertEqual('Australia and New Zealand', Term::load($node1->field_region->getValue()[0]['target_id'])->getName());
+
+    // referenceToFaolex => field_reference_to_faolex
+    $values = [];
+    foreach ($node1->field_reference_to_faolex->getValue() as $value) {
+      $values[] = $value['value'];
+    }
+    $compare = ['LEX-FAOC097858', 'LEX-FAOC097859'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
 
     // wildlifeCharges => field_charges
     $this->assertEqual('(1) unlawful entry into a game reserve, (2) unlawful possession of weapons in a game reserve', $node1->field_charges->getValue()[0]['value']);
@@ -176,12 +246,24 @@ class ElisConsumerMigrationTest extends WebTestBase {
       $node2->field_penalty->getValue()[0]['value']
     );
 
+    // linkToAbstract => field_abstract_files
+    $f = File::load($node1->field_abstract_files->getValue()[0]['target_id']);
+    $this->assertEqual('COU-AB-EN-143758.rtf', $f->getFilename());
+
+    // files => field_files
+    $values = [];
+    foreach ($node1->field_files->getValue() as $value) {
+      $values[] = File::load($value['target_id'])->getFilename();
+    }
+    $compare = ['COU-160006.pdf'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
   }
 
 }
 
 class DefaultElisMigrateMessage implements MigrateMessageInterface {
 
+  private $messages = array();
   /**
    * Output a message from the migration.
    *
@@ -192,7 +274,11 @@ class DefaultElisMigrateMessage implements MigrateMessageInterface {
    *
    */
   public function display($message, $type = 'status') {
+    $this->messages[] = $message;
     print "{$type}: {$message}" . PHP_EOL;
   }
 
+  public function getMessages() {
+    return $this->messages;
+  }
 }

@@ -18,7 +18,7 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: field_files/court_decisions
+  file_directory: court_decisions
   file_extensions: 'csv doc docx odt pdf ppt pptx rtf txt xls xlsx'
   max_filesize: ''
   description_field: true

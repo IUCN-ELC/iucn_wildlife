@@ -13,7 +13,6 @@ process:
     plugin: default_value
     default_value: court_decision
   field_original_id: id
-  # id2
   field_isis_number: isisMfn
   field_date_of_entry: dateOfEntry
   field_date_of_modification: dateOfModification

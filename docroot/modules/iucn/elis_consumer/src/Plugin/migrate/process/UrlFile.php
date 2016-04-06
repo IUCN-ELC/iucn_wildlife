@@ -53,8 +53,7 @@ class UrlFile extends ProcessPluginBase {
     $filename = basename($url);
     $path = $fi->getSetting('file_directory');
     $path = !empty($path) ? $path . '/' : '';
-    $destination = 'public://' . $path . $filename;
-    $file = $this->createFile($url, $destination);
+    $file = $this->createFile($url, $path, $filename, $migrate_executable);
     if (!$file) {
       $migrate_executable->saveMessage("Could not append to $destination_property, file at $url", MigrationInterface::MESSAGE_WARNING);
     }
@@ -75,14 +74,18 @@ class UrlFile extends ProcessPluginBase {
    * @return integer
    *  File ID (fid)
    */
-  protected function createFile($url, $destination) {
+  protected function createFile($url, $destination_path, $filename, $migrate_executable) {
     if ($data = $this->download($url)) {
       // Ecolex specific - does not return 404, but 200 with 404 page :rofl:
-      if (preg_match('/Server Error/', $data)) {
+      if (preg_match('/Server Error/', $data) || preg_match('/HTTP Status 404/', $data)) {
         return NULL;
       }
+      if (!file_prepare_directory($destination_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+        $migrate_executable->saveMessage("$destination_path is not writable", MigrationInterface::MESSAGE_WARNING);
+      }
+      $target = 'public://' . $destination_path . '/' . $filename;
       /** @var FileInterface $file */
-      if ($file = file_save_data($data, $destination, FILE_EXISTS_REPLACE)) {
+      if ($file = file_save_data($data, $target, FILE_EXISTS_REPLACE)) {
         return $file->id();
       }
     }

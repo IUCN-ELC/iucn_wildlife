@@ -32,6 +32,7 @@
     <seatOfCourt><![CDATA[Bunda]]></seatOfCourt>
 
     <justices><![CDATA[Kassonso, P.D.M.]]></justices>
+    <justices><![CDATA[Nelson]]></justices>
     <dateOfText>2014-09-30</dateOfText>
     <statusOfDecision>Unknown</statusOfDecision>
     <numberOfPages>5</numberOfPages>
@@ -42,9 +43,9 @@
     <internetReferenceSp><![CDATA[http://judis.nic.in/chennai/qrydisp.asp?tfnm=7675]]></internetReferenceSp>
     <linkToFullText><![CDATA[http://www.ecolex.org/server2neu.php/libcat/docs/COU/Full/En/COU-160006.pdf]]></linkToFullText>
     <linkToFullText><![CDATA[http://www.ecolex.org/invalid_file_404/COU-160172_Matrix.pdf]]></linkToFullText>
-    <abstract><![CDATA[On 28/09/2012, the three accused person were caught hunting at Rwamchanga area within Ikorongo Game reserve within Bunda District, they were further caught in possession of one knife, one bush knife and one full fresh carcass of a Zebra. They were arrested and taken to KDU. However, the charges were withdrawn under section 225(5) of the Criminal Procedure Act.]]></abstract>
-
+    <abstract><![CDATA[On 28/09/2012, the three accused person were caught hunting at Rwamchanga area]]></abstract>
     <referenceToFaolex><![CDATA[LEX-FAOC097858]]></referenceToFaolex>
+    <referenceToFaolex><![CDATA[LEX-FAOC097859]]></referenceToFaolex>
     <wildlifeCharges><![CDATA[(1) unlawful entry into a game reserve, (2) unlawful possession of weapons in a game reserve]]></wildlifeCharges>
     <wildlifeSpecies><![CDATA[Wildebeest]]></wildlifeSpecies>
     <wildlifeSpecies><![CDATA[Giraffe]]></wildlifeSpecies>
@@ -54,6 +55,27 @@
     <wildlifePenalty><![CDATA[-]]></wildlifePenalty>
     <projectInformation>WILD</projectInformation>
     <relatedWebSite><![CDATA[http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=1&lang=en]]></relatedWebSite>
+    <keyword><![CDATA[fishing area]]></keyword>
+    <keyword><![CDATA[fishing vessel]]></keyword>
+    <referenceToNationalLegislation><![CDATA[LEG-12345]]></referenceToNationalLegislation>
+    <referenceToNationalLegislation><![CDATA[LEG-45678]]></referenceToNationalLegislation>
+    <referenceToTreaties><![CDATA[TRE-001251]]></referenceToTreaties>
+    <referenceToTreaties><![CDATA[TRE-000753]]></referenceToTreaties>
+    <referenceToCourtDecision><![CDATA[COU-143770]]></referenceToCourtDecision>
+    <referenceToCourtDecision><![CDATA[COU-143771]]></referenceToCourtDecision>
+    <subdivision><![CDATA[Chamber of Consults]]></subdivision>
+    <territorialSubdivision><![CDATA[District of Columbia]]></territorialSubdivision>
+    <territorialSubdivision_fr_FR><![CDATA[District au Columbia]]></territorialSubdivision_fr_FR>
+    <territorialSubdivision_es_ES><![CDATA[District de Columbia]]></territorialSubdivision_es_ES>
+    <linkToAbstract><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/COU/Abstracts/COU-AB-EN-143758.rtf]]></linkToAbstract>
+    <referenceToEULegislation><![CDATA[LEG-142630]]></referenceToEULegislation>
+    <referenceToEULegislation><![CDATA[LEG-142631]]></referenceToEULegislation>
+    <instance><![CDATA[Grand Chamber]]></instance>
+    <officialPublication>In the High Court of New Zealand Auckland Registry</officialPublication>
+    <region><![CDATA[Australia and New Zealand]]></region>
+    <region_fr_FR><![CDATA[Australie et Nouvelle-Zélande]]></region_fr_FR>
+    <region_es_ES><![CDATA[Australia y Nueva Zelandia]]></region_es_ES>
+
   </document>
 
   <document>
@@ -89,7 +111,6 @@
     <dateOfText>2015-12-31</dateOfText>
     <statusOfDecision>Unknown</statusOfDecision>
     <referenceNumber><![CDATA[No. 101 of 2014]]></referenceNumber>
-    <linkToFullText><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/COU/Full/En/COU-160173.pdf]]></linkToFullText><linkToFullText><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/COU/Full/En/COU-160173_Matrix.pdf]]></linkToFullText>
     <abstract><![CDATA[The three accused persons were found within Ikorongo/Grumeti game reserve on 19/10/2014 without permission and in possession of one bush knife, one knife, one five trapping wires which were used for hunting, and nineteen pieces of dried wildebeest meat, four fresh pieces meat of giraffe and one skin of a giraffe. The accused persons were arrested and taken to Anti-Poaching Unit, Bundi. The accused persons were found guilty and were convicted.]]></abstract>
     <referenceToFaolex><![CDATA[LEX-FAOC097858]]></referenceToFaolex>
     <wildlifeCharges><![CDATA[(1) unlawful entry into a game reserve, (2) unlawful possession of weapons in a game reserve, (3) unlawful hunting in a game reserve, (4) unlawful possession of government trophies.]]></wildlifeCharges>

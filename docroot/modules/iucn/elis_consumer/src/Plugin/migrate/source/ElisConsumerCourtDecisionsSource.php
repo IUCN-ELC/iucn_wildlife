@@ -11,13 +11,12 @@ namespace Drupal\elis_consumer\Plugin\migrate\source;
 include_once __DIR__ . '/../../../../elis_consumer.xml.inc';
 
 use Drupal\elis_consumer\ElisXMLConsumer;
-use Drupal\file\FileInterface;
 use Drupal\migrate\Annotation\MigrateSource;
 use Drupal\migrate\Entity\MigrationInterface;
-use Drupal\migrate\Plugin\MigrateIdMapInterface;
+use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
-use Drupal\taxonomy\Entity\Term;
+
 
 /**
  * Migrate court decision from ELIS database.
@@ -32,27 +31,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
    * The directory where files should be stored.
    */
   protected $files_destination = 'court_decisions';
-
-  /**
-   * Fields that will be stored in taxonomies.
-   *
-   * @var array
-   *  The key is the source field name and the value is the vocabulary machine name.
-   */
-  protected $taxonomy_fields = array(
-    'subject' => 'ecolex_subjects',
-    'typeOfText' => 'document_types',
-    'languageOfDocument' => 'document_languages',
-    'justices' => 'justices',
-    'courtJurisdiction' => 'court_jurisdictions',
-    'instance' => 'instances',
-    'statusOfDecision' => 'decision_status',
-    'subdivision' => 'subdivisions',
-    'territorialSubdivision' => 'territorial_subdivisions',
-    'region' => 'regions',
-    'keyword' => 'keywords',
-    'country' => 'countries',
-  );
 
   protected $source = NULL;
   protected $data = array();
@@ -130,6 +108,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       'typeOfText' => 'Type of text',
       'abstract_languages' => 'Languages of abstract field',
       'referenceToNationalLegislation' => 'Reference to legislation',
+      'penalty' => 'Penaly of the case',
     );
   }
 
@@ -184,52 +163,6 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return $iterator;
   }
 
-
-  /**
-   * @param $terms
-   *  An array with term names.
-   * @param $vid
-   *  Vocabulary machine name.
-   * @param bool $create
-   *  If TRUE, nonexistent terms will be created.
-   * @return array
-   *  An array with tids.
-   */
-  public function map_taxonomy_terms_by_name($terms, $vid, $create = TRUE) {
-    if (!is_array($terms)) {
-      $terms = array($terms);
-    }
-    $filtered = array();
-    // Filter
-    foreach ($terms as $key => $term_name) {
-      // Cleanup spaces & special characters
-      $name = htmlspecialchars_decode(trim(preg_replace('/\s+/', ' ', $term_name)));
-      if (!empty($name)) {
-        $filtered[] = $name;
-      }
-    }
-    if (empty($filtered)) {
-      return [];
-    }
-    $db = \Drupal::database();
-    $q = $db->select('taxonomy_term_field_data', 't');
-    $q->fields('t', array('tid', 'name'));
-    $q->condition('vid', $vid);
-    $q->condition('name', $filtered, 'IN');
-    $data = $q->execute()->fetchAllKeyed();
-    if (count($data) != count($filtered)) {
-      foreach ($filtered as $term_name) {
-        if ($create && !in_array($term_name, $data)) {
-          $term = Term::create(array('name' => $term_name, 'vid' => $vid));
-          $term->save();
-          $data[$term->id()] = $term_name;
-        }
-      }
-    }
-    return array_keys($data);
-  }
-
-
   public function getTitle(Row $row) {
     if (empty($titleOfText = $row->getSourceProperty('titleOfText')) &&
         empty($titleOfText = $row->getSourceProperty('titleOfTextSp')) &&
@@ -244,33 +177,17 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     parent::prepareRow($row);
     $titleOfText = $this->getTitle($row);
     if (empty($titleOfText)) {
-      $this->idMap->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
-      $message = 'Title cannot be NULL. (' . $row->getSourceProperty('id') . ')';
-      \Drupal::logger('elis_consumer_court_decisions')
-        ->warning($message);
-      return FALSE;
+      throw new MigrateSkipRowException("Record title cannot be NULL. (id:{$row->getSourceProperty('id')})");
     }
-    else {
-      $row->setSourceProperty('titleOfText', $titleOfText);
-    }
+    $row->setSourceProperty('titleOfText', $titleOfText);
     if (empty($row->getSourceProperty('titleOfTextShort'))) {
       $row->setSourceProperty('titleOfTextShort', substr($titleOfText, 0, 255));
     }
-
     // Used str_replace('server2.php/', '', ...) because there is a bug in the urls from ELIS
     $linkToFullText = str_replace('server2.php/', '', $row->getSourceProperty('linkToFullText'));
     $row->setSourceProperty('linkToFullText', $linkToFullText);
     $linkToAbstract = str_replace('server2.php/', '', $row->getSourceProperty('linkToAbstract'));
     $row->setSourceProperty('linkToAbstract', $linkToAbstract);
-
-    /* Map taxonomy term reference fields */
-    foreach ($this->taxonomy_fields as $field_name => $vocabulary) {
-      if ($row->hasSourceProperty($field_name) && $unmapped = $row->getSourceProperty($field_name)) {
-        $mapped = $this->map_taxonomy_terms_by_name($unmapped, $vocabulary);
-        $row->setSourceProperty($field_name, $mapped);
-      }
-    }
-
     return TRUE;
   }
 }

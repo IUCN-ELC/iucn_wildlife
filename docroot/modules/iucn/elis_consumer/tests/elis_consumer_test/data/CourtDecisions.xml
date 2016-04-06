@@ -37,18 +37,23 @@
     <numberOfPages>5</numberOfPages>
     <availableIn>B7 p. 985:22/A</availableIn>
     <referenceNumber><![CDATA[No. 66 of 2012]]></referenceNumber>
+    <internetReference><![CDATA[http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=1&lang=en]]></internetReference>
+    <internetReferenceFr><![CDATA[http://www.unece.org/env/lrtap/full%20text/1988.NOX.f.pdf]]></internetReferenceFr>
+    <internetReferenceSp><![CDATA[http://judis.nic.in/chennai/qrydisp.asp?tfnm=7675]]></internetReferenceSp>
     <linkToFullText><![CDATA[http://www.ecolex.org/server2neu.php/libcat/docs/COU/Full/En/COU-160006.pdf]]></linkToFullText>
-    <linkToFullText><![CDATA[http://www.ecolex.org/server2.php/server2neu.php/libcat/docs/COU/Full/En/COU-160172_Matrix.pdf]]></linkToFullText>
+    <linkToFullText><![CDATA[http://www.ecolex.org/invalid_file_404/COU-160172_Matrix.pdf]]></linkToFullText>
     <abstract><![CDATA[On 28/09/2012, the three accused person were caught hunting at Rwamchanga area within Ikorongo Game reserve within Bunda District, they were further caught in possession of one knife, one bush knife and one full fresh carcass of a Zebra. They were arrested and taken to KDU. However, the charges were withdrawn under section 225(5) of the Criminal Procedure Act.]]></abstract>
 
     <referenceToFaolex><![CDATA[LEX-FAOC097858]]></referenceToFaolex>
-    <wildlifeCharges><![CDATA[(1) unlawful entry into a game reserve, (2) unlawful possession of weapons in a game reserve, (3) unlawful hunting in a game reserve, (4) unlawful possession of government trophies.]]></wildlifeCharges>
-    <wildlifeSpecies><![CDATA[Zebra]]></wildlifeSpecies>
+    <wildlifeCharges><![CDATA[(1) unlawful entry into a game reserve, (2) unlawful possession of weapons in a game reserve]]></wildlifeCharges>
+    <wildlifeSpecies><![CDATA[Wildebeest]]></wildlifeSpecies>
+    <wildlifeSpecies><![CDATA[Giraffe]]></wildlifeSpecies>
     <wildlifeValue><![CDATA[TZS 1,920,000]]></wildlifeValue>
-    <wildlifeTransnational>N</wildlifeTransnational>
+    <wildlifeTransnational>Y</wildlifeTransnational>
     <wildlifeDecision><![CDATA[Case withdrawn]]></wildlifeDecision>
     <wildlifePenalty><![CDATA[-]]></wildlifePenalty>
     <projectInformation>WILD</projectInformation>
+    <relatedWebSite><![CDATA[http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=1&lang=en]]></relatedWebSite>
   </document>
 
   <document>

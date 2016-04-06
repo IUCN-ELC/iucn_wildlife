@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\migrate\Plugin\migrate\process\Get.
+ * Contains \Drupal\migrate\Plugin\migrate\process\UrlFile.
  */
 
 namespace Drupal\elis_consumer\Plugin\migrate\process;
@@ -24,13 +24,6 @@ use Drupal\migrate\Annotation\MigrateProcessPlugin;
  * )
  */
 class UrlFile extends ProcessPluginBase {
-
-  /**
-   * Flag indicating whether there are multiple values.
-   *
-   * @var bool
-   */
-  protected $multiple = FALSE;
 
   /**
    * {@inheritdoc}

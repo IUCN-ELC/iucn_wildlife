@@ -81,7 +81,6 @@ class ElisConsumerMigrationTest extends WebTestBase {
     foreach ($node1->field_country->getValue() as $country) {
       $countries[] = Term::load($country['target_id'])->getName();
     }
-    var_dump($countries);
     $compare = ['Tanzania, Un. Rep. of', 'Guinea'];
     $this->assertTrue(array_diff($countries, $compare) == array_diff($compare, $countries));
 
@@ -115,16 +114,20 @@ class ElisConsumerMigrationTest extends WebTestBase {
     // linkToFullText => field_url
     $links = $node1->field_url->getValue();
     $link_values = array(
-      'http://www.ecolex.org/server2neu.php/libcat/docs/COU/Full/En/COU-160172.pdf',
-      'http://www.ecolex.org/server2neu.php/libcat/docs/COU/Full/En/COU-160172_Matrix.pdf'
+      'http://www.ecolex.org/server2neu.php/libcat/docs/COU/Full/En/COU-160006.pdf',
+      'http://www.ecolex.org/invalid_file_404/COU-160172_Matrix.pdf'
     );
     $this->assertEqual(2, count($links));
     foreach($links as $link) {
       $this->assertTrue(in_array($link['uri'], $link_values));
     }
 
-    // @todo: internetReference
-    // @todo: relatedWebSite
+    // internetReference => field_internet_reference
+    $this->assertEqual('http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=1&lang=en', $node1->field_internet_reference->getValue()[0]['uri']);
+
+    // relatedWebSite => field_related_website
+    $this->assertEqual('http://www.itlos.org/cgi-bin/cases/case_detail.pl?id=1&lang=en', $node1->field_related_website->getValue()[0]['uri']);
+
     // @todo: keyword
     // @todo: abstract
     // @todo: typeOfText
@@ -144,6 +147,35 @@ class ElisConsumerMigrationTest extends WebTestBase {
     // @todo: region
     // @todo: referenceToFaolex
     // @todo: files
+
+    // wildlifeCharges => field_charges
+    $this->assertEqual('(1) unlawful entry into a game reserve, (2) unlawful possession of weapons in a game reserve', $node1->field_charges->getValue()[0]['value']);
+
+    // wildlifeSpecies => field_species
+    $values = [];
+    foreach ($node1->field_species->getValue() as $value) {
+      $values[] = Term::load($value['target_id'])->getName();
+    }
+    $compare = ['Wildebeest', 'Giraffe'];
+    $this->assertTrue(array_diff($values, $compare) == array_diff($compare, $values));
+
+    // wildlifeValue => field_money_value
+    $this->assertEqual('TZS 1,920,000', $node1->field_money_value->getValue()[0]['value']);
+
+    // wildlifeTransnational => field_transnational
+    $this->assertEqual(1, $node1->field_transnational->getValue()[0]['value']);
+    $this->assertEqual(0, $node2->field_transnational->getValue()[0]['value']);
+
+    // wildlifeDecision => field_decision
+    $this->assertEqual('Case withdrawn', $node1->field_decision->getValue()[0]['value']);
+
+    // wildlifePenalty => field_penalty
+    $this->assertEqual('-', $node1->field_penalty->getValue()[0]['value']);
+    $this->assertEqual(
+      '(1) first count: serve 1 year imprisonment, (2) second count: serve 3 years imprisonment, (3) third count: serve 3 years imprisonment, (4) fourth count: serve 20 years imprisonment',
+      $node2->field_penalty->getValue()[0]['value']
+    );
+
   }
 
 }

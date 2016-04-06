@@ -1,6 +1,11 @@
 id: elis_consumer_court_decisions
 label: Elis court decisions
-# migration_group: elis
+migration_group: elis
+dependencies:
+  module:
+    - elis_consumer
+    - node
+template: null
 source:
   plugin: elis_consumer_court_decisions
 destination:

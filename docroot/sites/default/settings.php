@@ -245,10 +245,10 @@ $databases = array();
  * @endcode
  */
 $config_directories = array(
-  'vcs' => realpath($app_root . '/../config/default'),
-  'local' => realpath($app_root . '/../config/local'),
-  'dev' => realpath($app_root . '/../config/dev'),
-  'prod' => realpath($app_root . '/../config/prod'),
+  'vcs' => $app_root . '/../config/default',
+  'local' => $app_root . '/../config/local',
+  'dev' => $app_root . '/../config/dev',
+  'prod' => $app_root . '/../config/prod',
 );
 $config_directories[CONFIG_SYNC_DIRECTORY] = $config_directories['vcs'];
 

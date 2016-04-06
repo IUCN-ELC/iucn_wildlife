@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\elis_consumer\Tests;
+namespace Drupal\elis_consumer_test\Tests;
 
 use Drupal\migrate\Entity\MigrationInterface;
 use Drupal\simpletest\WebTestBase;

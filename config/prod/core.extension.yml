@@ -8,6 +8,7 @@ module:
   ckeditor: 0
   color: 0
   composer_manager: 0
+  config: 0
   contact: 0
   contextual: 0
   ctools: 0

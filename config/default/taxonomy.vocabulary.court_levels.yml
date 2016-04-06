@@ -2,7 +2,7 @@ uuid: 604fa715-2887-458b-9706-6cb630774db3
 langcode: en
 status: true
 dependencies: {  }
-name: 'Court levels'
+name: 'Court name'
 vid: court_levels
 description: ''
 hierarchy: 0

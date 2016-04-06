@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
-    - field.field.node.court_decision.field_court_jurisdiction
     - field.field.node.court_decision.field_date_of_entry
     - field.field.node.court_decision.field_date_of_modification
     - field.field.node.court_decision.field_date_of_text
@@ -102,11 +101,6 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: field_decision_status
     type: integer
-  field_court_jurisdiction:
-    label: 'Court jurisdiction'
-    datasource_id: 'entity:node'
-    property_path: field_court_jurisdiction
-    type: integer
   search_api_attachments_field_files:
     label: 'Search api attachments: Files'
     datasource_id: null
@@ -137,11 +131,6 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: field_species
     type: integer
-  field_court:
-    label: Court
-    datasource_id: 'entity:node'
-    property_path: field_court
-    type: integer
   field_wildlife_legislation:
     label: 'Wildlife legislation'
     datasource_id: 'entity:node'
@@ -166,6 +155,11 @@ field_settings:
     label: Country
     datasource_id: 'entity:node'
     property_path: field_country
+    type: integer
+  field_court:
+    label: Court
+    datasource_id: 'entity:node'
+    property_path: field_court
     type: integer
 processor_settings:
   add_url:

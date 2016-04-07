@@ -147,8 +147,9 @@
 .file-reveal {
   visibility: hidden;
 }
-.court-decision .field--name-field-justices .field--item {
-  display: inline;
+.court-decision .field--name-field-justices .field--item.label {
+  display: inline-block;
+  padding: .4em .6em .5em;
 }
 .court-decision.full .field {
   margin-bottom: 11px;

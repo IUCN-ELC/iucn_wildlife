@@ -55,7 +55,7 @@
 
       return $.parseHTML(html);
     },
-    templateSelection: function (data, container) {
+    templateSelection: function (data) {
       var splits = data.text.split(' (');
 
       if (splits.length === 1) {

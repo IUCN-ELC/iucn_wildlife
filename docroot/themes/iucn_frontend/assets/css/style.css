@@ -507,6 +507,12 @@ fieldset[disabled] #search-form .btn-primary.focus {
   box-shadow: none;
   color: #808080;
 }
+.pager__item--first {
+  float: left;
+}
+.pager__item--last {
+  float: right;
+}
 .blankslate {
   font-size: 14px;
   padding: 60px 120px;

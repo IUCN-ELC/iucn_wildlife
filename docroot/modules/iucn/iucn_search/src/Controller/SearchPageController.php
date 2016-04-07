@@ -159,6 +159,10 @@ class SearchPageController extends ControllerBase {
       'pager' => ['#type' => 'pager'],
     ];
 
+    if (!$found) {
+      unset($content['meta'][1]);
+    }
+
     return $content;
   }
 

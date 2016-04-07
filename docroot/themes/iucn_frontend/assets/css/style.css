@@ -298,6 +298,9 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .search-header:after {
   clear: both;
 }
+.search-header .pull-left {
+  margin-bottom: 11px;
+}
 .search-header strong {
   color: #212121;
 }

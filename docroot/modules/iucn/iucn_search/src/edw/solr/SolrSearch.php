@@ -37,6 +37,8 @@ class SolrSearch {
   /** @var \Drupal\iucn_search\edw\solr\SolrSearchServer */
   protected $server = NULL;
   protected $facets = array();
+  /** @var \Solarium\QueryType\Select\Query\Query */
+  protected $query = NULL;
 
   public function __construct(array $parameters, SolrSearchServer $server) {
     $this->parameters = $parameters;
@@ -46,17 +48,17 @@ class SolrSearch {
   }
 
   /**
-   * @param $page
-   * @param $size
-   * @param $filterQueryFields array
-   * @return \Drupal\iucn_search\edw\solr\SearchResult
-   *   Results
+   * @param array $parameters
+   *   An associative array containing:
+   *   - page: Current query page.
+   *   - size: The number of results to return.
    */
-  public function search($page, $size) {
+  public function createSelectQuery(array $parameters) {
+    $page = !empty($parameters['page']) ? $parameters['page'] : 0;
+    $size = !empty($parameters['size']) ? $parameters['size'] : 10;
     $search_text = $this->getParameter('q');
     $query = $this->server->createSelectQuery();
     $query_fields = array_values($this->server->getSearchFieldsMappings());
-    $solr_id_field = $this->server->getDocumentIdField();
     $solr_field_mappings = $this->server->getSolrFieldsMappings();
 
     $query->setQuery($search_text);
@@ -94,13 +96,22 @@ class SolrSearch {
     $hl->setFields('*')->setSimplePrefix('<em>')->setSimplePostfix('</em>');
     $hl->setFragSize($this->getParameter('highlightingFragSize') ?: 300);
 
-    $resultSet = $this->server->executeQuery($query);
+    $this->query = $query;
+  }
+
+  /**
+   * @return \Drupal\iucn_search\edw\solr\SearchResult
+   *  Search results.
+   */
+  public function getSearchResults() {
+    $resultSet = $this->server->executeQuery($this->query);
     $this->updateFacetValues($resultSet->getFacetSet());
     $documents = $resultSet->getDocuments();
     $countTotal = $resultSet->getNumFound();
 
     $highlighting = $resultSet->getHighlighting()->getResults();
 
+    $solr_id_field = $this->server->getDocumentIdField();
     $ret = array();
     /** @var Document $document */
     foreach ($documents as $document) {
@@ -125,6 +136,22 @@ class SolrSearch {
     }
     \Drupal::service('module_handler')->alter('edw_search_solr_results', $ret);
     return new SearchResult($ret, $countTotal);
+  }
+
+  /**
+   * @param $page
+   *  Current query page (default = 0).
+   * @param $size
+   *  The number of results to return (default = 10).
+   * @return \Drupal\iucn_search\edw\solr\SearchResult
+   *  Search results.
+   */
+  public function search($page = 0, $size = 10) {
+    $this->createSelectQuery([
+      'page' => $page,
+      'size' => $size,
+    ]);
+    return $this->getSearchResults();
   }
 
   public function getParameter($name) {

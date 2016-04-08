@@ -32,6 +32,13 @@ class SearchPageController extends ControllerBase {
       $parameters = [
         'highlightingFragSize' => self::TRIMMED_TEXT_SIZE,
       ];
+      $yearmin = !empty($_GET['yearmin']) ? $_GET['yearmin'] : NULL;
+      $yearmax = !empty($_GET['yearmax']) ? $_GET['yearmax'] : NULL;
+      if ($yearmin || $yearmax) {
+        $yearmin = $yearmin ? "{$yearmin}-01-01T00:00:00Z" : "*";
+        $yearmax = $yearmax ? "{$yearmax}-12-31T23:59:59Z" : "*";
+        $parameters['field_date_of_text'] = "[{$yearmin} TO {$yearmax}]";
+      }
       $server_config = new SolrSearchServer('default_node_index');
       self::$search = new SolrSearch($_GET + $parameters, $server_config);
     }
@@ -83,13 +90,13 @@ class SearchPageController extends ControllerBase {
         'order' => 'desc',
         'text' => 'relevance',
       ],
-      'dateOfEntryDesc' => [
-        'field' => 'field_date_of_entry',
+      'dateOfTextDesc' => [
+        'field' => 'field_date_of_text',
         'order' => 'desc',
         'text' => 'most recent',
       ],
-      'dateOfEntryAsc' => [
-        'field' => 'field_date_of_entry',
+      'dateOfTextAsc' => [
+        'field' => 'field_date_of_text',
         'order' => 'asc',
         'text' => 'least recent',
       ],

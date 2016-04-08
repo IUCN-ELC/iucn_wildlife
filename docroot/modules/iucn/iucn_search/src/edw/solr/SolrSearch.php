@@ -57,46 +57,39 @@ class SolrSearch {
     $page = !empty($parameters['page']) ? $parameters['page'] : 0;
     $size = !empty($parameters['size']) ? $parameters['size'] : 10;
     $search_text = $this->getParameter('q');
-    $query = $this->server->createSelectQuery();
+    $this->query = $this->server->createSelectQuery();
     $query_fields = array_values($this->server->getSearchFieldsMappings());
-    $solr_field_mappings = $this->server->getSolrFieldsMappings();
 
-    $query->setQuery($search_text);
-    $query->setFields(array('*', 'score'));
-    $query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
+    $this->query->setQuery($search_text);
+    $this->query->setFields(array('*', 'score'));
+    $this->query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
     $offset = $page * $size;
-    $query->setStart($offset);
-    $query->setRows($size);
+    $this->query->setStart($offset);
+    $this->query->setRows($size);
 
-    $this->setQuerySorts($query);
+    $this->setQuerySorts($this->query);
 
     // Handle the facets
-    $facetSet = $query->getFacetSet();
+    $facetSet = $this->query->getFacetSet();
     $facetSet->setSort('count');
     $facetSet->setLimit(10);
     $facetSet->setMinCount(1);
     $facetSet->setMissing(FALSE);
     /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
-      $facet->alterSolrQuery($query, $this->parameters);
+      $facet->alterSolrQuery($this->query, $this->parameters);
       $facet->createSolrFacet($facetSet);
     }
     foreach ($this->getFilterQueryParameters() as $field => $value) {
-      $fq = $query->createFilterQuery(array(
-        'key' => $solr_field_mappings[$field],
-        'query' => "{$solr_field_mappings[$field]}:{$value}",
-      ));
-      $query->addFilterQuery($fq);
+      $this->addFilterQuery($field, $value);
     }
-    \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
+    \Drupal::service('module_handler')->alter('edw_search_solr_query', $this->query);
 
     //Highlight results
     /** @var \Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
-    $hl = $query->getHighlighting();
+    $hl = $this->query->getHighlighting();
     $hl->setFields('*')->setSimplePrefix('<em>')->setSimplePostfix('</em>');
     $hl->setFragSize($this->getParameter('highlightingFragSize') ?: 300);
-
-    $this->query = $query;
   }
 
   /**
@@ -173,6 +166,21 @@ class SolrSearch {
       }
     }
     return $ret;
+  }
+
+  public function addFilterQuery($field, $value) {
+    if (!($this->query instanceof \Solarium\QueryType\Select\Query\Query)) {
+      throw new \Exception("Can't add filter query because the query is not created properly.");
+    }
+    $solr_field = $this->server->getSolrFieldsMappings()[$field];
+    if (!$solr_field) {
+      throw new \Exception("The field is not indexed in SOLR.");
+    }
+    $fq = $this->query->createFilterQuery(array(
+      'key' => $solr_field,
+      'query' => "{$solr_field}:{$value}",
+    ));
+    $this->query->addFilterQuery($fq);
   }
 
   public function getFacets() {

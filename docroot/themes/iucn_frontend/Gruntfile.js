@@ -110,6 +110,12 @@ module.exports = function (grunt) {
           },
           {
             expand: true,
+            cwd: 'node_modules/ion-rangeslider',
+            src: ['css/*', 'img/*', 'js/*'],
+            dest: 'assets/vendor/ion-rangeslider'
+          },
+          {
+            expand: true,
             cwd: 'node_modules/select2/dist',
             src: '**',
             dest: 'assets/vendor/select2'

@@ -32,6 +32,8 @@ class SolrSearchTest extends WebTestBase {
 
   public function setUp() {
     parent::setUp();
+    date_default_timezone_set('UTC');
+
     // Set front end theme.
     \Drupal::service('theme_installer')->install(array('iucn_frontend'), TRUE);
     $config = \Drupal::service('config.factory')->getEditable('system.theme');
@@ -327,6 +329,31 @@ class SolrSearchTest extends WebTestBase {
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
     $this->assertEqual(2, $result->getCountTotal(), $test_case);
+
+    // Test date filter.
+    $test_case = 'Date of text from 2000 to *';
+    $params = array(
+      'field_date_of_text' => "[2000-01-01T00:00:00Z TO *]",
+    );
+    $search = new SolrSearch($params, $search_server);
+    $result = $search->search(0, 10);
+    $this->assertEqual(11, $result->getCountTotal(), $test_case);
+
+    $test_case = 'Date of text from 2003 to 2006';
+    $params = array(
+      'field_date_of_text' => "[2003-01-01T00:00:00Z TO 2006-12-31T23:59:59Z]",
+    );
+    $search = new SolrSearch($params, $search_server);
+    $result = $search->search(0, 10);
+    $this->assertEqual(4, $result->getCountTotal(), $test_case);
+
+    $test_case = 'Date of text from * to 2008';
+    $params = array(
+      'field_date_of_text' => "[* TO 2008-12-31T23:59:59Z]",
+    );
+    $search = new SolrSearch($params, $search_server);
+    $result = $search->search(0, 10);
+    $this->assertEqual(8, $result->getCountTotal(), $test_case);
 
   }
 

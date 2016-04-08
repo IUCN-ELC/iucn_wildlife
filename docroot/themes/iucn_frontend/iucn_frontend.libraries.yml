@@ -4,6 +4,7 @@ application:
     assets/js/application.min.js: { minified: true }
   dependencies:
     - iucn_frontend/bootstrap-switch
+    - iucn_frontend/ion-rangeslider
     - iucn_frontend/select2
 
 bootstrap:
@@ -47,6 +48,16 @@ global-styling:
   dependencies:
     - iucn_frontend/bootstrap
     - iucn_frontend/fonts
+
+ion-rangeslider:
+  version: 2.1.2
+  css:
+    theme:
+      assets/vendor/ion-rangeslider/css/ion.rangeSlider.css: {}
+  js:
+    assets/vendor/ion-rangeslider/js/ion.rangeSlider.min.js: { minified: true }
+  dependencies:
+    - core/jquery
 
 select2:
   version: 4.0.2

@@ -55,6 +55,13 @@ class SolrSearch {
   public function search($page, $size) {
     $search_text = $this->getParameter('q');
     $query = $this->server->createSelectQuery();
+    if ($hash = \Drupal::config('search_api_solr.settings')->get('site_hash')) {
+      $fq = $query->createFilterQuery(array(
+        'key' => 'hash',
+        'query' => "hash:{$hash}",
+      ));
+      $query->addFilterQuery($fq);
+    }
     $query_fields = array_values($this->server->getSearchFieldsMappings());
     $solr_id_field = $this->server->getDocumentIdField();
     $solr_field_mappings = $this->server->getSolrFieldsMappings();

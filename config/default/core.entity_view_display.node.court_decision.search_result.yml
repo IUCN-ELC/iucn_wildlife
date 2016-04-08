@@ -59,13 +59,13 @@ mode: search_result
 content:
   field_abstract:
     type: text_default
-    weight: 5
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  field_date_of_entry:
+  field_date_of_text:
     type: datetime_custom
-    weight: 3
+    weight: 2
     label: hidden
     settings:
       timezone_override: ''
@@ -73,7 +73,7 @@ content:
     third_party_settings: {  }
   field_isis_number:
     type: string
-    weight: 4
+    weight: 3
     label: hidden
     settings:
       link_to_entity: false
@@ -99,8 +99,8 @@ hidden:
   field_country: true
   field_court: true
   field_court_jurisdiction: true
+  field_date_of_entry: true
   field_date_of_modification: true
-  field_date_of_text: true
   field_decision: true
   field_decision_status: true
   field_ecolex_subjects: true

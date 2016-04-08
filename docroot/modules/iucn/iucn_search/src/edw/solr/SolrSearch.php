@@ -37,8 +37,6 @@ class SolrSearch {
   /** @var \Drupal\iucn_search\edw\solr\SolrSearchServer */
   protected $server = NULL;
   protected $facets = array();
-  /** @var \Solarium\QueryType\Select\Query\Query */
-  protected $query = NULL;
 
   public function __construct(array $parameters, SolrSearchServer $server) {
     $this->parameters = $parameters;
@@ -48,63 +46,61 @@ class SolrSearch {
   }
 
   /**
-   * @param array $parameters
-   *   An associative array containing:
-   *   - page: Current query page.
-   *   - size: The number of results to return.
+   * @param $page
+   * @param $size
+   * @param $filterQueryFields array
+   * @return \Drupal\iucn_search\edw\solr\SearchResult
+   *   Results
    */
-  public function createSelectQuery(array $parameters) {
-    $page = !empty($parameters['page']) ? $parameters['page'] : 0;
-    $size = !empty($parameters['size']) ? $parameters['size'] : 10;
+  public function search($page, $size) {
     $search_text = $this->getParameter('q');
-    $this->query = $this->server->createSelectQuery();
+    $query = $this->server->createSelectQuery();
     $query_fields = array_values($this->server->getSearchFieldsMappings());
+    $solr_id_field = $this->server->getDocumentIdField();
+    $solr_field_mappings = $this->server->getSolrFieldsMappings();
 
-    $this->query->setQuery($search_text);
-    $this->query->setFields(array('*', 'score'));
-    $this->query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
+    $query->setQuery($search_text);
+    $query->setFields(array('*', 'score'));
+    $query->getEDisMax()->setQueryFields(implode(' ', $query_fields));
     $offset = $page * $size;
-    $this->query->setStart($offset);
-    $this->query->setRows($size);
+    $query->setStart($offset);
+    $query->setRows($size);
 
-    $this->setQuerySorts($this->query);
+    $this->setQuerySorts($query);
 
     // Handle the facets
-    $facetSet = $this->query->getFacetSet();
+    $facetSet = $query->getFacetSet();
     $facetSet->setSort('count');
     $facetSet->setLimit(10);
     $facetSet->setMinCount(1);
     $facetSet->setMissing(FALSE);
     /** @var SolrFacet $facet */
     foreach ($this->facets as $facet) {
-      $facet->alterSolrQuery($this->query, $this->parameters);
+      $facet->alterSolrQuery($query, $this->parameters);
       $facet->createSolrFacet($facetSet);
     }
     foreach ($this->getFilterQueryParameters() as $field => $value) {
-      $this->addFilterQuery($field, $value);
+      $fq = $query->createFilterQuery(array(
+        'key' => $solr_field_mappings[$field],
+        'query' => "{$solr_field_mappings[$field]}:{$value}",
+      ));
+      $query->addFilterQuery($fq);
     }
-    \Drupal::service('module_handler')->alter('edw_search_solr_query', $this->query);
+    \Drupal::service('module_handler')->alter('edw_search_solr_query', $query);
 
     //Highlight results
     /** @var \Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
-    $hl = $this->query->getHighlighting();
+    $hl = $query->getHighlighting();
     $hl->setFields('*')->setSimplePrefix('<em>')->setSimplePostfix('</em>');
     $hl->setFragSize($this->getParameter('highlightingFragSize') ?: 300);
-  }
 
-  /**
-   * @return \Drupal\iucn_search\edw\solr\SearchResult
-   *  Search results.
-   */
-  public function getSearchResults() {
-    $resultSet = $this->server->executeQuery($this->query);
+    $resultSet = $this->server->executeQuery($query);
     $this->updateFacetValues($resultSet->getFacetSet());
     $documents = $resultSet->getDocuments();
     $countTotal = $resultSet->getNumFound();
 
     $highlighting = $resultSet->getHighlighting()->getResults();
 
-    $solr_id_field = $this->server->getDocumentIdField();
     $ret = array();
     /** @var Document $document */
     foreach ($documents as $document) {
@@ -131,22 +127,6 @@ class SolrSearch {
     return new SearchResult($ret, $countTotal);
   }
 
-  /**
-   * @param $page
-   *  Current query page (default = 0).
-   * @param $size
-   *  The number of results to return (default = 10).
-   * @return \Drupal\iucn_search\edw\solr\SearchResult
-   *  Search results.
-   */
-  public function search($page = 0, $size = 10) {
-    $this->createSelectQuery([
-      'page' => $page,
-      'size' => $size,
-    ]);
-    return $this->getSearchResults();
-  }
-
   public function getParameter($name) {
     $ret = NULL;
     if (!empty($this->parameters[$name])) {
@@ -166,21 +146,6 @@ class SolrSearch {
       }
     }
     return $ret;
-  }
-
-  public function addFilterQuery($field, $value) {
-    if (!($this->query instanceof \Solarium\QueryType\Select\Query\Query)) {
-      throw new \Exception("Can't add filter query because the query is not created properly.");
-    }
-    $solr_field = $this->server->getSolrFieldsMappings()[$field];
-    if (!$solr_field) {
-      throw new \Exception("The field is not indexed in SOLR.");
-    }
-    $fq = $this->query->createFilterQuery(array(
-      'key' => $solr_field,
-      'query' => "{$solr_field}:{$value}",
-    ));
-    $this->query->addFilterQuery($fq);
   }
 
   public function getFacets() {

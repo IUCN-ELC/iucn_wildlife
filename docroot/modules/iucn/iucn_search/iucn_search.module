@@ -130,3 +130,18 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
     }
   }
 }
+
+/**
+ * Implements hook_cron().
+ */
+function iucn_search_cron() {
+  $last_run = \Drupal::state()->get('iucn_search.migration_last_run', NULL);
+  if (empty($last_run) || (time() - $last_run) >= 3600 /* 1 hour */) {
+    /** @var \Drupal\migrate\Entity\Migration $migration */
+    $migration = \Drupal\migrate\Entity\Migration::load('elis_consumer_court_decisions');
+    $log = new \Drupal\migrate_tools\DrushLogMigrateMessage();
+    $migrateExecutable = new \Drupal\migrate_tools\MigrateExecutable($migration, $log);
+    $migrateExecutable->import();
+    \Drupal::state()->set('iucn_search.migration_last_run', time());
+  }
+}

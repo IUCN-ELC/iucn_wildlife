@@ -64,8 +64,8 @@ class SearchPageController extends ControllerBase {
         foreach ($rows as $nid => $data) {
           /** @var Node $node */
           $node = Node::load($nid);
-          $cacheTags = array_merge($cacheTags, $node->getCacheTags());
           if (!empty($node)) {
+            $cacheTags = array_merge($cacheTags, $node->getCacheTags());
             $highlighting = $data['highlighting'];
             $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
             $abstract = !empty($highlighting['field_abstract']) ? $highlighting['field_abstract'] : text_summary($node->field_abstract->getValue()[0]['value'], NULL, self::TRIMMED_TEXT_SIZE);

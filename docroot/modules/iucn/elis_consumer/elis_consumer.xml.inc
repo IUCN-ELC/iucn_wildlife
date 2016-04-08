@@ -207,8 +207,8 @@ function elis_consumer_http_request($url, $headers = array()) {
  *
  * @param string $message
  *   Log message
- * @param int $severity
- *    See RfcLogLevel::* constants
+ * @param string $severity
+ *    See drush_log severity
  */
 function elis_consumer_log($message, $severity = 'notice') {
   if (function_exists('drush_log')) {

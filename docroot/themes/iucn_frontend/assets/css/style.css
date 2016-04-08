@@ -602,7 +602,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .irs-bar,
 .irs-bar-edge,
 .irs-slider {
-  background: url(../img/sprite-skin-flat.png) repeat-x;
+  background: url("../img/sprite-skin-flat.png") repeat-x;
 }
 .irs {
   height: 40px;
@@ -658,9 +658,9 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .irs-min,
 .irs-max {
-  background: #e1e4e9;
+  background: #ddd;
   border-radius: 4px;
-  color: #999;
+  color: #808080;
   font-size: 10px;
   line-height: 1.333;
   padding: 1px 3px;
@@ -670,7 +670,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .irs-from,
 .irs-to,
 .irs-single {
-  background: #ed5565;
+  background: #0077c0;
   border-radius: 4px;
   color: #fff;
   font-size: 10px;
@@ -681,7 +681,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .irs-from:after,
 .irs-to:after,
 .irs-single:after {
-  border-top-color: #ed5565;
+  border-top-color: #0077c0;
   border: 3px solid transparent;
   bottom: -6px;
   content: " ";
@@ -694,7 +694,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
   width: 0;
 }
 .irs-grid-pol {
-  background: #e1e4e9;
+  background: #ddd;
 }
 .irs-grid-text {
   color: #999;

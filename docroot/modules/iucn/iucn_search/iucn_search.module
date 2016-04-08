@@ -125,6 +125,7 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
 
       if (isset($build['#node']->solr_abstract)) {
         $build['field_abstract'][0]['#text'] = $build['#node']->solr_abstract;
+        $build['field_abstract'][0]['#format'] = 'basic_html';
       }
     }
   }

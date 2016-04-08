@@ -49,7 +49,11 @@ class SearchPageController extends ControllerBase {
 
     /** @var SearchResult $result */
     try {
-      if ($result = self::getSearch()->search($current_page, $this->items_per_page)) {
+      self::getSearch()->createSelectQuery([
+        'page' => $current_page,
+        'size' => $this->items_per_page,
+      ]);
+      if ($result = self::getSearch()->getSearchResults()) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
         $found = $result->getCountTotal();
         $rows = $result->getResults();

@@ -53,6 +53,13 @@ class SearchPageController extends ControllerBase {
         'page' => $current_page,
         'size' => $this->items_per_page,
       ]);
+      $yearmin = !empty($_GET['yearmin']) ? $_GET['yearmin'] : NULL;
+      $yearmax = !empty($_GET['yearmax']) ? $_GET['yearmax'] : NULL;
+      if ($yearmin || $yearmax) {
+        $yearmin = $yearmin ? "{$yearmin}-01-01T00:00:00Z" : "*";
+        $yearmax = $yearmax ? "{$yearmax}-12-31T23:59:59Z" : "*";
+        self::getSearch()->addFilterQuery('field_date_of_text', "[{$yearmin} TO {$yearmax}]");
+      }
       if ($result = self::getSearch()->getSearchResults()) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
         $found = $result->getCountTotal();

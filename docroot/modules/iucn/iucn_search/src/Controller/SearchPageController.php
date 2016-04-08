@@ -94,13 +94,13 @@ class SearchPageController extends ControllerBase {
         'order' => 'desc',
         'text' => 'relevance',
       ],
-      'dateOfEntryDesc' => [
-        'field' => 'field_date_of_entry',
+      'dateOfTextDesc' => [
+        'field' => 'field_date_of_text',
         'order' => 'desc',
         'text' => 'most recent',
       ],
-      'dateOfEntryAsc' => [
-        'field' => 'field_date_of_entry',
+      'dateOfTextAsc' => [
+        'field' => 'field_date_of_text',
         'order' => 'asc',
         'text' => 'least recent',
       ],

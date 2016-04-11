@@ -24,5 +24,8 @@ drush updatedb
 echo "Resetting admin password..."
 drush user-password admin --password="password"
 
+echo "Enabling simpletest module..."
+drush en -y simpletest
+
 drush cr
 echo "Done"

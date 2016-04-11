@@ -7,8 +7,10 @@ function iucn_search_theme($existing, $type, $theme, $path) {
   return [
     'range_filter' => [
       'variables' => [
-        'yearmax' => NULL,
-        'yearmin' => NULL
+        'from' => NULL,
+        'max' => NULL,
+        'min' => NULL,
+        'to' => NULL
       ]
     ]
   ];

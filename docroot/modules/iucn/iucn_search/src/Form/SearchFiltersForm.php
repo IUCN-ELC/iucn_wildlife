@@ -48,9 +48,11 @@ class SearchFiltersForm extends FormBase {
         'term' => $fqReset,
         'facets' => $this->getRenderedFacets(),
         'range' => [
+          '#from' => NULL,
+          '#max' => date('Y'),
+          '#min' => 1860,
           '#theme' => 'range_filter',
-          '#yearmax' => date('Y'),
-          '#yearmin' => 1860
+          '#to' => NULL
         ]
       ],
       'submit' => [

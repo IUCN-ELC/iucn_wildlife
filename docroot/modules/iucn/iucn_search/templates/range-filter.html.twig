@@ -1,12 +1,12 @@
 <div id="edit-range-year" class="form-group facet-container">
   <h4 class="facet-title">{{ 'Year/period'|t }}</h4>
-  <input class="form-control range-slider" type="text" data-min="{{ yearmin }}" data-max="{{ yearmax }}">
+  <input class="form-control range-slider" type="text" data-min="{{ min }}" data-max="{{ max }}">
   <div class="clearfix">
     <div class="pull-left">
       {{ 'from'|t }}
-      <input class="form-control" name="yearmin" type="number" value="{{ yearmin }}" min="{{ yearmin }}">
+      <input class="form-control" name="yearmin" type="number" value="{{ from|default(min) }}" min="{{ min }}" max="{{ max }}">
       {{ 'to'|t }}
-      <input class="form-control" name="yearmax" type="number" value="{{ yearmax }}" max="{{ yearmax }}">
+      <input class="form-control" name="yearmax" type="number" value="{{ to|default(max) }}" min="{{ min }}" max="{{ max }}">
     </div>
     <div class="pull-right">
       <button class="btn btn-link" type="submit" title="{{ 'Refresh search results'|t }}"><span class="glyphicon glyphicon-repeat"></span></button>

@@ -134,4 +134,29 @@
       }, throttle);
     }
   });
+
+  var rangeSlider = $('.range-slider', $searchFilters).ionRangeSlider({
+    'force_edges': true,
+    'prettify_enabled': false,
+    grid: true,
+    type: 'double',
+    onChange: function (data) {
+      $('[name="yearmin"]', $searchFilters).val(data.from);
+      $('[name="yearmax"]', $searchFilters).val(data.to);
+    }
+  }).data('ionRangeSlider');
+
+  $('[type="number"]', $searchFilters).change(function () {
+    var $this = $(this);
+
+    if ($this.attr('name') === 'yearmin') {
+      rangeSlider.update({
+        from: $this.val()
+      });
+    } else {
+      rangeSlider.update({
+        to: $this.val()
+      });
+    }
+  });
 })(jQuery);

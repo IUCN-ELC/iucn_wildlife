@@ -304,6 +304,31 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .search-header strong {
   color: #212121;
 }
+#edit-range-year .facet-title {
+  float: none;
+}
+#edit-range-year .clearfix {
+  margin-top: 11px;
+}
+#edit-range-year .form-control {
+  border-radius: 0;
+  border-width: 0 0 1px;
+  box-shadow: none;
+  display: inline-block;
+  font-size: inherit;
+  height: 30px;
+  padding: 0;
+  width: 4em;
+}
+#edit-range-year .btn-link {
+  border: 0;
+  font-size: inherit;
+  line-height: 30px;
+  padding: 0;
+}
+#edit-range-year .btn-link .glyphicon {
+  vertical-align: middle;
+}
 .footer {
   background-color: #eee;
   border-color: #ddd;
@@ -658,7 +683,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .irs-min,
 .irs-max {
-  background: #ddd;
+  background: #eee;
   border-radius: 4px;
   color: #808080;
   font-size: 10px;

@@ -46,7 +46,14 @@ class SearchFiltersForm extends FormBase {
         '#title' => $title,
         '#type' => 'fieldset',
         'term' => $fqReset,
-        'facets' => $this->getRenderedFacets()
+        'facets' => $this->getRenderedFacets(),
+        'range' => [
+          '#from' => NULL,
+          '#max' => date('Y'),
+          '#min' => 1860,
+          '#theme' => 'range_filter',
+          '#to' => NULL
+        ]
       ],
       'submit' => [
         '#attributes' => ['class' => ['btn-block', 'search-submit']],

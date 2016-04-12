@@ -44,12 +44,12 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
       'placeholder' => t('Add types…'),
       'bundle' => 'document_types',
     ],
-    'field_offences' => [
-      'title' => t('Offence'),
-      'placeholder' => t('Add offences…'),
-      'bundle' => 'offences',
-      'exposeOperator' => TRUE,
-    ],
+//    'field_offences' => [
+//      'title' => t('Offence'),
+//      'placeholder' => t('Add offences…'),
+//      'bundle' => 'offences',
+//      'exposeOperator' => TRUE,
+//    ],
     'field_species' => [
       'title' => t('Species'),
       'placeholder' => t('Add species…'),

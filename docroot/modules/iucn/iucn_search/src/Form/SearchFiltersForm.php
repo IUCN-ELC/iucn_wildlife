@@ -47,12 +47,11 @@ class SearchFiltersForm extends FormBase {
         '#type' => 'fieldset',
         'term' => $fqReset,
         'facets' => $this->getRenderedFacets(),
-        'range' => [
-          '#from' => NULL,
+        'year' => [
           '#max' => date('Y'),
           '#min' => 1860,
-          '#theme' => 'range_filter',
-          '#to' => NULL
+          '#title' => $this->t('Year/period'),
+          '#type' => 'range_slider'
         ]
       ],
       'submit' => [

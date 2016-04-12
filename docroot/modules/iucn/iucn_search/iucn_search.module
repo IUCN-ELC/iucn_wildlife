@@ -5,7 +5,8 @@
  */
 function iucn_search_theme($existing, $type, $theme, $path) {
   return [
-    'range_filter' => [
+    'range_slider' => [
+      'render element' => 'element',
       'variables' => [
         'from' => NULL,
         'max' => NULL,

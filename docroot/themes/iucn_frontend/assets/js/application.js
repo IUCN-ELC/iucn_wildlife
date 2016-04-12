@@ -141,15 +141,15 @@
     grid: true,
     type: 'double',
     onChange: function (data) {
-      $('[name="yearmin"]', $searchFilters).val(data.from);
-      $('[name="yearmax"]', $searchFilters).val(data.to);
+      $('[name="range[from]"]', $searchFilters).val(data.from);
+      $('[name="range[to]"]', $searchFilters).val(data.to);
     }
   }).data('ionRangeSlider');
 
   $('[type="number"]', $searchFilters).change(function () {
     var $this = $(this);
 
-    if ($this.attr('name') === 'yearmin') {
+    if ($this.attr('name') === 'range[from]') {
       rangeSlider.update({
         from: $this.val()
       });

@@ -16,6 +16,8 @@ use Drupal\iucn_search\edw\solr\SolrFacet;
 
 class SearchFiltersForm extends FormBase {
 
+  private $yearmin = '1860';
+
   /**
    * {@inheritdoc}
    */
@@ -40,6 +42,22 @@ class SearchFiltersForm extends FormBase {
         $fqReset[] = ['#markup' =>  sprintf('<span class="filter-label">%s</span><span class="label label-primary">%s %s</span><hr>', $this->t('Court decisions filtered by:'), $term->getName(), $close)];
       }
     }
+
+    $year = [
+      '#max' => date('Y'),
+      '#min' => 1860,
+      '#title' => $this->t('Year/period'),
+      '#type' => 'range_slider'
+    ];
+
+    if (!empty($_GET['yearmin'])) {
+      $year['#from'] = $_GET['yearmin'];
+    }
+
+    if (!empty($_GET['yearmax'])) {
+      $year['#to'] = $_GET['yearmax'];
+    }
+
     $form = [
       'panel' => [
         '#attributes' => ['class' => ['search-filters', 'invisible']],
@@ -47,13 +65,7 @@ class SearchFiltersForm extends FormBase {
         '#type' => 'fieldset',
         'term' => $fqReset,
         'facets' => $this->getRenderedFacets(),
-        'range' => [
-          '#from' => NULL,
-          '#max' => date('Y'),
-          '#min' => 1860,
-          '#theme' => 'range_filter',
-          '#to' => NULL
-        ]
+        'year' => $year
       ],
       'submit' => [
         '#attributes' => ['class' => ['btn-block', 'search-submit']],
@@ -79,6 +91,19 @@ class SearchFiltersForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $query = SearchPageController::getSearch()->getHttpQueryParameters($form_state);
+
+    $values = $form_state->getValues();
+
+    if (!empty($values['year'])) {
+      if ($values['year']['from'] !== $this->yearmin) {
+        $query['yearmin'] = $values['year']['from'];
+      }
+
+      if ($values['year']['to'] !== date('Y')) {
+        $query['yearmax'] = $values['year']['to'];
+      }
+    }
+
     $form_state->setRedirect('iucn.search', [], ['query' => $query]);
   }
 

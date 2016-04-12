@@ -11,7 +11,8 @@ function iucn_search_theme($existing, $type, $theme, $path) {
         'from' => NULL,
         'max' => NULL,
         'min' => NULL,
-        'to' => NULL
+        'title' => NULL,
+        'to' => NULL,
       ]
     ]
   ];

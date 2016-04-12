@@ -23,7 +23,7 @@ class RangeSlider extends FormElement {
   public function getInfo() {
     return array(
       '#theme' => 'range_slider',
-      '#theme_wrappers' => array('form_element')
+      '#theme_wrappers' => array('container')
     );
   }
 

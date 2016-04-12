@@ -314,13 +314,13 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .search-header strong {
   color: #212121;
 }
-#edit-range-year .facet-title {
+#edit-year .facet-title {
   float: none;
 }
-#edit-range-year .clearfix {
+#edit-year .clearfix {
   margin-top: 11px;
 }
-#edit-range-year .form-control {
+#edit-year .form-control {
   border-radius: 0;
   border-width: 0 0 1px;
   box-shadow: none;
@@ -330,13 +330,13 @@ fieldset[disabled] #search-form .btn-primary.focus {
   padding: 0;
   width: 4em;
 }
-#edit-range-year .btn-link {
+#edit-year .btn-link {
   border: 0;
   font-size: inherit;
   line-height: 30px;
   padding: 0;
 }
-#edit-range-year .btn-link .glyphicon {
+#edit-year .btn-link .glyphicon {
   vertical-align: middle;
 }
 .footer {

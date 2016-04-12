@@ -1,7 +1,7 @@
 {% if title %}
   <h4 class="facet-title">{{ title }}</h4>
 {% endif %}
-<input class="range-slider" type="text" data-min="{{ min }}" data-max="{{ max }}">
+<input class="range-slider" type="text" data-min="{{ min }}" data-max="{{ max }}" data-from="{{ from|default(min) }}" data-to="{{ to|default(max) }}">
 <div class="clearfix">
   <div class="pull-left">
     {{ 'from'|t }}

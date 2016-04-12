@@ -33,11 +33,12 @@
       font-weight: 700;
     }
 
-    .field--name-field-type-of-text,
-    .field--name-field-region,
-    .field--name-field-court-name,
-    .field--name-field-date-of-entry,
-    .field--name-field-isis-number {
+    .field--name-field-court-jurisdiction,
+    .field--name-field-territorial-subdivisions,
+    .field--name-field-court,
+    .field--name-field-seat-of-court,
+    .field--name-field-date-of-text,
+    .field--name-field-reference-number {
       &,
       .field--items,
       .field--item {
@@ -45,15 +46,21 @@
       }
     }
 
-    .field--name-field-type-of-text {
-      color: #090;
+    .field--name-field-court-jurisdiction {
+      a {
+        color: #090;
+      }
     }
 
-    .field--name-field-region,
-    .field--name-field-court-name,
-    .field--name-field-date-of-entry,
-    .field--name-field-isis-number {
-      color: #808080;
+    .field--name-field-territorial-subdivisions,
+    .field--name-field-court,
+    .field--name-field-seat-of-court,
+    .field--name-field-date-of-text,
+    .field--name-field-reference-number {
+      &,
+      a {
+        color: #808080;
+      }
 
       &:before {
         color: #ccc;

@@ -172,36 +172,46 @@
   font-style: normal;
   font-weight: 700;
 }
-.court-decision.search-result .field--name-field-type-of-text,
-.court-decision.search-result .field--name-field-region,
-.court-decision.search-result .field--name-field-court-name,
-.court-decision.search-result .field--name-field-date-of-entry,
-.court-decision.search-result .field--name-field-isis-number,
-.court-decision.search-result .field--name-field-type-of-text .field--items,
-.court-decision.search-result .field--name-field-region .field--items,
-.court-decision.search-result .field--name-field-court-name .field--items,
-.court-decision.search-result .field--name-field-date-of-entry .field--items,
-.court-decision.search-result .field--name-field-isis-number .field--items,
-.court-decision.search-result .field--name-field-type-of-text .field--item,
-.court-decision.search-result .field--name-field-region .field--item,
-.court-decision.search-result .field--name-field-court-name .field--item,
-.court-decision.search-result .field--name-field-date-of-entry .field--item,
-.court-decision.search-result .field--name-field-isis-number .field--item {
+.court-decision.search-result .field--name-field-court-jurisdiction,
+.court-decision.search-result .field--name-field-territorial-subdivisions,
+.court-decision.search-result .field--name-field-court,
+.court-decision.search-result .field--name-field-seat-of-court,
+.court-decision.search-result .field--name-field-date-of-text,
+.court-decision.search-result .field--name-field-reference-number,
+.court-decision.search-result .field--name-field-court-jurisdiction .field--items,
+.court-decision.search-result .field--name-field-territorial-subdivisions .field--items,
+.court-decision.search-result .field--name-field-court .field--items,
+.court-decision.search-result .field--name-field-seat-of-court .field--items,
+.court-decision.search-result .field--name-field-date-of-text .field--items,
+.court-decision.search-result .field--name-field-reference-number .field--items,
+.court-decision.search-result .field--name-field-court-jurisdiction .field--item,
+.court-decision.search-result .field--name-field-territorial-subdivisions .field--item,
+.court-decision.search-result .field--name-field-court .field--item,
+.court-decision.search-result .field--name-field-seat-of-court .field--item,
+.court-decision.search-result .field--name-field-date-of-text .field--item,
+.court-decision.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
-.court-decision.search-result .field--name-field-type-of-text {
+.court-decision.search-result .field--name-field-court-jurisdiction a {
   color: #090;
 }
-.court-decision.search-result .field--name-field-region,
-.court-decision.search-result .field--name-field-court-name,
-.court-decision.search-result .field--name-field-date-of-entry,
-.court-decision.search-result .field--name-field-isis-number {
+.court-decision.search-result .field--name-field-territorial-subdivisions,
+.court-decision.search-result .field--name-field-court,
+.court-decision.search-result .field--name-field-seat-of-court,
+.court-decision.search-result .field--name-field-date-of-text,
+.court-decision.search-result .field--name-field-reference-number,
+.court-decision.search-result .field--name-field-territorial-subdivisions a,
+.court-decision.search-result .field--name-field-court a,
+.court-decision.search-result .field--name-field-seat-of-court a,
+.court-decision.search-result .field--name-field-date-of-text a,
+.court-decision.search-result .field--name-field-reference-number a {
   color: #808080;
 }
-.court-decision.search-result .field--name-field-region:before,
-.court-decision.search-result .field--name-field-court-name:before,
-.court-decision.search-result .field--name-field-date-of-entry:before,
-.court-decision.search-result .field--name-field-isis-number:before {
+.court-decision.search-result .field--name-field-territorial-subdivisions:before,
+.court-decision.search-result .field--name-field-court:before,
+.court-decision.search-result .field--name-field-seat-of-court:before,
+.court-decision.search-result .field--name-field-date-of-text:before,
+.court-decision.search-result .field--name-field-reference-number:before {
   color: #ccc;
   content: "\2013";
 }

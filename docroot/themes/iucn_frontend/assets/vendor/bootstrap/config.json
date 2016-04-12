@@ -403,14 +403,16 @@
     "close.less",
     "component-animations.less",
     "tooltip.less",
-    "popovers.less"
+    "popovers.less",
+    "modals.less"
   ],
   "js": [
     "alert.js",
+    "modal.js",
     "tooltip.js",
     "popover.js",
     "collapse.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=2fa3ae581828b73ac5bd3dfb0944218e"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=9a583d137805509ea725e8020c425854"
 }

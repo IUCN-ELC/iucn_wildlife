@@ -75,99 +75,103 @@ class SearchPageController extends ControllerBase {
           }
         }
       }
+
+      Cache::invalidateTags($cacheTags);
+
+      $numFound = $found ? $this->formatPlural($found, 'Found 1 court decision', 'Found @count court decisions') : $this->t('Found no court decisions');
+
+      $sorts = [
+        'relevance' => [
+          'field' => 'score',
+          'order' => 'desc',
+          'text' => 'relevance',
+        ],
+        'dateOfTextDesc' => [
+          'field' => 'field_date_of_text',
+          'order' => 'desc',
+          'text' => 'most recent',
+        ],
+        'dateOfTextAsc' => [
+          'field' => 'field_date_of_text',
+          'order' => 'asc',
+          'text' => 'least recent',
+        ],
+      ];
+      $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : 'score';
+      $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'desc';
+      $getCopy = $_GET;
+      $sortMarkup = [];
+      foreach ($sorts as $key => $sort) {
+        if ($activeSort == $sort['field'] && $activeOrder == $sort['order']) {
+          $markup = '<strong>Sorted by ' . $sort['text'] . '</strong>';
+        }
+        else {
+          $getCopy['sort'] = $sort['field'];
+          $getCopy['sortOrder'] = $sort['order'];
+          $url = Url::fromRoute('iucn.search', [], ['query' => $getCopy]);
+          $markup = Link::fromTextAndUrl('Sort by ' . $sort['text'], $url)->toString();
+        }
+        $sortMarkup[$key] = [
+          '#type' => 'item',
+          '#markup' => $markup,
+        ];
+      }
+
+      if (empty($results)) {
+        if ($found) {
+          // The SOLR returned results but we couldn't find them in Drupal
+          throw new \Exception("SOLR server is out of sync.");
+        }
+        $results = [
+          '#attributes' => ['class' => ['well', 'blankslate']],
+          '#type' => 'container',
+          [
+            '#attributes' => ['class' => ['ecolexicon', 'ecolexicon-court-decision']],
+            '#tag' => 'span',
+            '#type' => 'html_tag'
+          ],
+          [
+            '#attributes' => ['class' => ['blankslate-title']],
+            '#tag' => 'h3',
+            '#type' => 'html_tag',
+            '#value' => $this->t('No court decisions found.')
+          ],
+          [
+            '#attributes' => ['class' => []],
+            '#tag' => 'p',
+            '#type' => 'html_tag',
+            '#value' => $this->t('Use the links above to find what you&rsquo;re looking for, or try a new search query. The Search filters are also super helpful for quickly finding court decisions most relevant to you.')
+          ]
+        ];
+      }
+
+      $content = [
+        'meta' => [
+          '#attributes' => ['class' => ['search-header']],
+          '#type' => 'container',
+          [
+            '#attributes' => ['class' => ['pull-left']],
+            '#tag' => 'div',
+            '#type' => 'html_tag',
+            '#value' => $numFound
+          ],
+          [
+            '#attributes' => ['class' => ['list-inline', 'pull-right']],
+            '#items' => $sortMarkup,
+            '#list_type' => 'ul',
+            '#theme' => 'item_list'
+          ]
+        ],
+        'results' => $results,
+        'pager' => ['#type' => 'pager'],
+      ];
+
+      if (!$found) {
+        unset($content['meta'][1]);
+      }
     }
     catch(\Exception $e) {
       return $this->handleError($e);
-    }
-
-    Cache::invalidateTags($cacheTags);
-
-    $numFound = $found ? $this->formatPlural($found, 'Found 1 court decision', 'Found @count court decisions') : $this->t('Found no court decisions');
-
-    $sorts = [
-      'relevance' => [
-        'field' => 'score',
-        'order' => 'desc',
-        'text' => 'relevance',
-      ],
-      'dateOfTextDesc' => [
-        'field' => 'field_date_of_text',
-        'order' => 'desc',
-        'text' => 'most recent',
-      ],
-      'dateOfTextAsc' => [
-        'field' => 'field_date_of_text',
-        'order' => 'asc',
-        'text' => 'least recent',
-      ],
-    ];
-    $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : 'score';
-    $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'desc';
-    $getCopy = $_GET;
-    $sortMarkup = [];
-    foreach ($sorts as $key => $sort) {
-      if ($activeSort == $sort['field'] && $activeOrder == $sort['order']) {
-        $markup = '<strong>Sorted by ' . $sort['text'] . '</strong>';
-      }
-      else {
-        $getCopy['sort'] = $sort['field'];
-        $getCopy['sortOrder'] = $sort['order'];
-        $url = Url::fromRoute('iucn.search', [], ['query' => $getCopy]);
-        $markup = Link::fromTextAndUrl('Sort by ' . $sort['text'], $url)->toString();
-      }
-      $sortMarkup[$key] = [
-        '#type' => 'item',
-        '#markup' => $markup,
-      ];
-    }
-
-    if (empty($results)) {
-      $results = [
-        '#attributes' => ['class' => ['well', 'blankslate']],
-        '#type' => 'container',
-        [
-          '#attributes' => ['class' => ['ecolexicon', 'ecolexicon-court-decision']],
-          '#tag' => 'span',
-          '#type' => 'html_tag'
-        ],
-        [
-          '#attributes' => ['class' => ['blankslate-title']],
-          '#tag' => 'h3',
-          '#type' => 'html_tag',
-          '#value' => $this->t('No court decisions found.')
-        ],
-        [
-          '#attributes' => ['class' => []],
-          '#tag' => 'p',
-          '#type' => 'html_tag',
-          '#value' => $this->t('Use the links above to find what you&rsquo;re looking for, or try a new search query. The Search filters are also super helpful for quickly finding court decisions most relevant to you.')
-        ]
-      ];
-    }
-
-    $content = [
-      'meta' => [
-        '#attributes' => ['class' => ['search-header']],
-        '#type' => 'container',
-        [
-          '#attributes' => ['class' => ['pull-left']],
-          '#tag' => 'div',
-          '#type' => 'html_tag',
-          '#value' => $numFound
-        ],
-        [
-          '#attributes' => ['class' => ['list-inline', 'pull-right']],
-          '#items' => $sortMarkup,
-          '#list_type' => 'ul',
-          '#theme' => 'item_list'
-        ]
-      ],
-      'results' => $results,
-      'pager' => ['#type' => 'pager'],
-    ];
-
-    if (!$found) {
-      unset($content['meta'][1]);
     }
 
     return $content;

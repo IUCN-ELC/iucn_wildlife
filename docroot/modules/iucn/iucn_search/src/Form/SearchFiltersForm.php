@@ -16,6 +16,8 @@ use Drupal\iucn_search\edw\solr\SolrFacet;
 
 class SearchFiltersForm extends FormBase {
 
+  private $yearmin = '1860';
+
   /**
    * {@inheritdoc}
    */
@@ -78,6 +80,19 @@ class SearchFiltersForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $query = SearchPageController::getSearch()->getHttpQueryParameters($form_state);
+
+    $values = $form_state->getValues();
+
+    if (!empty($values['year'])) {
+      if ($values['year']['from'] !== $this->yearmin) {
+        $query['yearmin'] = $values['year']['from'];
+      }
+
+      if ($values['year']['to'] !== date('Y')) {
+        $query['yearmax'] = $values['year']['to'];
+      }
+    }
+
     $form_state->setRedirect('iucn.search', [], ['query' => $query]);
   }
 

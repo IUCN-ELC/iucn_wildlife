@@ -36,12 +36,12 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
     ],
     'field_territorial_subdivisions' => [
       'title' => t('Sub-national jurisdiction'),
-      'placeholder' => t('Add territory…'),
+      'placeholder' => t('Add territories…'),
       'bundle' => 'territorial_subdivisions',
     ],
     'field_type_of_text' => [
       'title' => t('Judicial decision'),
-      'placeholder' => t('Add type…'),
+      'placeholder' => t('Add types…'),
       'bundle' => 'document_types',
     ],
     'field_offences' => [
@@ -58,7 +58,7 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
     ],
     'field_language_of_document' => [
       'title' => t('Language'),
-      'placeholder' => t('Add language…'),
+      'placeholder' => t('Add languages…'),
       'bundle' => 'document_languages',
     ],
 //    'field_region' => [

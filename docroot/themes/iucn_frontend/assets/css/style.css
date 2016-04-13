@@ -720,7 +720,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   background-color: #eee;
   border-color: #ddd;
-  clear: left;
   padding-bottom: 2px;
   padding-top: 2px;
 }

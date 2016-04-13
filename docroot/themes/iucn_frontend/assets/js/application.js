@@ -59,12 +59,9 @@
     templateSelection: function (data) {
       var regex = /\(([0-9]+)\)/;
       var match = data.text.match(regex) ;
-
-      if (match === null) {
-        return data.text;
-      }
-
-      var html = '<span class="option">' + data.text.substring(0, match.index) + '</span> <sup class="badge">' + match[1].trim() + '</sup>';
+      var html = match === null ?
+        '<span class="option">' + data.text + '</span>' :
+        '<span class="option">' + data.text.substring(0, match.index) + '</span> <sup class="badge">' + match[1].trim() + '</sup>';
 
       return $.parseHTML(html);
     }

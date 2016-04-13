@@ -94,11 +94,11 @@ class SearchFiltersForm extends FormBase {
     $values = $form_state->getValues();
 
     if (!empty($values['year'])) {
-      if (intval($values['year']['from']) !== self::getYearMin()) {
+      if ($values['year']['from'] != self::getYearMin()) {
         $query['yearmin'] = $values['year']['from'];
       }
 
-      if (intval($values['year']['to']) !== self::getYearMax()) {
+      if ($values['year']['to'] != self::getYearMax()) {
         $query['yearmax'] = $values['year']['to'];
       }
     }
@@ -119,7 +119,7 @@ class SearchFiltersForm extends FormBase {
   }
 
   private static function getYearMax() {
-    return intval(date('Y'));
+    return date('Y');
   }
 
   /**

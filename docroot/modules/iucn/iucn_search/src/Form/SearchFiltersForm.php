@@ -47,17 +47,17 @@ class SearchFiltersForm extends FormBase {
 
     $year = [
       '#max' => date('Y'),
-      '#min' => $this->yearmin,
+      '#min' => strval($this->yearmin),
       '#title' => $this->t('Year/period'),
       '#type' => 'range_slider'
     ];
 
     if (!empty($_GET['yearmin'])) {
-      $year['#from'] = intval($_GET['yearmin']);
+      $year['#from'] = $_GET['yearmin'];
     }
 
     if (!empty($_GET['yearmax'])) {
-      $year['#to'] = intval($_GET['yearmax']);
+      $year['#to'] = $_GET['yearmax'];
     }
 
     $form = [
@@ -97,7 +97,7 @@ class SearchFiltersForm extends FormBase {
     $values = $form_state->getValues();
 
     if (!empty($values['year'])) {
-      if ($values['year']['from'] !== $this->yearmin) {
+      if ($values['year']['from'] !== strval($this->yearmin)) {
         $query['yearmin'] = $values['year']['from'];
       }
 

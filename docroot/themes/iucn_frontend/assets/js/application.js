@@ -52,7 +52,7 @@
         return data.text;
       }
 
-      var html = '<span class="counter">' + match[1] + '</span>' + data.text.substring(0, match.index);
+      var html = '<span class="counter">' + match[1].trim() + '</span>' + data.text.substring(0, match.index);
 
       return $.parseHTML(html);
     },
@@ -64,7 +64,7 @@
         return data.text;
       }
 
-      var html = data.text.substring(0, match.index) + ' <sup class="badge">' + match[1] + '</sup>';
+      var html = '<span class="option">' + data.text.substring(0, match.index) + '</span> <sup class="badge">' + match[1].trim() + '</sup>';
 
       return $.parseHTML(html);
     }

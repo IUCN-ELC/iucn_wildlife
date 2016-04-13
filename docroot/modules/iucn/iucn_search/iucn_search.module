@@ -126,7 +126,7 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
   if ($entity->bundle() === 'court_decision') {
     $build['title'][0]['#context']['value'] = $build['#node']->field_original_title[0]->value;
 
-    if (isset($build['field_reference_to_faolex'])) {
+    if (isset($build['field_reference_to_faolex'][0])) {
       $config = \Drupal::config('iucn_search.settings');
       $pattern = $config->get('reference_to_legislation_pattern');
       $uri = str_replace('$RECID', $build['field_reference_to_faolex'][0]['#context']['value'], $pattern);

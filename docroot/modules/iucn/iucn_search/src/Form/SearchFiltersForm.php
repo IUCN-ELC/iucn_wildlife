@@ -7,6 +7,7 @@
 
 namespace Drupal\iucn_search\Form;
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -16,7 +17,7 @@ use Drupal\iucn_search\edw\solr\SolrFacet;
 
 class SearchFiltersForm extends FormBase {
 
-  private $yearmin = '1860';
+  private $yearmin = 1860;
 
   /**
    * {@inheritdoc}
@@ -42,20 +43,21 @@ class SearchFiltersForm extends FormBase {
         $fqReset[] = ['#markup' =>  sprintf('<span class="filter-label">%s</span><span class="label label-primary">%s %s</span><hr>', $this->t('Court decisions filtered by:'), $term->getName(), $close)];
       }
     }
+    $this->yearmin = self::getYearMin();
 
     $year = [
       '#max' => date('Y'),
-      '#min' => 1860,
+      '#min' => $this->yearmin,
       '#title' => $this->t('Year/period'),
       '#type' => 'range_slider'
     ];
 
     if (!empty($_GET['yearmin'])) {
-      $year['#from'] = $_GET['yearmin'];
+      $year['#from'] = intval($_GET['yearmin']);
     }
 
     if (!empty($_GET['yearmax'])) {
-      $year['#to'] = $_GET['yearmax'];
+      $year['#to'] = intval($_GET['yearmax']);
     }
 
     $form = [
@@ -117,5 +119,19 @@ class SearchFiltersForm extends FormBase {
     }
 
     return $return;
+  }
+
+
+  /**
+   *
+   * SELECT MIN(YEAR(STR_TO_DATE(field_date_of_text_value, '%Y'))) AS `year` FROM node__field_date_of_text;
+   */
+  private static function getYearMin() {
+    $q = Database::getConnection()->select('node__field_date_of_text', 'a');
+    $q->addExpression("MIN(YEAR(STR_TO_DATE(field_date_of_text_value, '%Y')))", 'year');
+    if ($min = $q->execute()->fetchField()) {
+      return $min;
+    }
+    return 1860;
   }
 }

@@ -1,28 +1,9 @@
 .block + .block {
-  margin-top: 22px;
+  margin-top: 40px;
 }
 .block-title {
   font-size: 18px;
-}
-.block-get-started.panel {
-  border-width: 2px;
-}
-@media (max-width: 991px) {
-  .block-get-started.panel {
-    margin-bottom: 22px;
-  }
-}
-@media (min-width: 992px) {
-  .block-get-started.panel {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display:         flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-            align-items: center;
-  }
+  margin-top: 0;
 }
 #block-otherresources dl {
   margin-bottom: 0;
@@ -364,16 +345,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #block-iucn-frontend-footer .nav > li > a:focus {
   text-decoration: underline;
 }
-@media (min-width: 992px) {
-  .row-eq-height,
-  .row-eq-height > [class*="col-"],
-  .row-eq-height .region-content {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display:         flex;
-  }
-}
 @font-face {
   font-family: "ecolex-icons";
   src: url("../fonts/ecolex-icons.eot");
@@ -437,10 +408,6 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .ecolexicon-new-window:before {
   content: "\e60f";
-}
-.navbar .logo {
-  margin-right: 5px;
-  margin-top: 8px;
 }
 .jumbotron {
   margin-bottom: 45px;

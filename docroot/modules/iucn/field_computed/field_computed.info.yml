@@ -1,6 +1,0 @@
-name: 'Computed Field'
-type: module
-description: 'Defines a computed field type.'
-core: 8.x
-dependencies:
-  - field

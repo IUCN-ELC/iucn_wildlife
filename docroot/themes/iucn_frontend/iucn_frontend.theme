@@ -10,7 +10,7 @@ function iucn_frontend_preprocess_page(array &$variables) {
   $variables['url_query'] = $get;
 
   if ($variables['is_front']) {
-    $variables['page']['content']['iucn_frontend_content'] = NULL;
+    hide($variables['page']['content']['iucn_frontend_content']);
   }
 }
 

@@ -91,7 +91,7 @@ class SearchFiltersForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $query = SearchPageController::getSearch()->getHttpQueryParameters($form_state);
-
+    unset($query['field_date_of_text']);
     $values = $form_state->getValues();
 
     if (!empty($values['year'])) {

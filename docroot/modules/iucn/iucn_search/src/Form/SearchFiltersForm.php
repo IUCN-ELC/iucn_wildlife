@@ -17,8 +17,6 @@ use Drupal\iucn_search\edw\solr\SolrFacet;
 
 class SearchFiltersForm extends FormBase {
 
-  private $yearmin = 1860;
-
   /**
    * {@inheritdoc}
    */
@@ -43,13 +41,12 @@ class SearchFiltersForm extends FormBase {
         $fqReset[] = ['#markup' =>  sprintf('<span class="filter-label">%s</span><span class="label label-primary">%s %s</span><hr>', $this->t('Court decisions filtered by:'), $term->getName(), $close)];
       }
     }
-    $this->yearmin = self::getYearMin();
 
     $year = [
-      '#max' => date('Y'),
-      '#min' => strval($this->yearmin),
+      '#max'   => self::getYearMax(),
+      '#min'   => self::getYearMin(),
       '#title' => $this->t('Year/period'),
-      '#type' => 'range_slider'
+      '#type'  => 'range_slider'
     ];
 
     if (!empty($_GET['yearmin'])) {
@@ -97,11 +94,11 @@ class SearchFiltersForm extends FormBase {
     $values = $form_state->getValues();
 
     if (!empty($values['year'])) {
-      if ($values['year']['from'] !== strval($this->yearmin)) {
+      if (intval($values['year']['from']) !== self::getYearMin()) {
         $query['yearmin'] = $values['year']['from'];
       }
 
-      if ($values['year']['to'] !== date('Y')) {
+      if (intval($values['year']['to']) !== self::getYearMax()) {
         $query['yearmax'] = $values['year']['to'];
       }
     }
@@ -121,6 +118,9 @@ class SearchFiltersForm extends FormBase {
     return $return;
   }
 
+  private static function getYearMax() {
+    return intval(date('Y'));
+  }
 
   /**
    *

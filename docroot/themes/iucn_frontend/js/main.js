@@ -45,24 +45,26 @@
       $(this).data('placeholder');
     },
     templateResult: function (data) {
-      var splits = data.text.split(' (');
+      var regex = /\(([0-9]+)\)/;
+      var match = data.text.match(regex) ;
 
-      if (splits.length === 1) {
+      if (match === null) {
         return data.text;
       }
 
-      var html = '<span class="counter">' + splits[1].split(')')[0] + '</span>' + splits[0];
+      var html = '<span class="counter">' + match[1] + '</span>' + data.text.substring(0, match.index);
 
       return $.parseHTML(html);
     },
     templateSelection: function (data) {
-      var splits = data.text.split(' (');
+      var regex = /\(([0-9]+)\)/;
+      var match = data.text.match(regex) ;
 
-      if (splits.length === 1) {
+      if (match === null) {
         return data.text;
       }
 
-      var html = splits[0] + ' <sup class="badge">' + splits[1].split(')')[0] + '</sup>';
+      var html = data.text.substring(0, match.index) + ' <sup class="badge">' + match[1] + '</sup>';
 
       return $.parseHTML(html);
     }

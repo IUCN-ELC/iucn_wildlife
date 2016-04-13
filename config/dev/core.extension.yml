@@ -25,7 +25,6 @@ module:
   file_list: 0
   filter: 0
   google_analytics: 0
-  help: 0
   image: 0
   iucn_search: 0
   kint: 0
@@ -48,10 +47,8 @@ module:
   text: 0
   token: 0
   toolbar: 0
-  tour: 0
   update: 0
   user: 0
-  views_ui: 0
   menu_link_content: 1
   pathauto: 1
   views: 10

@@ -149,6 +149,7 @@ class SearchPageController extends ControllerBase {
       }
 
       $content = [
+        '#cache' => array('max-age' => 0),
         'meta' => [
           '#attributes' => ['class' => ['search-header']],
           '#type' => 'container',

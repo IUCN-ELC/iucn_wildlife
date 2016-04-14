@@ -26,7 +26,7 @@ class SearchFiltersBlock extends BlockBase {
     $config = $this->getConfiguration();
     $label = $config['label_display'] ? $config['label'] : NULL;
     $form = \Drupal::formBuilder()->getForm('Drupal\iucn_search\Form\SearchFiltersForm', $label);
-    $form['#cache']['max-age'] = 0;
+    $form['#cache'] = ['contexts' => ['url']];
 
     return $form;
   }

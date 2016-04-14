@@ -43,8 +43,6 @@ class SearchPageController extends ControllerBase {
       self::$search = new SolrSearch($_GET + $parameters, $server_config);
     }
 
-    \Drupal::service('page_cache_kill_switch')->trigger();
-
     return self::$search;
   }
 
@@ -149,7 +147,7 @@ class SearchPageController extends ControllerBase {
       }
 
       $content = [
-        '#cache' => array('max-age' => 0),
+        '#cache' => ['contexts' => ['url']],
         'meta' => [
           '#attributes' => ['class' => ['search-header']],
           '#type' => 'container',

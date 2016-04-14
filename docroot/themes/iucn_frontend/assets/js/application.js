@@ -41,6 +41,9 @@
 
   $('.form-select', $searchFilters).select2({
     dataAdapter: CustomData,
+    matcher: function (term, text) {
+      return text.selected === true ? null : text;
+    },
     placeholder: function () {
       $(this).data('placeholder');
     },

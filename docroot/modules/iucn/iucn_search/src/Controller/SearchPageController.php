@@ -78,7 +78,7 @@ class SearchPageController extends ControllerBase {
 
       Cache::invalidateTags($cacheTags);
 
-      $numFound = $found ? $this->formatPlural($found, 'Found 1 court decision', 'Found @count court decisions') : $this->t('Found no court decisions');
+      $numFound = $this->formatPlural($found, 'Found 1 court decision', 'Found @count court decisions');
 
       $sorts = [
         'relevance' => [
@@ -167,7 +167,7 @@ class SearchPageController extends ControllerBase {
       ];
 
       if (!$found) {
-        unset($content['meta'][1]);
+        unset($content['meta']);
       }
     }
     catch(\Exception $e) {

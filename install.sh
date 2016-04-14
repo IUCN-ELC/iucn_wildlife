@@ -27,5 +27,9 @@ drush user-password admin --password="password"
 echo "Enabling simpletest module..."
 drush en -y simpletest
 
+echo "Reindexing Solr ..."
+drush sapi-c
+drush sapi-i
+
 drush cr
 echo "Done"

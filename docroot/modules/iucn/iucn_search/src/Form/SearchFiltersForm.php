@@ -36,8 +36,9 @@ class SearchFiltersForm extends FormBase {
       if ($term) {
         $getCopy = $_GET;
         unset($getCopy[$field]);
+        /** @var Url $url */
         $url = Url::fromRoute('iucn.search', [], ['query' => $getCopy]);
-        $close = sprintf('<a class="close" href="%s">&times;</a>', $url);
+        $close = sprintf('<a class="close" href="%s">&times;</a>', $url->toString());
         $fqReset[] = ['#markup' =>  sprintf('<span class="filter-label">%s</span><span class="label label-primary">%s %s</span><hr>', $this->t('Court decisions filtered by:'), $term->getName(), $close)];
       }
     }

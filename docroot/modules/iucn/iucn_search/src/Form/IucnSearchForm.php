@@ -99,8 +99,6 @@ class IucnSearchForm extends FormBase {
       '#type' => 'pager'
     ];
 
-    \Drupal::service('page_cache_kill_switch')->trigger();
-
     return $form;
   }
 

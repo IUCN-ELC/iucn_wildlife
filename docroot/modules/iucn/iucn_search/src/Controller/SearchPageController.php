@@ -42,6 +42,9 @@ class SearchPageController extends ControllerBase {
       $server_config = new SolrSearchServer('default_node_index');
       self::$search = new SolrSearch($_GET + $parameters, $server_config);
     }
+
+    \Drupal::service('page_cache_kill_switch')->trigger();
+
     return self::$search;
   }
 

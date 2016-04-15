@@ -1,11 +1,17 @@
 html {
-  min-height: 100%;
+  min-height: 100vh;
   position: relative;
 }
 
 body {
-  margin-bottom: 113px;
+  padding-bottom: 113px;
   position: static;
+
+  &.path-frontpage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 }
 
 .footer {

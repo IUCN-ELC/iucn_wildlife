@@ -325,7 +325,7 @@ html {
   position: relative;
 }
 body {
-  padding-bottom: 113px;
+  padding-bottom: 158px;
   position: static;
 }
 body.path-frontpage {
@@ -339,6 +339,7 @@ body.path-frontpage {
       -ms-flex-direction: column;
           flex-direction: column;
   min-height: 100vh;
+  padding-bottom: 113px;
 }
 .footer {
   background-color: #eee;

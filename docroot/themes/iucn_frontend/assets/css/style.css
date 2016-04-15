@@ -320,11 +320,23 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #edit-year .btn-link .glyphicon {
   vertical-align: middle;
 }
+html {
+  min-height: 100%;
+  position: relative;
+}
+body {
+  margin-bottom: 113px;
+  position: static;
+}
 .footer {
   background-color: #eee;
   border-color: #ddd;
+  bottom: 0;
   color: #808080;
   font-size: 14px;
+  height: 113px;
+  position: absolute;
+  width: 100%;
 }
 .footer a {
   color: #808080;

@@ -170,9 +170,8 @@ class SolrSearch {
         $values = $solrFacet->getValues();
         if ($request_parameters = $this->getParameter($facet_id)) {
           // Preserve user selection - add filters request.
-          $sticky = explode(',', $request_parameters);
-          if (!empty($sticky)) {
-            foreach ($sticky as $key) {
+          if (!empty($request_parameters)) {
+            foreach ($request_parameters as $key) {
               if (!array_key_exists($key, $values)) {
                 $values[$key] = 0;
               }

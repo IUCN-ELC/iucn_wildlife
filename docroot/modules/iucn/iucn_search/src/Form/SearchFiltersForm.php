@@ -83,6 +83,8 @@ class SearchFiltersForm extends FormBase {
       ]
     ];
 
+    $form['#method'] = 'get';
+
     return $form;
   }
 

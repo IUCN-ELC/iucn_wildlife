@@ -92,21 +92,7 @@ class SearchFiltersForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $query = SearchPageController::getSearch()->getHttpQueryParameters($form_state);
-    unset($query['field_date_of_text']);
-    $values = $form_state->getValues();
-
-    if (!empty($values['year'])) {
-      if ($values['year']['from'] != self::getYearMin()) {
-        $query['yearmin'] = $values['year']['from'];
-      }
-
-      if ($values['year']['to'] != self::getYearMax()) {
-        $query['yearmax'] = $values['year']['to'];
-      }
-    }
-
-    $form_state->setRedirect('iucn.search', [], ['query' => $query]);
+    //This function has to be empty because we use $form['#method'] = 'get'
   }
 
   private function getRenderedFacets() {

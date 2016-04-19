@@ -105,7 +105,7 @@
         {% if site_slogan %}
           <p class="text-primary">{{ site_slogan }}</p>
         {% endif %}
-        <form id="search-form" action="/search">
+        <form id="search-form" action="{{ url('iucn.search') }}">
           {% for key, value in url_query %}
             {% if value is iterable %}
               {% for val in value %}

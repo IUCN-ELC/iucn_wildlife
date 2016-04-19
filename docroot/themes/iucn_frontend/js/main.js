@@ -143,19 +143,19 @@
     grid: true,
     type: 'double',
     onChange: function (data) {
-      $('[name="range[from]"]', $searchFilters).val(data.from);
-      $('[name="range[to]"]', $searchFilters).val(data.to);
+      $('[name="yearmin"]', $searchFilters).val(data.from);
+      $('[name="yearmax"]', $searchFilters).val(data.to);
     }
   }).data('ionRangeSlider');
 
   $('[type="number"]', $searchFilters).change(function () {
     var $this = $(this);
 
-    if ($this.attr('name') === 'range[from]') {
+    if ($this.attr('name') === 'yearmin') {
       rangeSlider.update({
         from: $this.val()
       });
-    } else {
+    } else if ($this.attr('name') === 'yearmax') {
       rangeSlider.update({
         to: $this.val()
       });

@@ -69,7 +69,7 @@ class SolrFacet {
           $this->setOperator($operator);
         }
       }
-      $values = explode(',', $parameters[$this->id]);
+      $values = $parameters[$this->id];
       $filter = (count($values) > 1) ? '(' . implode(" {$operator} ", $values) . ')' : reset($values);
       $solarium_query->createFilterQuery(array(
           'key' => "facet:{$this->id}",
@@ -141,7 +141,7 @@ class SolrFacet {
           '#type' => $widget,
           '#title' => $this->getTitle(),
           '#options' => $options,
-          '#default_value' => !empty($_GET[$this->id]) ? explode(',', $_GET[$this->id]) : [],
+          '#default_value' => !empty($_GET[$this->id]) ? $_GET[$this->id] : [],
         );
         break;
       case 'select':
@@ -156,10 +156,10 @@ class SolrFacet {
             '#markup' => "<h4 class='facet-title'>{$this->getTitle()}</h4>",
           ],
           $request_param_name => $exposedOperator,
-          $this->id . '_values' => [
+          $this->id => [
             '#type' => $widget,
             '#options' => $options,
-            '#default_value' => !empty($_GET[$this->id]) ? explode(',', $_GET[$this->id]) : [],
+            '#default_value' => !empty($_GET[$this->id]) ? $_GET[$this->id] : [],
             '#multiple' => TRUE,
             '#attributes' => [
               'data-placeholder' => $this->getConfigValue('placeholder', ''),

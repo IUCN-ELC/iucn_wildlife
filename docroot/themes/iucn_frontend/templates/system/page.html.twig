@@ -105,9 +105,15 @@
         {% if site_slogan %}
           <p class="text-primary">{{ site_slogan }}</p>
         {% endif %}
-        <form id="search-form" action="/search">
+        <form id="search-form" action="{{ url('iucn.search') }}">
           {% for key, value in url_query %}
-            <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% if value is iterable %}
+              {% for val in value %}
+                <input type="hidden" name="{{ key }}[]" value="{{ val }}">
+              {% endfor %}
+            {% else %}
+              <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% endif %}
           {% endfor %}
           <div class="form-group has-feedback">
             <input type="text" class="form-control input-lg" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}">

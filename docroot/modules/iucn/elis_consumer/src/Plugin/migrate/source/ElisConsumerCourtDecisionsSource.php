@@ -196,6 +196,16 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     return $titleOfText;
   }
 
+  protected function fixDateFields(Row &$row, array $sourceFields) {
+    foreach ($sourceFields as $field) {
+      $p = preg_match('/(\d\d\d\d)\-(\d\d)\-00/', $row->getSourceProperty($field), $matches);
+      if ($p) {
+        $month = $matches[2] != '00' ? $matches[2] : '01';
+        $row->setSourceProperty($field, "{$matches[1]}-{$month}-01");
+      }
+    }
+  }
+
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
     $titleOfText = $this->getTitle($row);
@@ -211,6 +221,11 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     $row->setSourceProperty('linkToFullText', $linkToFullText);
     $linkToAbstract = str_replace('server2.php/', '', $row->getSourceProperty('linkToAbstract'));
     $row->setSourceProperty('linkToAbstract', $linkToAbstract);
+    $this->fixDateFields($row, [
+      'dateOfEntry',
+      'dateOfModification',
+      'dateOfText',
+    ]);
     return TRUE;
   }
 }

@@ -1,7 +1,7 @@
 uuid: 9948ba40-26ae-4a42-b700-bd3a6453e3b1
-name: 'IUCN Wildlife'
+name: WILDLEX
 mail: drupal@eaudeweb.ro
-slogan: 'Combating Poaching and Illegal Wildlife Trade in Africa and Asia'
+slogan: 'Database of Wildlife Related Law'
 page:
   403: ''
   404: ''

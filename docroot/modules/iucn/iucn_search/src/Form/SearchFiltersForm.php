@@ -121,6 +121,6 @@ class SearchFiltersForm extends FormBase {
     if ($min = $q->execute()->fetchField()) {
       return $min;
     }
-    return 1860;
+    return 1998;
   }
 }

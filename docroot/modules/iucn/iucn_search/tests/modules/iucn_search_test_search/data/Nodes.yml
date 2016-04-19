@@ -4,8 +4,13 @@
   'uid': 1
   'status': TRUE
   'promote': 0
-  'field_abstract': 'ABCD'
+  'field_country': [23,24]
+  'field_keywords': [28,29,30]
+  'field_territorial_subdivisions': [34,35]
+  'field_type_of_text': 37
+  'field_language_of_document': 41
   'field_species': [1,2]
+  'field_abstract': 'ABCD'
   'field_offences': 16
   'field_court': 6
   'field_region': 12
@@ -20,11 +25,16 @@
   'uid': 1
   'status': TRUE
   'promote': 0
-  'field_abstract': 'Something else'
+  'field_country': [23,26]
+  'field_keywords': [28,29]
+  'field_type_of_text': 38
+  'field_territorial_subdivisions': [34,35]
+  'field_language_of_document': 41
   'field_species': 3
+  'field_abstract': 'Something else'
   'field_offences': [16,17]
   'field_court': 8
-  'field_region': [14, 15]
+  'field_region': [14,15]
   'field_wildlife_legislation': 22
   'field_date_of_entry': '2016-01-16'
   'field_date_of_text': '2002-01-01'
@@ -35,8 +45,13 @@
   'uid': 1
   'status': TRUE
   'promote': 0
-  'field_abstract': 'Random content'
+  'field_country': [23,24,26]
+  'field_keywords': 28
+  'field_territorial_subdivisions': 35
+  'field_type_of_text': [37,38]
+  'field_language_of_document': 41
   'field_species': [1,3]
+  'field_abstract': 'Random content'
   'field_offences': 17
   'field_court': 10
   'field_region':
@@ -50,8 +65,13 @@
   'uid': 1
   'status': TRUE
   'promote': 0
-  'field_abstract': 'Some text manually generated'
+  'field_country': 25
+  'field_keywords': [29,30]
+  'field_territorial_subdivisions': [34,35,36]
+  'field_type_of_text': [37,38,39]
+  'field_language_of_document': 41
   'field_species': 4
+  'field_abstract': 'Some text manually generated'
   'field_offences': [16,17,18]
   'field_court': 9
   'field_region':
@@ -65,8 +85,13 @@
   'uid': 1
   'status': TRUE
   'promote': 0
-  'field_abstract': 'Some text rand generated Red Tuna'
+  'field_country': [25,26]
+  'field_keywords': 30
+  'field_territorial_subdivisions': 36
+  'field_type_of_text': [39,40]
+  'field_language_of_document': 42
   'field_species': [3,4]
+  'field_abstract': 'Some text rand generated Red Tuna'
   'field_offences': [18,19]
   'field_court': 10
   'field_region': 13
@@ -80,6 +105,10 @@
   'uid': 1
   'status': TRUE
   'promote': 0
+  'field_country':
+  'field_keywords': [30,31]
+  'field_type_of_text': 40
+  'field_language_of_document': 42
   'field_species': [1,2]
   'field_offences': 20
   'field_court':
@@ -95,8 +124,11 @@
   'uid': 1
   'status': TRUE
   'promote': 0
-  'field_abstract': 'Australia, Japan and New Zealand (Bluefin Tuna) should each ensure that no action was taken which might aggravate or extend the disputes submitted to the arbitral tribunal'
+  'field_country':
+  'field_type_of_text': 40
+  'field_language_of_document': 42
   'field_species':
+  'field_abstract': 'Australia, Japan and New Zealand (Bluefin Tuna) should each ensure that no action was taken which might aggravate or extend the disputes submitted to the arbitral tribunal'
   'field_offences':
   'field_court': 7
   'field_region': 11
@@ -110,6 +142,7 @@
   'uid': 1
   'status': TRUE
   'promote': 0
+  'field_country':
   'field_species': 2
   'field_offences': 19
   'field_court':

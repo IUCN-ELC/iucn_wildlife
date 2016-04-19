@@ -86,3 +86,86 @@
   'vid': 'wildlife_legislations'
   'tid': 22
 
+- 'name': 'France'
+  'vid': 'countries'
+  'tid': 23
+
+- 'name': 'UK'
+  'vid': 'countries'
+  'tid': 24
+
+- 'name': 'Romania'
+  'vid': 'countries'
+  'tid': 25
+
+- 'name': 'Spain'
+  'vid': 'countries'
+  'tid': 26
+
+- 'name': 'Italy'
+  'vid': 'countries'
+  'tid': 27
+
+- 'name': 'Bike'
+  'vid': 'keywords'
+  'tid': 28
+
+- 'name': 'Run'
+  'vid': 'keywords'
+  'tid': 29
+
+- 'name': 'Eat'
+  'vid': 'keywords'
+  'tid': 30
+
+- 'name': 'Sleep'
+  'vid': 'keywords'
+  'tid': 31
+
+- 'name': 'Rave'
+  'vid': 'keywords'
+  'tid': 32
+
+- 'name': 'Repeat'
+  'vid': 'keywords'
+  'tid': 33
+
+- 'name': 'Subdivision X'
+  'vid': 'territorial_subdivisions'
+  'tid': 34
+
+- 'name': 'SubdivisionY'
+  'vid': 'territorial_subdivisions'
+  'tid': 35
+
+- 'name': 'Subdivi XYZ'
+  'vid': 'territorial_subdivisions'
+  'tid': 36
+
+- 'name': 'Type A'
+  'vid': 'document_types'
+  'tid': 37
+
+- 'name': 'Cool document'
+  'vid': 'document_types'
+  'tid': 38
+
+- 'name': 'Secret document'
+  'vid': 'document_types'
+  'tid': 39
+
+- 'name': 'Documentation'
+  'vid': 'document_types'
+  'tid': 40
+
+- 'name': 'English'
+  'vid': 'document_languages'
+  'tid': 41
+
+- 'name': 'Spanish'
+  'vid': 'document_languages'
+  'tid': 42
+
+- 'name': 'French'
+  'vid': 'document_languages'
+  'tid': 43

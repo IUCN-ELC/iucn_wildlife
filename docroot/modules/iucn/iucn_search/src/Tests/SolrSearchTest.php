@@ -154,164 +154,164 @@ class SolrSearchTest extends WebTestBase {
     $result = $search->search(0, 10);
     $this->assertEqual(0, $result->getCountTotal(), 'Filter by field_species subject ' . $params['field_species'] . ' AND');
 
-    // Test field_offences.
-    // Test field_offences facet - Single value OR.
+    // Test field_country.
+    // Test field_country facet - Single value OR.
     $params = array(
-      'field_offences' => '16',
+      'field_country' => '23',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(3, $result->getCountTotal(), 'Filter by field_offences ' . $params['field_offences'] . ' OR');
+    $this->assertEqual(3, $result->getCountTotal(), 'Filter by field_country ' . $params['field_country'] . ' OR');
 
     // Test country facet - Multiple value OR.
     $params = array(
-      'field_offences' => '16,18',
+      'field_country' => '23,25',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(4, $result->getCountTotal(), 'Filter by field_offences ' . $params['field_offences'] . ' OR');
+    $this->assertEqual(5, $result->getCountTotal(), 'Filter by field_country ' . $params['field_country'] . ' OR');
 
     // Test country facet - Multiple value AND.
     $params = array(
-      'field_offences' => '16,17',
-      'field_offences_operator' => 'AND',
+      'field_country' => '23,24',
+      'field_country_operator' => 'AND',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(2, $result->getCountTotal(), 'Filter by field_offences ' . $params['field_offences'] . ' AND');
+    $this->assertEqual(2, $result->getCountTotal(), 'Filter by field_country ' . $params['field_country'] . ' AND');
 
     $params = array(
-      'field_offences' => '16,17,18',
-      'field_offences_operator' => 'AND',
+      'field_country' => '23,24,26',
+      'field_country_operator' => 'AND',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(1, $result->getCountTotal(), 'Filter by field_offences ' . $params['field_offences'] . ' AND');
+    $this->assertEqual(1, $result->getCountTotal(), 'Filter by field_country ' . $params['field_country'] . ' AND');
 
     $params = array(
-      'field_offences' => '16,17,20',
-      'field_offences_operator' => 'AND',
+      'field_country' => '23,24,25',
+      'field_country_operator' => 'AND',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(0, $result->getCountTotal(), 'Filter by field_offences ' . $params['field_offences'] . ' AND');
+    $this->assertEqual(0, $result->getCountTotal(), 'Filter by field_country ' . $params['field_country'] . ' AND');
 
 
 
-    // Test field_court.
-    // Test field_court facet - Single value OR.
+    // Test field_keywords.
+    // Test field_keywords facet - Single value OR.
     $params = array(
-      'field_court' => '10',
+      'field_keywords' => '28',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(2, $result->getCountTotal(), 'Filter by field_court ' . $params['field_court'] . ' OR');
+    $this->assertEqual(3, $result->getCountTotal(), 'Filter by field_keywords ' . $params['field_keywords'] . ' OR');
 
     // Test type of text facet - Multiple value OR.
     $params = array(
-      'field_court' => '9,10',
+      'field_keywords' => '29,30',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(3, $result->getCountTotal(), 'Filter by field_court ' . $params['field_court'] . ' OR');
+    $this->assertEqual(5, $result->getCountTotal(), 'Filter by field_keywords ' . $params['field_keywords'] . ' OR');
 
     $params = array(
-      'field_court' => '9,10',
-      'field_court_operator' => 'AND',
+      'field_keywords' => '29,30',
+      'field_keywords_operator' => 'AND',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(0, $result->getCountTotal(), 'Filter by field_court ' . $params['field_court'] . ' AND');
+    $this->assertEqual(2, $result->getCountTotal(), 'Filter by field_keywords ' . $params['field_keywords'] . ' AND');
 
-    // Test field_region.
-    // Test field_region facet - Single value OR.
+    // Test field_territorial_subdivisions.
+    // Test field_territorial_subdivisions facet - Single value OR.
     $params = array(
-      'field_region' => '12',
+      'field_territorial_subdivisions' => '35',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(2, $result->getCountTotal(), 'Filter by subdivsions ' . $params['field_region'] . ' OR');
+    $this->assertEqual(4, $result->getCountTotal(), 'Filter by field_territorial_subdivisions ' . $params['field_territorial_subdivisions'] . ' OR');
 
     // Test field_region facet - Multiple value OR.
     $params = array(
-      'field_region' => '11,12,13',
+      'field_territorial_subdivisions' => '34,35,36',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(4, $result->getCountTotal(), 'Filter by subdivsions ' . $params['field_region'] . ' OR');
+    $this->assertEqual(5, $result->getCountTotal(), 'Filter by field_territorial_subdivisions ' . $params['field_territorial_subdivisions'] . ' OR');
 
 
     // Test combined facets.
-    $test_case = 'field_species subject single value OR + field_court single value OR.';
+    $test_case = 'field_species subject single value OR + field_territorial_subdivisions single value OR.';
     $params = array(
-      'field_species' => '1',
-      'field_court' => '6',
+      'field_species' => '3',
+      'field_territorial_subdivisions' => '35',
+    );
+    $search = new SolrSearch($params, $search_server);
+    $result = $search->search(0, 10);
+    $this->assertEqual(2, $result->getCountTotal(), $test_case);
+
+    $test_case = 'field_species subject multiple value OR + field_territorial_subdivisions single value OR.';
+    $params = array(
+      'field_species' => '1,4',
+      'field_territorial_subdivisions' => '35',
+    );
+    $search = new SolrSearch($params, $search_server);
+    $result = $search->search(0, 10);
+    $this->assertEqual(3, $result->getCountTotal(), $test_case);
+
+    $test_case = 'field_species multiple value AND + field_keywords single value OR.';
+    $params = array(
+      'field_species' => '1,2',
+      'field_species_operator' => 'AND',
+      'field_keywords' => '28',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
     $this->assertEqual(1, $result->getCountTotal(), $test_case);
 
-    $test_case = 'field_species subject multiple value OR + field_court single value OR.';
+    $test_case = 'field_species multiple value AND + field_keywords multiple value OR.';
     $params = array(
-      'field_species' => '1,3',
-      'field_court' => '10',
+      'field_species' => '1,2',
+      'field_species_operator' => 'AND',
+      'field_keywords' => '28,30',
+      'field_keywords_operator' => 'OR',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
     $this->assertEqual(2, $result->getCountTotal(), $test_case);
 
-    $test_case = 'field_species multiple value AND + field_offences single value OR.';
+    $test_case = 'field_species multiple value AND + field_keywords multiple value AND.';
     $params = array(
       'field_species' => '1,2',
       'field_species_operator' => 'AND',
-      'field_offences' => '16',
+      'field_keywords' => '28,29',
+      'field_keywords_operator' => 'AND',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
     $this->assertEqual(1, $result->getCountTotal(), $test_case);
 
-    $test_case = 'field_species multiple value AND + field_offences multiple value OR.';
-    $params = array(
-      'field_species' => '1,2',
-      'field_species_operator' => 'AND',
-      'field_offences' => '16,20',
-      'field_offences_operator' => 'OR',
-    );
-    $search = new SolrSearch($params, $search_server);
-    $result = $search->search(0, 10);
-    $this->assertEqual(2, $result->getCountTotal(), $test_case);
-
-    $test_case = 'field_species multiple value AND + field_offences multiple value OR.';
-    $params = array(
-      'field_species' => '1,2',
-      'field_species_operator' => 'AND',
-      'field_offences' => '16,20',
-      'field_offences_operator' => 'OR',
-    );
-    $search = new SolrSearch($params, $search_server);
-    $result = $search->search(0, 10);
-    $this->assertEqual(2, $result->getCountTotal(), $test_case);
-
-    $test_case = 'field_species multiple value OR + field_offences multiple value OR + field_court value OR';
+    $test_case = 'field_species multiple value OR + field_keywords multiple value OR + field_type_of_text value OR';
     $params = array(
       'field_species' => '1,3',
-      'field_offences' => '16,18',
-      'field_court' => '6,10',
+      'field_keywords' => '29,30',
+      'field_type_of_text' => '37,38',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
     $this->assertEqual(2, $result->getCountTotal(), $test_case);
 
-    $test_case = 'field_species multiple value AND + field_offences multiple value OR + field_court multiple value OR';
+    $test_case = 'field_species multiple value AND + field_keywords multiple value OR + field_type_of_text multiple value OR';
     $params = array(
       'field_species' => '1,2',
       'field_species_subjects_operator' => 'AND',
-      'field_offences' => '16,20',
-      'field_court' => '6,10',
+      'field_keywords' => '30,31',
+      'field_type_of_text' => '37,40',
     );
     $search = new SolrSearch($params, $search_server);
     $result = $search->search(0, 10);
-    $this->assertEqual(1, $result->getCountTotal(), $test_case);
+    $this->assertEqual(2, $result->getCountTotal(), $test_case);
 
     // Test search words.
     $test_case = 'Search unique word in title';
@@ -372,37 +372,38 @@ class SolrSearchTest extends WebTestBase {
     // Check for search box.
     $this->assertField('q');
     // Check that all facets are shown.
-    $this->assertField('field_region_values[]');
+    $this->assertField('field_country_values[]');
+    $this->assertField('field_keywords_values[]');
+    $this->assertField('field_type_of_text_values[]');
+    $this->assertField('field_territorial_subdivisions_values[]');
     $this->assertField('field_species_values[]');
-    $this->assertField('field_wildlife_legislation_values[]');
-    $this->assertField('field_region_values[]');
-    $this->assertField('field_offences_values[]');
+    $this->assertField('field_language_of_document_values[]');
     // Check operator switchers are present and not checked.
-    $this->assertField('field_offences_operator');
     $this->assertField('field_species_operator');
     $this->assertNoFieldChecked('edit-field-species-operator');
-    $this->assertNoFieldChecked('edit-field-offences-operator');
     // Check that operators are not shown for single value fields.
-    $this->assertNoField('field_region_operator', 'Operator not for 1 single value fields');
-    $this->assertNoField('field_court_operator', 'Operator not for 1 single value fields');
-    $this->assertNoField('field_wildlife_legislation_operator', 'Operator not for 1 single value fields');
+    $this->assertNoField('field_language_of_document_operator', 'Operator not for 1 single value fields');
+    $this->assertNoField('field_territorial_subdivisions_operator', 'Operator not for 1 single value fields');
+    $this->assertNoField('field_type_of_text_operator', 'Operator not for 1 single value fields');
+    $this->assertNoField('field_country_operator', 'Operator not for 1 single value fields');
     // Check some facets values.
     $this->assertRaw('>Rico (3)</option>');
     $this->assertRaw('>Private (3)</option>');
-    $this->assertRaw('>National - higher court (1)</option>');
-    $this->assertRaw('>National - no court (1)</option>');
-    $this->assertRaw('>Central Europe (2)</option>');
-    $this->assertRaw('>Robbery (3)</option>');
-    $this->assertRaw('>WL 1 (3)</option>');
-    $this->assertRaw('>WL 2 (1)</option>');
+    $this->assertRaw('>France (3)</option>');
+    $this->assertRaw('>UK (2)</option>');
+    $this->assertRaw('>Bike (3)</option>');
+    $this->assertRaw('>Eat (4)</option>');
+    $this->assertRaw('>SubdivisionY (4)</option>');
+    $this->assertRaw('>Type A (3)</option>');
+    $this->assertRaw('>English (4)</option>');
     // Check that sort links are shown.
-    $this->assertLinkByHref('/search?sort=field_date_of_entry&sortOrder=desc');
-    $this->assertLinkByHref('/search?sort=field_date_of_entry&sortOrder=asc');
+    $this->assertLinkByHref('/search?sort=field_date_of_text&sortOrder=desc');
+    $this->assertLinkByHref('/search?sort=field_date_of_text&sortOrder=asc');
     $this->assertText('Sorted by relevance');
     // Check that 10 nodes per page are shown.
     $this->assertEqual(10, count($this->parse()->xpath('//article')));
     // Check pagination.
-    $this->assertLinkByHref('?page=0');
+    $this->assertNoLinkByHref('?page=0');
     $this->assertLinkByHref('?page=1');
     $this->assertNoLinkByHref('?page=2');
     // Check only court decisions are shown.
@@ -505,7 +506,5 @@ class SolrSearchTest extends WebTestBase {
     $this->assertText('Generic title');
     $this->assertNoText('The M/V Saiga case');
     $this->assertNoLinkByHref('?page=0');
-
-
   }
 }

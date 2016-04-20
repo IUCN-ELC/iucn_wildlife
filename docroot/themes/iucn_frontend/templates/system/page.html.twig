@@ -95,36 +95,61 @@
     </header>
   {% endblock %}
 {% endif %}
-<div class="jumbotron">
-  <div class="{{ container }}">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3 text-center">
-        {% if site_name %}
-          <h1>{{ site_name }}</h1>
-        {% endif %}
-        {% if site_slogan %}
-          <p class="text-primary">{{ site_slogan }}</p>
-        {% endif %}
-        <form id="search-form" action="{{ url('iucn.search') }}">
-          {% for key, value in url_query %}
-            {% if value is iterable %}
-              {% for val in value %}
-                <input type="hidden" name="{{ key }}[]" value="{{ val }}">
-              {% endfor %}
-            {% else %}
-              <input type="hidden" name="{{ key }}" value="{{ value }}">
-            {% endif %}
-          {% endfor %}
-          <div class="form-group has-feedback">
-            <input type="text" class="form-control input-lg" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}">
-            <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-            <button type="submit" class="btn btn-primary">{{ 'Search'|t }}</button>
-          </div>
-        </form>
+{# Jumbotron #}
+{% block jumbotron %}
+  <div class="jumbotron">
+    <div class="{{ container }}">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center">
+          {% if site_name %}
+            <h1>{{ site_name }}</h1>
+          {% endif %}
+          {% if site_slogan %}
+            <p class="text-primary">{{ site_slogan }}</p>
+          {% endif %}
+          <form id="search-form" action="{{ url('iucn.search') }}">
+            {% for key, value in url_query %}
+              {% if value is iterable %}
+                {% for val in value %}
+                  <input type="hidden" name="{{ key }}[]" value="{{ val }}">
+                {% endfor %}
+              {% else %}
+                <input type="hidden" name="{{ key }}" value="{{ value }}">
+              {% endif %}
+            {% endfor %}
+            <div class="form-group has-feedback">
+              <input type="text" class="form-control input-lg" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}">
+              <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+              <button type="submit" class="btn btn-primary">{{ 'Search'|t }}</button>
+            </div>
+          </form>
+          {% if is_front %}
+            <ul class="list-inline">
+              <li>
+                <a href="{{ url('iucn.search') }}">
+                  <span class="ecolexicon ecolexicon-court-decision" aria-hidden="true"></span>
+                  {{ 'Court Decisions'|t }}
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="ecolexicon ecolexicon-legislation" aria-hidden="true"></span>
+                  {{ 'Legislation'|t }}
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="ecolexicon ecolexicon-literature" aria-hidden="true"></span>
+                  {{ 'Resources'|t }}
+                </a>
+              </li>
+            </ul>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
-</div>
+{% endblock %}
 {# Main #}
 {% block main %}
   <div role="main" class="main-container {{ container }} js-quickedit-main-content">

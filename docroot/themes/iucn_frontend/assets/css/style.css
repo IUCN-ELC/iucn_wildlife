@@ -440,10 +440,14 @@ body.path-frontpage {
   padding-top: 30px;
 }
 .jumbotron h1 {
+  margin-bottom: 0;
   margin-top: 0;
 }
 .jumbotron .text-primary {
   color: #0095f3;
+}
+.path-frontpage .jumbotron .text-primary {
+  margin-bottom: 30px;
 }
 .path-frontpage .jumbotron {
   -webkit-box-align: center;

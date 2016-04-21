@@ -201,18 +201,21 @@
 }
 #search-form .form-control {
   border-radius: 5px;
-  font-size: 16px;
+  height: 44px;
   padding-right: 120px;
 }
 #search-form .has-feedback .form-control {
-  padding-left: 45px;
+  padding-left: 44px;
 }
 #search-form .form-control-feedback {
+  height: 44px;
   left: 0;
+  line-height: 44px;
   right: auto;
+  width: 44px;
 }
 #search-form .btn {
-  line-height: 27px;
+  line-height: 22px;
   position: absolute;
   right: 4px;
   top: 4px;
@@ -482,7 +485,6 @@ body.path-frontpage {
 }
 .jumbotron .form-control::-moz-placeholder {
   color: #8b9bb1;
-  opacity: 1;
   -webkit-transition: color ease-in-out .15s;
           transition: color ease-in-out .15s;
 }

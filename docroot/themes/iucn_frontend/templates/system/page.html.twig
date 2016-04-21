@@ -118,7 +118,7 @@
               {% endif %}
             {% endfor %}
             <div class="form-group has-feedback">
-              <input type="text" class="form-control input-lg" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}" {% if is_front %} autofocus {% endif %}>
+              <input type="text" class="form-control" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}" {% if is_front %} autofocus {% endif %}>
               <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
               <button type="submit" class="btn btn-primary">{{ 'Search'|t }}</button>
             </div>

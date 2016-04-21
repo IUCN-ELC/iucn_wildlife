@@ -30,11 +30,6 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
       'placeholder' => t('Add countries…'),
       'bundle' => 'country',
     ],
-    'field_keywords' => [
-      'title' => t('Keywords'),
-      'placeholder' => t('Add keywords…'),
-      'bundle' => 'keywords',
-    ],
     'field_territorial_subdivisions' => [
       'title' => t('Sub-national jurisdiction'),
       'placeholder' => t('Add territories…'),

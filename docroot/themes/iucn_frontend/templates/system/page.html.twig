@@ -107,7 +107,7 @@
           {% if site_slogan %}
             <p class="text-primary">{{ site_slogan }}</p>
           {% endif %}
-          <form id="search-form" action="{{ url('iucn.search') }}">
+          <form id="search-form" action="{{ url('iucn.search') }}" autocomplete="off">
             {% for key, value in url_query %}
               {% if value is iterable %}
                 {% for val in value %}
@@ -118,7 +118,7 @@
               {% endif %}
             {% endfor %}
             <div class="form-group has-feedback">
-              <input type="text" class="form-control input-lg" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}">
+              <input type="text" class="form-control input-lg" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}" {% if is_front %} autofocus {% endif %}>
               <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
               <button type="submit" class="btn btn-primary">{{ 'Search'|t }}</button>
             </div>

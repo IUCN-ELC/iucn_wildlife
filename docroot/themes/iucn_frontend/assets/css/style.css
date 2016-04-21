@@ -434,6 +434,9 @@ body.path-frontpage {
 .ecolexicon-new-window:before {
   content: "\e60f";
 }
+.navbar {
+  font-size: 14px;
+}
 .jumbotron {
   margin-bottom: 45px;
   padding-bottom: 30px;

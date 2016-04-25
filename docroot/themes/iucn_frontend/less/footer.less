@@ -1,8 +1,31 @@
+html {
+  min-height: 100vh;
+  position: relative;
+}
+
+body {
+  padding-bottom: 158px;
+  position: static;
+
+  &.path-frontpage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 95px;
+  }
+}
+
 .footer {
   background-color: #eee;
   border-color: #ddd;
+  bottom: 0;
   color: #808080;
   font-size: 14px;
+  height: 95px;
+  padding-bottom: 27px;
+  padding-top: 26px;
+  position: absolute;
+  width: 100%;
 
   a {
     color: #808080;
@@ -15,8 +38,16 @@
 
   .logos {
     float: left;
-    margin-bottom: 0;
-    margin-top: -1px;
+    margin: -1px 0 0 -10px;
+
+    > li {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    a {
+      display: block;
+    }
   }
 }
 

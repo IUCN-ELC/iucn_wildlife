@@ -30,11 +30,6 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
       'placeholder' => t('Add countries…'),
       'bundle' => 'country',
     ],
-    'field_keywords' => [
-      'title' => t('Keywords'),
-      'placeholder' => t('Add keywords…'),
-      'bundle' => 'keywords',
-    ],
     'field_territorial_subdivisions' => [
       'title' => t('Sub-national jurisdiction'),
       'placeholder' => t('Add territories…'),
@@ -131,7 +126,8 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
       $pattern = $config->get('reference_to_legislation_pattern');
       $uri = str_replace('$RECID', $build['field_reference_to_faolex'][0]['#context']['value'], $pattern);
       $url = \Drupal\Core\Url::fromUri($uri);
-      $link = \Drupal\Core\Link::fromTextAndUrl($build['field_reference_to_faolex'][0]['#context']['value'], $url);
+      $link = \Drupal\Core\Link::fromTextAndUrl($build['field_reference_to_faolex'][0]['#context']['value'], $url)->toRenderable();
+      $link['#attributes']['target'] = '_blank';
       $build['field_reference_to_faolex'][0]['#context']['value'] = $link;
     }
 

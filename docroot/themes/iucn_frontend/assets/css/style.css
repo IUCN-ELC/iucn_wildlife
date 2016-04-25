@@ -201,19 +201,21 @@
 }
 #search-form .form-control {
   border-radius: 5px;
-  font-size: 16px;
+  height: 44px;
   padding-right: 120px;
 }
 #search-form .has-feedback .form-control {
-  padding-left: 45px;
+  padding-left: 44px;
 }
 #search-form .form-control-feedback {
-  color: #666;
+  height: 44px;
   left: 0;
+  line-height: 44px;
   right: auto;
+  width: 44px;
 }
 #search-form .btn {
-  line-height: 27px;
+  line-height: 22px;
   position: absolute;
   right: 4px;
   top: 4px;
@@ -320,11 +322,38 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #edit-year .btn-link .glyphicon {
   vertical-align: middle;
 }
+html {
+  min-height: 100vh;
+  position: relative;
+}
+body {
+  padding-bottom: 158px;
+  position: static;
+}
+body.path-frontpage {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 95px;
+}
 .footer {
   background-color: #eee;
   border-color: #ddd;
+  bottom: 0;
   color: #808080;
   font-size: 14px;
+  height: 95px;
+  padding-bottom: 27px;
+  padding-top: 26px;
+  position: absolute;
+  width: 100%;
 }
 .footer a {
   color: #808080;
@@ -335,8 +364,14 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .footer .logos {
   float: left;
-  margin-bottom: 0;
-  margin-top: -1px;
+  margin: -1px 0 0 -10px;
+}
+.footer .logos > li {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.footer .logos a {
+  display: block;
 }
 #block-iucn-frontend-footer {
   float: right;
@@ -409,16 +444,104 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .ecolexicon-new-window:before {
   content: "\e60f";
 }
+.navbar {
+  font-size: 14px;
+}
 .jumbotron {
   margin-bottom: 45px;
   padding-bottom: 30px;
   padding-top: 30px;
 }
+.path-frontpage .jumbotron {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 0;
+      -ms-flex: 1 1 0;
+          flex: 1 1 0;
+  margin-bottom: 0;
+}
 .jumbotron h1 {
+  margin-bottom: 0;
   margin-top: 0;
 }
 .jumbotron .text-primary {
   color: #0095f3;
+}
+.path-frontpage .jumbotron .text-primary {
+  margin-bottom: 30px;
+}
+.jumbotron .form-control {
+  background-color: #455e82;
+  border: 0;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .175);
+  color: #fff;
+  -webkit-transition: all ease-in-out .15s;
+          transition: all ease-in-out .15s;
+}
+.jumbotron .form-control::-moz-placeholder {
+  color: #8b9bb1;
+  -webkit-transition: color ease-in-out .15s;
+          transition: color ease-in-out .15s;
+}
+.jumbotron .form-control:-ms-input-placeholder {
+  color: #8b9bb1;
+  -webkit-transition: color ease-in-out .15s;
+          transition: color ease-in-out .15s;
+}
+.jumbotron .form-control::-webkit-input-placeholder {
+  color: #8b9bb1;
+  -webkit-transition: color ease-in-out .15s;
+          transition: color ease-in-out .15s;
+}
+.jumbotron .form-control:focus {
+  background-color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+  color: #212121;
+}
+.jumbotron .form-control:focus::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+.jumbotron .form-control:focus:-ms-input-placeholder {
+  color: #999;
+}
+.jumbotron .form-control:focus::-webkit-input-placeholder {
+  color: #999;
+}
+.jumbotron .form-control:focus + .form-control-feedback {
+  color: #666;
+}
+.jumbotron .form-control-feedback {
+  color: #a2afc1;
+  -webkit-transition: color ease-in-out .15s;
+          transition: color ease-in-out .15s;
+}
+.jumbotron .list-inline {
+  font-size: 14px;
+  margin-bottom: 0;
+  margin-top: 30px;
+}
+.jumbotron .list-inline a {
+  color: #fff;
+  display: block;
+  padding: 5px;
+}
+.jumbotron .list-inline a:hover,
+.jumbotron .list-inline a:focus {
+  color: #0095f3;
+  text-decoration: none;
+}
+.jumbotron .ecolexicon {
+  display: block;
+  font-size: 44px;
+  margin-bottom: 5px;
 }
 .page-title {
   border-bottom: 1px solid #ddd;

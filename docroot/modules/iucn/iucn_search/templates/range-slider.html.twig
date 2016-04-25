@@ -5,9 +5,9 @@
 <div class="clearfix">
   <div class="pull-left">
     {{ 'from'|t }}
-    <input class="form-control" name="range[from]" type="number" value="{{ from|default(min) }}" min="{{ min }}" max="{{ max }}">
+    <input class="form-control" name="yearmin" type="number" value="{{ from|default(min) }}" min="{{ min }}" max="{{ max }}">
     {{ 'to'|t }}
-    <input class="form-control" name="range[to]" type="number" value="{{ to|default(max) }}" min="{{ min }}" max="{{ max }}">
+    <input class="form-control" name="yearmax" type="number" value="{{ to|default(max) }}" min="{{ min }}" max="{{ max }}">
   </div>
   <div class="pull-right">
     <button class="btn btn-link" type="submit" title="{{ 'Refresh search results'|t }}"><span class="glyphicon glyphicon-repeat"></span></button>

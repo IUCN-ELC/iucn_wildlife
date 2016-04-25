@@ -157,18 +157,21 @@
 .court-decision.search-result .field--name-field-territorial-subdivisions,
 .court-decision.search-result .field--name-field-court,
 .court-decision.search-result .field--name-field-seat-of-court,
+.court-decision.search-result .field--name-field-country,
 .court-decision.search-result .field--name-field-date-of-text,
 .court-decision.search-result .field--name-field-reference-number,
 .court-decision.search-result .field--name-field-court-jurisdiction .field--items,
 .court-decision.search-result .field--name-field-territorial-subdivisions .field--items,
 .court-decision.search-result .field--name-field-court .field--items,
 .court-decision.search-result .field--name-field-seat-of-court .field--items,
+.court-decision.search-result .field--name-field-country .field--items,
 .court-decision.search-result .field--name-field-date-of-text .field--items,
 .court-decision.search-result .field--name-field-reference-number .field--items,
 .court-decision.search-result .field--name-field-court-jurisdiction .field--item,
 .court-decision.search-result .field--name-field-territorial-subdivisions .field--item,
 .court-decision.search-result .field--name-field-court .field--item,
 .court-decision.search-result .field--name-field-seat-of-court .field--item,
+.court-decision.search-result .field--name-field-country .field--item,
 .court-decision.search-result .field--name-field-date-of-text .field--item,
 .court-decision.search-result .field--name-field-reference-number .field--item {
   display: inline;
@@ -179,11 +182,13 @@
 .court-decision.search-result .field--name-field-territorial-subdivisions,
 .court-decision.search-result .field--name-field-court,
 .court-decision.search-result .field--name-field-seat-of-court,
+.court-decision.search-result .field--name-field-country,
 .court-decision.search-result .field--name-field-date-of-text,
 .court-decision.search-result .field--name-field-reference-number,
 .court-decision.search-result .field--name-field-territorial-subdivisions a,
 .court-decision.search-result .field--name-field-court a,
 .court-decision.search-result .field--name-field-seat-of-court a,
+.court-decision.search-result .field--name-field-country a,
 .court-decision.search-result .field--name-field-date-of-text a,
 .court-decision.search-result .field--name-field-reference-number a {
   color: #808080;
@@ -191,6 +196,7 @@
 .court-decision.search-result .field--name-field-territorial-subdivisions:before,
 .court-decision.search-result .field--name-field-court:before,
 .court-decision.search-result .field--name-field-seat-of-court:before,
+.court-decision.search-result .field--name-field-country:before,
 .court-decision.search-result .field--name-field-date-of-text:before,
 .court-decision.search-result .field--name-field-reference-number:before {
   color: #ccc;

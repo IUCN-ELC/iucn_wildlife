@@ -67,24 +67,26 @@ class SearchFiltersForm extends FormBase {
         'facets' => $this->getRenderedFacets(),
         'year' => $year
       ],
-      'submit' => [
-        '#attributes' => ['class' => ['btn-block', 'search-submit']],
-        '#type' => 'submit',
-        '#value' => $this->t('Search')
-      ],
-      'reset' => [
-        '#attributes' => [
-          'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block', 'search-reset'],
-          'type' => 'reset'
-        ],
-        '#tag' => 'button',
-        '#type' => 'html_tag',
-        '#value' => $this->t('Reset all filters')
-      ]
     ];
     if ($q = iucn_search_query_filter()) {
       $form['last_query'] = [ '#type' => 'hidden', '#value' => $q, ];
     }
+    $form['actions']['#type'] = 'actions';
+    $form['actions']['submit'] = [
+      '#attributes' => ['class' => ['btn-block', 'search-submit']],
+      '#type' => 'submit',
+      '#value' => $this->t('Search')
+    ];
+    $form['actions']['reset'] = [
+      '#attributes' => [
+        'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block', 'search-reset'],
+        'href' => Url::fromRoute('iucn.search')->toString(),
+      ],
+      '#tag' => 'a',
+      '#type' => 'html_tag',
+      '#value' => $this->t('Reset all filters')
+    ];
+
     $form['#method'] = 'get';
 
     return $form;

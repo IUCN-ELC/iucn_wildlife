@@ -82,7 +82,9 @@ class SearchFiltersForm extends FormBase {
         '#value' => $this->t('Reset all filters')
       ]
     ];
-
+    if ($q = iucn_search_query_filter()) {
+      $form['last_query'] = [ '#type' => 'hidden', '#value' => $q, ];
+    }
     $form['#method'] = 'get';
 
     return $form;

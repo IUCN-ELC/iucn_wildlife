@@ -161,3 +161,16 @@ function iucn_search_cron() {
     }
   }
 }
+
+
+function iucn_search_query_filter() {
+  if (!empty($_GET['q'])) {
+    return $_GET['q'];
+  }
+  else {
+    if (!empty($_GET['last_query'])) {
+      return $_GET['last_query'];
+    }
+  }
+  return '';
+}

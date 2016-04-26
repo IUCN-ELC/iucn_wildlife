@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class IucnTaxonomyController {
   public function redirect(Request $request, TermInterface $taxonomy_term) {
     $vocid = $taxonomy_term->getVocabularyId();
+    /** @var FieldConfig $field */
     $field = NULL;
 
     $ids = \Drupal::entityQuery('field_config')
@@ -27,12 +28,19 @@ class IucnTaxonomyController {
       if ($field_instance->getType() == 'entity_reference' &&
         $field_instance->getSetting('target_type') == 'taxonomy_term' &&
         in_array($vocid, $field_instance->getSetting('handler_settings')['target_bundles'])) {
-        $field = $field_instance->getName();
+        $field = $field_instance;
         break;
       }
     }
-
-    $query = $field ? [$field => $taxonomy_term->id()] : [];
+    $query = [];
+    if ($field) {
+      if ($field->getFieldStorageDefinition()->getCardinality() == -1) {
+        $query = [$field->getName() . '[]' => $taxonomy_term->id()];
+      }
+      else {
+        $query = [$field->getName() => $taxonomy_term->id()];
+      }
+    }
     $url = Url::fromRoute('iucn.search', [], ['query' => $query])->toString();
     return new RedirectResponse($url);
   }

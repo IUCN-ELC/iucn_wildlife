@@ -69,7 +69,7 @@ class SearchFiltersForm extends FormBase {
       ],
     ];
     if ($q = iucn_search_query_filter()) {
-      $form['last_query'] = [ '#type' => 'hidden', '#value' => $q, ];
+      $form['q'] = ['#type' => 'hidden', '#value' => $q];
     }
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = [

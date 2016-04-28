@@ -49,6 +49,7 @@ dependencies:
     - node.type.court_decision
   module:
     - datetime
+    - file_list
     - text
     - user
 id: node.court_decision.default
@@ -110,6 +111,12 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_files:
+    type: file_list
+    weight: 24
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_justices:
     weight: 7
     label: above
@@ -229,7 +236,6 @@ hidden:
   field_date_of_entry: true
   field_date_of_modification: true
   field_ecolex_subjects: true
-  field_files: true
   field_instance: true
   field_internet_reference: true
   field_isis_number: true

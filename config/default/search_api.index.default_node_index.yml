@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
+    - field.field.node.court_decision.field_court_jurisdiction
     - field.field.node.court_decision.field_date_of_entry
     - field.field.node.court_decision.field_date_of_modification
     - field.field.node.court_decision.field_date_of_text
@@ -161,6 +162,11 @@ field_settings:
     label: Court
     datasource_id: 'entity:node'
     property_path: field_court
+    type: integer
+  field_court_jurisdiction:
+    label: 'Court jurisdiction'
+    datasource_id: 'entity:node'
+    property_path: field_court_jurisdiction
     type: integer
 processor_settings:
   add_url:

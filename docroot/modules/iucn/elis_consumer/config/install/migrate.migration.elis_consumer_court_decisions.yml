@@ -84,6 +84,11 @@ process:
     source: region
     plugin: taxonomy_term
   field_reference_to_faolex: referenceToFaolex
+  field_reference_to_faolex_title: referenceToFaolexTitle
+  field_reference_to_faolex_date: referenceToFaolexDate
+  field_reference_to_faolex_countr:
+    source: referenceToFaolexCountry_en
+    plugin: taxonomy_term
   field_files:
     source: linkToFullText
     plugin: url_file

@@ -226,6 +226,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
       'dateOfEntry',
       'dateOfModification',
       'dateOfText',
+      'referenceToFaolexDate',
     ]);
     return TRUE;
   }

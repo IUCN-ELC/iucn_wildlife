@@ -29,11 +29,19 @@ class SearchFiltersForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $title = NULL) {
     // @todo: handle exception
+    $facets = $this->getRenderedFacets();
+    $hiddenInputs = [];
     $fqParams = SearchPageController::getSearch()->getFilterQueryParameters();
     $fqReset = [];
     foreach ($fqParams as $field => $value) {
       $term = \Drupal\taxonomy\Entity\Term::load($value);
       if ($term) {
+        if (!array_key_exists($field, $facets)) {
+          $hiddenInputs[$field] = [
+            '#type' => 'hidden',
+            '#default_value' => $value,
+          ];
+        }
         $getCopy = $_GET;
         unset($getCopy[$field]);
         /** @var Url $url */
@@ -63,8 +71,9 @@ class SearchFiltersForm extends FormBase {
         '#attributes' => ['class' => ['search-filters', 'invisible']],
         '#title' => $title,
         '#type' => 'fieldset',
+        'hidden' => $hiddenInputs,
         'term' => $fqReset,
-        'facets' => $this->getRenderedFacets(),
+        'facets' => $facets,
         'year' => $year
       ],
     ];

@@ -87,6 +87,9 @@ class SolrSearch {
       $facet->createSolrFacet($facetSet);
     }
     foreach ($this->getFilterQueryParameters() as $field => $value) {
+      if (is_array($value)) {
+        $value = implode(' OR ', $value);
+      }
       $fq = $query->createFilterQuery(array(
         'key' => $solr_field_mappings[$field],
         'query' => "{$solr_field_mappings[$field]}:{$value}",

@@ -70,7 +70,12 @@ class SolrFacet {
         }
       }
       $values = $parameters[$this->id];
-      $filter = (count($values) > 1) ? '(' . implode(" {$operator} ", $values) . ')' : reset($values);
+      if (is_array($values)) {
+        $filter = (count($values) > 1) ? '(' . implode(" {$operator} ", $values) . ')' : reset($values);
+      }
+      else {
+        $filter = $values;
+      }
       $solarium_query->createFilterQuery(array(
           'key' => "facet:{$this->id}",
           'tag' => "facet:{$this->solr_field_id}",

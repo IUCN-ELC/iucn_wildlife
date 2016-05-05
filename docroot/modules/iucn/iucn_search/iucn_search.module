@@ -125,12 +125,33 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
       $build['field_transnational'][0]['#markup'] = $build['field_transnational'][0]['#markup'] === 'Y' ? t('Yes') : t('No');
     }
 
+    $faolex_ref = array();
+
+    if (isset($build['field_reference_to_faolex_title'][0])) {
+      $faolex_ref['title'] = $build['field_reference_to_faolex_title'][0]['#context']['value'];
+
+      hide($build['field_reference_to_faolex_title']);
+    }
+
+    if (isset($build['field_reference_to_faolex_date'][0])) {
+      $faolex_ref['date'] = $build['field_reference_to_faolex_date'][0]['#markup'];
+
+      hide($build['field_reference_to_faolex_date']);
+    }
+
+    if (isset($build['field_reference_to_faolex_countr'][0])) {
+      $faolex_ref['country'] = $build['field_reference_to_faolex_countr'][0]['#plain_text'];
+
+      hide($build['field_reference_to_faolex_countr']);
+    }
+
     if (isset($build['field_reference_to_faolex'][0])) {
       $config = \Drupal::config('iucn_search.settings');
       $pattern = $config->get('reference_to_legislation_pattern');
       $uri = str_replace('$RECID', $build['field_reference_to_faolex'][0]['#context']['value'], $pattern);
       $url = \Drupal\Core\Url::fromUri($uri);
-      $link = \Drupal\Core\Link::fromTextAndUrl($build['field_reference_to_faolex'][0]['#context']['value'], $url)->toRenderable();
+      $text = empty($faolex_ref) ? $build['field_reference_to_faolex'][0]['#context']['value'] : implode(', ', $faolex_ref);
+      $link = \Drupal\Core\Link::fromTextAndUrl($text, $url)->toRenderable();
       $link['#attributes']['target'] = '_blank';
       $build['field_reference_to_faolex'][0]['#context']['value'] = $link;
     }

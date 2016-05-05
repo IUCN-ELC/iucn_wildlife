@@ -145,8 +145,8 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
       hide($build['field_reference_to_faolex_countr']);
     }
 
+    $config = \Drupal::config('iucn_search.settings');
     if (isset($build['field_reference_to_faolex'][0])) {
-      $config = \Drupal::config('iucn_search.settings');
       $pattern = $config->get('reference_to_legislation_pattern');
       $uri = str_replace('$RECID', $build['field_reference_to_faolex'][0]['#context']['value'], $pattern);
       $url = \Drupal\Core\Url::fromUri($uri);
@@ -154,6 +154,16 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
       $link = \Drupal\Core\Link::fromTextAndUrl($text, $url)->toRenderable();
       $link['#attributes']['target'] = '_blank';
       $build['field_reference_to_faolex'][0]['#context']['value'] = $link;
+    }
+
+    if (isset($build['field_original_id'][0])) {
+      $pattern = $config->get('reference_to_ecolex_pattern');
+      $id = $build['field_original_id'][0]['#context']['value'];
+      $uri = str_replace('$RECID', $id, $pattern);
+      $url = \Drupal\Core\Url::fromUri($uri);
+      $link = \Drupal\Core\Link::fromTextAndUrl($id, $url)->toRenderable();
+      $link['#attributes']['target'] = '_blank';
+      $build['field_original_id'][0]['#context']['value'] = $link;
     }
 
     if ($view_mode === 'search_result') {

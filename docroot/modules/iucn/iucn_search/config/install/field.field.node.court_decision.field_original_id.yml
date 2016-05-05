@@ -9,7 +9,7 @@ id: node.court_decision.field_original_id
 field_name: field_original_id
 entity_type: node
 bundle: court_decision
-label: 'Original id'
+label: 'View in ECOLEX'
 description: ''
 required: false
 translatable: false

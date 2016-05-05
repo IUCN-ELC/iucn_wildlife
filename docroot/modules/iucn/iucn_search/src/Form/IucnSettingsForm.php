@@ -38,6 +38,13 @@ class IucnSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('iucn_search.settings');
 
+    $form['reference_to_ecolex_pattern'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Reference to ECOLEX PATTERN'),
+      '#description' => $this->t('e.g. http://ecolex.eaudeweb.ro/details/court-decision/$RECID'),
+      '#default_value' => $config->get('reference_to_ecolex_pattern'),
+    );
+
     $form['reference_to_legislation_pattern'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Reference to legislation PATTERN'),
@@ -53,6 +60,7 @@ class IucnSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('iucn_search.settings')
+      ->set('reference_to_ecolex_pattern', $form_state->getValue('reference_to_ecolex_pattern'))
       ->set('reference_to_legislation_pattern', $form_state->getValue('reference_to_legislation_pattern'))
       ->save();
 

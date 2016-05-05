@@ -34,6 +34,9 @@ dependencies:
     - field.field.node.court_decision.field_reference_number
     - field.field.node.court_decision.field_reference_to_cou
     - field.field.node.court_decision.field_reference_to_faolex
+    - field.field.node.court_decision.field_reference_to_faolex_countr
+    - field.field.node.court_decision.field_reference_to_faolex_date
+    - field.field.node.court_decision.field_reference_to_faolex_title
     - field.field.node.court_decision.field_reference_to_legislation
     - field.field.node.court_decision.field_reference_to_national_legi
     - field.field.node.court_decision.field_reference_to_treaties
@@ -138,6 +141,9 @@ hidden:
   field_penalty: true
   field_reference_to_cou: true
   field_reference_to_faolex: true
+  field_reference_to_faolex_countr: true
+  field_reference_to_faolex_date: true
+  field_reference_to_faolex_title: true
   field_reference_to_legislation: true
   field_reference_to_national_legi: true
   field_reference_to_treaties: true

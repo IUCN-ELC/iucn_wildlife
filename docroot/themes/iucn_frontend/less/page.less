@@ -1,6 +1,11 @@
-.page-node-type-page,
+.page-header:first-child {
+  h1 {
+    margin-top: 0;
+  }
+}
+
 .path-contact,
-.path-user {
+.path-user:not(.user-logged-in) {
   .page-header h1,
   .region-content {
     margin-left: auto;
@@ -10,10 +15,6 @@
 }
 
 .contact-message-form {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 555px;
-
   .button {
     float: right;
     margin-left: 1rem;

@@ -335,7 +335,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
   margin-right: auto;
   max-width: 555px;
 }
-.contact-message-form .button {
+.form-actions .button {
   float: right;
   margin-left: 1rem;
 }

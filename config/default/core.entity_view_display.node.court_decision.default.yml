@@ -91,12 +91,12 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_date_of_text:
-    type: datetime_default
+    type: datetime_custom
     weight: 9
     label: above
     settings:
-      format_type: medium
       timezone_override: ''
+      date_format: 'd F Y'
     third_party_settings: {  }
   field_decision:
     weight: 17

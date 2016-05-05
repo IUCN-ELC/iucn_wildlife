@@ -324,15 +324,20 @@ fieldset[disabled] #search-form .btn-primary.focus {
 #edit-year .btn-link .glyphicon {
   vertical-align: middle;
 }
-.path-contact .page-header h1 {
+.page-node-type-page .page-header h1,
+.path-contact .page-header h1,
+.path-user .page-header h1,
+.page-node-type-page .region-content,
+.path-contact .region-content,
+.path-user .region-content {
   margin-left: auto;
   margin-right: auto;
-  max-width: 70rem;
+  max-width: 555px;
 }
 .contact-message-form {
   margin-left: auto;
   margin-right: auto;
-  max-width: 70rem;
+  max-width: 555px;
 }
 .contact-message-form .button {
   float: right;

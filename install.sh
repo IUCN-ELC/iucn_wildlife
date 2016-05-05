@@ -22,7 +22,7 @@ echo "Running database pending updates ..."
 drush updatedb
 
 echo "Resetting admin password..."
-drush user-password admin --password="password"
+drush user-password iucn --password="password"
 
 echo "Enabling simpletest module..."
 drush en -y simpletest

@@ -71,7 +71,12 @@ class SearchPageController extends ControllerBase {
             $cacheTags = array_merge($cacheTags, $node->getCacheTags());
             $highlighting = $data['highlighting'];
             $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
-            $abstract = !empty($highlighting['field_abstract']) ? $highlighting['field_abstract'] : text_summary($node->field_abstract->getValue()[0]['value'], NULL, self::TRIMMED_TEXT_SIZE);
+            if (empty($highlighting['field_abstract'])) {
+              $abstract = !empty($highlighting['search_api_attachments_field_files']) ? $highlighting['search_api_attachments_field_files'] : text_summary($node->field_abstract->getValue()[0]['value'], NULL, self::TRIMMED_TEXT_SIZE);
+            }
+            else {
+              $abstract = $highlighting['field_abstract'];
+            }
             $node->solr_title = $title;
             $node->solr_abstract = $abstract;
             $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);

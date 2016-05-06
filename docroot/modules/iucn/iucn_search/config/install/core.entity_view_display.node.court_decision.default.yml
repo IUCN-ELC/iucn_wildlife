@@ -61,33 +61,33 @@ bundle: court_decision
 mode: default
 content:
   field_abstract:
-    weight: 13
+    weight: 12
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_charges:
-    weight: 14
+    weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_country:
     type: entity_reference_label
-    weight: 7
+    weight: 6
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_court:
-    weight: 5
+    weight: 4
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_court_jurisdiction:
-    weight: 1
+    weight: 0
     label: above
     settings:
       link: true
@@ -95,20 +95,20 @@ content:
     type: entity_reference_label
   field_date_of_text:
     type: datetime_custom
-    weight: 10
+    weight: 9
     label: above
     settings:
       timezone_override: ''
       date_format: 'd F Y'
     third_party_settings: {  }
   field_decision:
-    weight: 18
+    weight: 17
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_decision_status:
-    weight: 11
+    weight: 10
     label: above
     settings:
       link: true
@@ -116,81 +116,74 @@ content:
     type: entity_reference_label
   field_files:
     type: file_list
-    weight: 28
+    weight: 27
     label: above
     settings: {  }
     third_party_settings: {  }
   field_justices:
-    weight: 8
+    weight: 7
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_language_of_document:
-    weight: 4
+    weight: 3
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_money_value:
-    weight: 16
+    weight: 15
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-  field_original_id:
-    type: string
-    weight: 0
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_original_title:
-    weight: 3
+    weight: 2
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_penalty:
-    weight: 19
+    weight: 18
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_reference_number:
     type: string
-    weight: 12
+    weight: 11
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
   field_reference_to_cou:
-    weight: 21
+    weight: 20
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_reference_to_faolex:
-    weight: 22
+    weight: 21
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_reference_to_faolex_countr:
-    weight: 25
+    weight: 24
     label: above
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_reference_to_faolex_date:
-    weight: 24
+    weight: 23
     label: above
     settings:
       timezone_override: ''
@@ -198,56 +191,56 @@ content:
     third_party_settings: {  }
     type: datetime_custom
   field_reference_to_faolex_title:
-    weight: 23
+    weight: 22
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_reference_to_legislation:
-    weight: 27
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_reference_to_national_legi:
     weight: 26
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+  field_reference_to_national_legi:
+    weight: 25
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_reference_to_treaties:
-    weight: 20
+    weight: 19
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_seat_of_court:
-    weight: 6
+    weight: 5
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_species:
-    weight: 15
+    weight: 14
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_territorial_subdivisions:
-    weight: 2
+    weight: 1
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_transnational:
-    weight: 17
+    weight: 16
     label: above
     settings:
       format: default
@@ -257,7 +250,7 @@ content:
     type: boolean
   field_type_of_text:
     type: entity_reference_label
-    weight: 9
+    weight: 8
     label: above
     settings:
       link: true
@@ -275,6 +268,7 @@ hidden:
   field_number_of_pages: true
   field_offences: true
   field_official_publication: true
+  field_original_id: true
   field_region: true
   field_related_website: true
   field_subdivision: true

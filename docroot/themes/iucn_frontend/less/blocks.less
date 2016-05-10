@@ -31,7 +31,6 @@
 
     .facet-title {
       padding-left: 15px;
-      pointer-events: none;
       position: relative;
 
       &:before {
@@ -95,20 +94,24 @@
     opacity: 0;
     position: absolute;
     right: 0;
-    top: -29px;
+    top: -23px;
   }
 
   .select2-search__field {
     cursor: pointer;
+    margin-top: 0;
   }
 
-  .select2-container--open .select2-search {
-    opacity: 1;
-    position: static;
-  }
+  .select2-container--open {
+    .select2-search {
+      opacity: 1;
+      position: static;
+    }
 
-  .select2-container--open .select2-search__field {
-    cursor: text;
+    .select2-search__field {
+      cursor: text;
+      margin-top: 5px;
+    }
   }
 
   .search-submit {

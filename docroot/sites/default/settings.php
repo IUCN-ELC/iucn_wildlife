@@ -728,3 +728,6 @@ if (file_exists(__DIR__ . '/settings.local.php')) {
 if (file_exists('/var/www/site-php')) {
   require('/var/www/site-php/iucnwildlifed8/iucnwildlifed8-settings.inc');
 }
+
+$databases['default']['default']['init_commands']['lock_wait_timeout'] = "SET SESSION innodb_lock_wait_timeout = 3600";
+$databases['default']['default']['init_commands']['wait_timeout'] = "SET SESSION wait_timeout = 3600";

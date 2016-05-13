@@ -28,6 +28,7 @@ module:
   iucn_search: 0
   kint: 0
   link: 0
+  menu_link_attributes: 0
   menu_ui: 0
   migrate: 0
   migrate_plus: 0

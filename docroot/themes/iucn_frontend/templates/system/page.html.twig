@@ -124,26 +124,9 @@
             </div>
           </form>
           {% if is_front %}
-            <ul class="list-inline">
-              <li>
-                <a href="{{ url('iucn.search') }}">
-                  <span class="ecolexicon ecolexicon-court-decision" aria-hidden="true"></span>
-                  {{ 'Court Decisions'|t }}
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="ecolexicon ecolexicon-legislation" aria-hidden="true"></span>
-                  {{ 'Legislation'|t }}
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="ecolexicon ecolexicon-literature" aria-hidden="true"></span>
-                  {{ 'Resources'|t }}
-                </a>
-              </li>
-            </ul>
+            <div class="homepage-links">
+              {{ page.homepage_links }}
+            </div>
           {% endif %}
         </div>
       </div>

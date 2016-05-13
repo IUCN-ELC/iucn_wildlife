@@ -11,6 +11,12 @@ function iucn_frontend_preprocess_page(array &$variables) {
 
   if ($variables['is_front']) {
     hide($variables['page']['content']['iucn_frontend_content']);
+
+    $menu_tree = \Drupal::menuTree();
+    $menu_name = 'homepage-links';
+    $parameters = $menu_tree->getCurrentRouteMenuTreeParameters($menu_name);
+    $tree = $menu_tree->load($menu_name, $parameters);
+    $variables['page']['homepage_links'] = \Drupal::service('renderer')->render($menu_tree->build($tree));
   }
 }
 

@@ -44,7 +44,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
     file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
 
     $path = 'http://www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE';
-    $path = 'http://iucn-wildlife-dev.edw.ro/static/index.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE';
+//    $path = 'http://iucn-wildlife-dev.edw.ro/static/index.php?database=cou&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE';
     if (!empty($configuration['path'])) {
       $path = $configuration['path'];
     }

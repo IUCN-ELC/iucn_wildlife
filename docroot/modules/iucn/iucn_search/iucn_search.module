@@ -121,10 +121,6 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
   if ($entity->bundle() === 'court_decision') {
     $build['title'][0]['#context']['value'] = $build['#node']->field_original_title[0]->value;
 
-    if (isset($build['field_transnational'][0])) {
-      $build['field_transnational'][0]['#markup'] = $build['field_transnational'][0]['#markup'] === 'Y' ? t('Yes') : t('No');
-    }
-
     $faolex_ref = array();
 
     if (isset($build['field_reference_to_faolex_title'][0])) {

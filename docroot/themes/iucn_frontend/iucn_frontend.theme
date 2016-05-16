@@ -16,6 +16,11 @@ function iucn_frontend_preprocess_page(array &$variables) {
     $menu_name = 'homepage-links';
     $parameters = $menu_tree->getCurrentRouteMenuTreeParameters($menu_name);
     $tree = $menu_tree->load($menu_name, $parameters);
+    $manipulators = array(
+      // Use the default sorting of menu links.
+      array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
+    );
+    $tree = $menu_tree->transform($tree, $manipulators);
     $menu = $menu_tree->build($tree);
     $variables['page']['homepage_links'] = \Drupal::service('renderer')->render($menu);
   }

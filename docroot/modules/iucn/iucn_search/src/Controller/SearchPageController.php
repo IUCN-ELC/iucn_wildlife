@@ -130,6 +130,11 @@ class SearchPageController extends ControllerBase {
       $menu_name = 'homepage-links';
       $parameters = $menu_tree->getCurrentRouteMenuTreeParameters($menu_name);
       $tree = $menu_tree->load($menu_name, $parameters);
+      $manipulators = array(
+        // Use the default sorting of menu links.
+        array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
+      );
+      $tree = $menu_tree->transform($tree, $manipulators);
       $menu = $menu_tree->build($tree);
       $frontpage_links = \Drupal::service('renderer')->render($menu);
 

@@ -99,26 +99,44 @@
   list-style: none;
   padding-left: 0;
 }
-.path-frontpage .homepage-links {
-  margin-top: 30px;
-}
-.path-frontpage .homepage-links li {
+.homepage-links li {
   display: inline-block;
 }
-.path-frontpage .homepage-links li a.ecolexicon {
+.homepage-links li a.ecolexicon {
   font-family: "Noto Sans", sans-serif;
   font-size: 14px !important;
   color: #fff;
   padding: 5px;
+  text-align: center;
 }
-.path-frontpage .homepage-links li a.ecolexicon:before {
+.homepage-links li a.ecolexicon:before {
   font-family: "ecolex-icons";
   display: block;
   font-size: 44px;
 }
-.path-frontpage .homepage-links li a.ecolexicon:hover {
+.homepage-links li a.ecolexicon:hover,
+.homepage-links li a.ecolexicon:focus {
   background: none;
   color: #0095f3;
+}
+.path-frontpage .homepage-links {
+  margin-top: 30px;
+}
+.path-search .homepage-links li a.ecolexicon {
+  color: #06c;
+  font-size: 14px !important;
+}
+.path-search .homepage-links li a.ecolexicon:before {
+  display: inline-block;
+  font-size: 26px;
+  margin-right: 3px;
+}
+.path-search .homepage-links li a.ecolexicon:hover,
+.path-search .homepage-links li a.ecolexicon:focus {
+  color: #000;
+}
+.path-search .homepage-links li .ecolexicon-court-decision {
+  color: #000 !important;
 }
 .field--label {
   color: #212121;

@@ -1,0 +1,26 @@
+uuid: ca3e6cf6-9625-4e58-b000-fcae68fca733
+langcode: en
+status: true
+dependencies: {  }
+id: content_manager
+label: 'Content manager'
+weight: 3
+is_admin: null
+permissions:
+  - 'administer blocks'
+  - 'access content overview'
+  - 'administer nodes'
+  - 'view own unpublished content'
+  - 'create page content'
+  - 'delete any page content'
+  - 'delete own page content'
+  - 'delete page revisions'
+  - 'edit any page content'
+  - 'edit own page content'
+  - 'revert page revisions'
+  - 'view page revisions'
+  - 'administer menu'
+  - 'view the administration theme'
+  - 'access in-place editing'
+  - 'switch shortcut sets'
+  - 'access toolbar'

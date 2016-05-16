@@ -127,3 +127,27 @@
     padding-left: 0;
   }
 }
+
+.path-frontpage {
+  .homepage-links {
+    margin-top: 30px;
+    li {
+      display: inline-block;
+      a.ecolexicon {
+        font-family: "Noto Sans",sans-serif;
+        font-size: 14px !important;
+        color: #ffffff;
+        padding: 5px;
+        &:before {
+          font-family: 'ecolex-icons';
+          display: block;
+          font-size: 44px;
+        }
+        &:hover {
+          background: none;
+          color: #0095f3;
+        }
+      }
+    }
+  }
+}

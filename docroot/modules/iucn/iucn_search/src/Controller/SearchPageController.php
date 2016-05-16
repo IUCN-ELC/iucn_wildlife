@@ -125,6 +125,14 @@ class SearchPageController extends ControllerBase {
         ];
       }
 
+      // Render the frontpage links in search results bar
+      $menu_tree = \Drupal::menuTree();
+      $menu_name = 'homepage-links';
+      $parameters = $menu_tree->getCurrentRouteMenuTreeParameters($menu_name);
+      $tree = $menu_tree->load($menu_name, $parameters);
+      $menu = $menu_tree->build($tree);
+      $frontpage_links = \Drupal::service('renderer')->render($menu);
+
       if (empty($results)) {
         if ($found) {
           // The SOLR returned results but we couldn't find them in Drupal
@@ -155,6 +163,15 @@ class SearchPageController extends ControllerBase {
 
       $content = [
         '#cache' => ['contexts' => ['url']],
+        'frontpage-links' => [
+          '#attributes' => ['class' => ['homepage-links']],
+          '#type' => 'container',
+          [
+            '#tag' => 'div',
+            '#type' => 'html_tag',
+            '#value' => $frontpage_links
+          ],
+        ],
         'meta' => [
           '#attributes' => ['class' => ['search-header']],
           '#type' => 'container',

@@ -127,3 +127,53 @@
     padding-left: 0;
   }
 }
+
+.homepage-links {
+  li {
+    display: inline-block;
+    a.ecolexicon {
+      font-family: "Noto Sans",sans-serif;
+      font-size: 14px !important;
+      color: #ffffff;
+      padding: 5px;
+      text-align: center;
+      &:before {
+        font-family: 'ecolex-icons';
+        display: block;
+        font-size: 44px;
+      }
+      &:hover, &:focus {
+        background: none;
+        color: #0095f3;
+      }
+    }
+  }
+}
+
+.path-frontpage {
+  .homepage-links {
+    margin-top: 30px;
+  }
+}
+
+.path-search {
+  .homepage-links {
+    li {
+      a.ecolexicon {
+        color: #06c;
+        font-size: 14px !important;
+        &:before {
+          display: inline-block;
+          font-size: 26px;
+          margin-right: 3px;
+        }
+        &:hover, &:focus {
+          color: #000000;
+        }
+      }
+      .ecolexicon-court-decision {
+        color: #000000 !important;
+      }
+    }
+  }
+}

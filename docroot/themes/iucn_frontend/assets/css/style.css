@@ -125,11 +125,15 @@
 .path-search .homepage-links li a.ecolexicon {
   color: #06c;
   font-size: 14px !important;
+  padding-left: 30px;
+  line-height: 26px;
 }
 .path-search .homepage-links li a.ecolexicon:before {
   display: inline-block;
   font-size: 26px;
-  margin-right: 3px;
+  position: absolute;
+  margin-left: -30px;
+  top: 5px;
 }
 .path-search .homepage-links li a.ecolexicon:hover,
 .path-search .homepage-links li a.ecolexicon:focus {

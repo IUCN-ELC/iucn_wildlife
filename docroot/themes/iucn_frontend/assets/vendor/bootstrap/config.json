@@ -402,17 +402,19 @@
     "wells.less",
     "close.less",
     "component-animations.less",
+    "dropdowns.less",
     "tooltip.less",
     "popovers.less",
     "modals.less"
   ],
   "js": [
     "alert.js",
+    "dropdown.js",
     "modal.js",
     "tooltip.js",
     "popover.js",
     "collapse.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=9a583d137805509ea725e8020c425854"
+  "customizerUrl": "<none>"
 }

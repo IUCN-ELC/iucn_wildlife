@@ -1,31 +1,29 @@
-uuid: 11187b9e-dc33-4313-bc03-3b5edd923094
+uuid: 8830b5e7-22f2-4f3b-9800-a2a2ef9ea5ce
 langcode: en
 status: true
 dependencies:
-  content:
-    - 'block_content:basic:43f8c575-6b50-44ef-8736-54ccf72e75ae'
+  config:
+    - system.menu.homepage-links
   module:
-    - block_content
     - system
   theme:
     - iucn_frontend
 id: usefullinks
 theme: iucn_frontend
 region: sidebar
-weight: -8
+weight: -7
 provider: null
-plugin: 'block_content:43f8c575-6b50-44ef-8736-54ccf72e75ae'
+plugin: 'system_menu_block:homepage-links'
 settings:
-  id: 'block_content:43f8c575-6b50-44ef-8736-54ccf72e75ae'
+  id: 'system_menu_block:homepage-links'
   label: 'Useful links'
-  provider: block_content
+  provider: system
   label_display: visible
-  status: true
-  info: ''
-  view_mode: full
+  level: 1
+  depth: 0
 visibility:
   request_path:
     id: request_path
-    pages: /search
+    pages: "/search*\r\n/legislation\r\n/resources"
     negate: false
     context_mapping: {  }

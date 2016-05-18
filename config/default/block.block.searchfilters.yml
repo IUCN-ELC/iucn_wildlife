@@ -10,7 +10,7 @@ dependencies:
 id: searchfilters
 theme: iucn_frontend
 region: sidebar
-weight: -8
+weight: -7
 provider: null
 plugin: search_filters
 settings:

@@ -2,7 +2,7 @@ iucn.search:
   path: '/search'
   defaults:
     _controller: '\Drupal\iucn_search\Controller\SearchPageController::searchPage'
-    _title: 'Search results'
+    _title: ''
   requirements:
     _access: 'TRUE'
 

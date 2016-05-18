@@ -142,6 +142,16 @@
 .path-search .homepage-links li .ecolexicon-court-decision {
   color: #000 !important;
 }
+#block-usefullinks h2 {
+  font-size: 18px;
+}
+#block-usefullinks a.ecolexicon {
+  font-family: "Noto Sans", sans-serif;
+}
+#block-usefullinks a.ecolexicon:before {
+  font-family: "ecolex-icons";
+  margin-right: 10px;
+}
 .field--label {
   color: #212121;
   font-size: 14px;
@@ -435,6 +445,9 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .form-actions .button {
   float: right;
   margin-left: 1rem;
+}
+.path-search .page-header {
+  display: none;
 }
 html {
   min-height: 100vh;

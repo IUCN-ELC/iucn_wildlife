@@ -116,12 +116,6 @@ class SearchController extends ControllerBase {
       }
     }
 
-    if (count($results)) {
-      $build['search_results_title'] = array(
-        '#markup' => '<h2>' . $this->t('Search results') . '</h2>',
-      );
-    }
-
     $build['search_results'] = array(
       '#theme' => array('item_list__search_results__' . $plugin->getPluginId(), 'item_list__search_results'),
       '#items' => $results,

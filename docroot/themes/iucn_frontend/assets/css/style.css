@@ -122,11 +122,19 @@
 .path-frontpage .homepage-links {
   margin-top: 30px;
 }
+.path-search .homepage-links {
+  text-align: center;
+}
+.path-search .homepage-links li {
+  margin-right: 10px;
+  margin-left: 10px;
+}
 .path-search .homepage-links li a.ecolexicon {
   color: #06c;
-  font-size: 14px !important;
+  font-size: 16px !important;
   padding-left: 30px;
   line-height: 26px;
+  margin-bottom: 15px;
 }
 .path-search .homepage-links li a.ecolexicon:before {
   display: inline-block;

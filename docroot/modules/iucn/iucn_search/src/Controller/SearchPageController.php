@@ -168,15 +168,6 @@ class SearchPageController extends ControllerBase {
 
       $content = [
         '#cache' => ['contexts' => ['url']],
-        'frontpage-links' => [
-          '#attributes' => ['class' => ['homepage-links']],
-          '#type' => 'container',
-          [
-            '#tag' => 'div',
-            '#type' => 'html_tag',
-            '#value' => $frontpage_links
-          ],
-        ],
         'meta' => [
           '#attributes' => ['class' => ['search-header']],
           '#type' => 'container',

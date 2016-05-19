@@ -1,0 +1,8 @@
+uuid: 762a83f4-c563-48d9-a705-5baafc6d091d
+langcode: en
+status: true
+dependencies: {  }
+id: useful-links
+label: 'Useful links'
+description: 'Useful links menu'
+locked: false

@@ -24,3 +24,5 @@ permissions:
   - 'access in-place editing'
   - 'switch shortcut sets'
   - 'access toolbar'
+  - 'access administration pages'
+  - 'create url aliases'

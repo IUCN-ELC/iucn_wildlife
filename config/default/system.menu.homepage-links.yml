@@ -3,6 +3,6 @@ langcode: en
 status: true
 dependencies: {  }
 id: homepage-links
-label: 'Useful links'
-description: ''
+label: 'Homepage links'
+description: 'Displayed in the front-page and above the search'
 locked: false

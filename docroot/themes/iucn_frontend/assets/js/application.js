@@ -42,7 +42,15 @@
   $('.form-select', $searchFilters).select2({
     dataAdapter: CustomData,
     matcher: function (term, text) {
-      return text.selected === true ? null : text;
+      if (text.selected === true) {
+        return null;
+      }
+
+      if (term.term !== undefined && text.text.toLowerCase().indexOf(term.term.toLowerCase()) === -1) {
+        return null;
+      }
+
+      return text;
     },
     placeholder: function () {
       $(this).data('placeholder');

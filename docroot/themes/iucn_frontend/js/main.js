@@ -50,20 +50,31 @@
         return null;
       }
 
+      text.term = term.term;
+
       return text;
     },
     placeholder: function () {
       $(this).data('placeholder');
     },
     templateResult: function (data) {
+      var text = data.text;
+
+      if (data.term !== undefined) {
+        var index = text.toLowerCase().indexOf(data.term.toLowerCase());
+        var length = data.term.length;
+
+        text = text.substr(0, index) + '<em>' + text.substr(index, length) + '</em>' + text.substr(index + length);
+      }
+
       var regex = /\(([0-9]+)\)/;
-      var match = data.text.match(regex) ;
+      var match = text.match(regex) ;
 
       if (match === null) {
         return data.text;
       }
 
-      var html = '<span class="counter">' + match[1].trim() + '</span>' + data.text.substring(0, match.index);
+      var html = '<span class="counter">' + match[1].trim() + '</span>' + text.substring(0, match.index);
 
       return $.parseHTML(html);
     },

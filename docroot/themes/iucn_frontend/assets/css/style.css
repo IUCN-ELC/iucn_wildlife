@@ -429,7 +429,7 @@ html {
   position: relative;
 }
 body {
-  padding-bottom: 158px;
+  padding-bottom: 224px;
   position: static;
 }
 body.path-frontpage {
@@ -443,7 +443,7 @@ body.path-frontpage {
       -ms-flex-direction: column;
           flex-direction: column;
   min-height: 100vh;
-  padding-bottom: 95px;
+  padding-bottom: 160px;
 }
 .footer {
   background-color: #eee;
@@ -451,7 +451,7 @@ body.path-frontpage {
   bottom: 0;
   color: #808080;
   font-size: 14px;
-  height: 95px;
+  height: 160px;
   padding-bottom: 16px;
   padding-top: 15px;
   position: absolute;
@@ -473,7 +473,7 @@ body.path-frontpage {
 }
 #block-iucn-frontend-footer {
   float: right;
-  margin-top: 11px;
+  margin-top: 50px;
 }
 #block-iucn-frontend-footer .nav > li > a:hover,
 #block-iucn-frontend-footer .nav > li > a:focus {

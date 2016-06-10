@@ -136,14 +136,17 @@
     display: inline-block;
 
     a {
+      border-radius: 5px;
+      border: 1px solid #fff;
       color: #fff;
       font-size: 14px;
-      padding: 5px;
+      padding: 5px 15px;
       text-align: center;
 
       &:hover,
       &:focus {
         background-color: transparent;
+        border-color: #e67e22;
         color: #e67e22;
       }
     }
@@ -153,12 +156,5 @@
 #block-usefullinks {
   h2 {
     font-size: 18px;
-  }
-  a.ecolexicon {
-    font-family: "Noto Sans",sans-serif;
-    &:before {
-      font-family: 'ecolex-icons';
-      margin-right: 10px;
-    }
   }
 }

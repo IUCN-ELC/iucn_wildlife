@@ -1,9 +1,9 @@
-uuid: 86f14ebd-7179-413a-8c4e-7868d5cd393f
+uuid: 8830b5e7-22f2-4f3b-9800-a2a2ef9ea5ce
 langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.useful-links
+    - system.menu.homepage-links
   module:
     - system
   theme:
@@ -13,9 +13,9 @@ theme: iucn_frontend
 region: sidebar
 weight: -7
 provider: null
-plugin: 'system_menu_block:useful-links'
+plugin: 'system_menu_block:homepage-links'
 settings:
-  id: 'system_menu_block:useful-links'
+  id: 'system_menu_block:homepage-links'
   label: 'Useful links'
   provider: system
   label_display: visible
@@ -24,6 +24,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: /search
+    pages: "/search*\r\n/legislation\r\n/resources"
     negate: false
     context_mapping: {  }

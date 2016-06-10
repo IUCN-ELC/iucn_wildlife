@@ -488,7 +488,7 @@ body.path-frontpage {
   margin-top: 8px;
 }
 .jumbotron {
-  background: url("../img/bg.jpg") center center no-repeat;
+  background: url("../img/bg.jpg") center bottom no-repeat;
   background-size: cover;
   margin-bottom: 45px;
   padding-bottom: 30px;

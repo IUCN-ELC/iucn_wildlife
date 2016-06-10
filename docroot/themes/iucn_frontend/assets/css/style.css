@@ -585,6 +585,11 @@ body.path-frontpage {
 .navbar {
   font-size: 14px;
 }
+.navbar .logo {
+  margin-bottom: 8px;
+  margin-right: 10px;
+  margin-top: 8px;
+}
 .jumbotron {
   margin-bottom: 45px;
   padding-bottom: 10px;

@@ -488,8 +488,8 @@ body.path-frontpage {
   color: #808080;
   font-size: 14px;
   height: 95px;
-  padding-bottom: 27px;
-  padding-top: 26px;
+  padding-bottom: 16px;
+  padding-top: 15px;
   position: absolute;
   width: 100%;
 }
@@ -504,15 +504,12 @@ body.path-frontpage {
   float: left;
   margin: -1px 0 0 -10px;
 }
-.footer .logos > li {
-  padding-left: 10px;
-  padding-right: 35px;
-}
 .footer .logos a {
   display: block;
 }
 #block-iucn-frontend-footer {
   float: right;
+  margin-top: 11px;
 }
 #block-iucn-frontend-footer .nav > li > a:hover,
 #block-iucn-frontend-footer .nav > li > a:focus {

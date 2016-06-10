@@ -16,14 +16,13 @@ body {
 }
 
 .footer {
-  background-color: #eee;
   border-color: #ddd;
   bottom: 0;
   color: #808080;
   font-size: 14px;
-  height: 160px;
+  min-height: 160px;
   padding-bottom: 16px;
-  padding-top: 15px;
+  padding-top: 16px;
   position: absolute;
   width: 100%;
 
@@ -38,7 +37,7 @@ body {
 
   .logos {
     float: left;
-    margin: -1px 0 0 -10px;
+    margin: 0 0 0 -10px;
 
     a {
       display: block;
@@ -48,11 +47,12 @@ body {
 
 #block-iucn-frontend-footer {
   float: right;
-  margin-top: 50px;
+  margin-top: 15px;
 
   .nav > li > a {
     &:hover,
     &:focus {
+      background-color: transparent;
       text-decoration: underline;
     }
   }

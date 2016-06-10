@@ -446,14 +446,13 @@ body.path-frontpage {
   padding-bottom: 160px;
 }
 .footer {
-  background-color: #eee;
   border-color: #ddd;
   bottom: 0;
   color: #808080;
   font-size: 14px;
-  height: 160px;
+  min-height: 160px;
   padding-bottom: 16px;
-  padding-top: 15px;
+  padding-top: 16px;
   position: absolute;
   width: 100%;
 }
@@ -466,17 +465,18 @@ body.path-frontpage {
 }
 .footer .logos {
   float: left;
-  margin: -1px 0 0 -10px;
+  margin: 0 0 0 -10px;
 }
 .footer .logos a {
   display: block;
 }
 #block-iucn-frontend-footer {
   float: right;
-  margin-top: 50px;
+  margin-top: 15px;
 }
 #block-iucn-frontend-footer .nav > li > a:hover,
 #block-iucn-frontend-footer .nav > li > a:focus {
+  background-color: transparent;
   text-decoration: underline;
 }
 .navbar {

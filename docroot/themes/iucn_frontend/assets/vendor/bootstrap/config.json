@@ -6,15 +6,15 @@
     "@gray": "#666",
     "@gray-light": "#ccc",
     "@gray-lighter": "lighten(@gray-base, 93.5%)",
-    "@brand-primary": "#1c5479",
+    "@brand-primary": "#e67e22",
     "@brand-success": "#1cb54b",
     "@brand-info": "#5bc0de",
     "@brand-warning": "#f0ad4e",
     "@brand-danger": "#d9534f",
     "@body-bg": "#fff",
     "@text-color": "@gray",
-    "@link-color": "#06c",
-    "@link-hover-color": "#06c",
+    "@link-color": "#e67e22",
+    "@link-hover-color": "#e67e22",
     "@link-hover-decoration": "underline",
     "@font-family-sans-serif": "\"Noto Sans\", sans-serif",
     "@font-family-serif": "Georgia, \"Times New Roman\", Times, serif",
@@ -92,7 +92,7 @@
     "@input-border-radius": "@border-radius-base",
     "@input-border-radius-large": "@border-radius-large",
     "@input-border-radius-small": "@border-radius-small",
-    "@input-border-focus": "#66afe9",
+    "@input-border-focus": "#e67e22",
     "@input-color-placeholder": "#999",
     "@input-height-base": "(@line-height-computed + (@padding-base-vertical * 2) + 2)",
     "@input-height-large": "(ceil(@font-size-large * @line-height-large) + (@padding-large-vertical * 2) + 2)",
@@ -416,5 +416,5 @@
     "collapse.js",
     "transition.js"
   ],
-  "customizerUrl": "<none>"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=23d4836115a7f1cea15090f28a1ec162"
 }

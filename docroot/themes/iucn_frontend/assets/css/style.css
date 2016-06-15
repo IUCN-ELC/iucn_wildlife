@@ -287,6 +287,15 @@
 #search-form .has-feedback .form-control {
   padding-left: 44px;
 }
+#search-form .clear-search-text {
+  position: absolute;
+  right: 108px;
+  top: 15px;
+}
+#search-form .clear-search-text:hover,
+#search-form .clear-search-text:focus {
+  text-decoration: none;
+}
 #search-form .form-control-feedback {
   height: 44px;
   left: 0;
@@ -430,14 +439,12 @@ body {
 }
 body.path-frontpage {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
-  display:         flex;
+  display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+      flex-direction: column;
   min-height: 100vh;
   padding-bottom: 160px;
 }
@@ -492,17 +499,14 @@ body.path-frontpage {
 }
 .path-frontpage .jumbotron {
   -webkit-box-align: center;
-  -webkit-align-items: center;
   -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
-  display:         flex;
+  display: flex;
   -webkit-box-flex: 1;
-  -webkit-flex: 1 1 0;
-      -ms-flex: 1 1 0;
-          flex: 1 1 0;
+  -ms-flex: 1 1 0;
+      flex: 1 1 0;
   margin-bottom: 0;
 }
 .jumbotron h1 {
@@ -577,13 +581,11 @@ body.path-frontpage {
 @media (min-width: 992px) {
   .page-title > .row {
     -webkit-box-align: center;
-    -webkit-align-items: center;
     -ms-flex-align: center;
-            align-items: center;
+    align-items: center;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
-    display:         flex;
+    display: flex;
   }
 }
 .panel-body > hr {

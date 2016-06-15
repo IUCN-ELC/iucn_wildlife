@@ -182,6 +182,6 @@
   });
 
   $('.clear-search-text', '#search-form').click(function () {
-    $('input', '#search-form').val('');
+    $('input', '#search-form').val('').focus();
   });
 })(jQuery);

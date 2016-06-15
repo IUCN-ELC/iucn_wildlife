@@ -21,6 +21,7 @@ docroot/sites/*/settings.local.php
 .idea
 *.local.php
 drush/aliases/aliases.drushrc.php
+drush/aliases/iucnwildlifed8.aliases.drushrc.php
 conf/config.json
 conf/apache.conf
 docroot/sites/simpletest

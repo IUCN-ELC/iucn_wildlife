@@ -69,7 +69,7 @@ class ElisConsumerCourtDecisionsSource extends SourcePluginBase {
   }
 
   public function count($refresh = FALSE) {
-    return 0;
+    return 'n/a';
   }
 
   public function getIds() {

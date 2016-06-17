@@ -191,6 +191,8 @@ function iucn_search_cron() {
       \Drupal::state()->set('iucn_search.migration_last_run', time());
     }
   }
+  drush_search_api_clear();
+  drush_search_api_index();
 }
 
 function iucn_search_query_filter() {

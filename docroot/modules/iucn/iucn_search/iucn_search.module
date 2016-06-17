@@ -192,6 +192,7 @@ function iucn_search_cron() {
     /** @var \Drupal\migrate\Entity\Migration $migration */
     $migration = \Drupal\migrate\Entity\Migration::load('elis_consumer_court_decisions');
     if ($migration->getStatus() == \Drupal\migrate\Entity\MigrationInterface::STATUS_IDLE) {
+      $migration->getIdMap()->prepareUpdate();
       $log = new \Drupal\migrate_tools\DrushLogMigrateMessage();
       $migrateExecutable = new \Drupal\migrate_tools\MigrateExecutable($migration, $log);
       $migrateExecutable->import();

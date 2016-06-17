@@ -190,7 +190,7 @@ processor_settings:
       weights:
         preprocess_index: 0
 options:
-  index_directly: true
+  index_directly: false
   cron_limit: 50
 datasource_settings:
   'entity:node':
@@ -199,8 +199,6 @@ datasource_settings:
       default: '0'
       bundles:
         court_decision: court_decision
-        article: '0'
-        country: '0'
         page: '0'
       languages:
         - en

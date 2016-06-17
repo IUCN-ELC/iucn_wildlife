@@ -182,8 +182,11 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
  * Implements hook_cron().
  */
 function iucn_search_cron() {
-  Database::getConnection('default')->query("SET SESSION innodb_lock_wait_timeout = 3600");
-  Database::getConnection('default')->query("SET SESSION wait_timeout = 3600");
+  if (function_exists('drush_log')) {
+    drush_log('Increase SESSION wait_timeout');
+  }
+  Database::getConnection('default')->query("SET SESSION innodb_lock_wait_timeout = 4800");
+  Database::getConnection('default')->query("SET SESSION wait_timeout = 4800");
   $last_run = \Drupal::state()->get('iucn_search.migration_last_run', NULL);
   if (empty($last_run) || (time() - $last_run) >= 3600 /* 1 hour */) {
     /** @var \Drupal\migrate\Entity\Migration $migration */

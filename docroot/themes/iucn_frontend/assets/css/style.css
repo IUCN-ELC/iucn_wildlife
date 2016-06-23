@@ -445,14 +445,14 @@ body.path-frontpage {
       -ms-flex-direction: column;
           flex-direction: column;
   min-height: 100vh;
-  padding-bottom: 104px;
+  padding-bottom: 100px;
 }
 .footer {
   border-color: #ddd;
   bottom: 0;
   color: #808080;
   font-size: 14px;
-  min-height: 104px;
+  min-height: 100px;
   padding-bottom: 16px;
   padding-top: 16px;
   position: absolute;
@@ -474,7 +474,7 @@ body.path-frontpage {
 }
 #block-iucn-frontend-footer {
   float: right;
-  margin-top: 16px;
+  margin-top: 14px;
 }
 #block-iucn-frontend-footer .nav > li > a:hover,
 #block-iucn-frontend-footer .nav > li > a:focus {

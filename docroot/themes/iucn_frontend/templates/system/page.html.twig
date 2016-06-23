@@ -120,8 +120,10 @@
             <div class="form-group has-feedback">
               <input type="text" class="form-control" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}" {% if is_front %} autofocus {% endif %}>
               <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-              <a class="clear-search-text glyphicon glyphicon-remove" href="javascript:void(0)"></a>
               <button type="submit" class="btn btn-primary">{{ 'Search'|t }}</button>
+              {% if q %}
+                <button type="button" class="close" aria-label="{{ 'Clear'|t }}"><span aria-hidden="true">&times;</span></button>
+              {% endif %}
             </div>
           </form>
             <div class="homepage-links-menu-container">

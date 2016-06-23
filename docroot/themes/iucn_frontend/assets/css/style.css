@@ -282,19 +282,16 @@
 #search-form .form-control {
   border-radius: 5px;
   height: 44px;
-  padding-right: 120px;
+  padding-right: 138px;
 }
 #search-form .has-feedback .form-control {
   padding-left: 44px;
 }
-#search-form .clear-search-text {
+#search-form .close {
+  float: none;
   position: absolute;
-  right: 108px;
-  top: 15px;
-}
-#search-form .clear-search-text:hover,
-#search-form .clear-search-text:focus {
-  text-decoration: none;
+  right: 114px;
+  top: 10px;
 }
 #search-form .form-control-feedback {
   height: 44px;

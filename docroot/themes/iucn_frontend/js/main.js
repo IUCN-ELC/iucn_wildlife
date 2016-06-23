@@ -181,7 +181,11 @@
     }
   });
 
-  $('.clear-search-text', '#search-form').click(function () {
-    $('input', '#search-form').val('').focus();
+  var $searchForm = $('#search-form');
+
+  $('.close', $searchForm).click(function () {
+    $('.form-control', $searchForm).val('');
+
+    $searchForm.submit();
   });
 })(jQuery);

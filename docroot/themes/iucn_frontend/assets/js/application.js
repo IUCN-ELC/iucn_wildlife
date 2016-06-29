@@ -188,4 +188,10 @@
 
     $searchForm.submit();
   });
+
+  var $cookieBar = $('#slide-popup');
+
+  $('.agree-button', $cookieBar).click(function () {
+    $cookieBar.remove();
+  });
 })(jQuery);

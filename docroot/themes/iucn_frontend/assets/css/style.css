@@ -580,6 +580,9 @@ body.path-frontpage {
   display: table-cell;
   vertical-align: middle;
 }
+.path-frontpage #sliding-popup ~ .jumbotron {
+  height: calc(100vh - 229px);
+}
 .jumbotron h1 {
   margin-bottom: 0;
   margin-top: 0;

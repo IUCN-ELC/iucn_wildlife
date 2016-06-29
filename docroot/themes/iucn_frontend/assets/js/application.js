@@ -189,9 +189,7 @@
     $searchForm.submit();
   });
 
-  var $cookieBar = $('#sliding-popup', 'body');
-
-  $('.agree-button', $cookieBar).click(function () {
-    $cookieBar.remove();
+  $('#sliding-popup .agree-button', 'body').click(function () {
+    $('#sliding-popup').remove();
   });
 })(jQuery);

@@ -6,11 +6,20 @@
   padding-top: 30px;
 
   .path-frontpage & {
-    align-items: center;
     background-position: center bottom;
-    display: flex;
-    flex: 1 1 0;
+    height: calc(100vh - 182px);
     margin-bottom: 0;
+    min-height: 231px;
+
+    > .container {
+      display: table;
+      height: 100%;
+
+      > .row {
+        display: table-cell;
+        vertical-align: middle;
+      }
+    }
   }
 
   h1 {

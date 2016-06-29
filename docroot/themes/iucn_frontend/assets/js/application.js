@@ -189,7 +189,7 @@
     $searchForm.submit();
   });
 
-  $('#sliding-popup .agree-button', 'body').click(function () {
+  $('body').click('#sliding-popup .agree-button', function () {
     $('#sliding-popup').remove();
   });
 })(jQuery);

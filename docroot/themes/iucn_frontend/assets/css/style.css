@@ -95,9 +95,19 @@
 #block-usefullinks {
   font-size: 14px;
 }
+#block-usefullinks h2 {
+  font-size: 18px;
+}
 #block-usefullinks ul {
   list-style: none;
   padding-left: 0;
+}
+#block-usefullinks ul > li + li {
+  margin-top: 5px;
+}
+#block-usefullinks ul > li > a {
+  border-radius: 5px;
+  border: 1px solid #ddd;
 }
 .homepage-links-menu-container {
   margin-top: 15px;
@@ -119,9 +129,6 @@
   background-color: transparent;
   border-color: #e67e22;
   color: #e67e22;
-}
-#block-usefullinks h2 {
-  font-size: 18px;
 }
 .field--label {
   color: #212121;

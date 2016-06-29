@@ -122,9 +122,22 @@
 #block-usefullinks {
   font-size: 14px;
 
+  h2 {
+    font-size: 18px;
+  }
+
   ul {
     list-style: none;
     padding-left: 0;
+
+    > li + li {
+      margin-top: 5px;
+    }
+
+    > li > a {
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
   }
 }
 
@@ -150,11 +163,5 @@
         color: #e67e22;
       }
     }
-  }
-}
-
-#block-usefullinks {
-  h2 {
-    font-size: 18px;
   }
 }

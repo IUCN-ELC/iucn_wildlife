@@ -489,6 +489,10 @@ body.path-frontpage {
   margin-right: 20px;
   margin-top: 13px;
 }
+.navbar-nav > li > a.link-primary {
+  color: #e67e22;
+  font-weight: 600;
+}
 .jumbotron {
   background: url("../img/bg.jpg") center bottom no-repeat;
   background-size: cover;

@@ -189,7 +189,7 @@
     $searchForm.submit();
   });
 
-  var $cookieBar = $('#sliding-popup');
+  var $cookieBar = $('#sliding-popup', 'body');
 
   $('.agree-button', $cookieBar).click(function () {
     $cookieBar.remove();

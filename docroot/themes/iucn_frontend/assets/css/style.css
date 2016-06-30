@@ -560,8 +560,7 @@ body.path-frontpage {
   border-radius: 3px;
   border: 1px solid #e67e22;
   color: #fff;
-  margin-bottom: 26px;
-  margin-top: 26px;
+  margin: 26px 15px;
   padding: 6px 12px;
 }
 .navbar-nav > li > a.link-primary:hover,

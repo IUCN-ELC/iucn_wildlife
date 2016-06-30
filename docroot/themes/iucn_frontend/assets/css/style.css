@@ -556,8 +556,19 @@ body.path-frontpage {
   margin-top: 12px;
 }
 .navbar-nav > li > a.link-primary {
-  color: #e67e22;
-  font-weight: 600;
+  background-color: #e67e22;
+  border-radius: 3px;
+  border: 1px solid #e67e22;
+  color: #fff;
+  margin-bottom: 26px;
+  margin-top: 26px;
+  padding: 6px 12px;
+}
+.navbar-nav > li > a.link-primary:hover,
+.navbar-nav > li > a.link-primary:focus {
+  background-color: #bf6516;
+  border-color: #b66015;
+  color: #fff;
 }
 .jumbotron {
   background: url("../img/bg.jpg") center center no-repeat;

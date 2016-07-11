@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.court_decision.field_keywords
     - field.field.node.court_decision.field_language_of_document
     - field.field.node.court_decision.field_offences
+    - field.field.node.court_decision.field_original_title
     - field.field.node.court_decision.field_region
     - field.field.node.court_decision.field_species
     - field.field.node.court_decision.field_subdivision
@@ -168,6 +169,11 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: field_court_jurisdiction
     type: integer
+  field_original_title:
+    label: 'Original title'
+    datasource_id: 'entity:node'
+    property_path: field_original_title
+    type: string
 processor_settings:
   add_url:
     plugin_id: add_url

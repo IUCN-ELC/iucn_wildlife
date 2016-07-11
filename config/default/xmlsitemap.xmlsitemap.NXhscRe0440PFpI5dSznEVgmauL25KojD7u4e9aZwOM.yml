@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: NXhscRe0440PFpI5dSznEVgmauL25KojD7u4e9aZwOM
-label: 'http://default/'
+label: 'http://www.wildlex.org/sitemap.xml'
 chunks: null
 links: null
 max_filesize: null

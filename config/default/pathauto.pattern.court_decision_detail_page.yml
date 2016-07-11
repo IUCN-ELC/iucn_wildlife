@@ -1,0 +1,22 @@
+uuid: 08aca7c0-daba-4e05-a400-dabd5ad60c2c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: court_decision_detail_page
+label: 'Court decision detail page'
+type: 'canonical_entities:node'
+pattern: 'court-decisions/[node:title]'
+selection_criteria:
+  e01086c3-540a-4c7d-9006-6c24578e0b69:
+    id: node_type
+    bundles:
+      court_decision: court_decision
+    negate: false
+    context_mapping:
+      node: node
+    uuid: e01086c3-540a-4c7d-9006-6c24578e0b69
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -24,6 +24,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "/search*\r\n/legislation\r\n/resources"
+    pages: "/search*\r\n/legislation\r\n/resources\r\n/literature"
     negate: false
     context_mapping: {  }

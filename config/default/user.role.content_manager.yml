@@ -26,3 +26,6 @@ permissions:
   - 'access toolbar'
   - 'access administration pages'
   - 'create url aliases'
+  - 'view all revisions'
+  - 'use text format full_html'
+  - 'use text format restricted_html'

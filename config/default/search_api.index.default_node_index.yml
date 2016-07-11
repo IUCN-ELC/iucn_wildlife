@@ -173,7 +173,7 @@ field_settings:
     label: 'Original title'
     datasource_id: 'entity:node'
     property_path: field_original_title
-    type: string
+    type: text
 processor_settings:
   add_url:
     plugin_id: add_url

@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=832c7caeb151a6e7dfe1119a7ce41f56)
- * Config saved to config.json and https://gist.github.com/832c7caeb151a6e7dfe1119a7ce41f56
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=4372df7fd31cbbda019ae35cfd04fb30)
+ * Config saved to config.json and https://gist.github.com/4372df7fd31cbbda019ae35cfd04fb30
  */
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
@@ -1456,7 +1456,7 @@ dt {
 dd {
   margin-left: 0;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .dl-horizontal dt {
     float: left;
     width: 160px;
@@ -3342,7 +3342,7 @@ tbody.collapse.in {
   bottom: 100%;
   margin-bottom: 2px;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-right .dropdown-menu {
     left: auto;
     right: 0;
@@ -3550,12 +3550,12 @@ tbody.collapse.in {
   margin-bottom: 0;
   border: 1px solid transparent;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar {
     border-radius: 0;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-header {
     float: left;
   }
@@ -3572,7 +3572,7 @@ tbody.collapse.in {
 .navbar-collapse.in {
   overflow-y: auto;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-collapse {
     width: auto;
     border-top: 0;
@@ -3612,7 +3612,7 @@ tbody.collapse.in {
   margin-right: -10px;
   margin-left: -10px;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .container > .navbar-header,
   .container-fluid > .navbar-header,
   .container > .navbar-collapse,
@@ -3625,7 +3625,7 @@ tbody.collapse.in {
   z-index: 1000;
   border-width: 0 0 1px;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-static-top {
     border-radius: 0;
   }
@@ -3637,7 +3637,7 @@ tbody.collapse.in {
   left: 0;
   z-index: 1030;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-fixed-top,
   .navbar-fixed-bottom {
     border-radius: 0;
@@ -3666,7 +3666,7 @@ tbody.collapse.in {
 .navbar-brand > img {
   display: block;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar > .container .navbar-brand,
   .navbar > .container-fluid .navbar-brand {
     margin-left: -10px;
@@ -3696,7 +3696,7 @@ tbody.collapse.in {
 .navbar-toggle .icon-bar + .icon-bar {
   margin-top: 4px;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-toggle {
     display: none;
   }
@@ -3709,7 +3709,7 @@ tbody.collapse.in {
   padding-bottom: 10px;
   line-height: 22px;
 }
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .navbar-nav .open .dropdown-menu {
     position: static;
     float: none;
@@ -3732,7 +3732,7 @@ tbody.collapse.in {
     background-image: none;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-nav {
     float: left;
     margin: 0;
@@ -3806,7 +3806,7 @@ tbody.collapse.in {
     top: 0;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .navbar-form .form-group {
     margin-bottom: 5px;
   }
@@ -3814,7 +3814,7 @@ tbody.collapse.in {
     margin-bottom: 0;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-form {
     width: auto;
     border: 0;
@@ -3854,14 +3854,14 @@ tbody.collapse.in {
   margin-top: 33px;
   margin-bottom: 33px;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-text {
     float: left;
     margin-left: 10px;
     margin-right: 10px;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .navbar-left {
     float: left !important;
   }
@@ -3928,7 +3928,7 @@ tbody.collapse.in {
   background-color: #eeeeee;
   color: #212121;
 }
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: #666666;
   }
@@ -4024,7 +4024,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   background-color: #080808;
   color: #ffffff;
 }
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
     border-color: #080808;
   }

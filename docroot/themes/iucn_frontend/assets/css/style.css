@@ -475,6 +475,17 @@ body.path-frontpage {
 .footer .logos a {
   display: block;
 }
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 191px;
+  }
+  body.path-frontpage {
+    padding-bottom: 145px;
+  }
+  .footer {
+    min-height: 145px;
+  }
+}
 #block-iucn-frontend-footer {
   float: right;
   margin-top: 14px;
@@ -652,6 +663,20 @@ body.path-frontpage {
   color: #a2afc1;
   -webkit-transition: color ease-in-out .15s;
           transition: color ease-in-out .15s;
+}
+@media (max-width: 767px) {
+  .path-frontpage .jumbotron {
+    height: calc(100vh - 235px);
+  }
+  .path-frontpage #sliding-popup ~ .jumbotron {
+    height: calc(100vh - 282px);
+  }
+  .path-frontpage.toolbar-fixed .jumbotron {
+    height: calc(100vh - 274px);
+  }
+  .path-frontpage.toolbar-fixed.toolbar-tray-open .jumbotron {
+    height: calc(100vh - 314px);
+  }
 }
 .page-title {
   border-bottom: 1px solid #ddd;

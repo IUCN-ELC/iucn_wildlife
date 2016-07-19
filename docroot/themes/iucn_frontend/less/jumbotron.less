@@ -94,3 +94,23 @@
     transition: color ease-in-out .15s;
   }
 }
+
+@media (max-width: 767px) {
+  .jumbotron {
+    .path-frontpage & {
+      height: calc(100vh - 235px);
+    }
+
+    .path-frontpage #sliding-popup ~ & {
+      height: calc(100vh - 282px);
+    }
+
+    .path-frontpage.toolbar-fixed & {
+      height: calc(100vh - 274px);
+    }
+
+    .path-frontpage.toolbar-fixed.toolbar-tray-open & {
+      height: calc(100vh - 314px);
+    }
+  }
+}

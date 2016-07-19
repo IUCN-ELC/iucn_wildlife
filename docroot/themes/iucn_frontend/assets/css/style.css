@@ -475,17 +475,6 @@ body.path-frontpage {
 .footer .logos a {
   display: block;
 }
-@media (max-width: 767px) {
-  body {
-    padding-bottom: 191px;
-  }
-  body.path-frontpage {
-    padding-bottom: 145px;
-  }
-  .footer {
-    min-height: 145px;
-  }
-}
 #block-iucn-frontend-footer {
   float: right;
   margin-top: 14px;
@@ -494,6 +483,26 @@ body.path-frontpage {
 #block-iucn-frontend-footer .nav > li > a:focus {
   background-color: transparent;
   text-decoration: underline;
+}
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 195px;
+  }
+  body.path-frontpage {
+    padding-bottom: 149px;
+  }
+  .footer {
+    min-height: 149px;
+    text-align: center;
+  }
+  .footer .logos {
+    display: inline-block;
+    float: none;
+  }
+  #block-iucn-frontend-footer {
+    display: inline-block;
+    float: none;
+  }
 }
 @font-face {
   font-family: "ecolex-icons";
@@ -666,16 +675,16 @@ body.path-frontpage {
 }
 @media (max-width: 767px) {
   .path-frontpage .jumbotron {
-    height: calc(100vh - 235px);
+    height: calc(100vh - 239px);
   }
   .path-frontpage #sliding-popup ~ .jumbotron {
-    height: calc(100vh - 282px);
+    height: calc(100vh - 286px);
   }
   .path-frontpage.toolbar-fixed .jumbotron {
-    height: calc(100vh - 274px);
+    height: calc(100vh - 278px);
   }
   .path-frontpage.toolbar-fixed.toolbar-tray-open .jumbotron {
-    height: calc(100vh - 314px);
+    height: calc(100vh - 318px);
   }
 }
 .page-title {

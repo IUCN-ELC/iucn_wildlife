@@ -41,21 +41,6 @@ body {
       display: block;
     }
   }
-
-}
-
-@media (max-width: 767px) {
-  body {
-    padding-bottom: 191px;
-
-    &.path-frontpage {
-      padding-bottom: 145px;
-    }
-  }
-
-  .footer {
-    min-height: 145px;
-  }
 }
 
 #block-iucn-frontend-footer {
@@ -68,5 +53,30 @@ body {
       background-color: transparent;
       text-decoration: underline;
     }
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 195px;
+
+    &.path-frontpage {
+      padding-bottom: 149px;
+    }
+  }
+
+  .footer {
+    min-height: 149px;
+    text-align: center;
+
+    .logos {
+      display: inline-block;
+      float: none;
+    }
+  }
+
+  #block-iucn-frontend-footer {
+    display: inline-block;
+    float: none;
   }
 }

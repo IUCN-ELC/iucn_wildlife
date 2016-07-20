@@ -590,6 +590,13 @@ body.path-frontpage {
   border-color: #b66015;
   color: #fff;
 }
+.region-jumbotron-top #block-underdevelopmentdisclaimer {
+  text-align: center;
+  font-size: 14px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #e67e22;
+}
 .jumbotron {
   background: url("../img/bg.jpg") center center no-repeat;
   background-size: cover;
@@ -706,13 +713,11 @@ body.path-frontpage {
 @media (min-width: 992px) {
   .page-title > .row {
     -webkit-box-align: center;
-    -webkit-align-items: center;
     -ms-flex-align: center;
-            align-items: center;
+    align-items: center;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
-    display:         flex;
+    display: flex;
   }
 }
 .panel-body > hr {

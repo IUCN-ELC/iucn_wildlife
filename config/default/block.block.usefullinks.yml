@@ -1,6 +1,6 @@
 uuid: 8830b5e7-22f2-4f3b-9800-a2a2ef9ea5ce
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.homepage-links

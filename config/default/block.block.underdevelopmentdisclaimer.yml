@@ -1,0 +1,25 @@
+uuid: 590fb6b6-01a7-4839-bf00-a2e3e4ad7188
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:bbfff329-fce2-4eda-a000-0dd46d63d81c'
+  module:
+    - block_content
+  theme:
+    - iucn_frontend
+id: underdevelopmentdisclaimer
+theme: iucn_frontend
+region: jumbotron_top
+weight: -7
+provider: null
+plugin: 'block_content:bbfff329-fce2-4eda-a000-0dd46d63d81c'
+settings:
+  id: 'block_content:bbfff329-fce2-4eda-a000-0dd46d63d81c'
+  label: 'Under development disclaimer'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

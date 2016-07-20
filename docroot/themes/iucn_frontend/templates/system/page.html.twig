@@ -97,6 +97,15 @@
 {% endif %}
 {# Jumbotron #}
 {% block jumbotron %}
+  {% if page.jumbotron_top %}
+    <div class="jumbotron-top-bar {{ container }}">
+      <div class="row">
+        <div class="col-xs-12">
+          {{ page.jumbotron_top }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
   <div class="jumbotron">
     <div class="{{ container }}">
       <div class="row">

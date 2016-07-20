@@ -9,6 +9,7 @@ package: 'Bootstrap'
 regions:
   navigation: 'Navigation'
   navigation_collapsible: 'Navigation (Collapsible)'
+  jumbotron_top: 'Jumbotron top bar'
   header: 'Top Bar'
   highlighted: 'Highlighted'
   help: 'Help'

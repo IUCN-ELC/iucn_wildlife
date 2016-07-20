@@ -10,7 +10,9 @@
 
 use Drupal\Core\DrupalKernel;
 use Symfony\Component\HttpFoundation\Request;
-
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
 $autoloader = require_once 'autoload.php';
 
 $kernel = new DrupalKernel('prod', $autoloader);

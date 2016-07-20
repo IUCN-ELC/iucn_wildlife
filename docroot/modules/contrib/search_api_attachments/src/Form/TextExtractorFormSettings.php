@@ -1,14 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_attachments\Form\TextExtractorFormSettings.
- */
-
 namespace Drupal\search_api_attachments\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
@@ -33,11 +29,27 @@ class TextExtractorFormSettings extends ConfigFormBase {
   private $textExtractorPluginManager;
 
   /**
+   * Entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, TextExtractorPluginManager $text_extractor_plugin_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, TextExtractorPluginManager $text_extractor_plugin_manager, EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $current_user) {
     parent::__construct($config_factory);
     $this->textExtractorPluginManager = $text_extractor_plugin_manager;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -45,7 +57,10 @@ class TextExtractorFormSettings extends ConfigFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('config.factory'), $container->get('plugin.manager.search_api_attachments.text_extractor')
+      $container->get('config.factory'),
+      $container->get('plugin.manager.search_api_attachments.text_extractor'),
+      $container->get('entity_type.manager'),
+      $container->get('current_user')
     );
   }
 
@@ -94,7 +109,7 @@ class TextExtractorFormSettings extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Preserve cached extractions across cache clears.'),
       '#default_value' => $config->get('preserve_cache'),
-      '#description' => $this->t('When checked, <a href="@url">clearing the sidewide cache</a> will not clear the cache of extracted files.', array('@url' => $url)),
+      '#description' => $this->t('When checked, <a href=":url">clearing the sitewide cache</a> will not clear the cache of extracted files.', array(':url' => $url)),
     );
     $form['submit'] = array(
       '#type' => 'submit',
@@ -127,13 +142,12 @@ class TextExtractorFormSettings extends ConfigFormBase {
     $extractor_plugin_id = $form_state->getValue('extraction_method');
     if ($extractor_plugin_id) {
       $configuration = $config->get($extractor_plugin_id . '_configuration');
-      $configuration = array_merge($configuration, $form_state->getValue('text_extractor_config'));
       $extractor_plugin = $this->getTextExtractorPluginManager()->createInstance($extractor_plugin_id, $configuration);
       $extractor_plugin->submitConfigurationForm($form, $form_state);
     }
 
     // Set the extraction method variable.
-    $config = \Drupal::configFactory()->getEditable(static::CONFIGNAME);
+    $config = $this->configFactory()->getEditable(static::CONFIGNAME);
     $config->set('extraction_method', $extractor_plugin_id);
     $config->save();
 
@@ -143,7 +157,8 @@ class TextExtractorFormSettings extends ConfigFormBase {
     $extracted_data = NULL;
     try {
       $extracted_data = $extractor_plugin->extract($file);
-    } catch(\Exception $e) {
+    }
+    catch (\Exception $e) {
       $error = $e->getMessage();
     }
     $file->delete();
@@ -281,10 +296,9 @@ class TextExtractorFormSettings extends ConfigFormBase {
    *   $file
    */
   public function getTestFile() {
-    $account = \Drupal::currentUser();
     $filepath = 'public://search_api_attachments_test_extraction.pdf';
     $values = array('uri' => $filepath);
-    $file = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties($values);
+    $file = $this->entityTypeManager->getStorage('file')->loadByProperties($values);
     if (empty($file)) {
       // Copy the source file to public directory.
       $source = drupal_get_path('module', 'search_api_attachments');
@@ -293,7 +307,7 @@ class TextExtractorFormSettings extends ConfigFormBase {
       // Create the file object.
       $file = File::create(array(
         'uri' => $filepath,
-        'uid' => $account->id(),
+        'uid' => $this->currentUser->id(),
       ));
       $file->save();
     }

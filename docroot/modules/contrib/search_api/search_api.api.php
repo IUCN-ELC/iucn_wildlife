@@ -48,7 +48,6 @@ function hook_search_api_datasource_info_alter(array &$infos) {
   $infos['entity:node']['label'] = t('Node');
 }
 
-
 /**
  * Alter the available processors.
  *
@@ -79,6 +78,20 @@ function hook_search_api_processor_info_alter(array &$processors) {
 function hook_search_api_data_type_info_alter(array &$data_type_definitions) {
   if (isset($data_type_definitions['text'])) {
     $data_type_definitions['text']['label'] = t('Parsed text');
+  }
+}
+
+/**
+ * Alter the available parse modes.
+ *
+ * @param array $parse_mode_definitions
+ *   The definitions of the data type plugins.
+ *
+ * @see \Drupal\search_api\ParseMode\ParseModePluginBase
+ */
+function hook_search_api_parse_mode_info_alter(array &$parse_mode_definitions) {
+  if (isset($parse_mode_definitions['direct'])) {
+    $parse_mode_definitions['direct']['label'] = t('Solr syntax');
   }
 }
 

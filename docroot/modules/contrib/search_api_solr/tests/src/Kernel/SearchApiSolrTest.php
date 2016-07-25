@@ -1,25 +1,34 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_solr\Tests\SearchApiSolrTest.
- */
-
 namespace Drupal\Tests\search_api_solr\Kernel;
 
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Entity\Server;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
+use Drupal\search_api\Utility;
 use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
-use Drupal\Tests\search_api_db\Kernel\BackendTest;
+use Drupal\search_api_solr\SolrBackendInterface;
+use Drupal\Tests\search_api\Kernel\BackendTestBase;
+use Drupal\user\Entity\User;
 
 /**
  * Tests index and search capabilities using the Solr search backend.
  *
  * @group search_api_solr
  */
-class SearchApiSolrTest extends BackendTest {
+class SearchApiSolrTest extends BackendTestBase {
+
+  /**
+   * Modules to enable for this test.
+   *
+   * @var string[]
+   */
+  public static $modules = array(
+    'search_api_solr',
+    'search_api_solr_test',
+    'user',
+  );
 
   /**
    * A Search API server ID.
@@ -36,19 +45,14 @@ class SearchApiSolrTest extends BackendTest {
   protected $indexId = 'solr_search_index';
 
   /**
-   * Whether a Solr core is available for testing. Mostly needed because Drupal
-   * testbots do not support this.
+   * Whether a Solr core is available for testing.
+   *
+   * Drupal testbots do not support having a solr server, so they can't execute
+   * these tests.
    *
    * @var bool
    */
   protected $solrAvailable = FALSE;
-
-  /**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  public static $modules = array('search_api_solr', 'search_api_test_solr');
 
   /**
    * {@inheritdoc}
@@ -56,19 +60,49 @@ class SearchApiSolrTest extends BackendTest {
   public function setUp() {
     parent::setUp();
 
-    $this->installConfig(array('search_api_test_solr'));
+    $this->installEntitySchema('user');
+    $this->installConfig(['search_api_solr', 'search_api_solr_test']);
 
+    $this->detectSolrAvailability();
+  }
+
+  /**
+   * Detects the availability of a Solr Server and sets $this->solrAvailable.
+   */
+  protected function detectSolrAvailability() {
     // Because this is a kernel test, the routing isn't built by default, so
     // we have to force it.
     \Drupal::service('router.builder')->rebuild();
 
     try {
       $backend = Server::load($this->serverId)->getBackend();
-      if ($backend instanceof SearchApiSolrBackend && $backend->ping()) {
+      if ($backend instanceof SearchApiSolrBackend && $backend->getSolrHelper()->pingCore()) {
         $this->solrAvailable = TRUE;
       }
     }
-    catch (\Exception $e) {}
+    catch (\Exception $e) {
+    }
+  }
+
+  /**
+   * Executes a query and skips search_api post processing of results.
+   *
+   * A light weight alternative to $query->execute() if we don't want to get
+   * heavy weight search_api results here, but more or less raw solr results.
+   * The data as it is returned by Solr could be accessed by calling
+   * getExtraData('search_api_solr_response') on the result set returned here.
+   *
+   * @param \Drupal\search_api\Query\QueryInterface $query
+   *   The query to be executed.
+   *
+   * @return \Drupal\search_api\Query\ResultSetInterface
+   */
+  protected function executeQueryWithoutPostProcessing(QueryInterface $query) {
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = Index::load($this->indexId);
+
+    $query->preExecute();
+    return $index->getServerInstance()->search($query);
   }
 
   /**
@@ -82,10 +116,10 @@ class SearchApiSolrTest extends BackendTest {
   /**
    * Tests various indexing scenarios for the Solr search backend.
    */
-  public function testFramework() {
+  public function testBackend() {
     // Only run the tests if we have a Solr core available.
     if ($this->solrAvailable) {
-      parent::testFramework();
+      parent::testBackend();
     }
     else {
       $this->assertTrue(TRUE, 'Error: The Solr instance could not be found. Please enable a multi-core one on http://localhost:8983/solr/d8');
@@ -105,19 +139,21 @@ class SearchApiSolrTest extends BackendTest {
    * {@inheritdoc}
    */
   protected function clearIndex() {
-    /** @var \Drupal\search_api\IndexInterface $index */
-    $index = Index::load($this->indexId);
-    $index->clear();
-    // Deleting items take at least 1 second for Solr to parse it so that drupal
-    // doesn't get timeouts while waiting for Solr. Lets give it 2 seconds to
-    // make sure we are in bounds.
-    sleep(2);
+    if ($this->solrAvailable) {
+      /** @var \Drupal\search_api\IndexInterface $index */
+      $index = Index::load($this->indexId);
+      $index->clear();
+      // Deleting items take at least 1 second for Solr to parse it so that
+      // drupal doesn't get timeouts while waiting for Solr. Lets give it 2
+      // seconds to make sure we are in bounds.
+      sleep(2);
+    }
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function checkServerTables() {
+  protected function checkServerBackend() {
     // The Solr backend doesn't create any database tables.
   }
 
@@ -129,294 +165,16 @@ class SearchApiSolrTest extends BackendTest {
   }
 
   /**
-   * {@inheritdoc}
+   * Second server.
    */
-  protected function checkMultiValuedInfo() {
-    // We don't keep multi-valued (or any other) field information.
+  protected function checkSecondServer() {
+    // @todo
   }
 
   /**
-   * {@inheritdoc}
+   * Regression tests for #2469547.
    */
-  protected function editServerPartial($enable = TRUE) {
-    // There is no "partial matching" option for Solr servers (yet).
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function searchSuccessPartial() {
-    // There is no "partial matching" option for Solr servers (yet).
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function editServer() {
-    // The parent assertions don't make sense for the Solr backend.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function searchSuccess2() {
-    // This method tests the 'min_chars' option of the Database backend, which
-    // we don't have in Solr.
-    // @todo Copy tests from the Apachesolr module which create Solr cores on
-    // the fly with various schemas.
-  }
-
-  /**
-   * Tests various previously fixed bugs, mostly from the Database backend.
-   *
-   * Needs to be overridden here since some of the tests don't apply.
-   */
-  protected function regressionTests() {
-    // Regression tests for #2007872.
-    $results = $this->buildSearch('test')
-      ->sort('id', QueryInterface::SORT_ASC)
-      ->sort('type', QueryInterface::SORT_ASC)
-      ->execute();
-    $this->assertEquals(4, $results->getResultCount(), 'Sorting on field with NULLs returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(1, 2, 3, 4)), array_keys($results->getResultItems()), 'Sorting on field with NULLs returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $query = $this->buildSearch();
-    $conditions = $query->createConditionGroup('OR');
-    $conditions->addCondition('id', 3);
-    $conditions->addCondition('type', 'article');
-    $query->addConditionGroup($conditions);
-    $query->sort('id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(3, $results->getResultCount(), 'OR filter on field with NULLs returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(3, 4, 5)), array_keys($results->getResultItems()), 'OR filter on field with NULLs returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    // Regression tests for #1863672.
-    $query = $this->buildSearch();
-    $conditions = $query->createConditionGroup('OR');
-    $conditions->addCondition('keywords', 'orange');
-    $conditions->addCondition('keywords', 'apple');
-    $query->addConditionGroup($conditions);
-    $query->sort('id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(4, $results->getResultCount(), 'OR filter on multi-valued field returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(1, 2, 4, 5)), array_keys($results->getResultItems()), 'OR filter on multi-valued field returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $query = $this->buildSearch();
-    $conditions = $query->createConditionGroup('OR');
-    $conditions->addCondition('keywords', 'orange');
-    $conditions->addCondition('keywords', 'strawberry');
-    $query->addConditionGroup($conditions);
-    $conditions = $query->createConditionGroup('OR');
-    $conditions->addCondition('keywords', 'apple');
-    $conditions->addCondition('keywords', 'grape');
-    $query->addConditionGroup($conditions);
-    $query->sort('id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(3, $results->getResultCount(), 'Multiple OR filters on multi-valued field returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(2, 4, 5)), array_keys($results->getResultItems()), 'Multiple OR filters on multi-valued field returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $query = $this->buildSearch();
-    $conditions1 = $query->createConditionGroup('OR');
-    $conditions = $query->createConditionGroup('AND');
-    $conditions->addCondition('keywords', 'orange');
-    $conditions->addCondition('keywords', 'apple');
-    $conditions1->addConditionGroup($conditions);
-    $conditions = $query->createConditionGroup('AND');
-    $conditions->addCondition('keywords', 'strawberry');
-    $conditions->addCondition('keywords', 'grape');
-    $conditions1->addConditionGroup($conditions);
-    $query->addConditionGroup($conditions1);
-    $query->sort('id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(3, $results->getResultCount(), 'Complex nested filters on multi-valued field returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(2, 4, 5)), array_keys($results->getResultItems()), 'Complex nested filters on multi-valued field returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    // Regression tests for #2040543.
-    $query = $this->buildSearch();
-    $facets['category'] = array(
-      'field' => 'category',
-      'limit' => 0,
-      'min_count' => 1,
-      'missing' => TRUE,
-    );
-    $query->setOption('search_api_facets', $facets);
-    $query->range(0, 0);
-    $results = $query->execute();
-    $expected = array(
-      array('count' => 2, 'filter' => '"article_category"'),
-      array('count' => 2, 'filter' => '"item_category"'),
-      array('count' => 1, 'filter' => '!'),
-    );
-    $type_facets = $results->getExtraData('search_api_facets')['category'];
-    usort($type_facets, array($this, 'facetCompare'));
-    $this->assertEquals($expected, $type_facets, 'Correct facets were returned');
-
-    $query = $this->buildSearch();
-    $facets['category']['missing'] = FALSE;
-    $query->setOption('search_api_facets', $facets);
-    $query->range(0, 0);
-    $results = $query->execute();
-    $expected = array(
-      array('count' => 2, 'filter' => '"article_category"'),
-      array('count' => 2, 'filter' => '"item_category"'),
-    );
-    $type_facets = $results->getExtraData('search_api_facets')['category'];
-    usort($type_facets, array($this, 'facetCompare'));
-    $this->assertEquals($expected, $type_facets, 'Correct facets were returned');
-
-    // Regression tests for #2111753.
-    $keys = array(
-      '#conjunction' => 'OR',
-      'foo',
-      'test',
-    );
-    $query = $this->buildSearch($keys, array(), array('name'));
-    $query->sort('id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(3, $results->getResultCount(), 'OR keywords returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(1, 2, 4)), array_keys($results->getResultItems()), 'OR keywords returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $query = $this->buildSearch($keys, array(), array('name', 'body'));
-    $query->range(0, 0);
-    $results = $query->execute();
-    $this->assertEquals(5, $results->getResultCount(), 'Multi-field OR keywords returned correct number of results.');
-    $this->assertFalse($results->getResultItems(), 'Multi-field OR keywords returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $keys = array(
-      '#conjunction' => 'OR',
-      'foo',
-      'test',
-      array(
-        '#conjunction' => 'AND',
-        'bar',
-        'baz',
-      ),
-    );
-    $query = $this->buildSearch($keys, array(), array('name'));
-    $query->sort('id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(4, $results->getResultCount(), 'Nested OR keywords returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(1, 2, 4, 5)), array_keys($results->getResultItems()), 'Nested OR keywords returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $keys = array(
-      '#conjunction' => 'OR',
-      array(
-        '#conjunction' => 'AND',
-        'foo',
-        'test',
-      ),
-      array(
-        '#conjunction' => 'AND',
-        'bar',
-        'baz',
-      ),
-    );
-    $query = $this->buildSearch($keys, array(), array('name', 'body'));
-    $query->sort('id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(4, $results->getResultCount(), 'Nested multi-field OR keywords returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(1, 2, 4, 5)), array_keys($results->getResultItems()), 'Nested multi-field OR keywords returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    // Regression tests for #2127001.
-    $keys = array(
-      '#conjunction' => 'AND',
-      '#negation' => TRUE,
-      'foo',
-      'bar',
-    );
-    $results = $this->buildSearch($keys)
-      ->sort('search_api_id', QueryInterface::SORT_ASC)
-      ->execute();
-    $this->assertEquals(2, $results->getResultCount(), 'Negated AND fulltext search returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(3, 4)), array_keys($results->getResultItems()), 'Negated AND fulltext search returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $keys = array(
-      '#conjunction' => 'OR',
-      '#negation' => TRUE,
-      'foo',
-      'baz',
-    );
-    $results = $this->buildSearch($keys)->execute();
-    $this->assertEquals(1, $results->getResultCount(), 'Negated OR fulltext search returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(3)), array_keys($results->getResultItems()), 'Negated OR fulltext search returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $keys = array(
-      '#conjunction' => 'AND',
-      'test',
-      array(
-        '#conjunction' => 'AND',
-        '#negation' => TRUE,
-        'foo',
-        'bar',
-      ),
-    );
-    $results = $this->buildSearch($keys)
-      ->sort('search_api_id', QueryInterface::SORT_ASC)
-      ->execute();
-    $this->assertEquals(2, $results->getResultCount(), 'Nested NOT AND fulltext search returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(3, 4)), array_keys($results->getResultItems()), 'Nested NOT AND fulltext search returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    // Regression tests for #2136409.
-    $query = $this->buildSearch();
-    $query->addCondition('category', NULL);
-    $query->sort('search_api_id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(1, $results->getResultCount(), 'NULL filter returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(3)), array_keys($results->getResultItems()), 'NULL filter returned correct result.');
-
-    $query = $this->buildSearch();
-    $query->addCondition('category', NULL, '<>');
-    $query->sort('search_api_id', QueryInterface::SORT_ASC);
-    $results = $query->execute();
-    $this->assertEquals(4, $results->getResultCount(), 'NOT NULL filter returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(1, 2, 4, 5)), array_keys($results->getResultItems()), 'NOT NULL filter returned correct result.');
-
-    // Regression tests for #1658964.
-    $query = $this->buildSearch();
-    $facets['type'] = array(
-      'field' => 'type',
-      'limit' => 0,
-      'min_count' => 0,
-      'missing' => TRUE,
-    );
-    $query->setOption('search_api_facets', $facets);
-    $query->addCondition('type', 'article');
-    $query->range(0, 0);
-    $results = $query->execute();
-    $expected = array(
-      array('count' => 2, 'filter' => '"article"'),
-      array('count' => 0, 'filter' => '!'),
-      array('count' => 0, 'filter' => '"item"'),
-    );
-    $facets = $results->getExtraData('search_api_facets', array())['type'];
-    usort($facets, array($this, 'facetCompare'));
-    $this->assertEquals($expected, $facets, 'Correct facets were returned');
-
-    // Regression tests for #2469547.
+  protected function regressionTest2469547() {
     $query = $this->buildSearch();
     $facets = array();
     $facets['body'] = array(
@@ -429,53 +187,28 @@ class SearchApiSolrTest extends BackendTest {
     $query->addCondition('id', 5, '<>');
     $query->range(0, 0);
     $results = $query->execute();
-    $expected = array(
-      array('count' => 4, 'filter' => '"test"'),
-      array('count' => 3, 'filter' => '"case"'),
-      array('count' => 1, 'filter' => '"bar"'),
-      array('count' => 1, 'filter' => '"foobar"'),
-    );
+    $expected = $this->getExpectedFacetsOfregressionTest2469547();
     // We can't guarantee the order of returned facets, since "bar" and "foobar"
     // both occur once, so we have to manually sort the returned facets first.
     $facets = $results->getExtraData('search_api_facets', array())['body'];
     usort($facets, array($this, 'facetCompare'));
     $this->assertEquals($expected, $facets, 'Correct facets were returned for a fulltext field.');
+  }
 
-    // Regression tests for #1403916.
-    $query = $this->buildSearch('test foo');
-    $facets = array();
-    $facets['type'] = array(
-      'field' => 'type',
-      'limit' => 0,
-      'min_count' => 1,
-      'missing' => TRUE,
-    );
-    $query->setOption('search_api_facets', $facets);
-    $query->range(0, 0);
-    $results = $query->execute();
-    $expected = array(
-      array('count' => 2, 'filter' => '"item"'),
-      array('count' => 1, 'filter' => '"article"'),
-    );
-    $facets = $results->getExtraData('search_api_facets', array())['type'];
-    usort($facets, array($this, 'facetCompare'));
-    $this->assertEquals($expected, $facets, 'Correct facets were returned');
-
-    // Regression tests for #2557291.
-    $results = $this->buildSearch('smile' . json_decode('"\u1F601"'))
-      ->execute();
-    $this->assertEquals(1, $results->getResultCount(), 'Search for keywords with umlauts returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(1)), array_keys($results->getResultItems()), 'Search for keywords with umlauts returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
-
-    $results = $this->buildSearch()
-      ->addCondition('keywords', 'grape', '<>')
-      ->execute();
-    $this->assertEquals(2, $results->getResultCount(), 'Negated filter on multi-valued field returned correct number of results.');
-    $this->assertEquals($this->getItemIds(array(1, 3)), array_keys($results->getResultItems()), 'Negated filter on multi-valued field returned correct result.');
-    $this->assertIgnored($results);
-    $this->assertWarnings($results);
+  /**
+   * Return the expected facets for regression test 2469547.
+   *
+   * The facets differ for different backends because.
+   *
+   * @return array
+   */
+  protected function getExpectedFacetsOfregressionTest2469547() {
+    return [
+      ['count' => 4, 'filter' => '"test"'],
+      ['count' => 3, 'filter' => '"case"'],
+      ['count' => 1, 'filter' => '"bar"'],
+      ['count' => 1, 'filter' => '"foobar"'],
+    ];
   }
 
   /**
@@ -504,6 +237,349 @@ class SearchApiSolrTest extends BackendTest {
   protected function assertIgnored(ResultSetInterface $results, array $ignored = array(), $message = 'No keys were ignored.') {
     // Nothing to do here since the Solr backend doesn't keep a list of ignored
     // fields.
+  }
+
+  /**
+   * Calls protected/private method of a class.
+   *
+   * @param object &$object
+   *   Instantiated object that we will run method on.
+   * @param string
+   *  Method name to call.
+   * @param array $parameters
+   *   Array of parameters to pass into method.
+   *
+   * @return mixed
+   *   Method return.
+   */
+  protected function invokeMethod(&$object, $methodName, array $parameters = []) {
+    $reflection = new \ReflectionClass(get_class($object));
+    $method = $reflection->getMethod($methodName);
+    $method->setAccessible(TRUE);
+
+    return $method->invokeArgs($object, $parameters);
+  }
+
+  /**
+   * Gets the Drupal Fields and their Solr mapping.
+   *
+   * @param \Drupal\search_api_solr\SolrBackendInterface $backend
+   *    The backend the mapping is used for.
+   *
+   * @return array
+   *   [$fields, $mapping]
+   */
+  protected function getFieldsAndMapping(SolrBackendInterface $backend) {
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = Index::load($this->indexId);
+    $fields = $index->getFields();
+    $fields += $this->invokeMethod($backend, 'getSpecialFields', [$index]);
+    $field_info = array(
+      'type' => 'string',
+      'original type' => 'string',
+    );
+    $fields['x'] = Utility::createField($index, 'x', $field_info);
+    $fields['y'] = Utility::createField($index, 'y', $field_info);
+    $fields['z'] = Utility::createField($index, 'z', $field_info);
+
+    $mapping = $backend->getSolrFieldNames($index) + [
+      'x' => 'solr_x',
+      'y' => 'solr_y',
+      'z' => 'solr_z',
+    ];
+
+    return [$fields, $mapping];
+  }
+
+  /**
+   * Tests the conversion of Search API queries into Solr queries.
+   */
+  public function testQueryConditions() {
+    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    $backend = Server::load($this->serverId)->getBackend();
+    list($fields, $mapping) = $this->getFieldsAndMapping($backend);
+
+    $query = $this->buildSearch();
+    $query->addCondition('x', 5, '=');
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('solr_x:"5"', $fq[0]['query']);
+    $this->assertFalse(isset($fq[1]));
+
+    $query = $this->buildSearch();
+    $query->addCondition('x', 5, '<>');
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('-solr_x:"5"', $fq[0]['query']);
+    $this->assertFalse(isset($fq[1]));
+
+    $query = $this->buildSearch();
+    $query->addCondition('x', 3, '<>');
+    $query->addCondition('x', 5, '<>');
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('-solr_x:"3"', $fq[0]['query']);
+    $this->assertEquals('-solr_x:"5"', $fq[1]['query']);
+
+    $query = $this->buildSearch();
+    $condition_group = $query->createConditionGroup();
+    $condition_group->addCondition('x', 3, '<>');
+    $condition_group->addCondition('x', 5, '<>');
+    $query->addConditionGroup($condition_group);
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('(-solr_x:"3" -solr_x:"5")', $fq[0]['query']);
+    $this->assertFalse(isset($fq[1]));
+
+    $query = $this->buildSearch();
+    $condition_group = $query->createConditionGroup();
+    $condition_group->addCondition('x', 5, '<>');
+    $condition_group->addCondition('y', 3);
+    $condition_group->addCondition('z', 7);
+    $query->addConditionGroup($condition_group);
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('(-solr_x:"5" +solr_y:"3" +solr_z:"7")', $fq[0]['query']);
+    $this->assertFalse(isset($fq[1]));
+
+    $query = $this->buildSearch();
+    $condition_group = $query->createConditionGroup();
+    $inner_condition_group = $query->createConditionGroup('OR');
+    $condition_group->addCondition('x', 5, '<>');
+    $inner_condition_group->addCondition('y', 3);
+    $inner_condition_group->addCondition('z', 7);
+    $condition_group->addConditionGroup($inner_condition_group);
+    $query->addConditionGroup($condition_group);
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('(-solr_x:"5" +(solr_y:"3" solr_z:"7"))', $fq[0]['query']);
+    $this->assertFalse(isset($fq[1]));
+
+    $query = $this->buildSearch();
+    $condition_group = $query->createConditionGroup();
+    $inner_condition_group_or = $query->createConditionGroup('OR');
+    $inner_condition_group_or->addCondition('x', 3);
+    $inner_condition_group_or->addCondition('y', 7, '<>');
+    $inner_condition_group_and = $query->createConditionGroup();
+    $inner_condition_group_and->addCondition('x', 1);
+    $inner_condition_group_and->addCondition('y', 2, '<>');
+    $inner_condition_group_and->addCondition('z', 5, '<');
+    $condition_group->addConditionGroup($inner_condition_group_or);
+    $condition_group->addConditionGroup($inner_condition_group_and);
+    $query->addConditionGroup($condition_group);
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('(+(solr_x:"3" (-solr_y:"7")) +(+solr_x:"1" -solr_y:"2" +solr_z:{* TO "5"}))', $fq[0]['query']);
+    $this->assertFalse(isset($fq[1]));
+
+    $query = $this->buildSearch();
+    $condition_group = $query->createConditionGroup();
+    $condition_group->addCondition('x', 5);
+    $condition_group->addCondition('y', [1, 2, 3], 'NOT IN');
+    $query->addConditionGroup($condition_group);
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('(+solr_x:"5" +(*:* -solr_y:"1" -solr_y:"2" -solr_y:"3"))', $fq[0]['query']);
+    $this->assertFalse(isset($fq[1]));
+
+    $query = $this->buildSearch();
+    $condition_group = $query->createConditionGroup();
+    $condition_group->addCondition('x', 5);
+    $inner_condition_group = $query->createConditionGroup();
+    $inner_condition_group->addCondition('y', [1, 2, 3], 'NOT IN');
+    $condition_group->addConditionGroup($inner_condition_group);
+    $query->addConditionGroup($condition_group);
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('(+solr_x:"5" +(*:* -solr_y:"1" -solr_y:"2" -solr_y:"3"))', $fq[0]['query']);
+    $this->assertFalse(isset($fq[1]));
+
+    // test tagging of a single filter query of a facet query
+    $query = $this->buildSearch();
+    $conditions = $query->createConditionGroup('OR', array('facet:' . 'tagtosearchfor'));
+    $conditions->addCondition('category', 'article_category');
+    $query->addConditionGroup($conditions);
+    $conditions = $query->createConditionGroup('AND');
+    $conditions->addCondition('category', NULL, '<>');
+    $query->addConditionGroup($conditions);
+    $facets['category'] = array(
+      'field' => 'category',
+      'limit' => 0,
+      'min_count' => 1,
+      'missing' => TRUE,
+      'operator' => 'or',
+    );
+    $query->setOption('search_api_facets', $facets);
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('ss_category:"article_category"', $fq[0]['query'], 'Tag found in tagged first filter query');
+    $this->assertEquals(['facet:tagtosearchfor' => 'facet:tagtosearchfor'], $fq[0]['tags'], 'Tag found in tagged first filter query');
+    $this->assertEquals('ss_category:[* TO *]', $fq[1]['query'], 'Tag not found in unrelated second filter query');
+    $this->assertEquals([], $fq[1]['tags'], 'Tag found in tagged first filter query');
+  }
+
+  /**
+   * Tests the conversion of language aware queries into Solr queries.
+   */
+  public function testQueryConditionsAndLanguageFilter() {
+    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    $backend = Server::load($this->serverId)->getBackend();
+    list($fields, $mapping) = $this->getFieldsAndMapping($backend);
+
+    $query = $this->buildSearch();
+    $query->setLanguages(['en']);
+    $query->addCondition('x', 5, '=');
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('solr_x:"5"', $fq[0]['query']);
+    $this->assertEquals('ss_search_api_language:"en"', $fq[1]['query']);
+
+    $query = $this->buildSearch();
+    $query->setLanguages(['en', 'de']);
+    $condition_group = $query->createConditionGroup();
+    $condition_group->addCondition('x', 5);
+    $inner_condition_group = $query->createConditionGroup();
+    $inner_condition_group->addCondition('y', [1, 2, 3], 'NOT IN');
+    $condition_group->addConditionGroup($inner_condition_group);
+    $query->addConditionGroup($condition_group);
+    $fq = $this->invokeMethod($backend, 'getFilterQueries', [$query, $mapping, $fields]);
+    $this->assertEquals('(+solr_x:"5" +(*:* -solr_y:"1" -solr_y:"2" -solr_y:"3"))', $fq[0]['query']);
+    $this->assertEquals('(ss_search_api_language:"en" ss_search_api_language:"de")', $fq[1]['query']);
+  }
+
+  /**
+   * Tests highlight and excerpt options.
+   */
+  public function testHighlightAndExcerpt() {
+    // Only run the tests if we have a Solr core available.
+    if ($this->solrAvailable) {
+      $config = $this->getIndex()->getServerInstance()->getBackendConfig();
+
+      $this->insertExampleContent();
+      $this->indexItems($this->indexId);
+
+      $config['retrieve_data'] = TRUE;
+      $config['highlight_data'] = TRUE;
+      $config['excerpt'] = FALSE;
+      $query = $this->buildSearch('foobar');
+      $query->getIndex()->getServerInstance()->setBackendConfig($config);
+      $results = $query->execute();
+      $this->assertEquals(1, $results->getResultCount(), 'Search for »foobar« returned correct number of results.');
+      /** @var \Drupal\search_api\Item\ItemInterface $result */
+      foreach ($results as $result) {
+        $this->assertContains('<strong>foobar</strong>', (string) $result->getField('body')->getValues()[0]);
+        $this->assertNull($result->getExcerpt());
+      }
+
+      $config['highlight_data'] = FALSE;
+      $config['excerpt'] = TRUE;
+      $query = $this->buildSearch('foobar');
+      $query->getIndex()->getServerInstance()->setBackendConfig($config);
+      $results = $query->execute();
+      $this->assertEquals(1, $results->getResultCount(), 'Search for »foobar« returned correct number of results.');
+      /** @var \Drupal\search_api\Item\ItemInterface $result */
+      foreach ($results as $result) {
+        $this->assertNotContains('<strong>foobar</strong>', (string) $result->getField('body')->getValues()[0]);
+        $this->assertContains('<strong>foobar</strong>', $result->getExcerpt());
+      }
+
+      $config['highlight_data'] = TRUE;
+      $config['excerpt'] = TRUE;
+      $query = $this->buildSearch('foobar');
+      $query->getIndex()->getServerInstance()->setBackendConfig($config);
+      $results = $query->execute();
+      $this->assertEquals(1, $results->getResultCount(), 'Search for »foobar« returned correct number of results.');
+      /** @var \Drupal\search_api\Item\ItemInterface $result */
+      foreach ($results as $result) {
+        $this->assertContains('<strong>foobar</strong>', (string) $result->getField('body')->getValues()[0]);
+        $this->assertContains('<strong>foobar</strong>', $result->getExcerpt());
+      }
+
+    }
+    else {
+      $this->assertTrue(TRUE, 'Error: The Solr instance could not be found. Please enable a multi-core one on http://localhost:8983/solr/d8');
+    }
+  }
+
+  /**
+   * Test that basic auth config gets passed to Solarium.
+   */
+  public function testBasicAuth() {
+    $server = $this->getServer();
+    $config = $server->getBackendConfig();
+    $config['username'] = 'foo';
+    $config['password'] = 'bar';
+    $server->setBackendConfig($config);
+    $auth = $server->getBackend()->getSolrConnection()->getEndpoint()->getAuthentication();
+    $this->assertEquals(['username' => 'foo', 'password' => 'bar'], $auth);
+  }
+
+  /**
+   * Tests addition and deletion of a data source.
+   *
+   * @todo Test is currently disabled because it will fail until there's a fix
+   *   for https://www.drupal.org/node/2761719
+   */
+  public function _testDatasourceAdditionAndDeletion() {
+    // Only run the tests if we have a Solr core available.
+    if ($this->solrAvailable) {
+      $this->insertExampleContent();
+      $this->indexItems($this->indexId);
+
+      $results = $this->buildSearch()->execute();
+      $this->assertEquals(5, $results->getResultCount(), 'Number of indexed entities is correct.');
+
+      $previous_index_id = $this->indexId;
+
+      $this->indexId = 'multi_datasource_solr_search_index';
+
+      $this->indexItems($this->indexId);
+
+      $results = $this->buildSearch()->execute();
+      $this->assertEquals(5, $results->getResultCount(), 'Number of indexed entities is correct.');
+
+      User::create(array(
+        'uid' => 1,
+        'name' => 'root',
+        'langcode' => 'en',
+      ))->save();
+
+      $this->indexItems($this->indexId);
+
+      $results = $this->buildSearch()->execute();
+      $this->assertEquals(6, $results->getResultCount(), 'Number of indexed entities in multi datasource index is correct.');
+
+      $results = $this->buildSearch()->addCondition('uid', 0, '>')->execute();
+      $this->assertEquals(1, $results->getResultCount(), 'Search for users returned correct number of results.');
+
+      $this->indexId = $previous_index_id;
+
+      $results = $this->buildSearch()->execute();
+      $this->assertEquals(5, $results->getResultCount(), 'Number of indexed entities in multi datasource index is correct.');
+
+      try {
+        $results = $this->buildSearch()->addCondition('uid', 0, '>')->execute();
+        $this->fail('Field uid must not exists in this index.');
+      }
+      catch (\Exception $e) {
+        $this->assertEquals('Filter term on unknown or unindexed field uid.', $e->getMessage());
+      }
+
+      $this->indexId = 'multi_datasource_solr_search_index';
+
+      $this->getIndex()->removeDatasource('entity:entity_test_mulrev_changed')->save();
+
+      // Wait for the commitWithin 1 second to complete the deletion.
+      sleep(2);
+
+      $results = $this->buildSearch()->execute();
+      $this->assertEquals(1, $results->getResultCount(), 'Number of indexed entities is correct.');
+
+      $results = $this->buildSearch()->addCondition('uid', 0, '>')->execute();
+      $this->assertEquals(1, $results->getResultCount(), 'Search for users returned correct number of results.');
+
+      $this->clearIndex();
+
+      $this->indexId = $previous_index_id;
+
+      $results = $this->buildSearch()->execute();
+      $this->assertEquals(5, $results->getResultCount(), 'Number of indexed entities is correct.');
+
+      $this->clearIndex();
+    }
+    else {
+      $this->assertTrue(TRUE, 'Error: The Solr instance could not be found. Please enable a multi-core one on http://localhost:8983/solr/d8');
+    }
+
   }
 
 }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_attachments\Annotation\SearchApiAttachmentsTextExtractor.
- */
-
 namespace Drupal\search_api_attachments\Annotation;
 
 use Drupal\Component\Annotation\Plugin;

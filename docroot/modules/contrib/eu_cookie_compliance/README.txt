@@ -56,3 +56,11 @@ If you want to conditionally set cookies in your module, there is a javascript
 function provided that returns TRUE if the current user has given his consent:
 
 Drupal.eu_cookie_compliance.hasAgreed()
+
+To run test you should run next script:
+
+php ./core/scripts/run-tests.sh --color --verbose --browser --url <http://example.com> --class "\Drupal\eu_cookie_compliance\Tests\EuCookieComplianceTest"
+
+If you have Drupal Console installed:
+
+drupal tr --url=<http://example.com> "\Drupal\eu_cookie_compliance\Tests\EuCookieComplianceTest"

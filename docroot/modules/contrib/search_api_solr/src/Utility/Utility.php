@@ -1,24 +1,22 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_solr\Utility\Utility.
- */
-
 namespace Drupal\search_api_solr\Utility;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\search_api\ServerInterface;
 
+/**
+ * Utility functions specific to solr.
+ */
 class Utility {
 
   /**
    * Retrieves Solr-specific data for available data types.
    *
-   * Returns the data type information for both the default Search API data types
-   * and custom data types defined by hook_search_api_data_type_info(). Names for
-   * default data types are not included, since they are not relevant to the Solr
-   * service class.
+   * Returns the data type information for both the default Search API data
+   * types and custom data types defined by hook_search_api_data_type_info().
+   * Names for default data types are not included, since they are not relevant
+   * to the Solr service class.
    *
    * We're adding some extra Solr field information for the default search api
    * data types (as well as on behalf of a couple contrib field types). The
@@ -74,9 +72,6 @@ class Utility {
         'uri' => array(
           'prefix' => 's',
         ),
-        'tokens' => array(
-          'prefix' => 't',
-        ),
       ));
 
       // Extra data type info.
@@ -89,10 +84,11 @@ class Utility {
         ),
       );
 
-      // For the extra types, only add our extra info if it's already been defined.
+      // For the extra types, only add our extra info if it's already been
+      // defined.
       foreach ($extra_types_info as $key => $info) {
         if (array_key_exists($key, $types)) {
-          // Merge our extras into the data type info
+          // Merge our extras into the data type info.
           $types[$key] += $info;
         }
       }
@@ -108,8 +104,8 @@ class Utility {
   /**
    * Returns a unique hash for the current site.
    *
-   * This is used to identify Solr documents from different sites within a single
-   * Solr server.
+   * This is used to identify Solr documents from different sites within a
+   * single Solr server.
    *
    * @return string
    *   A unique site hash, containing only alphanumeric characters.
@@ -130,13 +126,13 @@ class Utility {
    * @param \Drupal\search_api\ServerInterface $server
    *   The Solr server whose files should be retrieved.
    * @param string $dir_name
-   *   (optional) The directory that should be searched for files. Defaults to the
-   *   root config directory.
+   *   (optional) The directory that should be searched for files. Defaults to
+   *   the root config directory.
    *
    * @return array
    *   An associative array of all config files in the given directory. The keys
-   *   are the file names, values are arrays with information about the file. The
-   *   files are returned in alphabetical order and breadth-first.
+   *   are the file names, values are arrays with information about the file.
+   *   The files are returned in alphabetical order and breadth-first.
    *
    * @throws \Drupal\search_api\SearchApiException
    *   If a problem occurred while retrieving the files.
@@ -152,9 +148,9 @@ class Utility {
 
     foreach ($files_list as $file_name => $file_info) {
       // Annoyingly, Solr 4.7 changed the way the admin/file handler returns
-      // the file names when listing directory contents: the returned name is now
-      // only the base name, not the complete path from the config root directory.
-      // We therefore have to check for this case.
+      // the file names when listing directory contents: the returned name is
+      // now only the base name, not the complete path from the config root
+      // directory. We therefore have to check for this case.
       if ($dir_name && substr($file_name, 0, $dir_length) !== "$dir_name/") {
         $file_name = "$dir_name/" . $file_name;
       }
@@ -169,23 +165,6 @@ class Utility {
     ksort($result);
     ksort($result['']);
     return array_reduce($result, 'array_merge', array());
-  }
-
-  /**
-   * Escapes a Search API field name for passing to Solr.
-   *
-   * Since field names can only contain one special character, ":", there is no
-   * need to use the complete escape() method.
-   *
-   * @param string $value
-   *   The field name to escape.
-   *
-   * @return string
-   *   An escaped string suitable for passing to Solr.
-   */
-  public static function escapeFieldName($value) {
-    $value = str_replace(':', '\:', $value);
-    return $value;
   }
 
   /**
@@ -216,45 +195,56 @@ class Utility {
    * "Field names should consist of alphanumeric or underscore characters only
    * and not start with a digit ... Names with both leading and trailing
    * underscores (e.g. _version_) are reserved." Field names starting with
-   * digits or underscores are already avoided by our schema.
+   * digits or underscores are already avoided by our schema. The same is true
+   * for the names of field types. See
+   * https://cwiki.apache.org/confluence/display/solr/Field+Type+Definitions+and+Properties
+   * "It is strongly recommended that names consist of alphanumeric or
+   * underscore characters only and not start with a digit. This is not
+   * currently strictly enforced."
    *
-   * This function therfore encodes all forbidden characters in their
-   * hexadecimal equivalent encapsulted by underscores. Example:
-   * "tm_entity:node/body" becomes "tm_5f_entity_3a_node_2f_body"
+   * This function therefore encodes all forbidden characters in their
+   * hexadecimal equivalent encapsulted by a leading sequence of '_X' and a
+   * termination charachter '_'. Example:
+   * "tm_entity:node/body" becomes "tm_entity_X3a_node_X2f_body".
+   *
+   * As a consequence the sequence '_X' itself needs to be encoded if it occurs
+   * within a field name. Example: "last_XMas" becomes "last_X5f58_Mas".
    *
    * @param string $field_name
+   *   The field name.
    *
    * @return string
+   *   The encoded field name.
    */
-  public static function encodeSolrDynamicFieldName($field_name) {
-    return preg_replace_callback('/([^\da-zA-Z])/u',
+  public static function encodeSolrName($field_name) {
+    return preg_replace_callback('/([^\da-zA-Z_]|_X)/u',
       function ($matches) {
-        // Convert non Java identifiers and '$' into byte-wise hexadecimal
-        // values encapsulated by '_'.
-        return '_' . bin2hex($matches[1]) . '_';
+        return '_X' . bin2hex($matches[1]) . '_';
       },
       $field_name);
   }
 
-/**
+  /**
    * Decodes solr field names.
    *
-   * See encodeSolrDynamicFieldName() for details.
+   * This function therefore decodes all forbidden characters from their
+   * hexadecimal equivalent encapsulted by a leading sequence of '_X' and a
+   * termination charachter '_'. Example:
+   * "tm_entity_X3a_node_X2f_body" becomes "tm_entity:node/body".
+   * @ee encodeSolrDynamicFieldName() for details.
    *
    * @param string $field_name
+   *   Encoded field name.
    *
    * @return string
+   *   The decoded field name
    */
-  public static function decodeSolrDynamicFieldName($field_name) {
-    return preg_replace_callback('/_([\dabcdef]+?)_/',
+  public static function decodeSolrName($field_name) {
+    return preg_replace_callback('/_X([\dabcdef]+?)_/',
       function ($matches) {
-        // Convert byte-wise hexadecimal values encapsulated by '_' back into
-        // characters.
         return hex2bin($matches[1]);
       },
       $field_name);
   }
 
 }
-
-

@@ -4,9 +4,11 @@ description: 'This module aims at making the website compliant with the new EU c
 package: custom
 # core: 8.x
 configure: eu_cookie_compliance.settings
+dependencies:
+  - filter
 
-# Information added by Drupal.org packaging script on 2016-03-01
-version: '8.x-1.0-beta4+5-dev'
+# Information added by Drupal.org packaging script on 2016-07-01
+version: '8.x-1.0-beta4+26-dev'
 core: '8.x'
 project: 'eu_cookie_compliance'
-datestamp: 1456821497
+datestamp: 1467416237

@@ -33,6 +33,9 @@ interface DatasourceInterface extends IndexPluginInterface {
   /**
    * Retrieves the properties exposed by the underlying complex data type.
    *
+   * Property names have to start with a letter or an underscore, followed by
+   * any number of letters, numbers and underscores.
+   *
    * @return \Drupal\Core\TypedData\DataDefinitionInterface[]
    *   An associative array of property data types, keyed by the property name.
    */
@@ -99,6 +102,17 @@ interface DatasourceInterface extends IndexPluginInterface {
   public function getItemBundle(ComplexDataInterface $item);
 
   /**
+   * Retrieves the item's language.
+   *
+   * @param \Drupal\Core\TypedData\ComplexDataInterface $item
+   *   An item of this datasource's type.
+   *
+   * @return string
+   *   The language code of this item.
+   */
+  public function getItemLanguage(ComplexDataInterface $item);
+
+  /**
    * Retrieves a URL at which the item can be viewed on the web.
    *
    * @param \Drupal\Core\TypedData\ComplexDataInterface $item
@@ -122,7 +136,6 @@ interface DatasourceInterface extends IndexPluginInterface {
    *   be empty if it isn't possible to view items of this datasource.
    */
   public function getViewModes($bundle = NULL);
-
 
   /**
    * Retrieves the bundles associated to this datasource.
@@ -195,5 +208,18 @@ interface DatasourceInterface extends IndexPluginInterface {
    *   following pages.
    */
   public function getItemIds($page = NULL);
+
+  /**
+   * Retrieves any dependencies of the given fields.
+   *
+   * @param string[] $fields
+   *   An array of property paths on this datasource, keyed by field IDs.
+   *
+   * @return string[][][]
+   *   An associative array containing the dependencies of the given fields. The
+   *   array is keyed by field ID and dependency type, the values are arrays
+   *   with dependency names.
+   */
+  public function getFieldDependencies(array $fields);
 
 }

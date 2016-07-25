@@ -29,7 +29,7 @@ class FileLink extends PreprocessBase {
   /**
    * {@inheritdoc}
    */
-  public function preprocessVariables(Variables $variables, $hook, array $info) {
+  public function preprocessVariables(Variables $variables) {
     $file = ($variables['file'] instanceof File) ? $variables['file'] : File::load($variables['file']->fid);
 
     $url = file_create_url($file->getFileUri());
@@ -57,7 +57,7 @@ class FileLink extends PreprocessBase {
       'file--' . file_icon_class($mime_type)
     ));
 
-    $this->preprocessAttributes($variables, $hook, $info);
+    $this->preprocessAttributes();
   }
 
 }

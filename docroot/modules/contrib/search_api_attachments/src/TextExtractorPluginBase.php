@@ -1,23 +1,23 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_attachments\TextExtractorPluginBase.
- */
-
 namespace Drupal\search_api_attachments;
 
-use Drupal;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
+use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
+use Drupal\file\Entity\File;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
 
 /**
  * Base class for plugins able to extract file content.
  *
  * @ingroup plugin_api
  */
-abstract class TextExtractorPluginBase extends PluginBase implements TextExtractorPluginInterface {
+abstract class TextExtractorPluginBase extends PluginBase implements TextExtractorPluginInterface, ContainerFactoryPluginInterface {
 
   /**
    * Name of the config being edited.
@@ -25,23 +25,54 @@ abstract class TextExtractorPluginBase extends PluginBase implements TextExtract
   const CONFIGNAME = 'search_api_attachments.admin_config';
 
   /**
+   * Config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Stream wrapper manager service.
+   *
+   * @var \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface
+   */
+  protected $streamWrapperManager;
+
+  /**
+   * Mime type guesser service.
+   *
+   * @var \Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface
+   */
+  protected $mimeTypeGuesser;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConfigFactoryInterface $config_factory, StreamWrapperManagerInterface $stream_wrapper_manager, MimeTypeGuesserInterface $mime_type_guesser) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->configFactory = $config_factory;
+    $this->streamWrapperManager = $stream_wrapper_manager;
+    $this->mimeTypeGuesser = $mime_type_guesser;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(array $configuration, $plugin_id, $plugin_definition) {
-    return new static($configuration, $plugin_id, $plugin_definition);
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('config.factory'),
+      $container->get('stream_wrapper_manager'),
+      $container->get('file.mime_type.guesser')
+    );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function extract($file) {
+  public function extract(File $file) {
     $filename = $file;
     $mode = 'r';
     return fopen($filename, $mode);
@@ -73,8 +104,7 @@ abstract class TextExtractorPluginBase extends PluginBase implements TextExtract
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     $extractor_plugin_id = $form_state->getValue('extraction_method');
-    $config = Drupal::configFactory()
-        ->getEditable(static::CONFIGNAME);
+    $config = $this->configFactory->getEditable(static::CONFIGNAME);
     $config->set($extractor_plugin_id . '_configuration', $this->configuration);
     $config->save();
   }
@@ -102,10 +132,9 @@ abstract class TextExtractorPluginBase extends PluginBase implements TextExtract
    *   The real path to the file if it is a local file. An URL otherwise.
    */
   public function getRealpath($uri) {
-    $stream_wrapper_manager = \Drupal::service('stream_wrapper_manager');
-    $wrapper = $stream_wrapper_manager->getViaUri($uri);
+    $wrapper = $this->streamWrapperManager->getViaUri($uri);
     $scheme = file_uri_scheme($uri);
-    $local_wrappers = $stream_wrapper_manager->getWrappers(StreamWrapperInterface::LOCAL);
+    $local_wrappers = $this->streamWrapperManager->getWrappers(StreamWrapperInterface::LOCAL);
     if (in_array($scheme, array_keys($local_wrappers))) {
       return $wrapper->realpath();
     }
@@ -121,9 +150,8 @@ abstract class TextExtractorPluginBase extends PluginBase implements TextExtract
    *   An array of the PDF MIME types.
    */
   public function getPdfMimeTypes() {
-    $mime_guesser = \Drupal::service('file.mime_type.guesser');
     $pdf_mime_types = array();
-    $pdf_mime_types[] = $mime_guesser->guess('dummy.pdf');
+    $pdf_mime_types[] = $this->mimeTypeGuesser->guess('dummy.pdf');
     return $pdf_mime_types;
   }
 

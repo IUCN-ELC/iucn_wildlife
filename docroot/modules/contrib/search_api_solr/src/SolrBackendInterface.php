@@ -1,14 +1,11 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_solr\SolrBackendInterface.
- */
-
 namespace Drupal\search_api_solr;
 
 use Drupal\search_api\Backend\BackendInterface;
 use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Item\ItemInterface;
+use Drupal\search_api_solr\Solr\SolrHelper;
 
 /**
  * Defines an interface for Solr search backend plugins.
@@ -22,7 +19,7 @@ interface SolrBackendInterface extends BackendInterface {
    * Returns the solr helper class.
    *
    * @return \Drupal\search_api_solr\Solr\SolrHelper
-   *  The Solr helper class.
+   *   The Solr helper class.
    */
   public function getSolrHelper();
 
@@ -30,9 +27,9 @@ interface SolrBackendInterface extends BackendInterface {
    * Sets the Solr helper class.
    *
    * @param \Drupal\search_api_solr\Solr\SolrHelper $solrHelper
-   *  The Solr helper class.
+   *   The Solr helper class.
    */
-  public function setSolrHelper($solrHelper);
+  public function setSolrHelper(SolrHelper $solrHelper);
 
   /**
    * Returns the Solarium client.
@@ -51,22 +48,12 @@ interface SolrBackendInterface extends BackendInterface {
    *
    * @param \Drupal\search_api\IndexInterface $index
    *   The Search Api index.
-   * @param bool $single_value_name
-   *   (optional) Whether to return names for fields which store only the first
-   *   value of the field. Defaults to FALSE.
    * @param bool $reset
    *   (optional) Whether to reset the static cache.
    *
    * @see SearchApiSolrBackend::search()
    */
-  public function getFieldNames(IndexInterface $index, $single_value_name = FALSE, $reset = FALSE);
-
-  /**
-   * Pings the Solr server to tell whether it can be accessed.
-   *
-   * Uses the admin/ping request handler.
-   */
-  public function ping();
+  public function getSolrFieldNames(IndexInterface $index, $reset = FALSE);
 
   /**
    * Gets the currently used Solr connection object.
@@ -75,20 +62,6 @@ interface SolrBackendInterface extends BackendInterface {
    *   The solr connection object used by this server.
    */
   public function getSolrConnection();
-
-  /**
-   * Gets metadata about fields in the Solr/Lucene index.
-   * @todo SearchApiSolrConnectionInterface and SearchApiSolrField don't exist!
-   *
-   * @param int $num_terms
-   *   Number of 'top terms' to return.
-   *
-   * @return array
-   *   An array of SearchApiSolrField objects.
-   *
-   * @see SearchApiSolrConnectionInterface::getFields()
-   */
-  public function getFields($num_terms = 0);
 
   /**
    * Retrieves a config file or file list from the Solr server.
@@ -107,5 +80,31 @@ interface SolrBackendInterface extends BackendInterface {
    * @throws \Drupal\search_api_solr\SearchApiSolrException
    */
   public function getFile($file = NULL);
+
+  /**
+   * Retrieves a Solr document from an search api index item.
+   *
+   * @param \Drupal\search_api\IndexInterface $index
+   *   The search api index.
+   * @param \Drupal\search_api\Item\ItemInterface $item
+   *   An item to get documents for.
+   *
+   * @return \Solarium\QueryType\Update\Query\Document\Document
+   *   A solr document.
+   */
+  public function getDocument(IndexInterface $index, ItemInterface $item);
+
+  /**
+   * Retrieves Solr documents from search api index items.
+   *
+   * @param \Drupal\search_api\IndexInterface $index
+   *   The search api index.
+   * @param \Drupal\search_api\Item\ItemInterface[] $items
+   *   An array of items to get documents for.
+   *
+   * @return \Solarium\QueryType\Update\Query\Document\Document[]
+   *   An array of solr documents.
+   */
+  public function getDocuments(IndexInterface $index, array $items);
 
 }

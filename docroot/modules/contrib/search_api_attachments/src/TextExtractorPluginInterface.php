@@ -1,14 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_attachments\TextExtractorPluginInterface.
- */
-
 namespace Drupal\search_api_attachments;
 
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Component\Plugin\ConfigurablePluginInterface;
+use Drupal\file\Entity\File;
 
 /**
  * Provides an interface for a plugin that extracts files content.
@@ -20,12 +16,12 @@ interface TextExtractorPluginInterface extends PluginFormInterface, Configurable
   /**
    * Extract method.
    *
-   * @param object $file
+   * @param \Drupal\file\Entity\File $file
    *   The file object.
    *
    * @return string
    *   The file extracted content.
    */
-  public function extract($file);
+  public function extract(File $file);
 
 }

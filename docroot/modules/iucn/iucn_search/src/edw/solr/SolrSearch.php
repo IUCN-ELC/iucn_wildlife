@@ -174,6 +174,9 @@ class SolrSearch {
         if ($request_parameters = $this->getParameter($facet_id)) {
           // Preserve user selection - add filters request.
           if (!empty($request_parameters)) {
+            if (!is_array($request_parameters)) {
+              $request_parameters = [$request_parameters];
+            }
             foreach ($request_parameters as $key) {
               if (!array_key_exists($key, $values)) {
                 $values[$key] = 0;

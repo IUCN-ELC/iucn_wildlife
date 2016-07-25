@@ -89,6 +89,9 @@ function search_api_solr_cron() {
         \Drupal::logger('search_api_solr')->info('Rebuilt spellcheck dictionary on @count Solr server(s).', $vars);
       }
     }
+
+    // Delete cached endpoint data once a day.
+    \Drupal::state()->delete('search_api_solr.endpoint.data');
   }
 }
 
@@ -103,13 +106,15 @@ function search_api_solr_search_api_server_update(ServerInterface $server) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_entity_type_alter().
  */
-function search_api_solr_form_search_api_index_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  /** @var \Drupal\search_api\IndexInterface $index */
-  $index = $form_state->getFormObject()->getEntity();
-  $backend = $index->hasValidServer() ? $index->getServerInstance()->getBackend() : NULL;
-  if ($backend instanceof SearchApiSolrBackend) {
-    $form['options']['index_directly']['#description'] .= ' ' . t('This feature is well supported for Solr 4 and above, but could cause latency and timeout problems with Solr 3. Not recommended with that version.');
+function search_api_solr_entity_type_alter(array &$entity_types) {
+  if (\Drupal::moduleHandler()->moduleExists('devel')) {
+    /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+    foreach ($entity_types as $entity_type_id => $entity_type) {
+      if ($entity_type->hasViewBuilderClass() && $entity_type->hasLinkTemplate('canonical')) {
+        $entity_type->setLinkTemplate('devel-solr', "/devel/$entity_type_id/{{$entity_type_id}}/solr");
+      }
+    }
   }
 }

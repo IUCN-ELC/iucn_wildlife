@@ -13,6 +13,7 @@ use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Routing\RequestContext;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -132,7 +133,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_agree_button_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Agree button message'),
-      '#default_value' => !empty($config->get('popup_agree_button_message')) ? $config->get('popup_agree_button_message') : t('OK, I agree'),
+      '#default_value' => $config->get('popup_agree_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
@@ -140,7 +141,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_disagree_button_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Disagree button message'),
-      '#default_value' => !empty($config->get('popup_disagree_button_message')) ? $config->get('popup_disagree_button_message') : t('No, give me more info'),
+      '#default_value' => $config->get('popup_disagree_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
@@ -148,7 +149,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_info'] = array(
       '#type' => 'text_format',
       '#title' => t('Popup message - requests consent'),
-      '#default_value' => !empty($config->get('popup_info.value')) ? $config->get('popup_info.value') : '',
+      '#default_value' => $config->get('popup_info.value'),
       '#required' => TRUE,
       '#format' => !empty($config->get('popup_info.format')) ? $config->get('popup_info.format') : filter_default_format(),
     );
@@ -169,7 +170,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_find_more_button_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Find more button message'),
-      '#default_value' => !empty($config->get('popup_find_more_button_message')) ? $config->get('popup_find_more_button_message') : t('More info'),
+      '#default_value' => $config->get('popup_find_more_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
@@ -177,7 +178,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_hide_button_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Hide button message'),
-      '#default_value' => !empty($config->get('popup_hide_button_message')) ? $config->get('popup_hide_button_message') : t('Hide'),
+      '#default_value' => $config->get('popup_hide_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
@@ -190,7 +191,13 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
       '#format' => !empty($config->get('popup_agreed')['format']) ? $config->get('popup_agreed')['format'] : filter_default_format(),
     );
 
-    $link = !empty($config->get('popup_link')) ? $this->aliasManager->getAliasByPath($config->get('popup_link')) : '';
+    // In the current popup-link is an internal link, try to load the alias for
+    // that path.
+    $link = !empty($config->get('popup_link')) ? $config->get('popup_link') : '';
+    if ($link && parse_url($link, PHP_URL_SCHEME) === 'internal') {
+      $link = explode(':', $link, 2)[1];
+      $link = $this->aliasManager->getAliasByPath($link);
+    }
     $form['eu_cookie_compliance']['popup_link'] = array(
       '#type' => 'textfield',
       '#title' => t('Privacy policy link'),
@@ -198,7 +205,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
       '#size' => 60,
       '#maxlength' => 220,
       '#required' => TRUE,
-      '#description' => t('Enter link to your privacy policy or other page that will explain cookies to your users. For external links prepend http://'),
+      '#description' => t('Enter link to your privacy policy or other page that will explain cookies to your users. Internal links should start with a forward slash (/), external links should start with http:// or https://.'),
     );
 
     $form['eu_cookie_compliance']['popup_link_new_window'] = array(
@@ -221,7 +228,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_width'] = array(
       '#type' => 'textfield',
       '#title' => t('Popup width in pixels or a percentage value'),
-      '#default_value' => !empty($config->get('popup_width')) ? $config->get('popup_width') : '100',
+      '#default_value' => $config->get('popup_width'),
       '#field_suffix' => ' ' . t('px or %'),
       '#size' => 5,
       '#maxlength' => 5,
@@ -232,7 +239,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_delay'] = array(
       '#type' => 'number',
       '#title' => t('Popup time delay in seconds'),
-      '#default_value' => !empty($config->get('popup_delay')) ? $config->get('popup_delay') : 1,
+      '#default_value' => $config->get('popup_delay'),
       '#field_suffix' => ' ' . t('seconds'),
       '#size' => 5,
       '#maxlength' => 5,
@@ -249,7 +256,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
       '#type' => $form_color_picker_type,
       '#title' => t('Background Color'),
       // Garland colors :).
-      '#default_value' => !empty($config->get('popup_bg_hex')) ? $config->get('popup_bg_hex') : '0779BF',
+      '#default_value' => $config->get('popup_bg_hex'),
       '#description' => t('Change the background color of the popup. Provide HEX value without the #'),
       '#element_validate' => array('eu_cookie_compliance_validate_hex'),
     );
@@ -257,7 +264,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_text_hex'] = array(
       '#type' => $form_color_picker_type,
       '#title' => t('Text Color'),
-      '#default_value' => !empty($config->get('popup_text_hex')) ? $config->get('popup_text_hex') : 'ffffff',
+      '#default_value' => $config->get('popup_text_hex'),
       '#description' => t('Change the text color of the popup. Provide HEX value without the #'),
       '#element_validate' => array('eu_cookie_compliance_validate_hex'),
     );
@@ -269,14 +276,14 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['domains_option'] = array(
       '#type' => 'radios',
       '#title' => t('Add/Remove popup on specified domains'),
-      '#default_value' => !empty($config->get('domains_option')) ? $config->get('domains_option') : 1,
+      '#default_value' => $config->get('domains_option'),
       '#options' => $exclude_domains_option_active,
       '#description' => t("Specify if you want to add or remove popup on the listed below domains."),
     );
     $form['eu_cookie_compliance']['domains_list'] = array(
       '#type' => 'textarea',
       '#title' => t('Domains list'),
-      '#default_value' => !empty($config->get('domains_list')) ? $config->get('domains_list') : '',
+      '#default_value' => $config->get('domains_list'),
       '#description' => t("Specify domains with protocol (e.g. http or https). Enter one domain per line."),
     );
 
@@ -294,16 +301,32 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
-    // If the link contains a fragment then check if it validates then rewrite
-    // link with full url.
     if (!$form_state->isValueEmpty('popup_link')) {
-      $form_state->setValueForElement($form['eu_cookie_compliance']['popup_link'], $this->aliasManager->getPathByAlias($form_state->getValue('popup_link')));
-    }
-    if ((strpos($form_state->getValue('popup_link'), '#') !== FALSE) && (strpos($form_state->getValue('popup_link'), 'http') === FALSE)) {
-      $fragment = explode('#', $popup_link);
-      $popup_link = _url($fragment[0], array('fragment' => $fragment[1], 'absolute' => TRUE));
-      $form_state->setErrorByName('popup_link', t('Looks like your privacy policy link contains fragment #, you should make this an absolute url eg @link', array('@link' => $form_state->getValue('popup_link'))));
+      $popup_link = $form_state->getValue('popup_link');
+
+      // If the popup link points does not point to an external resource,
+      // prepend the 'internal:' scheme.
+      if (parse_url($popup_link, PHP_URL_SCHEME) === NULL) {
+        if (!in_array($popup_link[0], ['/'])) {
+          $form_state->setErrorByName('popup_link', t('Internal paths should start with a "/".'));
+        }
+        else {
+          $popup_link = 'internal:' . $popup_link;
+
+          // If the link contains a fragment then check if it validates then
+          // rewrite link with full url.
+          if ((strpos($popup_link, '#') !== FALSE)) {
+            $fragment = explode('#', $popup_link);
+            $link = Url::fromUri($fragment[0], array(
+              'fragment' => $fragment[1],
+              'absolute' => TRUE,
+            ));
+            $form_state->setErrorByName('popup_link', t('Looks like your privacy policy link contains fragment #, you should make this an absolute url eg @link', array('@link' => $link->toString())));
+          }
+
+          $form_state->setValueForElement($form['eu_cookie_compliance']['popup_link'], $this->aliasManager->getPathByAlias($popup_link));
+        }
+      }
     }
 
     parent::validateForm($form, $form_state);

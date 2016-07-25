@@ -71,8 +71,8 @@ class SolrSearchServer {
     $mappings = [];
     /** @var SearchApiSolrBackend $backend */
     $backend = $this->server->getBackend();
-    $singleFields = $backend->getFieldNames($this->getIndex(), TRUE);
-    $multiFields = $backend->getFieldNames($this->getIndex());
+    $singleFields = $backend->getSolrFieldNames($this->getIndex(), TRUE);
+    $multiFields = $backend->getSolrFieldNames($this->getIndex());
     $field_configs = FieldStorageConfig::loadMultiple();
     foreach ($field_configs as $field_storage) {
       $name = $field_storage->getName();

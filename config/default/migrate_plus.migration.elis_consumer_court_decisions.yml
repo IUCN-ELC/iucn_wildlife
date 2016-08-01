@@ -1,0 +1,104 @@
+uuid: 45fdef02-ad58-4c9a-aa00-d5048e4874dd
+langcode: en
+status: true
+dependencies:
+  module:
+    - elis_consumer
+    - node
+_core:
+  default_config_hash: WtlDxNC8CWujIXrQHLxTOROKGl7fQVZsoR6OcoIGWyc
+id: elis_consumer_court_decisions
+migration_tags: null
+label: 'Elis court decisions'
+source:
+  plugin: elis_consumer_court_decisions
+process:
+  type:
+    plugin: default_value
+    default_value: court_decision
+  field_original_id: id
+  field_isis_number: isisMfn
+  field_date_of_entry: dateOfEntry
+  field_date_of_modification: dateOfModification
+  field_original_title: titleOfText
+  title: titleOfTextShort
+  field_country:
+    source: country
+    plugin: taxonomy_term
+  field_ecolex_subjects:
+    source: subject
+    plugin: taxonomy_term
+  field_language_of_document:
+    source: languageOfDocument
+    plugin: taxonomy_term
+  field_court:
+    source: courtName
+    plugin: taxonomy_term
+  field_date_of_text: dateOfText
+  field_reference_number: referenceNumber
+  field_number_of_pages: numberOfPages
+  field_available_in: availableIn
+  field_url: linkToFullText
+  field_internet_reference: internetReference
+  field_related_website: relatedWebSite
+  field_keywords:
+    source: keyword
+    plugin: taxonomy_term
+  field_abstract: abstract
+  field_type_of_text:
+    source: typeOfText
+    plugin: taxonomy_term
+  field_reference_to_national_legi: referenceToNationalLegislation
+  field_reference_to_treaties: referenceToTreaties
+  field_reference_to_cou: referenceToCourtDecision
+  field_subdivision:
+    source: subdivision
+    plugin: taxonomy_term
+  field_justices:
+    source: justices
+    plugin: taxonomy_term
+  field_territorial_subdivisions:
+    source: territorialSubdivision
+    plugin: taxonomy_term
+  field_abstract_files:
+    source: linkToAbstract
+    plugin: url_file
+  field_decision_status:
+    source: statusOfDecision
+    plugin: taxonomy_term
+  field_reference_to_legislation: referenceToEULegislation
+  field_seat_of_court: seatOfCourt
+  field_court_jurisdiction:
+    source: courtJurisdiction
+    plugin: taxonomy_term
+  field_instance:
+    source: instance
+    plugin: taxonomy_term
+  field_official_publication: officialPublication
+  field_region:
+    source: region
+    plugin: taxonomy_term
+  field_reference_to_faolex: referenceToFaolex
+  field_reference_to_faolex_title: referenceToFaolexTitle
+  field_reference_to_faolex_date: referenceToFaolexDate
+  field_reference_to_faolex_countr:
+    source: referenceToFaolexCountry_en
+    plugin: taxonomy_term
+  field_files:
+    source: linkToFullText
+    plugin: url_file
+  field_species:
+    source: wildlifeSpecies
+    plugin: taxonomy_term
+  field_penalty: wildlifePenalty
+  field_money_value: wildlifeValue
+  field_transnational:
+    source: wildlifeTransnational
+    plugin: boolean
+  field_decision: wildlifeDecision
+  field_charges: wildlifeCharges
+destination:
+  plugin: 'entity:node'
+template: null
+migration_dependencies: {  }
+migration_group: elis

@@ -12,7 +12,7 @@ include_once __DIR__ . '/../../../../elis_consumer.xml.inc';
 
 use Drupal\elis_consumer\ElisXMLConsumer;
 use Drupal\migrate\Annotation\MigrateSource;
-use Drupal\migrate\Entity\MigrationInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;

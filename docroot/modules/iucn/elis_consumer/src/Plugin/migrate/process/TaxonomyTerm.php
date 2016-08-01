@@ -8,7 +8,7 @@
 namespace Drupal\elis_consumer\Plugin\migrate\process;
 
 use Drupal\field\Entity\FieldConfig;
-use Drupal\migrate\Entity\MigrationInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Row;

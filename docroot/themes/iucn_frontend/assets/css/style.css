@@ -305,92 +305,151 @@
 .court-decision.search-result .field--name-field-abstract {
   margin-top: 2px;
 }
-.legislation.full .field {
+.legislation.full .field,
+.literature.full .field {
   margin-bottom: 11px;
 }
 @media (min-width: 992px) {
-  .legislation.full .field--label {
+  .legislation.full .field--label,
+  .literature.full .field--label {
     text-align: right;
   }
 }
-.legislation.search-result {
+.legislation.search-result,
+.literature.search-result {
   font-size: 14px;
   margin-bottom: 22px;
 }
-.legislation.search-result h2 {
+.legislation.search-result h2,
+.literature.search-result h2 {
   font-size: 18px;
   margin-bottom: 1px;
   margin-top: 0;
 }
-.legislation.search-result em {
+.legislation.search-result em,
+.literature.search-result em {
   font-style: normal;
   font-weight: 700;
 }
 .legislation.search-result .field--name-field-court-jurisdiction,
+.literature.search-result .field--name-field-court-jurisdiction,
 .legislation.search-result .field--name-field-territorial-subdivisions,
+.literature.search-result .field--name-field-territorial-subdivisions,
 .legislation.search-result .field--name-field-court,
+.literature.search-result .field--name-field-court,
 .legislation.search-result .field--name-field-seat-of-court,
+.literature.search-result .field--name-field-seat-of-court,
 .legislation.search-result .field--name-field-country,
+.literature.search-result .field--name-field-country,
 .legislation.search-result .field--name-field-date-of-text,
+.literature.search-result .field--name-field-date-of-text,
 .legislation.search-result .field--name-field-type-of-text,
+.literature.search-result .field--name-field-type-of-text,
 .legislation.search-result .field--name-field-region,
+.literature.search-result .field--name-field-region,
 .legislation.search-result .field--name-field-reference-number,
+.literature.search-result .field--name-field-reference-number,
 .legislation.search-result .field--name-field-court-jurisdiction .field--items,
+.literature.search-result .field--name-field-court-jurisdiction .field--items,
 .legislation.search-result .field--name-field-territorial-subdivisions .field--items,
+.literature.search-result .field--name-field-territorial-subdivisions .field--items,
 .legislation.search-result .field--name-field-court .field--items,
+.literature.search-result .field--name-field-court .field--items,
 .legislation.search-result .field--name-field-seat-of-court .field--items,
+.literature.search-result .field--name-field-seat-of-court .field--items,
 .legislation.search-result .field--name-field-country .field--items,
+.literature.search-result .field--name-field-country .field--items,
 .legislation.search-result .field--name-field-date-of-text .field--items,
+.literature.search-result .field--name-field-date-of-text .field--items,
 .legislation.search-result .field--name-field-type-of-text .field--items,
+.literature.search-result .field--name-field-type-of-text .field--items,
 .legislation.search-result .field--name-field-region .field--items,
+.literature.search-result .field--name-field-region .field--items,
 .legislation.search-result .field--name-field-reference-number .field--items,
+.literature.search-result .field--name-field-reference-number .field--items,
 .legislation.search-result .field--name-field-court-jurisdiction .field--item,
+.literature.search-result .field--name-field-court-jurisdiction .field--item,
 .legislation.search-result .field--name-field-territorial-subdivisions .field--item,
+.literature.search-result .field--name-field-territorial-subdivisions .field--item,
 .legislation.search-result .field--name-field-court .field--item,
+.literature.search-result .field--name-field-court .field--item,
 .legislation.search-result .field--name-field-seat-of-court .field--item,
+.literature.search-result .field--name-field-seat-of-court .field--item,
 .legislation.search-result .field--name-field-country .field--item,
+.literature.search-result .field--name-field-country .field--item,
 .legislation.search-result .field--name-field-date-of-text .field--item,
+.literature.search-result .field--name-field-date-of-text .field--item,
 .legislation.search-result .field--name-field-type-of-text .field--item,
+.literature.search-result .field--name-field-type-of-text .field--item,
 .legislation.search-result .field--name-field-region .field--item,
-.legislation.search-result .field--name-field-reference-number .field--item {
+.literature.search-result .field--name-field-region .field--item,
+.legislation.search-result .field--name-field-reference-number .field--item,
+.literature.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
-.legislation.search-result .field--name-field-court-jurisdiction a {
+.legislation.search-result .field--name-field-court-jurisdiction a,
+.literature.search-result .field--name-field-court-jurisdiction a {
   color: #808080;
 }
 .legislation.search-result .field--name-field-territorial-subdivisions,
+.literature.search-result .field--name-field-territorial-subdivisions,
 .legislation.search-result .field--name-field-court,
+.literature.search-result .field--name-field-court,
 .legislation.search-result .field--name-field-seat-of-court,
+.literature.search-result .field--name-field-seat-of-court,
 .legislation.search-result .field--name-field-country,
+.literature.search-result .field--name-field-country,
 .legislation.search-result .field--name-field-date-of-text,
+.literature.search-result .field--name-field-date-of-text,
 .legislation.search-result .field--name-field-type-of-text,
+.literature.search-result .field--name-field-type-of-text,
 .legislation.search-result .field--name-field-region,
+.literature.search-result .field--name-field-region,
 .legislation.search-result .field--name-field-reference-number,
+.literature.search-result .field--name-field-reference-number,
 .legislation.search-result .field--name-field-territorial-subdivisions a,
+.literature.search-result .field--name-field-territorial-subdivisions a,
 .legislation.search-result .field--name-field-court a,
+.literature.search-result .field--name-field-court a,
 .legislation.search-result .field--name-field-seat-of-court a,
+.literature.search-result .field--name-field-seat-of-court a,
 .legislation.search-result .field--name-field-country a,
+.literature.search-result .field--name-field-country a,
 .legislation.search-result .field--name-field-date-of-text a,
+.literature.search-result .field--name-field-date-of-text a,
 .legislation.search-result .field--name-field-type-of-text a,
+.literature.search-result .field--name-field-type-of-text a,
 .legislation.search-result .field--name-field-region a,
-.legislation.search-result .field--name-field-reference-number a {
+.literature.search-result .field--name-field-region a,
+.legislation.search-result .field--name-field-reference-number a,
+.literature.search-result .field--name-field-reference-number a {
   color: #808080;
 }
 .legislation.search-result .field--name-field-territorial-subdivisions:before,
+.literature.search-result .field--name-field-territorial-subdivisions:before,
 .legislation.search-result .field--name-field-court:before,
+.literature.search-result .field--name-field-court:before,
 .legislation.search-result .field--name-field-seat-of-court:before,
+.literature.search-result .field--name-field-seat-of-court:before,
 .legislation.search-result .field--name-field-country:before,
+.literature.search-result .field--name-field-country:before,
 .legislation.search-result .field--name-field-date-of-text:before,
+.literature.search-result .field--name-field-date-of-text:before,
 .legislation.search-result .field--name-field-type-of-text:before,
+.literature.search-result .field--name-field-type-of-text:before,
 .legislation.search-result .field--name-field-region:before,
-.legislation.search-result .field--name-field-reference-number:before {
+.literature.search-result .field--name-field-region:before,
+.legislation.search-result .field--name-field-reference-number:before,
+.literature.search-result .field--name-field-reference-number:before {
   color: #ccc;
   content: "\2013";
 }
-.legislation.search-result .field--name-field-abstract {
+.legislation.search-result .field--name-field-abstract,
+.literature.search-result .field--name-field-abstract {
   margin-top: 2px;
 }
-.legislation .field--name-field-date-of-text:before {
+.legislation .field--name-field-date-of-text:before,
+.literature .field--name-field-date-of-text:before {
   display: none;
 }
 #search-form .form-control {

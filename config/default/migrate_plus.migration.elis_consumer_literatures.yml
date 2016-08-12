@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - elis_consumer
+    - node
+id: elis_consumer_literatures
+migration_tags: null
+migration_group: elis
+label: 'Elis literatures'
+source:
+  plugin: elis_consumer_literatures
+process:
+  type:
+    plugin: default_value
+    default_value: literature
+  field_original_id: id
+  field_country:
+    source: country
+    plugin: taxonomy_term
+  field_isis_number: isisMfn
+  field_date_of_entry: dateOfEntry
+  field_date_of_modification: dateOfModification
+  field_date_of_text: dateOfText
+  field_original_title: titleOfText
+  title: titleOfTextShort
+  field_ecolex_subjects:
+    source: subject
+    plugin: taxonomy_term
+  field_language_of_document:
+    source: languageOfDocument
+    plugin: taxonomy_term
+  field_url: linkToFullText
+  field_type_of_text:
+    source: typeOfText
+    plugin: taxonomy_term
+  field_files:
+    source: linkToFullText
+    plugin: url_file
+  field_publication_place:
+    source: publPlace
+    plugin: taxonomy_term
+  field_publisher:
+    source: publisher
+    plugin: taxonomy_term
+  field_scope:
+    source: scope
+    plugin: taxonomy_term
+  field_paper_title_of_text: paperTitleOfText
+  field_serial_title: serialTitle
+  field_call_number: callNo
+destination:
+  plugin: 'entity:node'
+migration_dependencies: {  }

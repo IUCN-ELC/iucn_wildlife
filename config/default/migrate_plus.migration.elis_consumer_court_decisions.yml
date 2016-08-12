@@ -9,6 +9,7 @@ _core:
   default_config_hash: WtlDxNC8CWujIXrQHLxTOROKGl7fQVZsoR6OcoIGWyc
 id: elis_consumer_court_decisions
 migration_tags: null
+migration_group: elis
 label: 'Elis court decisions'
 source:
   plugin: elis_consumer_court_decisions
@@ -99,6 +100,4 @@ process:
   field_charges: wildlifeCharges
 destination:
   plugin: 'entity:node'
-template: null
 migration_dependencies: {  }
-migration_group: elis

@@ -1,0 +1,21 @@
+uuid: fdfbe3b0-65e3-456c-8643-505a93301b3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_modification
+    - node.type.legislation
+  module:
+    - datetime
+id: node.legislation.field_date_of_modification
+field_name: field_date_of_modification
+entity_type: node
+bundle: legislation
+label: 'Date of modification'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,21 @@
+uuid: 5a9465c9-6e3d-4387-ac55-6c895a7511f3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_entry
+    - node.type.legislation
+  module:
+    - datetime
+id: node.legislation.field_date_of_entry
+field_name: field_date_of_entry
+entity_type: node
+bundle: legislation
+label: 'Date of entry'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

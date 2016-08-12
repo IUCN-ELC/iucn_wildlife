@@ -1,0 +1,18 @@
+uuid: 640c2254-faf9-4dc4-aa0e-123b55dbc889
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: Legislation
+type: legislation
+description: 'Provides a content type for <em>legislations</em> imported from ECOLEX.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false

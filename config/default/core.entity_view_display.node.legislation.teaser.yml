@@ -1,0 +1,17 @@
+uuid: 8ba18e4d-00e9-46ca-8aa3-30dd8678d22c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - node.type.legislation
+  module:
+    - user
+id: node.legislation.teaser
+targetEntityType: node
+bundle: legislation
+mode: teaser
+content:
+  links:
+    weight: 100
+hidden: {  }

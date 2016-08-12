@@ -13,7 +13,7 @@ _core:
   default_config_hash: aF2si0l1d8x7GqtVBCl-JAfDK6EWnKZFidMND8UegjU
 name: 'Court decision'
 type: court_decision
-description: 'Provides a content type for court decisions imported from ECOLEX.'
+description: 'Provides a content type for <em>court decisions</em> imported from ECOLEX.'
 help: ''
 new_revision: false
 preview_mode: 1

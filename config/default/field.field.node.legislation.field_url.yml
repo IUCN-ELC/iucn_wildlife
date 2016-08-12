@@ -1,0 +1,23 @@
+uuid: 60335a32-22cf-4d4e-bb07-b84e41f4b892
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_url
+    - node.type.legislation
+  module:
+    - link
+id: node.legislation.field_url
+field_name: field_url
+entity_type: node
+bundle: legislation
+label: 'Link to full text'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

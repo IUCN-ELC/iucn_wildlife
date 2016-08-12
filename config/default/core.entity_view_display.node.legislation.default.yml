@@ -1,0 +1,129 @@
+uuid: 7e7d8347-1347-4610-8097-5556c305a7a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.legislation.field_country
+    - field.field.node.legislation.field_date_of_entry
+    - field.field.node.legislation.field_date_of_modification
+    - field.field.node.legislation.field_date_of_text
+    - field.field.node.legislation.field_ecolex_subjects
+    - field.field.node.legislation.field_files
+    - field.field.node.legislation.field_isis_number
+    - field.field.node.legislation.field_language_of_document
+    - field.field.node.legislation.field_original_id
+    - field.field.node.legislation.field_original_title
+    - field.field.node.legislation.field_region
+    - field.field.node.legislation.field_type_of_text
+    - field.field.node.legislation.field_url
+    - node.type.legislation
+  module:
+    - datetime
+    - file
+    - link
+    - user
+id: node.legislation.default
+targetEntityType: node
+bundle: legislation
+mode: default
+content:
+  field_country:
+    weight: 108
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_date_of_entry:
+    weight: 104
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_date_of_modification:
+    weight: 105
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_date_of_text:
+    weight: 106
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_ecolex_subjects:
+    weight: 110
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_files:
+    weight: 113
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+  field_isis_number:
+    weight: 103
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_language_of_document:
+    weight: 111
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_original_id:
+    weight: 101
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_original_title:
+    weight: 102
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_region:
+    weight: 109
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_type_of_text:
+    weight: 107
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_url:
+    weight: 112
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  links:
+    weight: 100
+hidden: {  }

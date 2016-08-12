@@ -1,0 +1,28 @@
+uuid: 947b919d-bf16-43ec-a1e0-d7b38de534c9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ecolex_subjects
+    - node.type.legislation
+    - taxonomy.vocabulary.ecolex_subjects
+id: node.legislation.field_ecolex_subjects
+field_name: field_ecolex_subjects
+entity_type: node
+bundle: legislation
+label: 'ECOLEX subject(s)'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ecolex_subjects: ecolex_subjects
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

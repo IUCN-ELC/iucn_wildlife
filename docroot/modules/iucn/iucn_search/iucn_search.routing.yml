@@ -6,6 +6,14 @@ iucn.search:
   requirements:
     _access: 'TRUE'
 
+iucn.search.legislation:
+  path: '/legislation'
+  defaults:
+    _controller: '\Drupal\iucn_search\Controller\LegislationSearchController::searchPage'
+    _title: ''
+  requirements:
+    _access: 'TRUE'
+
 iucn.admin_config_iucn:
   path: '/admin/config/iucn'
   defaults:

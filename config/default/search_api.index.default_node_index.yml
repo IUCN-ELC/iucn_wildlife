@@ -240,6 +240,11 @@ field_settings:
     datasource_id: null
     property_path: saa_field_files
     type: text
+  type:
+    label: 'Content type'
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
 processor_settings:
   add_url:
     plugin_id: add_url

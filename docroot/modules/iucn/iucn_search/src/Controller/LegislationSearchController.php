@@ -2,21 +2,18 @@
 
 /**
  * @file
- * Contains \Drupal\iucn_search\Controller\SearchPageController.
+ * Contains \Drupal\iucn_search\Controller\LegislationSearchController.
  */
 
 namespace Drupal\iucn_search\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
 use Drupal\Core\Cache\Cache;
 use Drupal\iucn_search\edw\solr\SearchResult;
-use Drupal\iucn_search\edw\solr\SolrSearch;
-use Drupal\iucn_search\edw\solr\SolrSearchServer;
 use Drupal\node\Entity\Node;
 
-class SearchPageController extends DefaultSearchController {
+class LegislationSearchController extends DefaultSearchController {
 
   public function searchPage() {
     $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
@@ -26,7 +23,7 @@ class SearchPageController extends DefaultSearchController {
 
     /** @var SearchResult $result */
     try {
-      if ($result = self::getSearch()->search($current_page, $this->items_per_page)) {
+      if ($result = self::getSearch('legislation')->search($current_page, $this->items_per_page)) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
         $found = $result->getCountTotal();
         $rows = $result->getResults();
@@ -38,14 +35,6 @@ class SearchPageController extends DefaultSearchController {
             $cacheTags = array_merge($cacheTags, $node->getCacheTags());
             $highlighting = $data['highlighting'];
             $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
-            if (empty($highlighting['field_abstract'])) {
-              $abstract = !empty($highlighting['search_api_attachments_field_files']) ? $highlighting['search_api_attachments_field_files'] : text_summary($node->field_abstract->getValue()[0]['value'], NULL, self::TRIMMED_TEXT_SIZE);
-            }
-            else {
-              $abstract = $highlighting['field_abstract'];
-            }
-            $node->solr_title = $title;
-            $node->solr_abstract = $abstract;
             $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
           }
         }
@@ -53,7 +42,7 @@ class SearchPageController extends DefaultSearchController {
 
       Cache::invalidateTags($cacheTags);
 
-      $numFound = $this->formatPlural($found, 'Found 1 court decision', 'Found @count court decisions');
+      $numFound = $this->formatPlural($found, 'Found 1 legislation', 'Found @count legislations');
 
       $sorts = [
         'relevance' => [
@@ -91,19 +80,6 @@ class SearchPageController extends DefaultSearchController {
           '#markup' => $markup,
         ];
       }
-
-      // Render the frontpage links in search results bar
-      $menu_tree = \Drupal::menuTree();
-      $menu_name = 'homepage-links';
-      $parameters = $menu_tree->getCurrentRouteMenuTreeParameters($menu_name);
-      $tree = $menu_tree->load($menu_name, $parameters);
-      $manipulators = array(
-        // Use the default sorting of menu links.
-        array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
-      );
-      $tree = $menu_tree->transform($tree, $manipulators);
-      $menu = $menu_tree->build($tree);
-      $frontpage_links = \Drupal::service('renderer')->render($menu);
 
       if (empty($results)) {
         if ($found) {
@@ -165,5 +141,4 @@ class SearchPageController extends DefaultSearchController {
 
     return $content;
   }
-
 }

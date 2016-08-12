@@ -14,4 +14,17 @@ mode: teaser
 content:
   links:
     weight: 100
-hidden: {  }
+hidden:
+  field_country: true
+  field_date_of_entry: true
+  field_date_of_modification: true
+  field_date_of_text: true
+  field_ecolex_subjects: true
+  field_files: true
+  field_isis_number: true
+  field_language_of_document: true
+  field_original_id: true
+  field_original_title: true
+  field_region: true
+  field_type_of_text: true
+  field_url: true

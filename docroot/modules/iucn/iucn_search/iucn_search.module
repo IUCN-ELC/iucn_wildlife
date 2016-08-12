@@ -42,12 +42,6 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
       'placeholder' => t('Add types…'),
       'bundle' => 'document_types',
     ],
-//    'field_offences' => [
-//      'title' => t('Offence'),
-//      'placeholder' => t('Add offences…'),
-//      'bundle' => 'offences',
-//      'exposeOperator' => TRUE,
-//    ],
     'field_species' => [
       'title' => t('Species'),
       'placeholder' => t('Add species…'),
@@ -59,51 +53,6 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
       'placeholder' => t('Add languages…'),
       'bundle' => 'document_languages',
     ],
-//    'field_region' => [
-//      'title' => t('Region'),
-//      'placeholder' => t('Add regions…'),
-//      'bundle' => 'regions',
-//    ],
-//    'field_court' => [
-//      'title' => t('Court'),
-//      'placeholder' => t('Add courts…'),
-//      'bundle' => 'court_levels',
-//    ],
-//    'field_wildlife_legislation' => [
-//      'title' => t('Wildlife legislation'),
-//      'placeholder' => t('Add wildlife legislations…'),
-//      'bundle' => 'wildlife_legislations',
-//    ],
-//    'field_ecolex_subjects' => [
-//      'title' => t('Subject'),
-//      'placeholder' => t('Add subjects…'),
-//      'bundle' => 'ecolex_subjects',
-//    ],
-//    'field_subdivision' => [
-//      'title' => t('Subdivision'),
-//      'field' => 'field_subdivision',
-//      'bundle' => 'subdivisions',
-//    ],
-//    'field_justices' => [
-//      'title' => t('Justice'),
-//      'field' => 'field_justices',
-//      'bundle' => 'justices',
-//    ],
-//    'field_instance' => [
-//      'title' => t('Instance'),
-//      'field' => 'field_instance',
-//      'bundle' => 'instances',
-//    ],
-//    'field_decision_status' => [
-//      'title' => t('Decision status'),
-//      'field' => 'field_decision_status',
-//      'bundle' => 'decision_status',
-//    ],
-//    'field_court_jurisdiction' => [
-//      'title' => t('Court jurisdiction'),
-//      'field' => 'field_court_jurisdiction',
-//      'bundle' => 'court_jurisdictions',
-//    ],
   ];
 
   $mappings = $server->getSolrFieldsMappings();

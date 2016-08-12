@@ -85,7 +85,7 @@ class LegislationSearchController extends DefaultSearchController {
           '#attributes' => ['class' => ['well', 'blankslate']],
           '#type' => 'container',
           [
-            '#attributes' => ['class' => ['ecolexicon', 'ecolexicon-court-decision']],
+            '#attributes' => ['class' => ['ecolexicon', 'ecolexicon-legislation']],
             '#tag' => 'span',
             '#type' => 'html_tag'
           ],

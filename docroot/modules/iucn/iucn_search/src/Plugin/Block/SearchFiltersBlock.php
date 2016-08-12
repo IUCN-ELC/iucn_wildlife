@@ -27,7 +27,8 @@ class SearchFiltersBlock extends BlockBase {
     $label = $config['label_display'] ? $config['label'] : NULL;
     $route = \Drupal::request()->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_NAME);
     switch ($route) {
-      case 'iucn.search.legislation';
+      case 'iucn.search.legislation':
+      case 'iucn.search.literature':
         $facets = [
           'field_country',
           'field_language_of_document',

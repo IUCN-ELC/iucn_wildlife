@@ -25,144 +25,66 @@ dependencies:
     - node.type.literature
   module:
     - datetime
-    - file
-    - link
     - user
 id: node.literature.search_result
 targetEntityType: node
 bundle: literature
 mode: search_result
 content:
-  field_call_number:
-    weight: 114
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
   field_country:
-    weight: 108
-    label: above
+    weight: 4
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_date_of_entry:
-    weight: 103
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
-  field_date_of_modification:
-    weight: 105
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
   field_date_of_text:
-    weight: 104
-    label: above
+    weight: 2
+    label: hidden
     settings:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  field_ecolex_subjects:
-    weight: 109
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_files:
-    weight: 112
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
-  field_isis_number:
-    weight: 106
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_language_of_document:
-    weight: 110
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_original_id:
-    weight: 101
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_original_title:
-    weight: 102
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_paper_title_of_text:
-    weight: 113
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
   field_publication_place:
-    weight: 116
-    label: above
+    weight: 1
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_publisher:
-    weight: 115
-    label: above
+    weight: 0
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_scope:
-    weight: 118
-    label: above
+    weight: 5
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_serial_title:
-    weight: 117
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
   field_type_of_text:
-    weight: 107
-    label: above
+    weight: 3
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_url:
-    weight: 111
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  links:
-    weight: 100
-hidden: {  }
+hidden:
+  field_call_number: true
+  field_date_of_entry: true
+  field_date_of_modification: true
+  field_ecolex_subjects: true
+  field_files: true
+  field_isis_number: true
+  field_language_of_document: true
+  field_original_id: true
+  field_original_title: true
+  field_paper_title_of_text: true
+  field_serial_title: true
+  field_url: true
+  links: true

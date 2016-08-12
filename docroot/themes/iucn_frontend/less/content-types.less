@@ -34,6 +34,9 @@
     .field--name-field-date-of-text,
     .field--name-field-type-of-text,
     .field--name-field-region,
+    .field--name-field-publisher,
+    .field--name-field-publication-place,
+    .field--name-field-scope,
     .field--name-field-reference-number {
       &,
       .field--items,
@@ -55,6 +58,9 @@
     .field--name-field-date-of-text,
     .field--name-field-type-of-text,
     .field--name-field-region,
+    .field--name-field-publisher,
+    .field--name-field-publication-place,
+    .field--name-field-scope,
     .field--name-field-reference-number {
       &,
       a {
@@ -73,10 +79,21 @@
   }
 }
 
-.legislation, .literature {
+.legislation {
   .court-decision;
 
   .field--name-field-date-of-text {
+    &:before {
+      display: none;
+    }
+  }
+
+}
+
+.literature {
+  .court-decision;
+
+  .field--name-field-publisher {
     &:before {
       display: none;
     }

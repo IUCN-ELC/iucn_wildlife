@@ -14,6 +14,14 @@ iucn.search.legislation:
   requirements:
     _access: 'TRUE'
 
+iucn.search.literature:
+  path: '/literature'
+  defaults:
+    _controller: '\Drupal\iucn_search\Controller\LiteratureSearchController::searchPage'
+    _title: ''
+  requirements:
+    _access: 'TRUE'
+
 iucn.admin_config_iucn:
   path: '/admin/config/iucn'
   defaults:

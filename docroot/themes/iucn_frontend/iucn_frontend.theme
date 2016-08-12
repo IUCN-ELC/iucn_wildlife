@@ -23,6 +23,12 @@ function iucn_frontend_preprocess_page(array &$variables) {
   $tree = $menu_tree->transform($tree, $manipulators);
   $menu = $menu_tree->build($tree);
   $variables['page']['homepage_links'] = \Drupal::service('renderer')->render($menu);
+
+  $route = \Drupal::request()->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_NAME);
+  if (!in_array($route, ['iucn.search.legislation', 'iucn.search.literature'])) {
+    $route = 'iucn.search';
+  }
+  $variables['search_route'] = $route;
 }
 
 function iucn_frontend_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {

@@ -246,11 +246,11 @@ field_settings:
     property_path: type
     type: string
 processor_settings:
-  add_url:
-    plugin_id: add_url
-    settings: {  }
   aggregated_field:
     plugin_id: aggregated_field
+    settings: {  }
+  add_url:
+    plugin_id: add_url
     settings: {  }
   rendered_item:
     plugin_id: rendered_item

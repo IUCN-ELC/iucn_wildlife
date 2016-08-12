@@ -32,6 +32,8 @@
     .field--name-field-seat-of-court,
     .field--name-field-country,
     .field--name-field-date-of-text,
+    .field--name-field-type-of-text,
+    .field--name-field-region,
     .field--name-field-reference-number {
       &,
       .field--items,
@@ -51,6 +53,8 @@
     .field--name-field-seat-of-court,
     .field--name-field-country,
     .field--name-field-date-of-text,
+    .field--name-field-type-of-text,
+    .field--name-field-region,
     .field--name-field-reference-number {
       &,
       a {
@@ -67,4 +71,15 @@
       margin-top: 2px;
     }
   }
+}
+
+.legislation {
+  .court-decision;
+
+  .field--name-field-date-of-text {
+    &:before {
+      display: none;
+    }
+  }
+
 }

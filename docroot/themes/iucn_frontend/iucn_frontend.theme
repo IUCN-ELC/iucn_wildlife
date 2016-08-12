@@ -37,7 +37,7 @@ function iucn_frontend_preprocess_field(array &$variables) {
   }
 
   if ($variables['element']['#entity_type'] == 'node' &&
-      $variables['element']['#bundle'] == 'court_decision' &&
+      in_array($variables['element']['#bundle'], ['court_decision', 'legislation']) &&
       $variables['element']['#view_mode'] == 'full') {
     if ($variables['field_name'] != 'title' && !$variables['label_hidden']) {
       $variables['attributes']['class'][] = 'row';

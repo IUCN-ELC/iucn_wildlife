@@ -23,7 +23,9 @@ class LegislationSearchController extends DefaultSearchController {
 
     /** @var SearchResult $result */
     try {
-      if ($result = self::getSearch('legislation')->search($current_page, $this->items_per_page)) {
+      $result = self::getSearch('legislation', ['sort' => 'field_date_of_text', 'sortOrder' => 'asc'])
+        ->search($current_page, $this->items_per_page);
+      if (!empty($result)) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
         $found = $result->getCountTotal();
         $rows = $result->getResults();
@@ -43,11 +45,6 @@ class LegislationSearchController extends DefaultSearchController {
       $numFound = $this->formatPlural($found, 'Found 1 legislation', 'Found @count legislations');
 
       $sorts = [
-        'relevance' => [
-          'field' => 'score',
-          'order' => 'desc',
-          'text' => 'relevance',
-        ],
         'dateOfTextDesc' => [
           'field' => 'field_date_of_text',
           'order' => 'desc',
@@ -59,8 +56,8 @@ class LegislationSearchController extends DefaultSearchController {
           'text' => 'least recent',
         ],
       ];
-      $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : 'score';
-      $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'desc';
+      $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : 'field_date_of_text';
+      $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'asc';
       $getCopy = $_GET;
       $sortMarkup = [];
       foreach ($sorts as $key => $sort) {
@@ -70,7 +67,7 @@ class LegislationSearchController extends DefaultSearchController {
         else {
           $getCopy['sort'] = $sort['field'];
           $getCopy['sortOrder'] = $sort['order'];
-          $url = Url::fromRoute('iucn.search', [], ['query' => $getCopy]);
+          $url = Url::fromRoute('iucn.search.legislation', [], ['query' => $getCopy]);
           $markup = Link::fromTextAndUrl('Sort by ' . $sort['text'], $url)->toString();
         }
         $sortMarkup[$key] = [
@@ -96,7 +93,7 @@ class LegislationSearchController extends DefaultSearchController {
             '#attributes' => ['class' => ['blankslate-title']],
             '#tag' => 'h3',
             '#type' => 'html_tag',
-            '#value' => $this->t('No court decisions found.')
+            '#value' => $this->t('No legislations found.')
           ],
           [
             '#attributes' => ['class' => []],

@@ -1,9 +1,9 @@
-uuid: 8ba18e4d-00e9-46ca-8aa3-30dd8678d22c
+uuid: 892c7095-a37c-4ef1-a8eb-1e7b58510ccf
 langcode: en
-status: false
+status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.search_result
     - field.field.node.legislation.field_country
     - field.field.node.legislation.field_date_of_entry
     - field.field.node.legislation.field_date_of_modification
@@ -19,25 +19,52 @@ dependencies:
     - field.field.node.legislation.field_url
     - node.type.legislation
   module:
+    - datetime
     - user
-id: node.legislation.teaser
+id: node.legislation.search_result
 targetEntityType: node
 bundle: legislation
-mode: teaser
+mode: search_result
 content:
-  links:
-    weight: 100
+  field_country:
+    type: entity_reference_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+  field_date_of_text:
+    weight: 1
+    label: hidden
+    settings:
+      timezone_override: ''
+      date_format: 'Y'
+    third_party_settings: {  }
+    type: datetime_custom
+  field_region:
+    type: entity_reference_entity_view
+    weight: 3
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+  field_type_of_text:
+    weight: 2
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
 hidden:
-  field_country: true
   field_date_of_entry: true
   field_date_of_modification: true
-  field_date_of_text: true
   field_ecolex_subjects: true
   field_files: true
   field_isis_number: true
   field_language_of_document: true
   field_original_id: true
   field_original_title: true
-  field_region: true
-  field_type_of_text: true
   field_url: true
+  links: true

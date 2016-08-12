@@ -25,7 +25,18 @@ class SearchFiltersBlock extends BlockBase {
   public function build() {
     $config = $this->getConfiguration();
     $label = $config['label_display'] ? $config['label'] : NULL;
-    $form = \Drupal::formBuilder()->getForm('Drupal\iucn_search\Form\SearchFiltersForm', $label);
+    $route = \Drupal::request()->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_NAME);
+    switch ($route) {
+      case 'iucn.search.legislation';
+        $facets = [
+          'field_country',
+          'field_language_of_document',
+        ];
+        break;
+      default:
+        $facets = [];
+    }
+    $form = \Drupal::formBuilder()->getForm('Drupal\iucn_search\Form\SearchFiltersForm', $label, $facets);
     unset($form['form_build_id']);
     unset($form['form_id']);
     $form['#cache'] = ['max-age' => 0];

@@ -25,11 +25,17 @@ class SearchFiltersForm extends FormBase {
   }
 
   /**
-   * {@inheritdoc}.
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   * @param null $title
+   *  The title of the block.
+   * @param array $facets
+   *  Array of facets to be rendered. If empty, all facets will be rendered.
+   * @return array
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $title = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $title = NULL, $facets = []) {
     // @todo: handle exception
-    $facets = $this->getRenderedFacets();
+    $facets = $this->getRenderedFacets($facets);
     $hiddenInputs = [];
     $fqParams = SearchPageController::getSearch()->getFilterQueryParameters();
     $fqReset = [];
@@ -108,13 +114,21 @@ class SearchFiltersForm extends FormBase {
     //This function has to be empty because we use $form['#method'] = 'get'
   }
 
-  private function getRenderedFacets() {
+  private function getRenderedFacets($facets = []) {
     $return = [];
 
     // @todo: handle exception
     /** @var SolrFacet $facet */
     foreach (SearchPageController::getSearch()->getFacets() as $facet_id => $facet) {
       $return[$facet_id] = $facet->renderAsWidget($_GET);
+    }
+
+    if (!empty($facets)) {
+      foreach ($return as $facet_id => $facet) {
+        if (!in_array($facet_id, $facets)) {
+          unset($return[$facet_id]);
+        }
+      }
     }
 
     return $return;

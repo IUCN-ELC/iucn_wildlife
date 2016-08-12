@@ -1,0 +1,19 @@
+uuid: 69ca2f7b-0dca-4e9c-a9c2-922e56f41655
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_serial_title
+field_name: field_serial_title
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

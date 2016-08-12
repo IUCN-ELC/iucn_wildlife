@@ -1,0 +1,19 @@
+uuid: 34a8f644-b039-49ce-b075-f1140e5aaa5d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_call_number
+    - node.type.literature
+id: node.literature.field_call_number
+field_name: field_call_number
+entity_type: node
+bundle: literature
+label: 'Call number'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

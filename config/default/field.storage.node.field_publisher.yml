@@ -1,0 +1,20 @@
+uuid: 41a7fabb-1db6-4243-bfad-dad8b74e0c77
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_publisher
+field_name: field_publisher
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

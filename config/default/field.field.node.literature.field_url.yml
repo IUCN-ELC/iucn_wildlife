@@ -1,0 +1,23 @@
+uuid: c0643eae-aafb-4513-865b-ae6f9db16c18
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_url
+    - node.type.literature
+  module:
+    - link
+id: node.literature.field_url
+field_name: field_url
+entity_type: node
+bundle: literature
+label: 'Link to full text'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

@@ -1,0 +1,21 @@
+uuid: 37b8e6f8-cfab-40a6-aea2-258e9586762f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_text
+    - node.type.literature
+  module:
+    - datetime
+id: node.literature.field_date_of_text
+field_name: field_date_of_text
+entity_type: node
+bundle: literature
+label: 'Date of text'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

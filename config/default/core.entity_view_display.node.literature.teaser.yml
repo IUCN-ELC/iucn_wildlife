@@ -1,0 +1,53 @@
+uuid: d8007e74-23a3-4383-9952-4a4c2db60b62
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.literature.field_call_number
+    - field.field.node.literature.field_country
+    - field.field.node.literature.field_date_of_entry
+    - field.field.node.literature.field_date_of_modification
+    - field.field.node.literature.field_date_of_text
+    - field.field.node.literature.field_ecolex_subjects
+    - field.field.node.literature.field_files
+    - field.field.node.literature.field_isis_number
+    - field.field.node.literature.field_language_of_document
+    - field.field.node.literature.field_original_id
+    - field.field.node.literature.field_original_title
+    - field.field.node.literature.field_paper_title_of_text
+    - field.field.node.literature.field_publication_place
+    - field.field.node.literature.field_publisher
+    - field.field.node.literature.field_scope
+    - field.field.node.literature.field_serial_title
+    - field.field.node.literature.field_type_of_text
+    - field.field.node.literature.field_url
+    - node.type.literature
+  module:
+    - user
+id: node.literature.teaser
+targetEntityType: node
+bundle: literature
+mode: teaser
+content:
+  links:
+    weight: 100
+hidden:
+  field_call_number: true
+  field_country: true
+  field_date_of_entry: true
+  field_date_of_modification: true
+  field_date_of_text: true
+  field_ecolex_subjects: true
+  field_files: true
+  field_isis_number: true
+  field_language_of_document: true
+  field_original_id: true
+  field_original_title: true
+  field_paper_title_of_text: true
+  field_publication_place: true
+  field_publisher: true
+  field_scope: true
+  field_serial_title: true
+  field_type_of_text: true
+  field_url: true

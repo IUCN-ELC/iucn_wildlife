@@ -1,0 +1,21 @@
+uuid: 98eb2bc1-d67a-4370-98f1-77b77fbb6c0d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_entry
+    - node.type.literature
+  module:
+    - datetime
+id: node.literature.field_date_of_entry
+field_name: field_date_of_entry
+entity_type: node
+bundle: literature
+label: 'Date of entry'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

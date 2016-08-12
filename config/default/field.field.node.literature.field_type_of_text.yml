@@ -1,0 +1,28 @@
+uuid: 6769f111-1fc4-4463-8d58-c9ca59f5974d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_type_of_text
+    - node.type.literature
+    - taxonomy.vocabulary.document_types
+id: node.literature.field_type_of_text
+field_name: field_type_of_text
+entity_type: node
+bundle: literature
+label: 'Type of text'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      document_types: document_types
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

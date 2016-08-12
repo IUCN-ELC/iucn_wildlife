@@ -1,0 +1,19 @@
+uuid: 18089cf8-2c3f-4750-a916-d52538050b38
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_serial_title
+    - node.type.literature
+id: node.literature.field_serial_title
+field_name: field_serial_title
+entity_type: node
+bundle: literature
+label: 'Serial title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

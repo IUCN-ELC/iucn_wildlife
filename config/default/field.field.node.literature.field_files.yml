@@ -1,0 +1,27 @@
+uuid: 65a22801-298b-46f4-b680-d2e66832dbc1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_files
+    - node.type.literature
+  module:
+    - file
+id: node.literature.field_files
+field_name: field_files
+entity_type: node
+bundle: literature
+label: Files
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: literatures
+  file_extensions: 'csv doc docx odt pdf ppt pptx rtf txt xls xlsx xml'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

@@ -1,0 +1,198 @@
+uuid: dccf922a-d709-4bf1-ae25-c2cc7e25b3df
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.literature.field_call_number
+    - field.field.node.literature.field_country
+    - field.field.node.literature.field_date_of_entry
+    - field.field.node.literature.field_date_of_modification
+    - field.field.node.literature.field_date_of_text
+    - field.field.node.literature.field_ecolex_subjects
+    - field.field.node.literature.field_files
+    - field.field.node.literature.field_isis_number
+    - field.field.node.literature.field_language_of_document
+    - field.field.node.literature.field_original_id
+    - field.field.node.literature.field_original_title
+    - field.field.node.literature.field_paper_title_of_text
+    - field.field.node.literature.field_publication_place
+    - field.field.node.literature.field_publisher
+    - field.field.node.literature.field_scope
+    - field.field.node.literature.field_serial_title
+    - field.field.node.literature.field_type_of_text
+    - field.field.node.literature.field_url
+    - node.type.literature
+  module:
+    - datetime
+    - file
+    - link
+    - path
+id: node.literature.default
+targetEntityType: node
+bundle: literature
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+  field_call_number:
+    weight: 44
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_country:
+    weight: 38
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_date_of_entry:
+    weight: 33
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_date_of_modification:
+    weight: 35
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_date_of_text:
+    weight: 34
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_ecolex_subjects:
+    weight: 39
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_files:
+    weight: 42
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+  field_isis_number:
+    weight: 36
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_language_of_document:
+    weight: 40
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_original_id:
+    weight: 31
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_original_title:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_paper_title_of_text:
+    weight: 43
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_publication_place:
+    weight: 46
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_publisher:
+    weight: 45
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_scope:
+    weight: 48
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_serial_title:
+    weight: 47
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_type_of_text:
+    weight: 37
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_url:
+    weight: 41
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  path:
+    type: path
+    weight: 30
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 15
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 16
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

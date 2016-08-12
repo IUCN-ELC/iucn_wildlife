@@ -1,0 +1,19 @@
+uuid: 33d38bd6-74ba-4e7b-bfa7-8ea79037841a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_paper_title_of_text
+    - node.type.literature
+id: node.literature.field_paper_title_of_text
+field_name: field_paper_title_of_text
+entity_type: node
+bundle: literature
+label: 'Paper title of text'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

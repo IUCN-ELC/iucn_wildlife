@@ -1,0 +1,28 @@
+uuid: f2922f9d-ec3a-4e5e-a06d-5a3792011ada
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_language_of_document
+    - node.type.literature
+    - taxonomy.vocabulary.document_languages
+id: node.literature.field_language_of_document
+field_name: field_language_of_document
+entity_type: node
+bundle: literature
+label: 'Language of document'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      document_languages: document_languages
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

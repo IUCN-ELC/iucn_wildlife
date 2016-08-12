@@ -1,0 +1,19 @@
+uuid: 6ba42857-2e8f-4f86-b219-4192c4730113
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_isis_number
+    - node.type.literature
+id: node.literature.field_isis_number
+field_name: field_isis_number
+entity_type: node
+bundle: literature
+label: 'ISIS Number'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

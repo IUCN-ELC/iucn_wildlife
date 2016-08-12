@@ -23,7 +23,7 @@ class LegislationSearchController extends DefaultSearchController {
 
     /** @var SearchResult $result */
     try {
-      $result = self::getSearch('legislation', ['sort' => 'field_date_of_text', 'sortOrder' => 'asc'])
+      $result = self::getSearch('legislation', ['sort' => 'field_date_of_text', 'sortOrder' => 'desc'])
         ->search($current_page, $this->items_per_page);
       if (!empty($result)) {
         pager_default_initialize($result->getCountTotal(), $this->items_per_page);
@@ -57,7 +57,7 @@ class LegislationSearchController extends DefaultSearchController {
         ],
       ];
       $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : 'field_date_of_text';
-      $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'asc';
+      $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'desc';
       $getCopy = $_GET;
       $sortMarkup = [];
       foreach ($sorts as $key => $sort) {

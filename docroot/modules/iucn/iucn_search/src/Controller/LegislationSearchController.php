@@ -33,8 +33,6 @@ class LegislationSearchController extends DefaultSearchController {
           $node = Node::load($nid);
           if (!empty($node)) {
             $cacheTags = array_merge($cacheTags, $node->getCacheTags());
-            $highlighting = $data['highlighting'];
-            $title = !empty($highlighting['title']) ? $highlighting['title'] : $node->getTitle();
             $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
           }
         }

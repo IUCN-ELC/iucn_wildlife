@@ -116,6 +116,11 @@
 .homepage-links-menu-container .menu li {
   display: inline-block;
 }
+.homepage-links-menu-container .menu li.active a {
+  background-color: transparent;
+  border-color: #e67e22;
+  color: #e67e22;
+}
 .homepage-links-menu-container .menu li a {
   border-radius: 5px;
   border: 1px solid #fff;

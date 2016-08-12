@@ -95,7 +95,7 @@ class SearchFiltersForm extends FormBase {
     $form['actions']['reset'] = [
       '#attributes' => [
         'class' => ['btn', 'btn-default', 'btn-sm', 'btn-block', 'search-reset'],
-        'href' => Url::fromRoute('iucn.search')->toString(),
+        'href' => Url::fromRoute(\Drupal::request()->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_NAME))->toString(),
       ],
       '#tag' => 'a',
       '#type' => 'html_tag',

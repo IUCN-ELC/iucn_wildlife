@@ -1,0 +1,19 @@
+uuid: 302242bc-3005-4a1d-9cdc-0df8cb6b1304
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_holdings
+    - node.type.literature
+id: node.literature.field_holdings
+field_name: field_holdings
+entity_type: node
+bundle: literature
+label: Holdings
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

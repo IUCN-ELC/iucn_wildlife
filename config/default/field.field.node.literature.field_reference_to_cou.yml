@@ -1,0 +1,19 @@
+uuid: d8716074-cce3-430c-a825-f85a5940d006
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reference_to_cou
+    - node.type.literature
+id: node.literature.field_reference_to_cou
+field_name: field_reference_to_cou
+entity_type: node
+bundle: literature
+label: 'Reference to Court Decisions'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

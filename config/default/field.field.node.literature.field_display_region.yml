@@ -1,0 +1,28 @@
+uuid: aadc11fa-0249-4c46-b110-baec25895e18
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_display_region
+    - node.type.literature
+    - taxonomy.vocabulary.regions
+id: node.literature.field_display_region
+field_name: field_display_region
+entity_type: node
+bundle: literature
+label: 'Display region'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      regions: regions
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

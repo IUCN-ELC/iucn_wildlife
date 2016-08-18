@@ -1,0 +1,19 @@
+uuid: 6c7ba26d-9be2-4baf-90d2-d10240acaf5c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_conference_name
+field_name: field_conference_name
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,28 @@
+uuid: 8fe6f14a-ba25-4b5e-b0a9-e5a08a9e0ba6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_territorial_subdivisions
+    - node.type.literature
+    - taxonomy.vocabulary.territorial_subdivisions
+id: node.literature.field_territorial_subdivisions
+field_name: field_territorial_subdivisions
+entity_type: node
+bundle: literature
+label: 'Territorial subdivisions'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      territorial_subdivisions: territorial_subdivisions
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

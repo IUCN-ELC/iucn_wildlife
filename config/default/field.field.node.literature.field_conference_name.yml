@@ -1,0 +1,19 @@
+uuid: 05b653c9-1c7e-4a0f-a5e9-698bfe0485b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_conference_name
+    - node.type.literature
+id: node.literature.field_conference_name
+field_name: field_conference_name
+entity_type: node
+bundle: literature
+label: 'Conference name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

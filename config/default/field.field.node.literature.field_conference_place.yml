@@ -1,0 +1,19 @@
+uuid: c99c69aa-6427-4425-9d54-bc83a493924a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_conference_place
+    - node.type.literature
+id: node.literature.field_conference_place
+field_name: field_conference_place
+entity_type: node
+bundle: literature
+label: 'Conference place'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

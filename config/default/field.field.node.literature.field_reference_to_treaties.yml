@@ -1,0 +1,19 @@
+uuid: 7d603922-4272-4bb6-a3dc-ec4790ed55e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reference_to_treaties
+    - node.type.literature
+id: node.literature.field_reference_to_treaties
+field_name: field_reference_to_treaties
+entity_type: node
+bundle: literature
+label: 'Reference to Treaties'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

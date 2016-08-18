@@ -3,34 +3,125 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.literature.field_author
+    - field.field.node.literature.field_basin
     - field.field.node.literature.field_call_number
+    - field.field.node.literature.field_collation
+    - field.field.node.literature.field_conference_date
+    - field.field.node.literature.field_conference_name
+    - field.field.node.literature.field_conference_number
+    - field.field.node.literature.field_conference_place
+    - field.field.node.literature.field_contributor
+    - field.field.node.literature.field_corp_author
     - field.field.node.literature.field_country
     - field.field.node.literature.field_date_of_entry
     - field.field.node.literature.field_date_of_modification
     - field.field.node.literature.field_date_of_text
+    - field.field.node.literature.field_display_region
     - field.field.node.literature.field_ecolex_subjects
+    - field.field.node.literature.field_edition
     - field.field.node.literature.field_files
+    - field.field.node.literature.field_frequency
+    - field.field.node.literature.field_holdings
+    - field.field.node.literature.field_internet_reference
+    - field.field.node.literature.field_isbn
     - field.field.node.literature.field_isis_number
+    - field.field.node.literature.field_issn
+    - field.field.node.literature.field_keywords
     - field.field.node.literature.field_language_of_document
+    - field.field.node.literature.field_location
+    - field.field.node.literature.field_notes
     - field.field.node.literature.field_original_id
     - field.field.node.literature.field_original_title
     - field.field.node.literature.field_paper_title_of_text
     - field.field.node.literature.field_publication_place
     - field.field.node.literature.field_publisher
+    - field.field.node.literature.field_reference_to_cou
+    - field.field.node.literature.field_reference_to_faolex
+    - field.field.node.literature.field_reference_to_literature
+    - field.field.node.literature.field_reference_to_treaties
+    - field.field.node.literature.field_region
     - field.field.node.literature.field_scope
+    - field.field.node.literature.field_serial_status
     - field.field.node.literature.field_serial_title
+    - field.field.node.literature.field_territorial_subdivisions
     - field.field.node.literature.field_type_of_text
     - field.field.node.literature.field_url
+    - field.field.node.literature.field_volume_number
     - node.type.literature
   module:
     - datetime
     - file
+    - link
     - user
 id: node.literature.default
 targetEntityType: node
 bundle: literature
 mode: default
 content:
+  field_author:
+    weight: 32
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_basin:
+    weight: 18
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_collation:
+    weight: 19
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_conference_date:
+    weight: 24
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_conference_name:
+    weight: 22
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_conference_number:
+    weight: 21
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_conference_place:
+    weight: 23
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_contributor:
+    weight: 25
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_corp_author:
+    weight: 33
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_country:
     weight: 7
     label: above
@@ -46,6 +137,13 @@ content:
       date_format: 'm F Y'
     third_party_settings: {  }
     type: datetime_custom
+  field_display_region:
+    weight: 20
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_ecolex_subjects:
     weight: 8
     label: above
@@ -53,12 +151,65 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_edition:
+    weight: 31
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_files:
     weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
+  field_frequency:
+    weight: 36
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_holdings:
+    weight: 37
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_internet_reference:
+    weight: 17
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  field_isbn:
+    weight: 34
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_issn:
+    weight: 35
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_keywords:
+    weight: 16
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_language_of_document:
     weight: 9
     label: above
@@ -66,6 +217,20 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_location:
+    weight: 28
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_notes:
+    weight: 29
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_paper_title_of_text:
     weight: 1
     label: above
@@ -86,6 +251,41 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_reference_to_cou:
+    weight: 12
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_reference_to_faolex:
+    weight: 11
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_reference_to_literature:
+    weight: 13
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_reference_to_treaties:
+    weight: 14
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_region:
+    weight: 15
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_scope:
     weight: 6
     label: above
@@ -93,12 +293,26 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_serial_status:
+    weight: 30
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_serial_title:
     weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+  field_territorial_subdivisions:
+    weight: 26
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_type_of_text:
     weight: 5
     label: above
@@ -106,6 +320,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_volume_number:
+    weight: 27
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
 hidden:
   field_call_number: true
   field_date_of_entry: true

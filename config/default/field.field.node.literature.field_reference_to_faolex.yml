@@ -1,0 +1,19 @@
+uuid: fb5c6672-37e7-46f6-868d-1f4ac227ef73
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reference_to_faolex
+    - node.type.literature
+id: node.literature.field_reference_to_faolex
+field_name: field_reference_to_faolex
+entity_type: node
+bundle: literature
+label: 'Reference to FAOLEX'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,19 @@
+uuid: 50b260b7-d2e0-41f9-a11f-a5cff99a743f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_volume_number
+    - node.type.literature
+id: node.literature.field_volume_number
+field_name: field_volume_number
+entity_type: node
+bundle: literature
+label: 'Volume number'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

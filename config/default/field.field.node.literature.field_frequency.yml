@@ -1,0 +1,19 @@
+uuid: 680c4e35-e3c9-46a0-aea4-afb3c96d63df
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_frequency
+    - node.type.literature
+id: node.literature.field_frequency
+field_name: field_frequency
+entity_type: node
+bundle: literature
+label: Frequency
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

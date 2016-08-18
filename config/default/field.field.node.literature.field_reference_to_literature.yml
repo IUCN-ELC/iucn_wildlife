@@ -1,0 +1,19 @@
+uuid: eda2d086-7b18-4919-81e3-dc96ad81ac68
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reference_to_literature
+    - node.type.literature
+id: node.literature.field_reference_to_literature
+field_name: field_reference_to_literature
+entity_type: node
+bundle: literature
+label: 'Reference to literature'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

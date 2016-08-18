@@ -49,6 +49,43 @@ process:
   field_paper_title_of_text: paperTitleOfText
   field_serial_title: serialTitle
   field_call_number: callNo
+  field_author: authorA
+  field_basin:
+    source: basin
+    plugin: taxonomy_term
+  field_collation: collation
+  field_conference_date: confDate
+  field_conference_name: confName
+  field_conference_number: confNo
+  field_conference_place: confPlace
+  field_contributor: contributor
+  field_corp_author: corpAuthorA
+  field_display_region:
+    source: displayRegion
+    plugin: taxonomy_term
+  field_edition: edition
+  field_frequency: frequency
+  field_holdings: holdings
+  field_internet_reference: internetReference
+  field_isbn: isbn
+  field_issn: issn
+  field_keywords:
+    source: keyword
+    plugin: taxonomy_term
+  field_location: location
+  field_notes: notes
+  field_reference_to_cou: referenceToCourtDecision
+  field_reference_to_faolex: referenceToFaolex
+  field_reference_to_literature: referenceToLiterature
+  field_reference_to_treaties: referenceToTreaties
+  field_region:
+    source: region
+    plugin: taxonomy_term
+  field_serial_status: serialStatus
+  field_territorial_subdivisions:
+    source: territorialSubdivision
+    plugin: taxonomy_term
+  field_volume_number: volumeNo
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }

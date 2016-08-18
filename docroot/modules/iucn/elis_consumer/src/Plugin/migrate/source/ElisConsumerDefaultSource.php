@@ -73,21 +73,37 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
     $abstract = '';
     foreach ($data as $field_name => $value) {
       $value = (string) $value;
+
       if (mb_detect_encoding($value) != 'UTF-8') {
         $value = utf8_encode($value);
       }
       if (strpos($value, 'www.') === 0) {
         $value = 'http://' . $value;
       }
-      if ($field_name == 'abstract') {
-        $abstract .= $value . PHP_EOL;
-        continue;
+
+      switch ($field_name) {
+        case 'abstract':
+          $abstract .= $value . PHP_EOL;
+          continue;
+        case 'party':
+          $parties[] = $value;
+          continue;
+        case 'authorM':
+          $field_name = 'authorA';
+          break;
+        case 'corpAuthorM':
+          $field_name = 'corpAuthorA';
+          break;
+        case 'confDate':
+          $dates = explode(" - ", $value);
+          foreach ($dates as &$date) {
+            $date = date("Y-m-d", strtotime($date));
+          }
+          $ret[$field_name] = $dates;
+          continue;
       }
-      else if ($field_name == 'party') {
-        $parties[] = $value;
-        continue;
-      }
-      else if (!empty($ret[$field_name])) {
+
+      if (!empty($ret[$field_name])) {
         if (is_array($ret[$field_name])) {
           $ret[$field_name][] = $value;
         }

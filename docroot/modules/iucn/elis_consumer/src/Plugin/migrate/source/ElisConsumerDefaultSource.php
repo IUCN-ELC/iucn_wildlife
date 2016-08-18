@@ -178,12 +178,13 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
   public function prepareRow(Row $row) {
     $titleOfText = $this->getTitle($row);
     if (empty($titleOfText)) {
-      throw new MigrateSkipRowException("Record title cannot be NULL. (id:{$row->getSourceProperty('id')})");
+      return FALSE;
     }
     $row->setSourceProperty('titleOfText', $titleOfText);
     if (empty($row->getSourceProperty('titleOfTextShort'))) {
       $row->setSourceProperty('titleOfTextShort', substr($titleOfText, 0, 255));
     }
+    return TRUE;
   }
 
 }

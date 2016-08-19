@@ -11,7 +11,7 @@ id: node.literature.field_date_of_text
 field_name: field_date_of_text
 entity_type: node
 bundle: literature
-label: 'Date of text'
+label: 'Publication year'
 description: ''
 required: false
 translatable: true

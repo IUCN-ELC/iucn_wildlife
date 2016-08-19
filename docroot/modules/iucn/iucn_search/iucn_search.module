@@ -145,6 +145,7 @@ function iucn_search_cron() {
 
   /** @var \Drupal\migrate\Plugin\MigrationPluginManager $service */
   $service = \Drupal::service('plugin.manager.migration');
+  $migrate_last_imported_store = \Drupal::keyValue('migrate_last_imported');
   foreach ($migrations as $migrationName) {
     $last_run = \Drupal::state()->get('iucn_search.migration_last_run.' . $migrationName, NULL);
     if (empty($last_run) || (time() - $last_run) >= 3600 /* 1 hour */) {
@@ -156,6 +157,7 @@ function iucn_search_cron() {
         $executable = new \Drupal\migrate\MigrateExecutable($migration, new \Drupal\migrate\MigrateMessage());
         $executable->import();
         \Drupal::state()->set('iucn_search.migration_last_run.' . $migrationName, time());
+        $migrate_last_imported_store->set($migration->id(), round(microtime(TRUE) * 1000));
       }
     }
   }

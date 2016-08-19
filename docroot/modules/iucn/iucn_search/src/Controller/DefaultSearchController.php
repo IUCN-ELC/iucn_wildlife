@@ -60,7 +60,10 @@ abstract class DefaultSearchController extends ControllerBase {
   }
 
   protected function getDefaultSorting () {
-    return [];
+    return [
+      'sort' => 'field_date_of_text',
+      'sortOrder' => 'desc',
+    ];
   }
 
   protected function getSortFields() {
@@ -120,8 +123,8 @@ abstract class DefaultSearchController extends ControllerBase {
       $numFound = $this->formatPlural($found, 'Found 1 ' . $singular, 'Found @count ' . $plural);
 
       $sorts = $this->getSortFields();
-      $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : 'score';
-      $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : 'desc';
+      $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : $this->getDefaultSorting()['sort'];
+      $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : $this->getDefaultSorting()['sortOrder'];
       $getCopy = $_GET;
       $sortMarkup = [];
       foreach ($sorts as $key => $sort) {

@@ -19,6 +19,13 @@ class SearchPageController extends DefaultSearchController {
     return $return;
   }
 
+  protected function getDefaultSorting () {
+    return [
+      'sort' => 'score',
+      'sortOrder' => 'desc',
+    ];
+  }
+
   public function getRoute() {
     return 'iucn.search';
   }

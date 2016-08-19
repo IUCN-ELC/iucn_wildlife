@@ -101,6 +101,13 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
           }
           $ret[$field_name] = $dates;
           continue;
+        case 'dateOfText':
+        case 'dateOfEntry':
+        case 'dateOfModification':
+          if (preg_match('/\d\d\d\d/', $value)) {
+            $value = "$value-01-01";
+          }
+          break;
       }
 
       if (!empty($ret[$field_name])) {

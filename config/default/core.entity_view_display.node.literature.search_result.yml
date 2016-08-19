@@ -4,24 +4,51 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.search_result
+    - field.field.node.literature.field_author
+    - field.field.node.literature.field_basin
     - field.field.node.literature.field_call_number
+    - field.field.node.literature.field_collation
+    - field.field.node.literature.field_conference_date
+    - field.field.node.literature.field_conference_name
+    - field.field.node.literature.field_conference_number
+    - field.field.node.literature.field_conference_place
+    - field.field.node.literature.field_contributor
+    - field.field.node.literature.field_corp_author
     - field.field.node.literature.field_country
     - field.field.node.literature.field_date_of_entry
     - field.field.node.literature.field_date_of_modification
     - field.field.node.literature.field_date_of_text
+    - field.field.node.literature.field_display_region
     - field.field.node.literature.field_ecolex_subjects
+    - field.field.node.literature.field_edition
     - field.field.node.literature.field_files
+    - field.field.node.literature.field_frequency
+    - field.field.node.literature.field_holdings
+    - field.field.node.literature.field_internet_reference
+    - field.field.node.literature.field_isbn
     - field.field.node.literature.field_isis_number
+    - field.field.node.literature.field_issn
+    - field.field.node.literature.field_keywords
     - field.field.node.literature.field_language_of_document
+    - field.field.node.literature.field_location
+    - field.field.node.literature.field_notes
     - field.field.node.literature.field_original_id
     - field.field.node.literature.field_original_title
     - field.field.node.literature.field_paper_title_of_text
     - field.field.node.literature.field_publication_place
     - field.field.node.literature.field_publisher
+    - field.field.node.literature.field_reference_to_cou
+    - field.field.node.literature.field_reference_to_faolex
+    - field.field.node.literature.field_reference_to_literature
+    - field.field.node.literature.field_reference_to_treaties
+    - field.field.node.literature.field_region
     - field.field.node.literature.field_scope
+    - field.field.node.literature.field_serial_status
     - field.field.node.literature.field_serial_title
+    - field.field.node.literature.field_territorial_subdivisions
     - field.field.node.literature.field_type_of_text
     - field.field.node.literature.field_url
+    - field.field.node.literature.field_volume_number
     - node.type.literature
   module:
     - datetime
@@ -75,16 +102,43 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
 hidden:
+  field_author: true
+  field_basin: true
   field_call_number: true
+  field_collation: true
+  field_conference_date: true
+  field_conference_name: true
+  field_conference_number: true
+  field_conference_place: true
+  field_contributor: true
+  field_corp_author: true
   field_date_of_entry: true
   field_date_of_modification: true
+  field_display_region: true
   field_ecolex_subjects: true
+  field_edition: true
   field_files: true
+  field_frequency: true
+  field_holdings: true
+  field_internet_reference: true
+  field_isbn: true
   field_isis_number: true
+  field_issn: true
+  field_keywords: true
   field_language_of_document: true
+  field_location: true
+  field_notes: true
   field_original_id: true
   field_original_title: true
   field_paper_title_of_text: true
+  field_reference_to_cou: true
+  field_reference_to_faolex: true
+  field_reference_to_literature: true
+  field_reference_to_treaties: true
+  field_region: true
+  field_serial_status: true
   field_serial_title: true
+  field_territorial_subdivisions: true
   field_url: true
+  field_volume_number: true
   links: true

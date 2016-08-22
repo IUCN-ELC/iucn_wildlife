@@ -134,7 +134,7 @@ content:
     label: above
     settings:
       timezone_override: ''
-      date_format: 'm F Y'
+      date_format: 'Y'
     third_party_settings: {  }
     type: datetime_custom
   field_display_region:

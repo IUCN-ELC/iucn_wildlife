@@ -24,6 +24,7 @@ dependencies:
     - field.field.node.court_decision.field_justices
     - field.field.node.court_decision.field_keywords
     - field.field.node.court_decision.field_language_of_document
+    - field.field.node.court_decision.field_legislation_cited
     - field.field.node.court_decision.field_money_value
     - field.field.node.court_decision.field_number_of_pages
     - field.field.node.court_decision.field_offences
@@ -132,6 +133,7 @@ hidden:
   field_justices: true
   field_keywords: true
   field_language_of_document: true
+  field_legislation_cited: true
   field_money_value: true
   field_number_of_pages: true
   field_offences: true

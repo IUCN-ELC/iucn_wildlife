@@ -117,7 +117,7 @@ content:
     type: entity_reference_label
   field_files:
     type: file_list
-    weight: 27
+    weight: 28
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -136,7 +136,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_legislation_cited:
-    weight: 28
+    weight: 27
     label: above
     settings:
       link_to_entity: false

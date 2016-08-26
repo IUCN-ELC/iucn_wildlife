@@ -84,6 +84,7 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       'wildlifeTransnational' => 'Transnational (Y/N)',
       'wildlifeDecision' => 'Decision of the court',
       'wildlifeCharges' => 'Charges against accused person(s)',
+      'referenceToNationalLegislationNotes' => 'Cited legislations',
     );
   }
 

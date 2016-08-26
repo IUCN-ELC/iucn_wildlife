@@ -136,7 +136,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_legislation_cited:
-    weight: 27
+    weight: 21
     label: above
     settings:
       link_to_entity: false
@@ -177,21 +177,21 @@ content:
     third_party_settings: {  }
     type: string
   field_reference_to_faolex:
-    weight: 21
+    weight: 24
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_reference_to_faolex_countr:
-    weight: 24
+    weight: 27
     label: above
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_reference_to_faolex_date:
-    weight: 23
+    weight: 26
     label: above
     settings:
       timezone_override: ''
@@ -199,21 +199,21 @@ content:
     third_party_settings: {  }
     type: datetime_custom
   field_reference_to_faolex_title:
-    weight: 22
+    weight: 25
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_reference_to_legislation:
-    weight: 26
+    weight: 22
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_reference_to_national_legi:
-    weight: 25
+    weight: 23
     label: above
     settings:
       link_to_entity: false

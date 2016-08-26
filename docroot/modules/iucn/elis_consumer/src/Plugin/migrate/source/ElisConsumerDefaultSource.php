@@ -104,7 +104,7 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
         case 'dateOfText':
         case 'dateOfEntry':
         case 'dateOfModification':
-          if (preg_match('/^\d{4}&/', $value)) {
+          if (preg_match('/^\d{4}$/', $value)) {
             $value = "$value-01-01";
           }
           break;

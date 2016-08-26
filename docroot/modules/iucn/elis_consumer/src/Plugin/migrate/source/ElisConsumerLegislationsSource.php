@@ -22,7 +22,7 @@ use Drupal\migrate\Row;
  */
 class ElisConsumerLegislationsSource extends ElisConsumerDefaultSource {
 
-  protected function getElisServicePath() {
+  protected function getElisServiceUrl() {
     return 'http://www2.ecolex.org/elis_isis3w.php?database=legal&search_type=page_search&table=all&format_name=@xmlexp&lang=xmlf&page_header=@xmlh&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE';
   }
 

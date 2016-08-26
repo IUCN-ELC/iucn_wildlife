@@ -30,7 +30,7 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
    * E.g. http://www.ecolex.org/elis_isis3w.php?database=cou&search_type=page_search&spage_query=SPAGE_QUERY_VALUE&spage_first=SPAGE_FIRST_VALUE
    * @return string
    */
-  abstract protected function getElisServicePath();
+  abstract protected function getElisServiceUrl();
 
   /**
    * The directory where files should be stored.
@@ -52,7 +52,7 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
       $path = $configuration['path'];
     }
     else {
-      $path = $this->getElisServicePath();
+      $path = $this->getElisServiceUrl();
     }
 
     $encoding = 'iso-8859-15';

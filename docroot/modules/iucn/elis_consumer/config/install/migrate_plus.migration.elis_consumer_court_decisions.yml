@@ -95,6 +95,7 @@ process:
     plugin: boolean
   field_decision: wildlifeDecision
   field_charges: wildlifeCharges
+  field_legislation_cited: referenceToNationalLegislationNotes
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }

@@ -23,6 +23,7 @@ dependencies:
     - field.field.node.court_decision.field_justices
     - field.field.node.court_decision.field_keywords
     - field.field.node.court_decision.field_language_of_document
+    - field.field.node.court_decision.field_legislation_cited
     - field.field.node.court_decision.field_money_value
     - field.field.node.court_decision.field_number_of_pages
     - field.field.node.court_decision.field_offences
@@ -207,6 +208,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_legislation_cited:
+    weight: 52
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
   field_money_value:
     weight: 48
     settings:

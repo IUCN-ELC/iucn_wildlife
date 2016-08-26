@@ -9,7 +9,7 @@ id: node.court_decision.field_reference_to_treaties
 field_name: field_reference_to_treaties
 entity_type: node
 bundle: court_decision
-label: 'Reference to Treaties'
+label: 'Treaty cited'
 description: ''
 required: false
 translatable: false

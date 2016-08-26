@@ -13,7 +13,7 @@ id: node.court_decision.field_date_of_text
 field_name: field_date_of_text
 entity_type: node
 bundle: court_decision
-label: 'Date of text'
+label: 'Date of opinion'
 description: ''
 required: false
 translatable: false

@@ -171,7 +171,7 @@ function elis_consumer_xml_http_request($url, $xml_encoding) {
       else {
         $data = trim(utf8_decode($response));
       }
-      $ret = simplexml_load_string($data);
+      $ret = simplexml_load_string(utf8_encode($data));
     } catch (\Exception $e) {
       $error = libxml_get_last_error();
       $msg = sprintf('elis_consumer_xml_http_request: Cannot parse XML (%s), line %d:%d, %s', $error->file, $error->line, $error->column, $error->message);

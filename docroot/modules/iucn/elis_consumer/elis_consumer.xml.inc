@@ -190,6 +190,7 @@ function elis_consumer_http_request($url, $headers = array()) {
   curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   curl_setopt($ch, CURLOPT_NOBODY, 0);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
   $ret = curl_exec($ch);
   $info = curl_getinfo($ch);
   if ($info['http_code'] != 200) {

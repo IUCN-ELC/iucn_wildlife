@@ -1,2 +1,3 @@
 reference_to_legislation_pattern: 'http://www.ecolex.org/ecolex/ledge/view/RecordDetails?id=$RECID&index=documents'
 reference_to_ecolex_pattern: 'http://ecolex.eaudeweb.ro/details/court-decision/$RECID'
+reference_to_treaty_pattern: 'http://ecolex.eaudeweb.ro/treaty/details/$RECID'

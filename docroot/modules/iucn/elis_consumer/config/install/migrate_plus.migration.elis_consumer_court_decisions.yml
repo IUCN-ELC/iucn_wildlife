@@ -48,6 +48,7 @@ process:
     plugin: taxonomy_term
   field_reference_to_national_legi: referenceToNationalLegislation
   field_reference_to_treaties: referenceToTreaties
+  field_reference_to_treaties_titl: referenceToTreatiesTitle
   field_reference_to_cou: referenceToCourtDecision
   field_subdivision:
     source: subdivision

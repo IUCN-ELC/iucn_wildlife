@@ -103,10 +103,10 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
       $build['field_reference_to_faolex'][0]['#context']['value'] = $link;
     }
 
-    if (!empty($treaties = $build['field_reference_to_treaties']['#items'])) {
+    if (!empty($build['field_reference_to_treaties']['#items'])) {
       $pattern = $config->get('reference_to_treaty_pattern');
       $items = [];
-      foreach ($treaties as $key => $item) {
+      foreach ($build['field_reference_to_treaties']['#items'] as $key => $item) {
         $uri = str_replace('$RECID', $item->getValue()['value'], $pattern);
         if (!empty($uri)) {
           if (!array_key_exists($key, $items)) {

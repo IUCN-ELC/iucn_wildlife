@@ -49,7 +49,7 @@ process:
   field_reference_to_national_legi: referenceToNationalLegislation
   field_reference_to_treaties: referenceToTreaties
   field_reference_to_treaties_titl: referenceToTreatiesTitle
-  field_reference_to_cou: referenceToCourtDecision
+  field_reference_to_cou: referenceToCourtDecisionNotes
   field_subdivision:
     source: subdivision
     plugin: taxonomy_term

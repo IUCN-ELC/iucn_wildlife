@@ -9,7 +9,7 @@ id: node.court_decision.field_reference_to_cou
 field_name: field_reference_to_cou
 entity_type: node
 bundle: court_decision
-label: 'Reference to Court Decisions'
+label: 'Court cases cited'
 description: ''
 required: false
 translatable: false

@@ -10,7 +10,7 @@ id: node.court_decision.field_territorial_subdivisions
 field_name: field_territorial_subdivisions
 entity_type: node
 bundle: court_decision
-label: 'Territorial subdivisions'
+label: 'Territorial subdivision'
 description: ''
 required: false
 translatable: false
@@ -24,4 +24,5 @@ settings:
     sort:
       field: _none
     auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

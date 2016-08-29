@@ -11,7 +11,7 @@ id: node.court_decision.field_files
 field_name: field_files
 entity_type: node
 bundle: court_decision
-label: Files
+label: 'Text and analysis'
 description: ''
 required: false
 translatable: false

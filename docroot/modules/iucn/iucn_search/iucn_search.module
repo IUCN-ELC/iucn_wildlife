@@ -33,7 +33,7 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
       'bundle' => 'country',
     ],
     'field_territorial_subdivisions' => [
-      'title' => t('Sub-national jurisdiction'),
+      'title' => t('Territorial subdivision'),
       'placeholder' => t('Add territories…'),
       'bundle' => 'territorial_subdivisions',
     ],

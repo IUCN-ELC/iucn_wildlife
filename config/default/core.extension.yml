@@ -47,7 +47,6 @@ module:
   text: 0
   token: 0
   toolbar: 0
-  update: 0
   user: 0
   menu_link_content: 1
   pathauto: 1

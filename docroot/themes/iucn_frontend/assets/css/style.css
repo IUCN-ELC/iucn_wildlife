@@ -252,6 +252,7 @@
 .court-decision.search-result .field--name-field-publisher,
 .court-decision.search-result .field--name-field-publication-place,
 .court-decision.search-result .field--name-field-scope,
+.court-decision.search-result .field--name-field-corp-author,
 .court-decision.search-result .field--name-field-reference-number,
 .court-decision.search-result .field--name-field-court-jurisdiction .field--items,
 .court-decision.search-result .field--name-field-territorial-subdivisions .field--items,
@@ -264,6 +265,7 @@
 .court-decision.search-result .field--name-field-publisher .field--items,
 .court-decision.search-result .field--name-field-publication-place .field--items,
 .court-decision.search-result .field--name-field-scope .field--items,
+.court-decision.search-result .field--name-field-corp-author .field--items,
 .court-decision.search-result .field--name-field-reference-number .field--items,
 .court-decision.search-result .field--name-field-court-jurisdiction .field--item,
 .court-decision.search-result .field--name-field-territorial-subdivisions .field--item,
@@ -276,6 +278,7 @@
 .court-decision.search-result .field--name-field-publisher .field--item,
 .court-decision.search-result .field--name-field-publication-place .field--item,
 .court-decision.search-result .field--name-field-scope .field--item,
+.court-decision.search-result .field--name-field-corp-author .field--item,
 .court-decision.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
@@ -292,6 +295,7 @@
 .court-decision.search-result .field--name-field-publisher,
 .court-decision.search-result .field--name-field-publication-place,
 .court-decision.search-result .field--name-field-scope,
+.court-decision.search-result field--name-field-corp-author,
 .court-decision.search-result .field--name-field-reference-number,
 .court-decision.search-result .field--name-field-territorial-subdivisions a,
 .court-decision.search-result .field--name-field-court a,
@@ -303,6 +307,7 @@
 .court-decision.search-result .field--name-field-publisher a,
 .court-decision.search-result .field--name-field-publication-place a,
 .court-decision.search-result .field--name-field-scope a,
+.court-decision.search-result field--name-field-corp-author a,
 .court-decision.search-result .field--name-field-reference-number a {
   color: #808080;
 }
@@ -316,6 +321,7 @@
 .court-decision.search-result .field--name-field-publisher:before,
 .court-decision.search-result .field--name-field-publication-place:before,
 .court-decision.search-result .field--name-field-scope:before,
+.court-decision.search-result field--name-field-corp-author:before,
 .court-decision.search-result .field--name-field-reference-number:before {
   color: #ccc;
   content: "\2013";
@@ -355,6 +361,7 @@
 .legislation.search-result .field--name-field-publisher,
 .legislation.search-result .field--name-field-publication-place,
 .legislation.search-result .field--name-field-scope,
+.legislation.search-result .field--name-field-corp-author,
 .legislation.search-result .field--name-field-reference-number,
 .legislation.search-result .field--name-field-court-jurisdiction .field--items,
 .legislation.search-result .field--name-field-territorial-subdivisions .field--items,
@@ -367,6 +374,7 @@
 .legislation.search-result .field--name-field-publisher .field--items,
 .legislation.search-result .field--name-field-publication-place .field--items,
 .legislation.search-result .field--name-field-scope .field--items,
+.legislation.search-result .field--name-field-corp-author .field--items,
 .legislation.search-result .field--name-field-reference-number .field--items,
 .legislation.search-result .field--name-field-court-jurisdiction .field--item,
 .legislation.search-result .field--name-field-territorial-subdivisions .field--item,
@@ -379,6 +387,7 @@
 .legislation.search-result .field--name-field-publisher .field--item,
 .legislation.search-result .field--name-field-publication-place .field--item,
 .legislation.search-result .field--name-field-scope .field--item,
+.legislation.search-result .field--name-field-corp-author .field--item,
 .legislation.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
@@ -395,6 +404,7 @@
 .legislation.search-result .field--name-field-publisher,
 .legislation.search-result .field--name-field-publication-place,
 .legislation.search-result .field--name-field-scope,
+.legislation.search-result field--name-field-corp-author,
 .legislation.search-result .field--name-field-reference-number,
 .legislation.search-result .field--name-field-territorial-subdivisions a,
 .legislation.search-result .field--name-field-court a,
@@ -406,6 +416,7 @@
 .legislation.search-result .field--name-field-publisher a,
 .legislation.search-result .field--name-field-publication-place a,
 .legislation.search-result .field--name-field-scope a,
+.legislation.search-result field--name-field-corp-author a,
 .legislation.search-result .field--name-field-reference-number a {
   color: #808080;
 }
@@ -419,6 +430,7 @@
 .legislation.search-result .field--name-field-publisher:before,
 .legislation.search-result .field--name-field-publication-place:before,
 .legislation.search-result .field--name-field-scope:before,
+.legislation.search-result field--name-field-corp-author:before,
 .legislation.search-result .field--name-field-reference-number:before {
   color: #ccc;
   content: "\2013";
@@ -461,6 +473,7 @@
 .literature.search-result .field--name-field-publisher,
 .literature.search-result .field--name-field-publication-place,
 .literature.search-result .field--name-field-scope,
+.literature.search-result .field--name-field-corp-author,
 .literature.search-result .field--name-field-reference-number,
 .literature.search-result .field--name-field-court-jurisdiction .field--items,
 .literature.search-result .field--name-field-territorial-subdivisions .field--items,
@@ -473,6 +486,7 @@
 .literature.search-result .field--name-field-publisher .field--items,
 .literature.search-result .field--name-field-publication-place .field--items,
 .literature.search-result .field--name-field-scope .field--items,
+.literature.search-result .field--name-field-corp-author .field--items,
 .literature.search-result .field--name-field-reference-number .field--items,
 .literature.search-result .field--name-field-court-jurisdiction .field--item,
 .literature.search-result .field--name-field-territorial-subdivisions .field--item,
@@ -485,6 +499,7 @@
 .literature.search-result .field--name-field-publisher .field--item,
 .literature.search-result .field--name-field-publication-place .field--item,
 .literature.search-result .field--name-field-scope .field--item,
+.literature.search-result .field--name-field-corp-author .field--item,
 .literature.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
@@ -501,6 +516,7 @@
 .literature.search-result .field--name-field-publisher,
 .literature.search-result .field--name-field-publication-place,
 .literature.search-result .field--name-field-scope,
+.literature.search-result field--name-field-corp-author,
 .literature.search-result .field--name-field-reference-number,
 .literature.search-result .field--name-field-territorial-subdivisions a,
 .literature.search-result .field--name-field-court a,
@@ -512,6 +528,7 @@
 .literature.search-result .field--name-field-publisher a,
 .literature.search-result .field--name-field-publication-place a,
 .literature.search-result .field--name-field-scope a,
+.literature.search-result field--name-field-corp-author a,
 .literature.search-result .field--name-field-reference-number a {
   color: #808080;
 }
@@ -525,6 +542,7 @@
 .literature.search-result .field--name-field-publisher:before,
 .literature.search-result .field--name-field-publication-place:before,
 .literature.search-result .field--name-field-scope:before,
+.literature.search-result field--name-field-corp-author:before,
 .literature.search-result .field--name-field-reference-number:before {
   color: #ccc;
   content: "\2013";

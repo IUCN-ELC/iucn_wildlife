@@ -58,44 +58,23 @@ targetEntityType: node
 bundle: literature
 mode: search_result
 content:
-  field_country:
-    weight: 4
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_date_of_text:
-    weight: 2
-    label: hidden
-    settings:
-      timezone_override: ''
-      date_format: 'd F Y'
-    third_party_settings: {  }
-    type: datetime_custom
-  field_publication_place:
-    weight: 1
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_publisher:
+  field_corp_author:
+    type: string
     weight: 0
     label: hidden
     settings:
-      link: true
+      link_to_entity: false
     third_party_settings: {  }
-    type: entity_reference_label
-  field_scope:
-    weight: 5
+  field_date_of_text:
+    weight: 1
     label: hidden
     settings:
-      link: true
+      timezone_override: ''
+      date_format: 'Y'
     third_party_settings: {  }
-    type: entity_reference_label
-  field_type_of_text:
-    weight: 3
+    type: datetime_custom
+  field_scope:
+    weight: 2
     label: hidden
     settings:
       link: true
@@ -111,7 +90,7 @@ hidden:
   field_conference_number: true
   field_conference_place: true
   field_contributor: true
-  field_corp_author: true
+  field_country: true
   field_date_of_entry: true
   field_date_of_modification: true
   field_display_region: true
@@ -131,6 +110,8 @@ hidden:
   field_original_id: true
   field_original_title: true
   field_paper_title_of_text: true
+  field_publication_place: true
+  field_publisher: true
   field_reference_to_cou: true
   field_reference_to_faolex: true
   field_reference_to_literature: true
@@ -139,6 +120,7 @@ hidden:
   field_serial_status: true
   field_serial_title: true
   field_territorial_subdivisions: true
+  field_type_of_text: true
   field_url: true
   field_volume_number: true
   links: true

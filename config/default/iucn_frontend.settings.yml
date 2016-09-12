@@ -17,3 +17,14 @@ logo:
   url: ''
   use_default: true
 schema: 8000
+breadcrumb: '0'
+region_wells:
+  navigation: ''
+  navigation_collapsible: ''
+  jumbotron_top: ''
+  header: ''
+  highlighted: ''
+  help: ''
+  content: ''
+  sidebar: ''
+  footer: ''

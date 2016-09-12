@@ -82,7 +82,6 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
       if (strpos($entity->field_original_id->value, 'MON') === 0) {
         hide($build['field_collection']);
         hide($build['field_collation']);
-        hide($build['field_field_of_application']);
       }
     }
   }

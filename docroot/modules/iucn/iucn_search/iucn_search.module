@@ -69,6 +69,24 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
  * Implements hook_ENTITY_TYPE_view().
  */
 function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+
+  if ($entity->bundle() === 'literature') {
+    if ($view_mode === 'full') {
+      $build['field_publisher'][1] = $build['field_publication_place'][0];
+      $build['field_publisher'][2] = $build['field_date_of_text'][0];
+      hide($build['field_publication_place']);
+      hide($build['field_date_of_text']);
+    }
+
+    if ($view_mode === 'search_result') {
+      if (strpos($entity->field_original_id->value, 'MON') === 0) {
+        hide($build['field_collection']);
+        hide($build['field_collation']);
+        hide($build['field_field_of_application']);
+      }
+    }
+  }
+
   if ($entity->bundle() === 'court_decision') {
     $build['title'][0]['#context']['value'] = $build['#node']->field_original_title[0]->value;
 

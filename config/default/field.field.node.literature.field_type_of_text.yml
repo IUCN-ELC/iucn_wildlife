@@ -10,7 +10,7 @@ id: node.literature.field_type_of_text
 field_name: field_type_of_text
 entity_type: node
 bundle: literature
-label: 'Type of text'
+label: 'Document type'
 description: ''
 required: false
 translatable: true

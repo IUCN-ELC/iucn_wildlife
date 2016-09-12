@@ -9,7 +9,7 @@ id: node.literature.field_corp_author
 field_name: field_corp_author
 entity_type: node
 bundle: literature
-label: 'Corp Author'
+label: Author
 description: ''
 required: false
 translatable: false

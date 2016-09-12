@@ -11,7 +11,7 @@ id: node.literature.field_files
 field_name: field_files
 entity_type: node
 bundle: literature
-label: Files
+label: Text
 description: ''
 required: false
 translatable: true

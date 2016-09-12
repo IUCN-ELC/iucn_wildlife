@@ -1,0 +1,22 @@
+uuid: a8715cf3-d6ec-4866-ab03-53e7caa0d43a
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: literature_details_page
+label: 'Literature details page'
+type: 'canonical_entities:node'
+pattern: 'literature/[node:title]'
+selection_criteria:
+  7a7f50d9-cfd3-4ef3-a103-be89e22bc0ac:
+    id: node_type
+    bundles:
+      literature: literature
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 7a7f50d9-cfd3-4ef3-a103-be89e22bc0ac
+selection_logic: and
+weight: -5
+relationships: {  }

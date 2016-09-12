@@ -1,0 +1,22 @@
+uuid: 695082ef-0ac1-4d05-a4c8-10b698bae560
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: legislation_details_page
+label: 'Legislation details page'
+type: 'canonical_entities:node'
+pattern: 'legislation/[node:title]'
+selection_criteria:
+  641ab477-b341-47c7-89fe-8629ede78b48:
+    id: node_type
+    bundles:
+      legislation: legislation
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 641ab477-b341-47c7-89fe-8629ede78b48
+selection_logic: and
+weight: -5
+relationships: {  }

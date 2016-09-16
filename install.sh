@@ -4,7 +4,7 @@
 cd docroot/
 drush sql-drop -y
 
-env="test"
+env="prod"
 if [ ! -z "$1" ]; then
   env=$1
 fi

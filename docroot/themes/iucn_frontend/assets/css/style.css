@@ -450,9 +450,6 @@
 .legislation.search-result .field--name-field-abstract {
   margin-top: 2px;
 }
-.legislation .field--name-field-date-of-text:before {
-  display: none;
-}
 .literature.full .field {
   margin-bottom: 11px;
 }

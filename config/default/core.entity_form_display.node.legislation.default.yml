@@ -13,7 +13,9 @@ dependencies:
     - field.field.node.legislation.field_language_of_document
     - field.field.node.legislation.field_original_id
     - field.field.node.legislation.field_original_title
+    - field.field.node.legislation.field_reference_number
     - field.field.node.legislation.field_region
+    - field.field.node.legislation.field_territorial_subdivisions
     - field.field.node.legislation.field_type_of_text
     - field.field.node.legislation.field_url
     - node.type.legislation
@@ -98,8 +100,23 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+  field_reference_number:
+    weight: 45
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
   field_region:
     weight: 39
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_territorial_subdivisions:
+    weight: 44
     settings:
       match_operator: CONTAINS
       size: 60

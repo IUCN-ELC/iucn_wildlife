@@ -8,7 +8,7 @@
         "wikimedia/composer-merge-plugin": "~1.3"
     },
     "replace": {
-        "drupal/core": "~8.0",
+        "drupal/core": "~8.1",
         "drupal/webprofiler": "8.*",
         "drupal/pathauto": "8.*",
         "drupal/search_api_solr": "8.*"

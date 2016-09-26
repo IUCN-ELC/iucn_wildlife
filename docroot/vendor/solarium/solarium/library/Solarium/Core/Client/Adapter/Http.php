@@ -30,12 +30,14 @@
  *
  * @copyright Copyright 2011 Bas de Nooijer <solarium@raspberry.nl>
  * @license http://github.com/basdenooijer/solarium/raw/master/COPYING
+ *
  * @link http://www.solarium-project.org/
  */
 
 /**
  * @namespace
  */
+
 namespace Solarium\Core\Client\Adapter;
 
 use Solarium\Core\Configurable;
@@ -45,22 +47,24 @@ use Solarium\Core\Client\Endpoint;
 use Solarium\Exception\HttpException;
 
 /**
- * Basic HTTP adapter using a stream
+ * Basic HTTP adapter using a stream.
  */
 class Http extends Configurable implements AdapterInterface
 {
     /**
-     * Handle Solr communication
+     * Handle Solr communication.
      *
      * @throws HttpException
-     * @param  Request       $request
-     * @param  Endpoint      $endpoint
+     *
+     * @param Request  $request
+     * @param Endpoint $endpoint
+     *
      * @return Response
      */
     public function execute($request, $endpoint)
     {
         $context = $this->createContext($request, $endpoint);
-        $uri = $endpoint->getBaseUri() . $request->getUri();
+        $uri = $endpoint->getBaseUri().$request->getUri();
 
         list($data, $headers) = $this->getData($uri, $context);
 
@@ -70,12 +74,12 @@ class Http extends Configurable implements AdapterInterface
     }
 
     /**
-     * Check result of a request
+     * Check result of a request.
      *
      * @throws HttpException
-     * @param  string        $data
-     * @param  array         $headers
-     * @return void
+     *
+     * @param string $data
+     * @param array  $headers
      */
     public function check($data, $headers)
     {
@@ -87,52 +91,41 @@ class Http extends Configurable implements AdapterInterface
     }
 
     /**
-     * Create a stream context for a request
+     * Create a stream context for a request.
      *
-     * @param  Request  $request
-     * @param  Endpoint $endpoint
+     * @param Request  $request
+     * @param Endpoint $endpoint
+     *
      * @return resource
      */
     public function createContext($request, $endpoint)
     {
         $method = $request->getMethod();
         $context = stream_context_create(
-          array('http' => array(
-            'method' => $method,
-            'timeout' => $endpoint->getTimeout(),
-          ),
-          )
+            array('http' => array(
+                    'method' => $method,
+                    'timeout' => $endpoint->getTimeout(),
+                ),
+            )
         );
 
         if ($method == Request::METHOD_POST) {
             if ($request->getFileUpload()) {
-                $boundary = '----------' . md5(time());
-                $CRLF = "\r\n";
-                $file = $request->getFileUpload();
-                $filename = basename($file);
-                // Add the proper boundary to the Content-Type header
-                $request->addHeader("Content-Type: multipart/form-data; boundary={$boundary}");
-                $data =  "--{$boundary}" . $CRLF;
-                $data .= 'Content-Disposition: form-data; name="upload"; filename=' . $filename . $CRLF;
-                $data .= 'Content-Type: application/octet-stream' . $CRLF . $CRLF;
-                $data .= file_get_contents($request->getFileUpload()) . $CRLF;
-                $data .= '--' . $boundary . '--';
-                $content_length = strlen($data);
-                $request->addHeader("Content-Length: $content_length\r\n");
                 stream_context_set_option(
-                  $context,
-                  'http',
-                  'content',
-                  $data
+                    $context,
+                    'http',
+                    'content',
+                    file_get_contents($request->getFileUpload())
                 );
+                $request->addHeader('Content-Type: multipart/form-data');
             } else {
                 $data = $request->getRawData();
                 if (null !== $data) {
                     stream_context_set_option(
-                      $context,
-                      'http',
-                      'content',
-                      $data
+                        $context,
+                        'http',
+                        'content',
+                        $data
                     );
 
                     $request->addHeader('Content-Type: text/xml; charset=UTF-8');
@@ -148,7 +141,7 @@ class Http extends Configurable implements AdapterInterface
 
         if (!empty($authData['username']) && !empty($authData['password'])) {
             $request->addHeader(
-                'Authorization: Basic ' . base64_encode($authData['username'] . ':' . $authData['password'])
+                'Authorization: Basic '.base64_encode($authData['username'].':'.$authData['password'])
             );
         }
 
@@ -166,10 +159,11 @@ class Http extends Configurable implements AdapterInterface
     }
 
     /**
-     * Execute request
+     * Execute request.
      *
-     * @param  string   $uri
-     * @param  resource $context
+     * @param string   $uri
+     * @param resource $context
+     *
      * @return array
      */
     protected function getData($uri, $context)

@@ -41,6 +41,10 @@ process:
   field_files:
     source: linkToFullText
     plugin: url_file
+  field_territorial_subdivisions:
+    source: territorialSubdivision
+    plugin: taxonomy_term
+  field_reference_number: referenceNumber
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }

@@ -44,6 +44,10 @@ process:
     source: territorialSubdivision
     plugin: taxonomy_term
   field_reference_number: referenceNumber
+  field_keywords:
+    source: keyword
+    plugin: taxonomy_term
+  field_abstract: abstract
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }

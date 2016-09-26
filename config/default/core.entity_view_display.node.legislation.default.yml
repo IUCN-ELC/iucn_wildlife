@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.legislation.field_abstract
     - field.field.node.legislation.field_country
     - field.field.node.legislation.field_date_of_entry
     - field.field.node.legislation.field_date_of_modification
@@ -10,6 +11,7 @@ dependencies:
     - field.field.node.legislation.field_ecolex_subjects
     - field.field.node.legislation.field_files
     - field.field.node.legislation.field_isis_number
+    - field.field.node.legislation.field_keywords
     - field.field.node.legislation.field_language_of_document
     - field.field.node.legislation.field_original_id
     - field.field.node.legislation.field_original_title
@@ -22,12 +24,19 @@ dependencies:
   module:
     - datetime
     - file
+    - text
     - user
 id: node.legislation.default
 targetEntityType: node
 bundle: legislation
 mode: default
 content:
+  field_abstract:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   field_country:
     weight: 1
     label: above
@@ -49,6 +58,13 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
+  field_keywords:
+    weight: 8
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_language_of_document:
     weight: 6
     label: above

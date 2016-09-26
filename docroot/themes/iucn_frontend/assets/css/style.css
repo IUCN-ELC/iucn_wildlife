@@ -285,13 +285,13 @@
 .court-decision.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
-.court-decision.search-result .field--name-field-court-jurisdiction a {
+.court-decision.search-result .field--name-field-country a {
   color: #808080;
 }
 .court-decision.search-result .field--name-field-territorial-subdivisions,
 .court-decision.search-result .field--name-field-court,
 .court-decision.search-result .field--name-field-seat-of-court,
-.court-decision.search-result .field--name-field-country,
+.court-decision.search-result .field--name-field-court-jurisdiction,
 .court-decision.search-result .field--name-field-date-of-text,
 .court-decision.search-result .field--name-field-type-of-text,
 .court-decision.search-result .field--name-field-region,
@@ -304,7 +304,7 @@
 .court-decision.search-result .field--name-field-territorial-subdivisions a,
 .court-decision.search-result .field--name-field-court a,
 .court-decision.search-result .field--name-field-seat-of-court a,
-.court-decision.search-result .field--name-field-country a,
+.court-decision.search-result .field--name-field-court-jurisdiction a,
 .court-decision.search-result .field--name-field-date-of-text a,
 .court-decision.search-result .field--name-field-type-of-text a,
 .court-decision.search-result .field--name-field-region a,
@@ -319,7 +319,7 @@
 .court-decision.search-result .field--name-field-territorial-subdivisions:before,
 .court-decision.search-result .field--name-field-court:before,
 .court-decision.search-result .field--name-field-seat-of-court:before,
-.court-decision.search-result .field--name-field-country:before,
+.court-decision.search-result .field--name-field-court-jurisdiction:before,
 .court-decision.search-result .field--name-field-date-of-text:before,
 .court-decision.search-result .field--name-field-type-of-text:before,
 .court-decision.search-result .field--name-field-region:before,
@@ -400,13 +400,13 @@
 .legislation.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
-.legislation.search-result .field--name-field-court-jurisdiction a {
+.legislation.search-result .field--name-field-country a {
   color: #808080;
 }
 .legislation.search-result .field--name-field-territorial-subdivisions,
 .legislation.search-result .field--name-field-court,
 .legislation.search-result .field--name-field-seat-of-court,
-.legislation.search-result .field--name-field-country,
+.legislation.search-result .field--name-field-court-jurisdiction,
 .legislation.search-result .field--name-field-date-of-text,
 .legislation.search-result .field--name-field-type-of-text,
 .legislation.search-result .field--name-field-region,
@@ -419,7 +419,7 @@
 .legislation.search-result .field--name-field-territorial-subdivisions a,
 .legislation.search-result .field--name-field-court a,
 .legislation.search-result .field--name-field-seat-of-court a,
-.legislation.search-result .field--name-field-country a,
+.legislation.search-result .field--name-field-court-jurisdiction a,
 .legislation.search-result .field--name-field-date-of-text a,
 .legislation.search-result .field--name-field-type-of-text a,
 .legislation.search-result .field--name-field-region a,
@@ -434,7 +434,7 @@
 .legislation.search-result .field--name-field-territorial-subdivisions:before,
 .legislation.search-result .field--name-field-court:before,
 .legislation.search-result .field--name-field-seat-of-court:before,
-.legislation.search-result .field--name-field-country:before,
+.legislation.search-result .field--name-field-court-jurisdiction:before,
 .legislation.search-result .field--name-field-date-of-text:before,
 .legislation.search-result .field--name-field-type-of-text:before,
 .legislation.search-result .field--name-field-region:before,
@@ -518,13 +518,13 @@
 .literature.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
-.literature.search-result .field--name-field-court-jurisdiction a {
+.literature.search-result .field--name-field-country a {
   color: #808080;
 }
 .literature.search-result .field--name-field-territorial-subdivisions,
 .literature.search-result .field--name-field-court,
 .literature.search-result .field--name-field-seat-of-court,
-.literature.search-result .field--name-field-country,
+.literature.search-result .field--name-field-court-jurisdiction,
 .literature.search-result .field--name-field-date-of-text,
 .literature.search-result .field--name-field-type-of-text,
 .literature.search-result .field--name-field-region,
@@ -537,7 +537,7 @@
 .literature.search-result .field--name-field-territorial-subdivisions a,
 .literature.search-result .field--name-field-court a,
 .literature.search-result .field--name-field-seat-of-court a,
-.literature.search-result .field--name-field-country a,
+.literature.search-result .field--name-field-court-jurisdiction a,
 .literature.search-result .field--name-field-date-of-text a,
 .literature.search-result .field--name-field-type-of-text a,
 .literature.search-result .field--name-field-region a,
@@ -552,7 +552,7 @@
 .literature.search-result .field--name-field-territorial-subdivisions:before,
 .literature.search-result .field--name-field-court:before,
 .literature.search-result .field--name-field-seat-of-court:before,
-.literature.search-result .field--name-field-country:before,
+.literature.search-result .field--name-field-court-jurisdiction:before,
 .literature.search-result .field--name-field-date-of-text:before,
 .literature.search-result .field--name-field-type-of-text:before,
 .literature.search-result .field--name-field-region:before,

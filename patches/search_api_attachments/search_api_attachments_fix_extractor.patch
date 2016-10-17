@@ -1,0 +1,38 @@
+commit 313e2eed28925ba8e2769f3bfe6e10b3f6d83b6a
+Author: Octavian Belu <beluoctavian@gmail.com>
+Date:   Mon Oct 17 13:25:54 2016 +0300
+
+    Don't crash if the xml can't be decoded
+
+diff --git a/docroot/modules/contrib/search_api_attachments/src/Plugin/search_api_attachments/SolrExtractor.php b/docroot/modules/contrib/search_api_attachments/src/Plugin/search_api_attachments/SolrExtractor.php
+index 2be5265..9ef7b6d 100644
+--- a/docroot/modules/contrib/search_api_attachments/src/Plugin/search_api_attachments/SolrExtractor.php
++++ b/docroot/modules/contrib/search_api_attachments/src/Plugin/search_api_attachments/SolrExtractor.php
+@@ -99,15 +99,20 @@ public function extract(File $file) {
+     // the extracted text we need and [filename]_metadata that contains some
+     // extra metadata.
+     $xml_data = $array_data[basename($filepath)];
+-    // We need to get only what is in body tag.
+-    $xmlencoder = new XmlEncoder();
+-    $dom_data = $xmlencoder->decode($xml_data, 'xml');
+-    $dom_data = $dom_data['body'];
++    try {
++      // We need to get only what is in body tag.
++      $xmlencoder = new XmlEncoder();
++      $dom_data = $xmlencoder->decode($xml_data, 'xml');
++      $dom_data = $dom_data['body'];
+ 
+-    $htmlencoder = new XmlEncoder();
+-    $htmlencoder = $htmlencoder->encode($dom_data, 'xml');
++      $htmlencoder = new XmlEncoder();
++      $htmlencoder = $htmlencoder->encode($dom_data, 'xml');
++      $body = strip_tags($htmlencoder);
+ 
+-    $body = strip_tags($htmlencoder);
++    }
++    catch (\Exception $e) {
++      $body = trim(strip_tags($xml_data));
++    }
+     return $body;
+   }
+ 

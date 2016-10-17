@@ -99,15 +99,20 @@ class SolrExtractor extends TextExtractorPluginBase {
     // the extracted text we need and [filename]_metadata that contains some
     // extra metadata.
     $xml_data = $array_data[basename($filepath)];
-    // We need to get only what is in body tag.
-    $xmlencoder = new XmlEncoder();
-    $dom_data = $xmlencoder->decode($xml_data, 'xml');
-    $dom_data = $dom_data['body'];
+    try {
+      // We need to get only what is in body tag.
+      $xmlencoder = new XmlEncoder();
+      $dom_data = $xmlencoder->decode($xml_data, 'xml');
+      $dom_data = $dom_data['body'];
 
-    $htmlencoder = new XmlEncoder();
-    $htmlencoder = $htmlencoder->encode($dom_data, 'xml');
+      $htmlencoder = new XmlEncoder();
+      $htmlencoder = $htmlencoder->encode($dom_data, 'xml');
+      $body = strip_tags($htmlencoder);
 
-    $body = strip_tags($htmlencoder);
+    }
+    catch (\Exception $e) {
+      $body = trim(strip_tags($xml_data));
+    }
     return $body;
   }
 

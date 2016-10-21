@@ -30,6 +30,7 @@ content:
   links:
     weight: 100
 hidden:
+  field_abstract: true
   field_country: true
   field_date_of_entry: true
   field_date_of_modification: true
@@ -37,6 +38,7 @@ hidden:
   field_ecolex_subjects: true
   field_files: true
   field_isis_number: true
+  field_keywords: true
   field_language_of_document: true
   field_original_id: true
   field_original_title: true

@@ -265,7 +265,7 @@ processor_settings:
       excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
 options:
   index_directly: false
-  cron_limit: 50
+  cron_limit: 2
 datasource_settings:
   'entity:node':
     plugin_id: 'entity:node'

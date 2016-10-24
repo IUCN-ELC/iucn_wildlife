@@ -91,27 +91,33 @@ class SolrExtractor extends TextExtractorPluginBase {
     }
 
     // Execute the query.
-    $result = $client->extract($query);
-    $response = $result->getResponse();
-    $json_data = $response->getBody();
-    $array_data = Json::decode($json_data);
-    // $array_data contains json array with two keys : [filename] that contains
-    // the extracted text we need and [filename]_metadata that contains some
-    // extra metadata.
-    $xml_data = $array_data[basename($filepath)];
     try {
-      // We need to get only what is in body tag.
-      $xmlencoder = new XmlEncoder();
-      $dom_data = $xmlencoder->decode($xml_data, 'xml');
-      $dom_data = $dom_data['body'];
+      $result = $client->extract($query);
+      $response = $result->getResponse();
+      $json_data = $response->getBody();
+      $array_data = Json::decode($json_data);
+      // $array_data contains json array with two keys : [filename] that contains
+      // the extracted text we need and [filename]_metadata that contains some
+      // extra metadata.
+      $xml_data = $array_data[basename($filepath)];
+      try {
+        // We need to get only what is in body tag.
+        $xmlencoder = new XmlEncoder();
+        $dom_data = $xmlencoder->decode($xml_data, 'xml');
+        $dom_data = $dom_data['body'];
 
-      $htmlencoder = new XmlEncoder();
-      $htmlencoder = $htmlencoder->encode($dom_data, 'xml');
-      $body = strip_tags($htmlencoder);
+        $htmlencoder = new XmlEncoder();
+        $htmlencoder = $htmlencoder->encode($dom_data, 'xml');
+        $body = strip_tags($htmlencoder);
 
+      }
+      catch (\Exception $e) {
+        $body = trim(strip_tags($xml_data));
+      }
     }
-    catch (\Exception $e) {
-      $body = trim(strip_tags($xml_data));
+    catch (\Solarium\Exception\HttpException $e) {
+      \Drupal::logger('search_api_exception')->error(t('Extraction for file @file failed.', ['@file' => $filepath]));
+      $body = '';
     }
     return $body;
   }

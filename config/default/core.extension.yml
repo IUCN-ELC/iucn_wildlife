@@ -16,6 +16,7 @@ module:
   dblog: 0
   dynamic_page_cache: 0
   editor: 0
+  editor_file: 0
   elis_consumer: 0
   eu_cookie_compliance: 0
   field: 0
@@ -28,6 +29,7 @@ module:
   iucn_search: 0
   kint: 0
   link: 0
+  linkit: 0
   menu_link_attributes: 0
   menu_ui: 0
   migrate: 0

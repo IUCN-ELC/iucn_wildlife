@@ -186,6 +186,8 @@ function iucn_search_cron() {
     'elis_consumer_court_decisions',
   ];
 
+  $reindex = FALSE;
+
   /** @var \Drupal\migrate\Plugin\MigrationPluginManager $service */
   $service = \Drupal::service('plugin.manager.migration');
   $migrate_last_imported_store = \Drupal::keyValue('migrate_last_imported');
@@ -201,12 +203,15 @@ function iucn_search_cron() {
         $executable->import();
         \Drupal::state()->set('iucn_search.migration_last_run.' . $migrationName, time());
         $migrate_last_imported_store->set($migration->id(), round(microtime(TRUE) * 1000));
+        $reindex = TRUE;
       }
     }
   }
 
-  drush_search_api_clear();
-  drush_search_api_index();
+  if ($reindex === TRUE) {
+    drush_search_api_clear();
+    drush_search_api_index();
+  }
 }
 
 function iucn_search_query_filter() {

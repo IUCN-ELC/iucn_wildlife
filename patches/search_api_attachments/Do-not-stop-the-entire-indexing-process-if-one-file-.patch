@@ -1,0 +1,70 @@
+From ce656cc7a75e6616c7d4bc1ab621081d698aa373 Mon Sep 17 00:00:00 2001
+From: Octavian Belu <beluoctavian@gmail.com>
+Date: Mon, 24 Oct 2016 16:34:09 +0300
+Subject: [PATCH] Do not stop the entire indexing process if one file cannot be
+ extracted by tika
+
+---
+ .../search_api_attachments/SolrExtractor.php       | 44 ++++++++++++----------
+ 1 file changed, 25 insertions(+), 19 deletions(-)
+
+diff --git a/docroot/modules/contrib/search_api_attachments/src/Plugin/search_api_attachments/SolrExtractor.php b/docroot/modules/contrib/search_api_attachments/src/Plugin/search_api_attachments/SolrExtractor.php
+index 9ef7b6d..f73278f 100644
+--- a/docroot/modules/contrib/search_api_attachments/src/Plugin/search_api_attachments/SolrExtractor.php
++++ b/docroot/modules/contrib/search_api_attachments/src/Plugin/search_api_attachments/SolrExtractor.php
+@@ -91,27 +91,33 @@ public function extract(File $file) {
+     }
+ 
+     // Execute the query.
+-    $result = $client->extract($query);
+-    $response = $result->getResponse();
+-    $json_data = $response->getBody();
+-    $array_data = Json::decode($json_data);
+-    // $array_data contains json array with two keys : [filename] that contains
+-    // the extracted text we need and [filename]_metadata that contains some
+-    // extra metadata.
+-    $xml_data = $array_data[basename($filepath)];
+     try {
+-      // We need to get only what is in body tag.
+-      $xmlencoder = new XmlEncoder();
+-      $dom_data = $xmlencoder->decode($xml_data, 'xml');
+-      $dom_data = $dom_data['body'];
+-
+-      $htmlencoder = new XmlEncoder();
+-      $htmlencoder = $htmlencoder->encode($dom_data, 'xml');
+-      $body = strip_tags($htmlencoder);
+-
++      $result = $client->extract($query);
++      $response = $result->getResponse();
++      $json_data = $response->getBody();
++      $array_data = Json::decode($json_data);
++      // $array_data contains json array with two keys : [filename] that contains
++      // the extracted text we need and [filename]_metadata that contains some
++      // extra metadata.
++      $xml_data = $array_data[basename($filepath)];
++      try {
++        // We need to get only what is in body tag.
++        $xmlencoder = new XmlEncoder();
++        $dom_data = $xmlencoder->decode($xml_data, 'xml');
++        $dom_data = $dom_data['body'];
++
++        $htmlencoder = new XmlEncoder();
++        $htmlencoder = $htmlencoder->encode($dom_data, 'xml');
++        $body = strip_tags($htmlencoder);
++
++      }
++      catch (\Exception $e) {
++        $body = trim(strip_tags($xml_data));
++      }
+     }
+-    catch (\Exception $e) {
+-      $body = trim(strip_tags($xml_data));
++    catch (\Solarium\Exception\HttpException $e) {
++      \Drupal::logger('search_api_exception')->error(t('Extraction for file @file failed.', ['@file' => $filepath]));
++      $body = '';
+     }
+     return $body;
+   }
+-- 
+1.9.1
+

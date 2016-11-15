@@ -731,3 +731,5 @@ if (file_exists('/var/www/site-php')) {
 
 $databases['default']['default']['init_commands']['lock_wait_timeout'] = "SET SESSION innodb_lock_wait_timeout = 3600";
 $databases['default']['default']['init_commands']['wait_timeout'] = "SET SESSION wait_timeout = 3600";
+
+$databases['migrate']['default'] = $databases['default']['default'];

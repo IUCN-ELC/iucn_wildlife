@@ -118,9 +118,7 @@ abstract class DefaultSearchController extends ControllerBase {
         $results = $this->handleResults($rows);
       }
 
-      $singular = $this->getContentType()['singular'];
-      $plural = $this->getContentType()['plural'];
-      $numFound = $this->formatPlural($found, 'Found 1 ' . $singular, 'Found @count ' . $plural);
+      $numFound = $this->formatPlural($found, 'Found one search result', 'Found @count search results');
 
       $sorts = $this->getSortFields();
       $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : $this->getDefaultSorting()['sort'];

@@ -77,10 +77,16 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
       hide($build['field_publication_place']);
       hide($build['field_date_of_text']);
 
+      /* --- START https://trello.com/c/5qu73PMB --- */
       if (!empty($entity->field_author->value) && !empty($entity->field_corp_author->value)) {
-        // https://trello.com/c/5qu73PMB
         hide($build['field_corp_author']);
       }
+
+      if (!empty($entity->field_volume_number->value)) {
+        $build['field_serial_title'][1] = $build['field_volume_number'][0];
+        hide($build['field_volume_number']);
+      }
+      /* --- END https://trello.com/c/5qu73PMB --- */
     }
 
     if ($view_mode === 'search_result') {

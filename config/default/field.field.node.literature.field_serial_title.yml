@@ -9,7 +9,7 @@ id: node.literature.field_serial_title
 field_name: field_serial_title
 entity_type: node
 bundle: literature
-label: 'Serial title'
+label: In
 description: ''
 required: false
 translatable: false

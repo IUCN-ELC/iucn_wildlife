@@ -74,7 +74,7 @@ content:
     third_party_settings: {  }
     type: string
   field_date_of_text:
-    weight: 4
+    weight: 6
     label: hidden
     settings:
       timezone_override: ''
@@ -82,20 +82,20 @@ content:
     third_party_settings: {  }
     type: datetime_custom
   field_ecolex_subjects:
-    weight: 7
+    weight: 9
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_files:
-    weight: 9
+    weight: 11
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
   field_internet_reference:
-    weight: 10
+    weight: 12
     label: above
     settings:
       trim_length: 80
@@ -106,40 +106,53 @@ content:
     third_party_settings: {  }
     type: link
   field_keywords:
-    weight: 8
+    weight: 10
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_publication_place:
-    weight: 3
+    weight: 5
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_publisher:
-    weight: 2
+    weight: 4
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_scope:
-    weight: 6
+    weight: 8
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_serial_title:
+    type: basic_string
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_type_of_text:
-    weight: 5
+    weight: 7
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_volume_number:
+    type: string
+    weight: 3
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
 hidden:
   field_basin: true
   field_call_number: true
@@ -171,8 +184,6 @@ hidden:
   field_reference_to_treaties: true
   field_region: true
   field_serial_status: true
-  field_serial_title: true
   field_territorial_subdivisions: true
   field_url: true
-  field_volume_number: true
   links: true

@@ -254,6 +254,7 @@
 .court-decision.search-result .field--name-field-scope,
 .court-decision.search-result .field--name-field-corp-author,
 .court-decision.search-result .field--name-field-collation,
+.court-decision.search-result .field--name-field-serial-title,
 .court-decision.search-result .field--name-field-reference-number,
 .court-decision.search-result .field--name-field-court-jurisdiction .field--items,
 .court-decision.search-result .field--name-field-territorial-subdivisions .field--items,
@@ -268,6 +269,7 @@
 .court-decision.search-result .field--name-field-scope .field--items,
 .court-decision.search-result .field--name-field-corp-author .field--items,
 .court-decision.search-result .field--name-field-collation .field--items,
+.court-decision.search-result .field--name-field-serial-title .field--items,
 .court-decision.search-result .field--name-field-reference-number .field--items,
 .court-decision.search-result .field--name-field-court-jurisdiction .field--item,
 .court-decision.search-result .field--name-field-territorial-subdivisions .field--item,
@@ -282,6 +284,7 @@
 .court-decision.search-result .field--name-field-scope .field--item,
 .court-decision.search-result .field--name-field-corp-author .field--item,
 .court-decision.search-result .field--name-field-collation .field--item,
+.court-decision.search-result .field--name-field-serial-title .field--item,
 .court-decision.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
@@ -369,6 +372,7 @@
 .legislation.search-result .field--name-field-scope,
 .legislation.search-result .field--name-field-corp-author,
 .legislation.search-result .field--name-field-collation,
+.legislation.search-result .field--name-field-serial-title,
 .legislation.search-result .field--name-field-reference-number,
 .legislation.search-result .field--name-field-court-jurisdiction .field--items,
 .legislation.search-result .field--name-field-territorial-subdivisions .field--items,
@@ -383,6 +387,7 @@
 .legislation.search-result .field--name-field-scope .field--items,
 .legislation.search-result .field--name-field-corp-author .field--items,
 .legislation.search-result .field--name-field-collation .field--items,
+.legislation.search-result .field--name-field-serial-title .field--items,
 .legislation.search-result .field--name-field-reference-number .field--items,
 .legislation.search-result .field--name-field-court-jurisdiction .field--item,
 .legislation.search-result .field--name-field-territorial-subdivisions .field--item,
@@ -397,6 +402,7 @@
 .legislation.search-result .field--name-field-scope .field--item,
 .legislation.search-result .field--name-field-corp-author .field--item,
 .legislation.search-result .field--name-field-collation .field--item,
+.legislation.search-result .field--name-field-serial-title .field--item,
 .legislation.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
@@ -484,6 +490,7 @@
 .literature.search-result .field--name-field-scope,
 .literature.search-result .field--name-field-corp-author,
 .literature.search-result .field--name-field-collation,
+.literature.search-result .field--name-field-serial-title,
 .literature.search-result .field--name-field-reference-number,
 .literature.search-result .field--name-field-court-jurisdiction .field--items,
 .literature.search-result .field--name-field-territorial-subdivisions .field--items,
@@ -498,6 +505,7 @@
 .literature.search-result .field--name-field-scope .field--items,
 .literature.search-result .field--name-field-corp-author .field--items,
 .literature.search-result .field--name-field-collation .field--items,
+.literature.search-result .field--name-field-serial-title .field--items,
 .literature.search-result .field--name-field-reference-number .field--items,
 .literature.search-result .field--name-field-court-jurisdiction .field--item,
 .literature.search-result .field--name-field-territorial-subdivisions .field--item,
@@ -512,6 +520,7 @@
 .literature.search-result .field--name-field-scope .field--item,
 .literature.search-result .field--name-field-corp-author .field--item,
 .literature.search-result .field--name-field-collation .field--item,
+.literature.search-result .field--name-field-serial-title .field--item,
 .literature.search-result .field--name-field-reference-number .field--item {
   display: inline;
 }
@@ -568,21 +577,25 @@
 .literature .field--name-field-corp-author:before {
   display: none;
 }
-.literature.full .field--name-field-publisher .field--item {
+.literature.full .field--name-field-publisher .field--item,
+.literature.full .field--name-field-serial-title .field--item {
   display: inline;
   width: auto!important;
   padding-right: 0;
   color: #e67e22;
   padding-left: 5px;
 }
-.literature.full .field--name-field-publisher .field--item:before {
+.literature.full .field--name-field-publisher .field--item:before,
+.literature.full .field--name-field-serial-title .field--item:before {
   padding-right: 5px;
   content: "|";
 }
-.literature.full .field--name-field-publisher .field--item:nth-child(2) {
+.literature.full .field--name-field-publisher .field--item:nth-child(2),
+.literature.full .field--name-field-serial-title .field--item:nth-child(2) {
   padding-left: 15px;
 }
-.literature.full .field--name-field-publisher .field--item:nth-child(2):before {
+.literature.full .field--name-field-publisher .field--item:nth-child(2):before,
+.literature.full .field--name-field-serial-title .field--item:nth-child(2):before {
   padding-right: 0;
   content: none;
 }

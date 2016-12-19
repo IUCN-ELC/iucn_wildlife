@@ -163,15 +163,19 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
   }
 
   public function getTitle(Row $row) {
-    if (empty($titleOfText = $row->getSourceProperty('titleOfText')) &&
-      empty($titleOfText = $row->getSourceProperty('titleOfTextSp')) &&
-      empty($titleOfText = $row->getSourceProperty('titleOfTextFr')) &&
-      empty($titleOfText = $row->getSourceProperty('titleOfTextOther')) &&
-      empty($titleOfText = $row->getSourceProperty('paperTitleOfText')) &&
+    if (strpos($row->getSourceProperty('id'), 'MON') === 0) {
+      if (empty($titleOfText = $row->getSourceProperty('titleOfText')) &&
+        empty($titleOfText = $row->getSourceProperty('titleOfTextSp')) &&
+        empty($titleOfText = $row->getSourceProperty('titleOfTextFr')) &&
+        empty($titleOfText = $row->getSourceProperty('titleOfTextOther')) {
+        return null;
+      }
+    }
+    elseif (empty($titleOfText = $row->getSourceProperty('paperTitleOfText')) &&
       empty($titleOfText = $row->getSourceProperty('paperTitleOfTextSp')) &&
       empty($titleOfText = $row->getSourceProperty('paperTitleOfTextFr')) &&
       empty($titleOfText = $row->getSourceProperty('paperTitleOfTextOther'))) {
-      return NULL;
+      return null;
     }
     return $titleOfText;
   }

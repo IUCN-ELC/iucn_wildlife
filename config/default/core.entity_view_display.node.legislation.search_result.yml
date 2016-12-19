@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.search_result
+    - field.field.node.legislation.field_abstract
     - field.field.node.legislation.field_country
     - field.field.node.legislation.field_date_of_entry
     - field.field.node.legislation.field_date_of_modification
@@ -11,6 +12,7 @@ dependencies:
     - field.field.node.legislation.field_ecolex_subjects
     - field.field.node.legislation.field_files
     - field.field.node.legislation.field_isis_number
+    - field.field.node.legislation.field_keywords
     - field.field.node.legislation.field_language_of_document
     - field.field.node.legislation.field_original_id
     - field.field.node.legislation.field_original_title
@@ -33,7 +35,7 @@ content:
     weight: 0
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
   field_date_of_text:
     weight: 3
@@ -55,13 +57,13 @@ content:
     weight: 2
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
   field_type_of_text:
     weight: 1
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
 hidden:

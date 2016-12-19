@@ -4,6 +4,7 @@ status: false
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.legislation.field_abstract
     - field.field.node.legislation.field_country
     - field.field.node.legislation.field_date_of_entry
     - field.field.node.legislation.field_date_of_modification
@@ -11,6 +12,7 @@ dependencies:
     - field.field.node.legislation.field_ecolex_subjects
     - field.field.node.legislation.field_files
     - field.field.node.legislation.field_isis_number
+    - field.field.node.legislation.field_keywords
     - field.field.node.legislation.field_language_of_document
     - field.field.node.legislation.field_original_id
     - field.field.node.legislation.field_original_title

@@ -108,7 +108,19 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
       if (!empty($entity->field_author->value) && !empty($entity->field_corp_author->value)) {
         hide($build['field_corp_author']);
       }
-      concat_fields_display($build, $entity, 'field_serial_title', 'field_volume_number', 'field_collation');
+
+      if (literature_is_article($entity)) {
+        concat_fields_display($build, $entity, 'field_serial_title', 'field_volume_number', 'field_collation');
+        hide($build['field_paper_title_of_text']);
+      }
+      elseif (literature_is_chapter($entity)) {
+        concat_fields_display($build, $entity, 'field_paper_title_of_text', 'field_volume_number', 'field_collation');
+        hide($build['field_serial_title']);
+      }
+      else {
+        hide($build['field_paper_title_of_text']);
+        hide($build['field_serial_title']);
+      }
     }
 
     if ($view_mode === 'search_result') {

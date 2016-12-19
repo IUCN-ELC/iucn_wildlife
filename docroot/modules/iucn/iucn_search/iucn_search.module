@@ -82,9 +82,15 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
         hide($build['field_corp_author']);
       }
 
+      $k = 1;
       if (!empty($entity->field_volume_number->value)) {
-        $build['field_serial_title'][1] = $build['field_volume_number'][0];
+        $build['field_serial_title'][$k++] = $build['field_volume_number'][0];
         hide($build['field_volume_number']);
+      }
+
+      if (!empty($entity->field_collation->value)) {
+        $build['field_serial_title'][$k] = $build['field_collation'][0];
+        hide($build['field_collation']);
       }
       /* --- END https://trello.com/c/5qu73PMB --- */
     }

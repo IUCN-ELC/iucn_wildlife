@@ -66,6 +66,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_collation:
+    type: string
+    weight: 4
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_corp_author:
     weight: 1
     label: above
@@ -74,7 +81,7 @@ content:
     third_party_settings: {  }
     type: string
   field_date_of_text:
-    weight: 6
+    weight: 7
     label: hidden
     settings:
       timezone_override: ''
@@ -82,20 +89,20 @@ content:
     third_party_settings: {  }
     type: datetime_custom
   field_ecolex_subjects:
-    weight: 9
+    weight: 10
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_files:
-    weight: 11
+    weight: 12
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
   field_internet_reference:
-    weight: 12
+    weight: 13
     label: above
     settings:
       trim_length: 80
@@ -106,28 +113,28 @@ content:
     third_party_settings: {  }
     type: link
   field_keywords:
-    weight: 10
+    weight: 11
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_publication_place:
-    weight: 5
+    weight: 6
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_publisher:
-    weight: 4
+    weight: 5
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_scope:
-    weight: 8
+    weight: 9
     label: above
     settings:
       link: true
@@ -140,7 +147,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_type_of_text:
-    weight: 7
+    weight: 8
     label: above
     settings:
       link: true
@@ -156,7 +163,6 @@ content:
 hidden:
   field_basin: true
   field_call_number: true
-  field_collation: true
   field_conference_date: true
   field_conference_name: true
   field_conference_number: true

@@ -85,6 +85,16 @@ function concat_fields_display(array &$build, \Drupal\Core\Entity\EntityInterfac
   }
 }
 
+function literature_is_article(\Drupal\node\NodeInterface $node) {
+  return !empty($node->field_date_of_text_ser->value);
+}
+
+function literature_is_chapter(\Drupal\node\NodeInterface $node) {
+  return !empty($node->field_original_id->value)
+        && (strpos($node->field_original_id->value, 'ANA') === 0)
+        && literature_is_article($node) == false;
+}
+
 /**
  * Implements hook_ENTITY_TYPE_view().
  */

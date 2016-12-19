@@ -583,8 +583,12 @@
 .literature.search-result .field--name-field-abstract {
   margin-top: 2px;
 }
-.literature .field--name-field-corp-author:before {
+.literature.search-result .field--name-field-scope:before {
   display: none;
+}
+.literature.search-result .field--name-field-corp-author:before {
+  color: #ccc;
+  content: "\2013";
 }
 .literature.full .field--name-field-publisher .field--item,
 .literature.full .field--name-field-serial-title .field--item,

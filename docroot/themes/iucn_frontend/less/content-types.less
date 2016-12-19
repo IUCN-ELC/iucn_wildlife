@@ -93,14 +93,25 @@
 .literature {
   .court-decision;
 
-  .field--name-field-corp-author {
-    &:before {
-      display: none;
+  &.search-result {
+    .field--name-field-scope {
+      &:before {
+        display: none;
+      }
+    }
+
+    .field--name-field-corp-author {
+      &:before {
+        color: #ccc;
+        content: "\2013";
+      }
     }
   }
 
   &.full {
-    .field--name-field-publisher, .field--name-field-serial-title, .field--name-field-paper-title-of-text {
+    .field--name-field-publisher,
+    .field--name-field-serial-title,
+    .field--name-field-paper-title-of-text {
       .field--item {
         display: inline;
         width: auto!important;

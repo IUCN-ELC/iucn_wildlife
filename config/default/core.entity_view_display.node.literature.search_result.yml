@@ -61,20 +61,27 @@ mode: search_result
 content:
   field_collation:
     type: string
-    weight: 1
+    weight: 3
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
   field_corp_author:
     type: string
-    weight: 0
+    weight: 2
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_country:
+    type: entity_reference_label
+    weight: 0
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
   field_date_of_text:
-    weight: 2
+    weight: 4
     label: hidden
     settings:
       timezone_override: ''
@@ -82,10 +89,10 @@ content:
     third_party_settings: {  }
     type: datetime_custom
   field_scope:
-    weight: 3
+    weight: 1
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
 hidden:
@@ -97,7 +104,6 @@ hidden:
   field_conference_number: true
   field_conference_place: true
   field_contributor: true
-  field_country: true
   field_date_of_entry: true
   field_date_of_modification: true
   field_date_of_text_ser: true

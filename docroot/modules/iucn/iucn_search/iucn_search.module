@@ -128,6 +128,35 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
         hide($build['field_collection']);
         hide($build['field_collation']);
       }
+
+      // Display maximum 3 countries or show the 'International' scope
+      $countries = $entity->field_country->getValue();
+      if (empty($countries)) {
+        $scope = $entity->field_scope->entity;
+        if ($scope instanceof \Drupal\taxonomy\TermInterface && $scope->label() == 'International') {
+          $build['field_country'] = $build['field_scope'];
+        }
+      }
+      else {
+        $max = -1;
+        for ($i = 0; $i < count($countries); $i++) {
+          if ($i >= 3) {
+            unset($build['field_country'][$i]);
+          }
+          else {
+            $max++;
+            $build['field_country'][$i]['#suffix'] = ',';
+          }
+        }
+
+        if (count($countries) > 3) {
+          $build['field_country'][$max]['#suffix'] = '...';
+        }
+        else {
+          $build['field_country'][$max]['#suffix'] = '';
+        }
+      }
+      hide($build['field_scope']);
     }
   }
 

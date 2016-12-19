@@ -121,6 +121,10 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
         hide($build['field_paper_title_of_text']);
         hide($build['field_serial_title']);
       }
+
+      if (!empty($entity->field_country->getValue())) {
+        hide($build['field_scope']);
+      }
     }
 
     if ($view_mode === 'search_result') {

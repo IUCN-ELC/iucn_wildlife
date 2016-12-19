@@ -81,6 +81,8 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
         $value = 'http://' . $value;
       }
 
+      $value = str_replace(['^a', '^b'], ['', ' '], $value);
+
       switch ($field_name) {
         case 'abstract':
           $abstract .= $value . PHP_EOL;

@@ -87,6 +87,7 @@ class ElisConsumerLiteraturesSource extends ElisConsumerDefaultSource {
       'serialStatus' => 'Serial status',
       'territorialSubdivision' => 'Territorial subdivision',
       'volumeNo' => 'Volume number',
+      'dateOfTextSer' => 'Date of text Ser',
     );
   }
 
@@ -98,6 +99,7 @@ class ElisConsumerLiteraturesSource extends ElisConsumerDefaultSource {
       'dateOfEntry',
       'dateOfModification',
       'dateOfText',
+      'dateOfTextSer',
     ]);
     return parent::prepareRow($row);
   }

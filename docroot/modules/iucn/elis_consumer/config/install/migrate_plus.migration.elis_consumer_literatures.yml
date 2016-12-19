@@ -22,6 +22,7 @@ process:
   field_date_of_entry: dateOfEntry
   field_date_of_modification: dateOfModification
   field_date_of_text: dateOfText
+  field_date_of_text_ser: dateOfTextSer
   field_original_title: titleOfText
   title: titleOfTextShort
   field_ecolex_subjects:

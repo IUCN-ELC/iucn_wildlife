@@ -167,7 +167,7 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
       if (empty($titleOfText = $row->getSourceProperty('titleOfText')) &&
         empty($titleOfText = $row->getSourceProperty('titleOfTextSp')) &&
         empty($titleOfText = $row->getSourceProperty('titleOfTextFr')) &&
-        empty($titleOfText = $row->getSourceProperty('titleOfTextOther')) {
+        empty($titleOfText = $row->getSourceProperty('titleOfTextOther'))) {
         return null;
       }
     }

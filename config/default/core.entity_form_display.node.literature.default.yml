@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.literature.field_date_of_entry
     - field.field.node.literature.field_date_of_modification
     - field.field.node.literature.field_date_of_text
+    - field.field.node.literature.field_date_of_text_ser
     - field.field.node.literature.field_display_region
     - field.field.node.literature.field_ecolex_subjects
     - field.field.node.literature.field_edition
@@ -153,6 +154,11 @@ content:
     type: datetime_default
   field_date_of_text:
     weight: 34
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_date_of_text_ser:
+    weight: 76
     settings: {  }
     third_party_settings: {  }
     type: datetime_default

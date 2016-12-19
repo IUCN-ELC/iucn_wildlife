@@ -1,0 +1,20 @@
+uuid: 043006fe-9dc9-4bbd-b64d-ef2873047811
+langcode: en
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_date_of_text_ser
+field_name: field_date_of_text_ser
+entity_type: node
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

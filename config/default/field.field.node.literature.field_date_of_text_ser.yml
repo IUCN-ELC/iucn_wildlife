@@ -1,0 +1,21 @@
+uuid: 8782a2c6-2f76-4ccf-8a68-afbd4ebdd08a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_text_ser
+    - node.type.literature
+  module:
+    - datetime
+id: node.literature.field_date_of_text_ser
+field_name: field_date_of_text_ser
+entity_type: node
+bundle: literature
+label: 'Date of text Ser'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

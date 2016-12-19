@@ -9,7 +9,7 @@ id: node.literature.field_paper_title_of_text
 field_name: field_paper_title_of_text
 entity_type: node
 bundle: literature
-label: 'Paper title of text'
+label: In
 description: ''
 required: false
 translatable: false

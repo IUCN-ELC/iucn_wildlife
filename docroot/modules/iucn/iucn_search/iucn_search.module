@@ -68,7 +68,7 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
 
   if ($entity->bundle() === 'literature') {
     if ($view_mode === 'full') {
@@ -76,6 +76,11 @@ function iucn_search_node_view(array &$build, \Drupal\Core\Entity\EntityInterfac
       $build['field_publisher'][2] = $build['field_date_of_text'][0];
       hide($build['field_publication_place']);
       hide($build['field_date_of_text']);
+
+      if (!empty($entity->field_author->value) && !empty($entity->field_corp_author->value)) {
+        // https://trello.com/c/5qu73PMB
+        hide($build['field_corp_author']);
+      }
     }
 
     if ($view_mode === 'search_result') {

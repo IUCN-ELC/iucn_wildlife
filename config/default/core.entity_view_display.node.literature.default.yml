@@ -96,14 +96,6 @@ content:
       date_format: 'Y'
     third_party_settings: {  }
     type: datetime_custom
-  field_date_of_text_ser:
-    weight: 16
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
   field_ecolex_subjects:
     weight: 12
     label: above
@@ -192,6 +184,7 @@ hidden:
   field_contributor: true
   field_date_of_entry: true
   field_date_of_modification: true
+  field_date_of_text_ser: true
   field_display_region: true
   field_edition: true
   field_frequency: true

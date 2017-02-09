@@ -85,6 +85,7 @@ class ElisXMLConsumer {
     $interval = $this->rangeFromDate($this->dateOfEntryFilter);
     while (key($interval) !== NULL) {
       $this->pullRemoteData($data, $interval);
+      next($interval);
     }
     return $data;
   }
@@ -154,7 +155,6 @@ class ElisXMLConsumer {
         }
       }
     }
-    next($interval);
   }
 }
 

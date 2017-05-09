@@ -273,15 +273,20 @@ function iucn_search_cron() {
     $last_run = \Drupal::state()->get('iucn_search.migration_last_run.' . $migrationName, NULL);
     if (empty($last_run) || (time() - $last_run) >= 3600 /* 1 hour */) {
       /** @var \Drupal\migrate\Plugin\Migration $migration */
-      $migration = $service->createInstance($migrationName);
-      if ($migration->getStatus() == \Drupal\migrate\Plugin\MigrationInterface::STATUS_IDLE) {
-        $migration->setTrackLastImported(TRUE);
-        $migration->getIdMap()->prepareUpdate();
-        $executable = new \Drupal\migrate\MigrateExecutable($migration, new \Drupal\migrate\MigrateMessage());
-        $executable->import();
-        \Drupal::state()->set('iucn_search.migration_last_run.' . $migrationName, time());
-        $migrate_last_imported_store->set($migration->id(), round(microtime(TRUE) * 1000));
-        $reindex = TRUE;
+      if ($migration = $service->createInstance($migrationName)) {
+        if ($migration->getStatus() == \Drupal\migrate\Plugin\MigrationInterface::STATUS_IDLE) {
+          $migration->setTrackLastImported(true);
+          $migration->getIdMap()->prepareUpdate();
+          $executable = new \Drupal\migrate\MigrateExecutable($migration, new \Drupal\migrate\MigrateMessage());
+          $executable->import();
+          \Drupal::state()
+            ->set('iucn_search.migration_last_run.' . $migrationName, time());
+          $migrate_last_imported_store->set($migration->id(), round(microtime(true) * 1000));
+          $reindex = true;
+        }
+      }
+      else {
+        // @todo: Report error, migrations are not working :-(
       }
     }
   }

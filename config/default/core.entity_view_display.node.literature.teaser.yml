@@ -60,6 +60,7 @@ mode: teaser
 content:
   links:
     weight: 100
+    region: content
 hidden:
   field_author: true
   field_basin: true

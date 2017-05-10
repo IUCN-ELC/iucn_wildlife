@@ -67,6 +67,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
   field_collation:
     type: string
     weight: 5
@@ -74,6 +75,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
   field_corp_author:
     weight: 1
     label: above
@@ -81,6 +83,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_country:
     type: entity_reference_label
     weight: 10
@@ -88,6 +91,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
+    region: content
   field_date_of_text:
     weight: 8
     label: hidden
@@ -96,6 +100,7 @@ content:
       date_format: 'Y'
     third_party_settings: {  }
     type: datetime_custom
+    region: content
   field_ecolex_subjects:
     weight: 12
     label: above
@@ -103,12 +108,14 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_files:
     weight: 14
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
+    region: content
   field_internet_reference:
     weight: 15
     label: above
@@ -120,6 +127,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_keywords:
     weight: 13
     label: above
@@ -127,12 +135,14 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_paper_title_of_text:
     type: basic_string
     weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_publication_place:
     weight: 7
     label: hidden
@@ -140,6 +150,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_publisher:
     weight: 6
     label: above
@@ -147,6 +158,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_scope:
     weight: 11
     label: above
@@ -154,12 +166,14 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_serial_title:
     type: basic_string
     weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_type_of_text:
     weight: 9
     label: above
@@ -167,6 +181,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_volume_number:
     type: string
     weight: 4
@@ -174,6 +189,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
 hidden:
   field_basin: true
   field_call_number: true

@@ -10,7 +10,7 @@ dependencies:
     - iucn_frontend
 id: usefullinks
 theme: iucn_frontend
-region: '-1'
+region: navigation
 weight: -5
 provider: null
 plugin: 'system_menu_block:homepage-links'

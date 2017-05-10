@@ -68,6 +68,7 @@ content:
     weight: 33
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_abstract:
     weight: 3
     settings:
@@ -75,12 +76,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_abstract_files:
     weight: 40
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
+    region: content
   field_available_in:
     weight: 25
     settings:
@@ -88,6 +91,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_charges:
     weight: 51
     settings:
@@ -95,6 +99,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
   field_country:
     weight: 46
     settings:
@@ -103,6 +108,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_court:
     weight: 44
     settings:
@@ -111,6 +117,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_court_jurisdiction:
     weight: 4
     settings:
@@ -119,21 +126,25 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
+    region: content
   field_date_of_entry:
     type: datetime_default
     weight: 5
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_date_of_modification:
     type: datetime_default
     weight: 6
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_date_of_text:
     type: datetime_default
     weight: 7
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_decision:
     weight: 50
     settings:
@@ -141,6 +152,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
   field_decision_status:
     weight: 28
     settings:
@@ -149,6 +161,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_ecolex_subjects:
     type: entity_reference_autocomplete_tags
     weight: 8
@@ -157,12 +170,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_files:
     weight: 31
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
+    region: content
   field_instance:
     weight: 26
     settings:
@@ -171,6 +186,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
+    region: content
   field_internet_reference:
     weight: 27
     settings:
@@ -178,6 +194,7 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
   field_isis_number:
     type: string_textfield
     weight: 9
@@ -185,6 +202,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_justices:
     weight: 14
     settings:
@@ -193,6 +211,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
+    region: content
   field_keywords:
     weight: 41
     settings:
@@ -201,6 +220,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_language_of_document:
     weight: 39
     settings:
@@ -209,6 +229,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_legislation_cited:
     weight: 52
     settings:
@@ -216,6 +237,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_money_value:
     weight: 48
     settings:
@@ -223,6 +245,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_number_of_pages:
     type: string_textfield
     weight: 10
@@ -230,6 +253,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_offences:
     weight: 42
     settings:
@@ -238,6 +262,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_official_publication:
     weight: 38
     settings:
@@ -245,6 +270,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_original_id:
     weight: 0
     settings:
@@ -252,6 +278,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_original_title:
     weight: 2
     settings:
@@ -259,6 +286,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_penalty:
     weight: 47
     settings:
@@ -266,6 +294,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
   field_reference_number:
     type: string_textfield
     weight: 11
@@ -273,6 +302,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_reference_to_cou:
     weight: 17
     settings:
@@ -280,6 +310,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_reference_to_faolex:
     weight: 19
     settings:
@@ -287,6 +318,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_reference_to_faolex_countr:
     weight: 22
     settings:
@@ -295,11 +327,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_reference_to_faolex_date:
     weight: 21
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_reference_to_faolex_title:
     weight: 20
     settings:
@@ -307,6 +341,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_reference_to_legislation:
     weight: 18
     settings:
@@ -314,6 +349,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_reference_to_national_legi:
     weight: 23
     settings:
@@ -321,6 +357,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_reference_to_treaties:
     weight: 24
     settings:
@@ -328,6 +365,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_reference_to_treaties_titl:
     weight: 53
     settings:
@@ -335,6 +373,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_region:
     weight: 37
     settings:
@@ -343,6 +382,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_related_website:
     weight: 16
     settings:
@@ -350,6 +390,7 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
   field_seat_of_court:
     weight: 12
     settings:
@@ -357,6 +398,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_species:
     weight: 43
     settings:
@@ -365,6 +407,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_subdivision:
     weight: 29
     settings:
@@ -373,6 +416,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
+    region: content
   field_territorial_subdivisions:
     weight: 30
     settings:
@@ -381,12 +425,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
+    region: content
   field_transnational:
     weight: 49
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
   field_type_of_text:
     type: entity_reference_autocomplete_tags
     weight: 13
@@ -395,6 +441,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_url:
     type: link_default
     weight: 15
@@ -402,6 +449,7 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+    region: content
   field_wildlife_legislation:
     weight: 45
     settings:
@@ -410,23 +458,27 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   path:
     type: path
     weight: 36
     settings: {  }
     third_party_settings: {  }
+    region: content
   promote:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 34
     third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 35
     third_party_settings: {  }
+    region: content
   title:
     type: string_textfield
     weight: 1
@@ -434,6 +486,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   uid:
     type: entity_reference_autocomplete_tags
     weight: 32
@@ -442,4 +495,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden: {  }

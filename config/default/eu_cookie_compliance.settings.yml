@@ -16,7 +16,7 @@ popup_clicking_confirmation: false
 popup_position: true
 popup_agree_button_message: 'Got it!'
 popup_disagree_button_message: 'Learn more'
-popup_agreed_enabled: '0'
+popup_agreed_enabled: false
 popup_hide_agreed: false
 popup_find_more_button_message: 'More info'
 popup_hide_button_message: Hide

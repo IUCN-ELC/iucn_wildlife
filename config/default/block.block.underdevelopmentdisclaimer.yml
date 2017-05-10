@@ -10,7 +10,7 @@ dependencies:
     - iucn_frontend
 id: underdevelopmentdisclaimer
 theme: iucn_frontend
-region: '-1'
+region: navigation
 weight: -4
 provider: null
 plugin: 'block_content:7eae5f72-e147-4a65-a009-9eb1c6d0f925'

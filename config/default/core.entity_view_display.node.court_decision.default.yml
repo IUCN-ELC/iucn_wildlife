@@ -68,12 +68,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_charges:
     weight: 11
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
   field_country:
     type: entity_reference_label
     weight: 1
@@ -81,6 +83,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+    region: content
   field_court:
     weight: 3
     label: above
@@ -88,6 +91,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_court_jurisdiction:
     weight: 5
     label: above
@@ -95,6 +99,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_date_of_text:
     type: datetime_custom
     weight: 7
@@ -103,12 +108,14 @@ content:
       timezone_override: ''
       date_format: 'Y'
     third_party_settings: {  }
+    region: content
   field_decision:
     weight: 15
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
   field_decision_status:
     weight: 6
     label: above
@@ -116,12 +123,14 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_files:
     type: file_list
     weight: 26
     label: above
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_language_of_document:
     weight: 9
     label: above
@@ -129,6 +138,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_legislation_cited:
     weight: 19
     label: above
@@ -136,6 +146,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_money_value:
     weight: 13
     label: above
@@ -143,12 +154,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_penalty:
     weight: 16
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
   field_reference_number:
     type: string
     weight: 10
@@ -156,6 +169,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
   field_reference_to_cou:
     weight: 18
     label: above
@@ -163,6 +177,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_reference_to_faolex:
     weight: 22
     label: visually_hidden
@@ -170,6 +185,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_reference_to_faolex_countr:
     weight: 25
     label: hidden
@@ -177,6 +193,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_reference_to_faolex_date:
     weight: 24
     label: hidden
@@ -185,6 +202,7 @@ content:
       date_format: 'd F Y'
     third_party_settings: {  }
     type: datetime_custom
+    region: content
   field_reference_to_faolex_title:
     weight: 23
     label: hidden
@@ -192,6 +210,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_reference_to_legislation:
     weight: 20
     label: above
@@ -199,6 +218,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_reference_to_national_legi:
     weight: 21
     label: above
@@ -206,6 +226,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_reference_to_treaties:
     weight: 17
     label: above
@@ -213,6 +234,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_reference_to_treaties_titl:
     weight: 27
     label: above
@@ -220,6 +242,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_region:
     type: entity_reference_label
     weight: 0
@@ -227,6 +250,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+    region: content
   field_seat_of_court:
     weight: 4
     label: above
@@ -234,6 +258,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_species:
     weight: 12
     label: above
@@ -241,6 +266,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_territorial_subdivisions:
     weight: 2
     label: above
@@ -248,6 +274,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_transnational:
     weight: 14
     label: above
@@ -257,6 +284,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
 hidden:
   field_abstract_files: true
   field_available_in: true

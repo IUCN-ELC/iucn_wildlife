@@ -37,3 +37,6 @@ backend_config:
   site_hash: 1
   autocorrect_spell: true
   autocorrect_suggest_words: true
+  core: ''
+  username: ''
+  password: ''

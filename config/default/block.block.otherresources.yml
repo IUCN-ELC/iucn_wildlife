@@ -11,7 +11,7 @@ dependencies:
     - iucn_frontend
 id: otherresources
 theme: iucn_frontend
-region: '-1'
+region: navigation
 weight: -7
 provider: null
 plugin: 'block_content:f8b99306-6bf9-44ff-8e00-eaeb2f32c0f3'

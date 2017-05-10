@@ -1,0 +1,18 @@
+---
+wildlex_project_home: "/var/www/html/wildlex"
+wildlex_project_repository: "https://github.com/IUCN-ELC/iucn_wildlife.git"
+apache_virtual_hosts:
+  - {
+      vh_domain: "www.wildlex.org", vh_home: "{{ wildlex_project_home }}/docroot",
+      template: "apache-vh-simple.conf.j2", dest: "wildlex.conf",
+    }
+apache_expires_default: "access plus 1 months"
+apache_expires_default_images: "{{ apache_expires_default }}"
+apache_expires_default_js: "{{ apache_expires_default }}"
+apache_expires_default_css: "{{ apache_expires_default }}"
+apache_expires_default_pdf: "{{ apache_expires_default }}"
+wildlex_db_user: "wildlex"
+wildlex_db_password: "{{ vault_wildlex_db_password }}"
+ecolex_db_root_password: "{{ vault_ecolex_db_root_password }}"
+wildlex_db_name: "wildlex"
+

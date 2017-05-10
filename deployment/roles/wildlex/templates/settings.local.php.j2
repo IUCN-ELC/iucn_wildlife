@@ -1,0 +1,16 @@
+<?php
+$settings['trusted_host_patterns'] = array('^wildlex\.org$', '^.+\.wildlex\.org$');
+
+$databases['default']['default'] = array (
+ 'database' => '{{ wildlex_db_name }}',
+ 'username' => '{{ wildlex_db_user }}',
+ 'password' => '{{ wildlex_db_password }}',
+ 'prefix' => '',
+ 'host' => 'localhost',
+ 'port' => '3306',
+ 'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+ 'driver' => 'mysql',
+);
+$databases['default']['default']['init_commands']['lock_wait_timeout'] = "SET SESSION innodb_lock_wait_timeout = 3600";
+$databases['default']['default']['init_commands']['wait_timeout'] = "SET SESSION wait_timeout = 3600";
+$databases['migrate']['default'] = $databases['default']['default'];

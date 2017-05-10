@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+    ServerName {{ item.vh_domain }}
+    ServerAlias wildlex.org
+    DocumentRoot {{ item.vh_home }}
+    <Directory {{ item.vh_home }}>
+        AllowOverride All
+        Require all granted
+    </Directory>
+    {% if item.vh_extra is defined %}
+    {{ item.vh_extra }}
+    {% endif %}
+</VirtualHost>

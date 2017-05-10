@@ -1,0 +1,12 @@
+---
+- hosts: ecolex
+  vars:
+    motd: 'ECOLEX production server'
+    user_php_hash: "TODO"
+
+  roles:
+    - base-role-drupal-solr
+    - wildlex
+
+  handlers:
+    - include: roles/wildlex/handlers/main.yml

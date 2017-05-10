@@ -1,0 +1,35 @@
+---
+- name: install support tools
+  yum: name="{{ item }}" state="present"
+  with_items: [ "git", "wget" ]
+
+- name: run composer-install script
+  script: creates="/usr/sbin/composer" files/composer-install.sh
+
+- name: create drush home
+  file: path="{{ drush_installation_dir }}" state="directory"
+
+- name: fetch drush from git
+  git: repo="https://github.com/drush-ops/drush.git" dest="{{ drush_installation_dir }}" version="8.1.3"
+
+- name: install drush via composer
+  command: "composer install --no-plugins --no-scripts -d {{ drush_installation_dir }}"
+  args:
+    chdir: "{{ drush_installation_dir }}"
+    creates: "{{ drush_installation_dir }}/vendor"
+
+- name: create drush link
+  file: src="{{ drush_installation_dir }}/drush" dest="/usr/bin/drush" state="link"
+
+- name: detect php user
+  stat: path="/home/php"
+  register:
+    user_php_exists
+
+- name: create ~/.drush directory
+  file: path="/home/php/.drush" state="directory" owner="php" group="users"
+  when: (user_php_exists.stat.exists == True)
+
+- name: setup drushrc.php in home directory
+  copy: src="files/drushrc.php" dest="/home/php/.drush/drushrc.php" owner="php" group="users"
+  when: (user_php_exists.stat.exists == True)

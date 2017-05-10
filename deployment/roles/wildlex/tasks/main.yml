@@ -1,4 +1,7 @@
 ---
+- name: load vault variables
+  include_vars: ../defaults/main_vault.yml
+
 - name: Check SQL dump exists on remote
   stat:
     path: "{{ wildlex_sql_dump_path }}"
@@ -16,9 +19,6 @@
 - fail:
     msg: "Please install latest 'public' file archive in {{ wildlex_public_files_path }}"
   when: not (wildlex_valid_public_files.stat.exists is defined and wildlex_valid_public_files.stat.exists)
-
-- name: load vault variables
-  include_vars: ../defaults/main_vault.yml
 
 # Disabled because we are running this on preinstalled production machine)
 #- name: install required system packages (disabled because we are running this on preinstalled production machine)
@@ -75,7 +75,9 @@
   with_items:
     - { owner: "php" , group: "apache" , recurse: "yes" , path: "{{ wildlex_project_home }}" , state: "directory" }
     - { owner: "php" , group: "apache" , recurse: "no"  , path: "{{ wildlex_project_home }}/docroot/.htaccess" , state: "file" }
-    - { owner: "php" , group: "apache" , recurse: "yes" , path: "{{ wildlex_project_home }}/docroot/sites/default/files" , state: "directory", mode: "770" }
+
+- name: reset public files directory permissions
+  file: owner="php" group="apache" path="{{ wildlex_project_home }}/docroot/sites/default/files" state="directory" mode="2770"
 
 - name: create settings.php
   template: src="templates/settings.local.php.j2" dest="{{ wildlex_project_home }}/docroot/sites/default/settings.local.php" owner="root" group="root"

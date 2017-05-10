@@ -3,40 +3,27 @@ langcode: en
 status: true
 dependencies:
   module:
-    - acquia_search
+    - search_api_solr
 _core:
   default_config_hash: 9qmJQXzunAx3irbErjjRWx2zzwFQj5-eVdLAIoGa_vY
 id: solr_server
 name: 'SOLR Server'
 description: ''
-backend: search_api_solr_acquia
+backend: search_api_solr
 backend_config:
   scheme: http
-  host: euwest1-c7.acquia-search.com
-  port: 80
-  path: /solr/DKWZ-106572
-  http:
-    http_user: ''
-    http_pass: ''
-  advanced:
-    excerpt: 1
-    retrieve_data: 1
-    highlight_data: 1
-    skip_schema_check: 0
-    solr_version: ''
-    http_method: AUTO
-    site_hash: 1
-  http_user: ''
-  http_pass: ''
-  excerpt: 1
-  retrieve_data: 1
-  highlight_data: 1
-  skip_schema_check: 0
-  solr_version: ''
-  http_method: AUTO
-  site_hash: 1
-  autocorrect_spell: true
-  autocorrect_suggest_words: true
-  core: ''
+  host: localhost
+  port: '8983'
+  path: /solr
+  core: wildlex
   username: ''
   password: ''
+  retrieve_data: true
+  highlight_data: true
+  excerpt: true
+  skip_schema_check: false
+  solr_version: ''
+  http_method: AUTO
+  site_hash: true
+  autocorrect_spell: true
+  autocorrect_suggest_words: true

@@ -2,7 +2,7 @@ extraction_method: solr_extractor
 preserve_cache: true
 solr_extractor_configuration:
   solr_server: solr_server
-  solr_tika_path: extract/tika
+  solr_tika_path: update/extract
 pdftotext_extractor_configuration: {  }
 tika_extractor_configuration:
   java_path: java

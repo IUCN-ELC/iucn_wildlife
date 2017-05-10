@@ -1,0 +1,44 @@
+---
+- name: install support tools
+  yum: name="{{ item }}" state="present"
+  with_items: [ "git" ]
+
+- name: install openjdk
+  yum: name="{{ item }}" state="present"
+  with_items: [ "java-1.8.0-openjdk", "java-1.8.0-openjdk-headless" ]
+
+- name: install drupal-solr
+  git: repo="https://github.com/cristiroma/drupal-solr.git" dest="{{ drupal_solr4_home }}" version="master"
+
+- name: create drupal-solr cores
+  command: creates="{{ drupal_solr4_home }}/cores/{{ item }}" chdir="{{ drupal_solr4_home }}/cores"  cp -r core0 {{ item }}
+  with_items: "{{ drupal_solr4_cores }}"
+  tags:
+    - add-drupal-solr-core
+
+- name: configure drupal-solr cores
+  replace: dest="{{ drupal_solr4_home }}/cores/{{ item }}/core.properties" regexp="core0" replace="{{ item }}"
+  with_items: "{{ drupal_solr4_cores }}"
+  register: drupal_solr_cores
+  tags:
+    - add-drupal-solr-core
+
+- name: create the drupal-solr account
+  user: name="solr" comment="Apache Solr daemon"
+    shell="/sbin/nologin" state="present" createhome="no"
+
+- name: configure drupal-solr ownership account
+  file: owner="solr" group="solr" recurse="yes" path="{{ drupal_solr4_home }}" state="directory"
+
+- name: install drupal-solr service
+  copy: src="{{ drupal_solr4_home }}/scripts/systemd/drupal-solr4.service" dest="/etc/systemd/system/{{ drupal_solr4_service_name }}.service" remote_src="True"
+
+- name: prepare drupal-solr service
+  ini_file: dest="/etc/systemd/system/{{ drupal_solr4_service_name }}.service" section="Service" option="User" value="solr"
+
+- name: enable and start drupal-solr
+  service: name="{{ drupal_solr4_service_name }}" state="started" enabled="yes"
+
+- name: restart solr
+  service: name="{{ drupal_solr4_service_name }}" state=restarted
+  when: drupal_solr_cores.changed

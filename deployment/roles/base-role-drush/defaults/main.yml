@@ -1,0 +1,3 @@
+---
+# defaults file for drush
+drush_installation_dir: "/opt/drush"

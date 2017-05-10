@@ -1,0 +1,4 @@
+---
+drupal_solr4_service_name: "drupal-solr4"
+drupal_solr4_home: "/opt/drupal-solr"
+drupal_solr4_cores: []

@@ -20,13 +20,13 @@
   tags:
     - create_system_users
 
-- name: install Solr
+- name: install solr server & create wildlex core
   include_role:
     name: base-role-drupal-solr
   vars:
     drupal_solr4_cores: [ "wildlex" ]
 
-- name: install Solr
+- name: install drush command line
   include_role:
     name: base-role-drush
 

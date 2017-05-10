@@ -141,7 +141,7 @@ class SolrSearchServer {
     if (!empty($config['http_method'])) {
       $request->setMethod($config['http_method']);
     }
-    if (strlen($config['http_user']) && strlen($config['http_pass'])) {
+    if (!empty($config['http_user']) && !empty($config['http_pass'])) {
       $request->setAuthentication($config['http_user'], $config['http_pass']);
     }
     // Send search request.

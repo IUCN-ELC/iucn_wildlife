@@ -1,14 +1,33 @@
 ---
+- name: Check SQL dump exists on remote
+  stat:
+    path: "{{ wildlex_sql_dump_path }}"
+  register: wildlex_valid_db
+
+- fail:
+    msg: "Please install latest SQL dump file in {{ wildlex_sql_dump_path }}"
+  when: not (wildlex_valid_db.stat.exists is defined and wildlex_valid_db.stat.exists)
+
+- name: Check public files archive exists on remote
+  stat:
+    path: "{{ wildlex_public_files_path }}"
+  register: wildlex_valid_public_files
+
+- fail:
+    msg: "Please install latest 'public' file archive in {{ wildlex_public_files_path }}"
+  when: not (wildlex_valid_public_files.stat.exists is defined and wildlex_valid_public_files.stat.exists)
+
 - name: load vault variables
   include_vars: ../defaults/main_vault.yml
 
-- name: install required system packages
-  yum: name="{{ item }}" state="installed"
-  with_items: [
-    "MySQL-python", "git", "wget",
-    "httpd", "mariadb", "mariadb-server",
-    "php55w", "php55w-cli", "php55w-gd", "php55w-mbstring", "php55w-mysql", "php55w-xml"
-  ]
+# Disabled because we are running this on preinstalled production machine)
+#- name: install required system packages (disabled because we are running this on preinstalled production machine)
+#  yum: name="{{ item }}" state="installed"
+#  with_items: [
+#    "MySQL-python", "git", "wget",
+#    "httpd", "mariadb", "mariadb-server",
+#    "php55w", "php55w-cli", "php55w-gd", "php55w-mbstring", "php55w-mysql", "php55w-xml"
+#  ]
 
 - name: create system accounts
   user: name="{{ item.username }}" comment="{{ item.comment|default('Created by Ansible deployment') }}"
@@ -38,11 +57,8 @@
     login_user="root" login_password="{{ ecolex_db_root_password }}"
     host="localhost" state="present" update_password="always"
 
-- name: copy mysql database
-  copy: src="files/wildlex-latest.sql.bz2" dest="/tmp"
-
 - name: load mysql database
-  mysql_db: name="{{ wildlex_db_name }}" state="import" target="/tmp/wildlex-latest.sql.bz2" login_user="root" login_password="{{ ecolex_db_root_password }}"
+  mysql_db: name="{{ wildlex_db_name }}" state="import" target="{{ wildlex_sql_dump_path }}" login_user="root" login_password="{{ ecolex_db_root_password }}"
 
 - name: clone code repo
   git: dest="{{ wildlex_project_home}}" repo="{{ wildlex_project_repository }}" version="master"
@@ -50,9 +66,9 @@
 - name: create public files directory and set permissions
   file: owner="php" group="apache" path="{{ wildlex_project_home }}/docroot/sites/default/files" state="directory" mode="2770"
 
-- name: unpack public-files.tar.gz
-  unarchive: src="files/public-files.tar.gz" dest="{{ wildlex_project_home }}/docroot/sites/default/files" owner="php" group="apache"
-    creates="{{ wildlex_project_home }}/docroot/sites/default/files/field_files"
+- name: unpack public files archive
+  unarchive: src="{{ wildlex_public_files_path }}" dest="{{ wildlex_project_home }}/docroot/sites/default/files" owner="php" group="apache"
+    creates="{{ wildlex_project_home }}/docroot/sites/default/files/field_files" remote_src="yes"
 
 - name: set filesystem permissions
   file: owner="{{ item.owner }}" group="{{ item.group }}" recurse="{{ item.recurse }}" path="{{ item.path }}" state="{{ item.state }}"

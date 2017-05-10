@@ -15,4 +15,5 @@ wildlex_db_user: "wildlex"
 wildlex_db_password: "{{ vault_wildlex_db_password }}"
 ecolex_db_root_password: "{{ vault_ecolex_db_root_password }}"
 wildlex_db_name: "wildlex"
-
+wildlex_sql_dump_path: "/root/wildlex-database.sql.bz2"
+wildlex_public_files_path: "/root/wildlex-public-files.tar.gz"

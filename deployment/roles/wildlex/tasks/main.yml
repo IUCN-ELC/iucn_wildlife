@@ -39,6 +39,13 @@
   tags:
     - create_system_users
 
+- name: install openssh keys
+  authorized_key: user="{{ item.username }}" key="{{ item.key }}" state="{{ item.state|default('present') }}"
+  with_items: "{{ sshd_authorized_keys }}"
+  tags:
+    - create_system_users
+    - install_sshm_keys
+
 - name: install solr server & create wildlex core
   include_role:
     name: base-role-drupal-solr
@@ -86,6 +93,10 @@
   template: src="templates/{{ item.template }}" dest="/etc/httpd/conf.d/{{ item.dest }}" owner="root" group="root"
   with_items: "{{ apache_virtual_hosts }}"
   notify: reload httpd server
+
+- name: install cron
+  template: src="templates/wildlex_prod.cron.j2" dest="/etc/cron.d/wildlex_prod.cron"
+  notify: restart crond
 
 # - name: configure httpd caching
 #  template: src="templates/expires.conf.j2" dest="/etc/httpd/conf.d/expires.conf" owner="root" group="root"

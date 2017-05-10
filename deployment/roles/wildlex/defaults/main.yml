@@ -17,3 +17,7 @@ ecolex_db_root_password: "{{ vault_ecolex_db_root_password }}"
 wildlex_db_name: "wildlex"
 wildlex_sql_dump_path: "/root/wildlex-database.sql.bz2"
 wildlex_public_files_path: "/root/wildlex-public-files.tar.gz"
+wildlex_cron_key: "{{ wildlex_cron_key_vault }}"
+sshd_authorized_keys:
+  - { username: "php", key: "{{ lookup('file', './files/cristiroma.pub') }}" }
+  - { username: "php", key: "{{ lookup('file', './files/octavian.pub') }}" }

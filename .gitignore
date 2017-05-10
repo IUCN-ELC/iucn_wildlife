@@ -54,6 +54,7 @@ config/local
 *.7z
 *.dmg
 *.gz
+*.bz2
 *.iso
 *.jar
 *.rar

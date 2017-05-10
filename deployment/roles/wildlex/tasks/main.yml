@@ -98,5 +98,53 @@
   template: src="templates/wildlex_prod.cron.j2" dest="/etc/cron.d/wildlex_prod.cron"
   notify: restart crond
 
+- name: mkdir /opt/edw/system/oth
+  file: path="/opt/edw/system/oth" state="directory"
+
+- name: mkdir /opt/edw/system/bin
+  file: path="/opt/edw/system/bin" state="directory"
+
+- name: mkdir /etc/cron.edw/
+  file: path="/etc/cron.edw/" state="directory"
+
+- name: touch /etc/cron.edw/edw_crontab.cron
+  file: path="/etc/cron.edw/edw_crontab.cron" state="touch"
+
+- name: setup backup
+  include_role:
+    name: base-role-backup
+  vars:
+    server_hostname: "www.wildlex.org"
+    server_ip: '138.201.83.138'
+    backup_on_rsync: True
+    backup_on_hetzner: False
+    backup_want_monthly: True
+    backup_want_yearly: True
+    backup_emailrec: "cristian.romanescu@eaudeweb.ro"
+    backup_rscust: "IUCN"
+    backup_rsproject: "WILDLEX"
+    backup_rssite: "www.wildlex.org"
+    backup_rsuser: "{{ backup_rsuser_vault }}"
+    backup_rskey: "edw_id_rsa_wildlex_138.201.83.138"
+    backup_rshost: "{{ backup_rshost_vault }}"
+    backup_rstemp: "/root/tmp/rstmp"
+    backup_paths:
+      - path: "/etc"
+        exclude:
+      - path: "/var/www/html/wildlex"
+        exclude:
+    backup_rsprep:
+      - "mysqldump -u root -p{{ ecolex_db_root_password }} wildlex 2>&1 1>${TEMPLOCAL}/wildlex.sql"
+      - "gzip ${TEMPLOCAL}/wildlex.sql  2>&1 1>/dev/null"
+    backup_hztemp:
+    backup_hzcust:
+    backup_hzproject:
+    backup_hzsite:
+    backup_hzhistlen:
+    backup_hzuser:
+    backup_hzbckdevdir:
+    backup_hztargetdir:
+    backup_hzpwd:
+
 # - name: configure httpd caching
 #  template: src="templates/expires.conf.j2" dest="/etc/httpd/conf.d/expires.conf" owner="root" group="root"

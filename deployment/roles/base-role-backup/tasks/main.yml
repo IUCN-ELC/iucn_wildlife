@@ -1,0 +1,117 @@
+---
+# tasks file for base-role-rsync-backup
+
+- name: copy semodules to permit backup
+  copy: src="{{item.src}}" dest="{{item.dest}}"
+  with_items:
+    - { src: "files/backup.pp", dest: "/tmp/backup.pp"}
+    - { src: "files/allow_all_backup.pp", dest: "/tmp/allow_all_backup.pp"}
+  register: semodules
+  tags: [ 'backup' , 'setup' ]
+
+- name: install semodules to permit backup
+  shell: "semodule -i {{ item }}"
+  with_items:
+    - "/tmp/backup.pp"
+    - "/tmp/allow_all_backup.pp"
+  when: "{{ semodules.changed }}"
+  tags: [ 'backup' , 'setup' ]
+
+- name: create Rsync temp directory
+  file: path={{backup_rstemp}} state=directory setype="backup_store_t"
+  tags: [ 'backup' , 'rsync' , 'setup' ]
+
+- name: copy rsync user ssh keys
+  copy: src='files/{{backup_rskey}}' dest='/opt/edw/system/oth/{{backup_rskey}}' mode=600
+  tags: [ 'backup' , 'rsync' , 'setup' ]
+
+- name: create root's known_hosts
+  file: dest="/root/.ssh/known_hosts" state=touch
+  tags: [ 'backup' , 'rsync' , 'setup' ]
+
+- name: copy daily Rsync back-up script
+  template: src=templates/rsync_backup.sh dest=/opt/edw/system/bin/edw_rsync_backup.sh setype="backup_exec_t" mode=750 setype="backup_exec_t"
+  when: "backup_on_rsync"
+  tags: [ 'backup' , 'rsync' , 'setup' ]
+
+- name: create daily Rsync cron entry 
+  blockinfile:
+    dest: "/etc/cron.edw/edw_crontab.cron"
+    block: "45 03 * * *     root    /opt/edw/system/bin/edw_rsync_backup.sh 1>/dev/null 2>&1 || true"
+    marker: "# {mark} rsync backup script ANSIBLE MANAGED, DO NOT EDIT!"
+  notify: restart crond
+  tags: [ 'backup' , 'rsync' , 'setup' ]
+
+- name: copy the Rsync restore helper script
+  template: src="templates/rsync_restore_helper.sh.j2" dest="/opt/edw/system/bin/rsync_restore_helper.sh" mode=750 setype="bin_t"
+  when: "backup_on_rsync"
+  tags: [ 'backup' , 'rsync' , 'setup' ]
+
+- name: install cifs-utils
+  yum: name=cifs-utils state=present
+  when: "backup_on_hetzner"
+  tags: [ 'backup' , 'rsync' , 'setup' ]
+
+- name: prepare hetzner backup folders
+  file: path={{item}} state=directory
+  with_items:
+    - "/mnt/diskimage"
+    - "/mnt/backup"
+  when: "backup_on_hetzner"
+  tags: [ 'backup' , 'hetzner' , 'setup' ]
+
+- name: create Hetzner temp directory
+  file: path={{backup_hztemp}} state=directory setype="backup_store_t"
+  when: "backup_on_hetzner"
+  tags: [ 'backup' , 'hetzner' , 'setup' ]
+
+- name: copy daily Hetzner back-up script
+  template: src=templates/hetzner_backup.sh dest=/opt/edw/system/bin/edw_hetzner_backup.sh setype="backup_exec_t" mode=750 setype="backup_exec_t"
+  when: "backup_on_hetzner"
+  tags: [ 'backup' , 'hetzner' , 'setup' ]
+
+- name: copy Hetzner time marker
+  copy: src="files/lastrun.sh" dest="/etc/cron.edw/lastrun.sh" setype="backup_exec_t" mode=750
+  when: "backup_on_hetzner"
+  tags: [ 'backup' , 'hetzner' , 'setup' ]
+
+- name: create daily Hetzner cron entry
+  blockinfile:
+    dest: "/etc/cron.edw/edw_crontab.cron"
+    block: "01 03 * * *     root    /opt/edw/system/bin/edw_hetzner_backup.sh 1>/dev/null 2>&1 || true"
+    marker: "# {mark} daily Hetzner backup script ANSIBLE MANAGED, DO NOT EDIT!"
+  notify: restart crond
+  tags: [ 'backup' , 'rsync' , 'setup' ]
+
+- name: create monthly Hetzner back-up script
+  template: src="templates/hetzner_m_y.sh" dest="/opt/edw/system/bin/edw_hetzner_{{backup_hzmory}}_backup.sh" setype="backup_exec_t" mode=750
+  when: "backup_want_monthly"
+  vars: 
+    backup_hzmory: "monthly"
+  tags: [ 'backup' , 'hetzner' , 'YM' ]
+
+- name: create yearly Hetzner back-up script
+  template: src="templates/hetzner_m_y.sh" dest="/opt/edw/system/bin/edw_hetzner_{{backup_hzmory}}_backup.sh" setype="backup_exec_t" mode=750
+  when: "backup_want_yearly"
+  vars: 
+    backup_hzmory: "yearly"
+  tags: [ 'backup' , 'hetzner' , 'YM' ]
+
+- name: create monthly and yearly Hetzner backup cron entries
+  blockinfile: 
+    dest: "/etc/cron.edw/edw_crontab.cron" 
+    block: "{{item.block}}" 
+    marker: "{{item.marker}}"
+  with_items:
+    - { block: "01 05 01 * *     root    /etc/cron.edw/edw_hetzner_monthly_backup.sh 1>/dev/null 2>&1 || true" , marker: "# {mark} monthly Hetzner backup script ANSIBLE MANAGED, DO NOT EDIT!" }
+    - { block: "01 07 31 12 *     root    /etc/cron.edw/edw_hetzner_yearly_backup.sh 1>/dev/null 2>&1 || true" , marker: "# {mark} yearly Hetzner backup script ANSIBLE MANAGED, DO NOT EDIT!" }
+  when: "backup_want_monthly"
+  tags: [ 'backup' , 'hetzner' , 'YM' ]
+
+- name: enhance root's Bash history with Hetzner specific commands 
+  lineinfile: 
+    dest: "/root/.bash_history"
+    line: 'mount.cifs -o user=usr___,pass=psw___ //usr___.your-backup.de/backup /mnt/diskimage/'
+  when: "backup_on_hetzner"
+  tags: [ 'backup' , 'hetzner' , 'setup' ]
+

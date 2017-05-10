@@ -1,0 +1,40 @@
+---
+# defaults file for base-role-rsync-backup
+backup_on_rsync: True
+backup_on_hetzner: False
+backup_want_monthly: True
+backup_want_yearly: True
+backup_emailrec: 'morespam@msn.com'
+
+backup_paths:
+  - path: "/etc"
+    exclude:
+
+  - path: "/var/log"
+    exclude:
+
+  - path: "/run/log/journal"
+    exclude:
+
+backup_rsprep:
+  - "ls /tmp"
+
+backup_hzprep:
+  - "ls /tmp"
+
+backup_rstemp: '/var/www/html/tmp/rstmp'
+backup_rscust: 'rscust'
+backup_rsproject: 'rsproject'
+backup_rssite: 'rssite.example.com'
+backup_rsuser: 'rsuser'
+backup_rskey: 'rskey'
+backup_rshost: 'rshost'
+
+backup_hztemp: '/var/www/html/tmp/hztmp'
+backup_hzcust: 'hzcust'
+backup_hzproject: 'hzproject'
+backup_hzsite: 'hzsite.eholcim.ro'
+backup_hzhistlen: 21
+backup_hzuser: 'hzuser'
+backup_hzbckdevdir: '/mnt/diskimage'
+backup_hztargetdir: '/mnt/backup'

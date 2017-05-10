@@ -1,0 +1,128 @@
+#!/bin/bash
+
+CR=$'\n'
+TABS=$'\t\t'
+RSYNC='/usr/bin/rsync'
+
+GREEN="\033[1;32m"
+YELLOW="\033[1;33m"
+RED="\033[1;31m"
+NO_COLOUR="\033[0m"
+
+RCUSTOMER="{{backup_rscust}}"
+RPROJECT="{{backup_rsproject}}"
+RSITE="{{backup_rssite}}"
+RSUSER="{{backup_rsuser}}"
+RSKEY="/opt/edw/system/oth/{{backup_rskey}}"
+TEMPLOCAL="{{backup_rstemp}}"
+RSHOST="{{backup_rshost}}"
+
+R_STATUS=0
+declare -a R_MSGS
+
+if [ ! -x $RSYNC ] ; then
+	R_STATUS=1
+	R_MSGS+=("$CR${RED} [ERROR] ${NO_COLOUR}Checking for rsync command ${CR}${TABS} $RSYNC   not found $CR")
+fi
+
+PING=$(ping -q -c 1 ${RSHOST} 2>&1 1>/dev/null) 
+PINGRES=$?
+
+if [ ${PINGRES} -eq 0 ] ; then 
+	R_MSGS+=("$CR${GREEN} [OK] ${NO_COLOUR}Checking for ${RSHOST}$CR")
+else
+	R_STATUS=1
+	R_MSGS+=("$CR${RED} [ERROR] ${NO_COLOUR}Checking for ${RSHOST} ${CR}${TABS} ${PING}$CR")
+fi
+
+
+AUTHCHK=$( ssh -i ${RSKEY} -o 'BatchMode yes' ${RSUSER}@${RSHOST} "ls" 2>&1 1>/dev/null ) 
+AUTHCHKRES=$?
+
+if [ ${AUTHCHKRES} -eq 0 ] ; then
+
+	RCUSTOMERCHK=$( ssh -i ${RSKEY} -o 'BatchMode yes' ${RSUSER}@${RSHOST} "ls ${RCUSTOMER}" 2>&1 1>/dev/null )
+	RCUSTOMERCHKRES=$?
+
+	if [ ${RCUSTOMERCHKRES} -eq 0 ] ; then
+
+		RPROJECTCHK=$( ssh -i ${RSKEY} -o 'BatchMode yes' ${RSUSER}@${RSHOST} "ls ${RCUSTOMER}/${RPROJECT}" 2>&1 1>/dev/null )
+		RPROJECTCHKRES=$?
+		
+		if [ ${RPROJECTCHKRES} -eq 0 ] ; then
+
+			RSITECHK=$( ssh -i ${RSKEY} -o 'BatchMode yes' ${RSUSER}@${RSHOST} "ls ${RCUSTOMER}/${RPROJECT}/${RSITE}" 2>&1 1>/dev/null )
+			RSITECHKRES=$?
+
+			if [ ${RSITECHKRES} -eq 0 ] ; then
+
+				DATACHK=$( ssh -i ${RSKEY} -o 'BatchMode yes' ${RSUSER}@${RSHOST} "ls ${RCUSTOMER}/${RPROJECT}/${RSITE}/data" 2>&1 1>/dev/null )
+				DATACHKRES=$?
+
+				if [ ${DATACHKRES} -eq 0 ] ; then
+					R_MSGS+=("$CR${GREEN} [OK] ${NO_COLOUR}Checking for ${RCUSTOMER}/${RPROJECT}/${RSITE}/data as ${RSUSER}@${RSHOST}$CR")
+				else 
+					R_STATUS=1
+					R_MSGS+=("$CR${RED} [ERROR] ${NO_COLOUR}Checking for ${RCUSTOMER}/${RPROJECT}/${RSITE}/data folder, most likely you don't have a valid backup on ${RSHOST}${CR}${TABS}${DATACHK}$CR")
+				fi
+
+			else
+				R_STATUS=1
+				R_MSGS+=("$CR${RED} [ERROR] ${NO_COLOUR}Checking for ${RCUSTOMER}/${RPROJECT}/${RSITE} folder, most likely you don't have a valid backup on ${RSHOST}${CR}${TABS}${RSITECHK}$CR")
+			fi
+
+		else 
+			R_STATUS=1
+			R_MSGS+=("$CR${RED} [ERROR] ${NO_COLOUR}Checking for ${RCUSTOMER}/${RPROJECT} folder, most likely you don't have a valid backup on ${RSHOST}${CR}${TABS}${RPROJECTCHK}$CR")
+		fi
+
+	else 
+		R_STATUS=1
+		R_MSGS+=("$CR${RED} [ERROR] ${NO_COLOUR}Checking for ${RCUSTOMER} folder, most likely you don't have a valid backup on ${RSHOST}${CR}${TABS}${RCUSTOMERCHK}$CR")
+	fi
+
+else
+	R_STATUS=1
+	R_MSGS+=("$CR${RED} [ERROR] ${NO_COLOUR}Checking for basic ssh commands as ${RSUSER}@${RSHOST}${CR}${TABS}${AUTHCHK}$CR")
+fi
+
+for MSG in "${R_MSGS[@]}" ; do
+	echo -e "${MSG}" 
+done
+
+if [ ${R_STATUS} -eq 1 ] ; then 
+	echo "$CR One or more errors detected while checking for ${RSUSER}@${RSHOST}:/${RCUSTOMER}/${RPROJECT}/${RSITE}/data/ $CR"		
+else
+	HELP=" 
+ You can now start using the backup folder on ${RSHOST}:${RCUSTOMER}/${RPROJECT}/${RSITE}/data
+
+ To check for available data:
+
+	ssh -i ${RSKEY} -o 'BatchMode yes' ${RSUSER}@${RSHOST} \"ls ${RCUSTOMER}/${RPROJECT}/${RSITE}/data\"
+
+ To restore a certain file in the current working directory:
+
+	rsync -av -e \"ssh -i ${RSKEY}\"  \"${RSUSER}@${RSHOST}:${RCUSTOMER}/${RPROJECT}/${RSITE}/data/file_name\" .
+
+ To restore a certain file inside an existing folder :
+
+	rsync -av -e \"ssh -i ${RSKEY}\"  \"${RSUSER}@${RSHOST}:${RCUSTOMER}/${RPROJECT}/${RSITE}/data/file_name\" \"/var/www/html/\"
+
+ To restore a certain file with a new local name:
+	
+	rsync -av -e \"ssh -i ${RSKEY}\"  \"${RSUSER}@${RSHOST}:${RCUSTOMER}/${RPROJECT}/${RSITE}/data/file_name\" \"/var/www/html/new_file_name\"
+
+ To restore all files from a folder to a an existing local folder:
+
+ 	rsync -av -e \"ssh -i ${RSKEY}\"  \"${RSUSER}@${RSHOST}:${RCUSTOMER}/${RPROJECT}/${RSITE}/data/folder_name/*\" \"/var/www/html/folder_name/\"
+
+ To restore a folder to a an existing location (note the missing \" /* \" from source and the fact that we only specify the destination parent folder) :
+	rsync -av -e \"ssh -i ${RSKEY}\"  \"${RSUSER}@${RSHOST}:${RCUSTOMER}/${RPROJECT}/${RSITE}/data/folder_name\" \"/var/www/html/\"
+
+	"
+echo -e "${HELP}"
+
+fi
+
+
+exit ${R_STATUS}

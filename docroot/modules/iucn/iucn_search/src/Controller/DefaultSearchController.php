@@ -158,13 +158,13 @@ abstract class DefaultSearchController extends ControllerBase {
             '#attributes' => ['class' => ['blankslate-title']],
             '#tag' => 'h3',
             '#type' => 'html_tag',
-            '#value' => $this->t('No ' . $plural . ' found.')
+            '#value' => $this->t('No results found.')
           ],
           [
             '#attributes' => ['class' => []],
             '#tag' => 'p',
             '#type' => 'html_tag',
-            '#value' => $this->t('Use the links above to find what you&rsquo;re looking for, or try a new search query. The Search filters are also super helpful for quickly finding ' . $plural . ' most relevant to you.')
+            '#value' => $this->t('Use the links above to find what you&rsquo;re looking for, or try a new search query. The Search filters are also super helpful for quickly finding results most relevant to you.')
           ]
         ];
       }

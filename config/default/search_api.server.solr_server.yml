@@ -13,7 +13,7 @@ backend: search_api_solr
 backend_config:
   scheme: http
   host: localhost
-  port: '8983'
+  port: '8984'
   path: /solr
   core: wildlex
   username: ''

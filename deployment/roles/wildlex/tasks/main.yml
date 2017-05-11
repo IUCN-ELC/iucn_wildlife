@@ -120,7 +120,7 @@
     backup_on_hetzner: False
     backup_want_monthly: True
     backup_want_yearly: True
-    backup_emailrec: "cristian.romanescu@eaudeweb.ro"
+    backup_emailrec: "drupal@eaudeweb.ro"
     backup_rscust: "IUCN"
     backup_rsproject: "WILDLEX"
     backup_rssite: "www.wildlex.org"

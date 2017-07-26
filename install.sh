@@ -10,7 +10,7 @@ if [ ! -z "$1" ]; then
 fi
 
 echo "Getting '$env' environment database ..."
-drush sql-sync "@iucnwildlifed8.$env" @self -y
+drush sql-sync "@$env" @self -y
 
 echo "Importing 'default' configuration..."
 drush cim vcs -y

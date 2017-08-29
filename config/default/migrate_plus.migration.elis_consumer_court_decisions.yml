@@ -35,6 +35,9 @@ process:
   field_court:
     source: courtName
     plugin: taxonomy_term
+  field_type_of_case:
+    source: courtCase
+    plugin: taxonomy_term
   field_date_of_text: dateOfText
   field_reference_number: referenceNumber
   field_number_of_pages: numberOfPages

@@ -48,6 +48,7 @@ dependencies:
     - field.field.node.court_decision.field_subdivision
     - field.field.node.court_decision.field_territorial_subdivisions
     - field.field.node.court_decision.field_transnational
+    - field.field.node.court_decision.field_type_of_case
     - field.field.node.court_decision.field_type_of_text
     - field.field.node.court_decision.field_url
     - field.field.node.court_decision.field_wildlife_legislation
@@ -432,6 +433,15 @@ content:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
+  field_type_of_case:
+    weight: 54
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_type_of_text:
     type: entity_reference_autocomplete_tags

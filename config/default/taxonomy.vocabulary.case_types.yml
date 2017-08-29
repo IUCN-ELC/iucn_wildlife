@@ -1,0 +1,9 @@
+uuid: 8694e4f4-3636-476c-950b-8e680095b65d
+langcode: en
+status: true
+dependencies: {  }
+name: 'Case types'
+vid: case_types
+description: ''
+hierarchy: 0
+weight: 0

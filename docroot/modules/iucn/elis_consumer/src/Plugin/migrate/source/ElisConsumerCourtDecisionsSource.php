@@ -85,6 +85,7 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       'wildlifeDecision' => 'Decision of the court',
       'wildlifeCharges' => 'Charges against accused person(s)',
       'referenceToNationalLegislationNotes' => 'Cited legislations',
+      'courtCase' => 'Type of case',
     );
   }
 

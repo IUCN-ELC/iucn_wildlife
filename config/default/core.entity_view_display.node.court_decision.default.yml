@@ -48,6 +48,7 @@ dependencies:
     - field.field.node.court_decision.field_subdivision
     - field.field.node.court_decision.field_territorial_subdivisions
     - field.field.node.court_decision.field_transnational
+    - field.field.node.court_decision.field_type_of_case
     - field.field.node.court_decision.field_type_of_text
     - field.field.node.court_decision.field_url
     - field.field.node.court_decision.field_wildlife_legislation
@@ -63,14 +64,14 @@ bundle: court_decision
 mode: default
 content:
   field_abstract:
-    weight: 8
+    weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_charges:
-    weight: 11
+    weight: 12
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -102,7 +103,7 @@ content:
     region: content
   field_date_of_text:
     type: datetime_custom
-    weight: 7
+    weight: 8
     label: above
     settings:
       timezone_override: ''
@@ -110,7 +111,7 @@ content:
     third_party_settings: {  }
     region: content
   field_decision:
-    weight: 15
+    weight: 16
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -118,13 +119,13 @@ content:
     region: content
   field_files:
     type: file_list
-    weight: 26
+    weight: 27
     label: above
     settings: {  }
     third_party_settings: {  }
     region: content
   field_language_of_document:
-    weight: 9
+    weight: 10
     label: above
     settings:
       link: true
@@ -132,7 +133,7 @@ content:
     type: entity_reference_label
     region: content
   field_legislation_cited:
-    weight: 19
+    weight: 20
     label: above
     settings:
       link_to_entity: false
@@ -140,7 +141,7 @@ content:
     type: string
     region: content
   field_money_value:
-    weight: 13
+    weight: 14
     label: above
     settings:
       link_to_entity: false
@@ -148,7 +149,7 @@ content:
     type: string
     region: content
   field_penalty:
-    weight: 16
+    weight: 17
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -156,14 +157,14 @@ content:
     region: content
   field_reference_number:
     type: string
-    weight: 10
+    weight: 11
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     region: content
   field_reference_to_cou:
-    weight: 18
+    weight: 19
     label: above
     settings:
       link_to_entity: false
@@ -171,7 +172,7 @@ content:
     type: string
     region: content
   field_reference_to_faolex:
-    weight: 22
+    weight: 23
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -179,7 +180,7 @@ content:
     type: string
     region: content
   field_reference_to_faolex_countr:
-    weight: 25
+    weight: 26
     label: hidden
     settings:
       link: false
@@ -187,7 +188,7 @@ content:
     type: entity_reference_label
     region: content
   field_reference_to_faolex_date:
-    weight: 24
+    weight: 25
     label: hidden
     settings:
       timezone_override: ''
@@ -196,7 +197,7 @@ content:
     type: datetime_custom
     region: content
   field_reference_to_faolex_title:
-    weight: 23
+    weight: 24
     label: hidden
     settings:
       link_to_entity: false
@@ -204,14 +205,6 @@ content:
     type: string
     region: content
   field_reference_to_legislation:
-    weight: 20
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_reference_to_national_legi:
     weight: 21
     label: above
     settings:
@@ -219,8 +212,16 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_reference_to_national_legi:
+    weight: 22
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_reference_to_treaties:
-    weight: 17
+    weight: 18
     label: above
     settings:
       link_to_entity: false
@@ -228,7 +229,7 @@ content:
     type: string
     region: content
   field_reference_to_treaties_titl:
-    weight: 27
+    weight: 28
     label: above
     settings:
       link_to_entity: false
@@ -252,7 +253,7 @@ content:
     type: string
     region: content
   field_species:
-    weight: 12
+    weight: 13
     label: above
     settings:
       link: true
@@ -268,7 +269,7 @@ content:
     type: entity_reference_label
     region: content
   field_transnational:
-    weight: 14
+    weight: 15
     label: above
     settings:
       format: default
@@ -276,6 +277,14 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
+  field_type_of_case:
+    weight: 7
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_type_of_text:
     type: entity_reference_label

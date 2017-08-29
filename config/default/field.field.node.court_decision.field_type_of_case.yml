@@ -1,0 +1,28 @@
+uuid: 916f721e-d397-41a4-9420-c1a15ed0016b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_type_of_case
+    - node.type.court_decision
+    - taxonomy.vocabulary.case_types
+id: node.court_decision.field_type_of_case
+field_name: field_type_of_case
+entity_type: node
+bundle: court_decision
+label: 'Type of case'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      case_types: case_types
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -12,7 +12,7 @@ id: node.court_decision.field_type_of_text
 field_name: field_type_of_text
 entity_type: node
 bundle: court_decision
-label: 'Type of text'
+label: 'Type of court'
 description: ''
 required: false
 translatable: false

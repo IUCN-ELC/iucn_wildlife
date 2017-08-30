@@ -338,7 +338,7 @@ function drush_migrate_tools_migrate_stop($migration_id = '') {
  */
 function drush_migrate_tools_migrate_reset_status($migration_id = '') {
   /** @var MigrationInterface $migration */
-  $migration = \Drupal::service('plugin.manager.migration')->createInstance($migration_id);
+  $migration = \Drupal::service('plugin.manager.config_entity_migration')->createInstance($migration_id);
   if ($migration) {
     $status = $migration->getStatus();
     if ($status == MigrationInterface::STATUS_IDLE) {

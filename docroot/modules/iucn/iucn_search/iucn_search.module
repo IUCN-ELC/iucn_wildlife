@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Database\Database;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_theme().
@@ -311,5 +312,15 @@ function iucn_search_query_filter() {
 function iucn_search_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == 'contact_message_feedback_form') {
     $form['actions']['preview']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function iucn_search_views_pre_build(ViewExecutable $view) {
+  if ($view->id() == 'ws_provider' && $view->current_display == 'court_decisions') {
+    $items_per_page = \Drupal::request()->get('items_per_page') ?: 10;
+    $view->setItemsPerPage($items_per_page);
   }
 }

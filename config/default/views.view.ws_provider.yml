@@ -341,7 +341,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '/ws-provider/details/{{ uuid }}'
+            text: '/ws/details/{{ uuid }}'
             make_link: false
             path: ''
             absolute: false
@@ -512,7 +512,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: ws-provider/court-decisions
+      path: ws/court-decisions
       display_description: ''
       row:
         type: data_field
@@ -579,7 +579,7 @@ display:
     position: 2
     display_options:
       display_extenders: {  }
-      path: ws-provider/details/%
+      path: ws/details/%
       filters:
         status:
           value: '1'

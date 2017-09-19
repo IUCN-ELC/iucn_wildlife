@@ -321,6 +321,8 @@ function iucn_search_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
 function iucn_search_views_pre_build(ViewExecutable $view) {
   if ($view->id() == 'ws_provider' && $view->current_display == 'court_decisions') {
     $items_per_page = \Drupal::request()->get('items_per_page') ?: 10;
+    $offset = \Drupal::request()->get('offset') ?: 0;
     $view->setItemsPerPage($items_per_page);
+    $view->setOffset($offset);
   }
 }

@@ -2,6 +2,8 @@
 
 use Drupal\Core\Database\Database;
 use Drupal\views\ViewExecutable;
+use Drupal\search_api\Entity\Index;
+use Drupal\search_api\IndexBatchHelper;
 
 /**
  * Implements hook_theme().
@@ -16,8 +18,8 @@ function iucn_search_theme($existing, $type, $theme, $path) {
         'min' => NULL,
         'title' => NULL,
         'to' => NULL,
-      ]
-    ]
+      ],
+    ],
   ];
 }
 
@@ -25,7 +27,7 @@ function iucn_search_theme($existing, $type, $theme, $path) {
  * Implements hook_edw_search_solr_facet_info().
  */
 function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\SolrSearchServer $server) {
-  $ret = array();
+  $ret = [];
 
   $facets = [
     'field_country' => [
@@ -92,8 +94,8 @@ function literature_is_article(\Drupal\node\NodeInterface $node) {
 
 function literature_is_chapter(\Drupal\node\NodeInterface $node) {
   return !empty($node->field_original_id->value)
-        && (strpos($node->field_original_id->value, 'ANA') === 0)
-        && literature_is_article($node) == false;
+    && (strpos($node->field_original_id->value, 'ANA') === 0)
+    && literature_is_article($node) == FALSE;
 }
 
 /**
@@ -168,7 +170,7 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
   if ($entity->bundle() === 'court_decision') {
     $build['title'][0]['#context']['value'] = $build['#node']->field_original_title[0]->value;
 
-    $faolex_ref = array();
+    $faolex_ref = [];
 
     if (isset($build['field_reference_to_faolex_title'][0])) {
       $faolex_ref['title'] = $build['field_reference_to_faolex_title'][0]['#context']['value'];
@@ -218,7 +220,8 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
         }
       }
       foreach ($items as $key => $item) {
-        $link = \Drupal\Core\Link::fromTextAndUrl($item['text'], $item['url'])->toRenderable();
+        $link = \Drupal\Core\Link::fromTextAndUrl($item['text'], $item['url'])
+          ->toRenderable();
         $link['#attributes']['target'] = '_blank';
         $build['field_reference_to_treaties'][$key]['#context']['value'] = $link;
       }
@@ -256,7 +259,8 @@ function iucn_search_cron() {
   if (function_exists('drush_log')) {
     drush_log('Increase SESSION wait_timeout');
   }
-  Database::getConnection('default')->query("SET SESSION innodb_lock_wait_timeout = 4800");
+  Database::getConnection('default')
+    ->query("SET SESSION innodb_lock_wait_timeout = 4800");
   Database::getConnection('default')->query("SET SESSION wait_timeout = 4800");
 
   $migrations = [
@@ -271,30 +275,38 @@ function iucn_search_cron() {
   $service = \Drupal::service('plugin.manager.config_entity_migration');
   $migrate_last_imported_store = \Drupal::keyValue('migrate_last_imported');
   foreach ($migrations as $migrationName) {
-    $last_run = \Drupal::state()->get('iucn_search.migration_last_run.' . $migrationName, NULL);
+    $last_run = \Drupal::state()
+      ->get('iucn_search.migration_last_run.' . $migrationName, NULL);
     if (empty($last_run) || (time() - $last_run) >= 3600 /* 1 hour */) {
       /** @var \Drupal\migrate\Plugin\Migration $migration */
       if ($migration = $service->createInstance($migrationName)) {
         if ($migration->getStatus() == \Drupal\migrate\Plugin\MigrationInterface::STATUS_IDLE) {
-          $migration->setTrackLastImported(true);
+          $migration->setTrackLastImported(TRUE);
           $migration->getIdMap()->prepareUpdate();
           $executable = new \Drupal\migrate\MigrateExecutable($migration, new \Drupal\migrate\MigrateMessage());
           $executable->import();
           \Drupal::state()
             ->set('iucn_search.migration_last_run.' . $migrationName, time());
-          $migrate_last_imported_store->set($migration->id(), round(microtime(true) * 1000));
-          $reindex = true;
+          $migrate_last_imported_store->set($migration->id(), round(microtime(TRUE) * 1000));
+          $reindex = TRUE;
         }
       }
       else {
-        // @todo: Report error, migrations are not working :-(
+        \Drupal::logger('migrate')
+          ->critical(t('Could\'t run migration @migration', ['@migration' => $migrationName]));
       }
     }
   }
 
   if ($reindex === TRUE) {
-    drush_search_api_clear();
-    drush_search_api_index();
+    $indexes = Index::loadMultiple();
+    foreach ($indexes as $index) {
+      /** @var \Drupal\search_api\Entity\Index $index */
+      if ($index->status()) {
+        $index->clear();
+        $index->indexItems();
+      }
+    }
   }
 }
 

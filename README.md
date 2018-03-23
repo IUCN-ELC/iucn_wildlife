@@ -11,7 +11,7 @@
 
 ## Quick start
 
-1. cp docker-compose.override.template.yml docker-compose.override.yml
+1. `cp docker-compose.override.template.yml docker-compose.override.yml`
 2. Optional
    * If you have SSH access to the staging/production server, edit docker-compose.override.yml and uncomment the php71 volume containing id_rsa and also `cp drush/aliases/example.aliases.local.php drush/aliases/aliases.local.php`, then edit aliases.local.php and set your own user
    * Change the ports mapping for service nginx if you already have a web server running on port 80.
@@ -20,9 +20,11 @@
 3. `cp docroot/sites/default/example.settings.local.php docroot/sites/default/settings.local.php`
 (remember the database settings must match docker-compose.override.yml)
 
-4. Edit your local /etc/hosts and add the server_name from ./.docker/conf_nginx/project.conf:
+4. Edit your local /etc/hosts and add the `server_name` from `./.docker/conf_nginx/project.conf`:
 
-    127.0.0.1 wildlex.local
+```
+127.0.0.1 wildlex.local
+```
 
 5. run `docker-compose up`, make sure that there are no errors in the console. If everything looks ok, CTRL+C and `docker-compose up -d`
 
@@ -30,22 +32,28 @@
 
 7. Restore database contents:
 
-  $ curl -o db.sql.gz https://www.wildlex.org/sites/default/files/db.sql.gz
-  $ gunzip db.sql.gz
-  $ docker cp db.sql wl_db:/tmp
-  $ docker exec -it wl_db bash
-  $ mysql -u root -proot drupal < /tmp/db.sql
+```
+$ curl -o db.sql.gz https://www.wildlex.org/sites/default/files/db.sql.gz
+$ gunzip db.sql.gz
+$ docker cp db.sql wl_db:/tmp
+$ docker exec -it wl_db bash
+$ mysql -u root -proot drupal < /tmp/db.sql
+```
 
 8. Restore sites/default/files. If you have SSH access to @prod (see step 2):
 
-  $ docker exec -it wl_php bash
-  $ cd /var/www/html/docroot
-  $ drush -v rsync @prod:%files @self:%files
+```
+$ docker exec -it wl_php bash
+$ cd /var/www/html/docroot
+$ drush -v rsync @prod:%files @self:%files
+```
 
 or 
 
+```
   $ cd docroot/sites/default
   $ rsync -varzh php@www.wildlex.org:/var/www/html/wildlex/docroot/sites/default/files .
+```
 
 9. Reset admin password
   $ docker exec -it wl_php bash

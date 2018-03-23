@@ -1,0 +1,2 @@
+<?php
+$aliases['prod']['remote-user'] = 'user';

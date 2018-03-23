@@ -13,11 +13,11 @@
 
 1. `cp docker-compose.override.template.yml docker-compose.override.yml`
 2. Optional
-   * If you have SSH access to the staging/production server, edit docker-compose.override.yml and uncomment the php71 volume containing id_rsa and also `cp drush/aliases/example.aliases.local.php drush/aliases/aliases.local.php`, then edit aliases.local.php and set your own user
+   * If you have SSH access to the staging/production server, edit docker-compose.override.yml and uncomment the php71 volume containing id_rsa and also `cp drush/aliases/aliases.local.php.example drush/aliases/aliases.local.php`, then edit aliases.local.php and set your own user
    * Change the ports mapping for service nginx if you already have a web server running on port 80.
    * If you are going to access the mysql database directly, uncomment the ports mapping from service db.
 
-3. `cp docroot/sites/default/example.settings.local.php docroot/sites/default/settings.local.php`
+3. `cp docroot/sites/default/settings.local.php.example docroot/sites/default/settings.local.php`
 (remember the database settings must match docker-compose.override.yml)
 
 4. Edit your local /etc/hosts and add the `server_name` from `./.docker/conf_nginx/project.conf`:

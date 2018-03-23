@@ -64,6 +64,12 @@ or
 
 TODO: Cristi
 
+### Create sql-dump
+
+```
+$ drush sql-dump --gzip --structure-tables-list=cache,cache_*,watchdog > db.sql.gz
+```
+
 ### Configuration management
 
 #### Export

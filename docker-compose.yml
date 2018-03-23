@@ -1,0 +1,38 @@
+version: '2.0'
+
+services:
+
+  nginx:
+    image: nginx:latest
+    depends_on:
+    - php71
+    volumes:
+    - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf
+    - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf
+    - .:/var/www/html/
+
+  php71:
+    image: cristiroma/php-fpm:latest
+    depends_on:
+    - db
+    volumes:
+    - .:/var/www/html/
+
+  db:
+    image: mariadb
+    environment:
+      MYSQL_DATABASE: "drupal"
+      MYSQL_ROOT_PASSWORD: "root"
+    volumes:
+    - .docker/conf-mysqld/server.cnf:/etc/mysql/conf.d/server.cnf
+    - .docker/conf-mysqld/client.cnf:/etc/mysql/conf.d/client.cnf
+
+  solr6:
+    image: library/solr:6
+    volumes:
+      - .docker/conf-solr/core-template:/core-template
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - drupal
+      - /core-template

@@ -11,13 +11,15 @@ services:
 
   php71:
     container_name: wl_php
-    volumes:
-      - /home/cristiroma/.ssh/id_rsa:/root/.ssh/id_rsa
+    #volumes:
+    #  - /home/user/.ssh/id_rsa:/root/.ssh/id_rsa:ro
 
   solr6:
     container_name: wl_solr6
 
   db:
     container_name: wl_db
+#    ports:
+#    - "127.0.0.1:13306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "root"

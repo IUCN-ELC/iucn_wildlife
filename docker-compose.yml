@@ -22,7 +22,6 @@ services:
     image: mariadb
     environment:
       MYSQL_DATABASE: "drupal"
-      MYSQL_ROOT_PASSWORD: "root"
     volumes:
     - .docker/conf-mysqld/server.cnf:/etc/mysql/conf.d/server.cnf
     - .docker/conf-mysqld/client.cnf:/etc/mysql/conf.d/client.cnf

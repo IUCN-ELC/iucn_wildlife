@@ -2,6 +2,8 @@
 
 namespace Drupal\views\Tests;
 
+@trigger_error('\Drupal\views\Tests\ViewTestBase is deprecated in Drupal 8.4.0 and will be removed before Drupal 9.0.0. Instead, use \Drupal\Tests\views\Functional\ViewTestBase', E_USER_DEPRECATED);
+
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\simpletest\WebTestBase;
 use Drupal\views\ViewExecutable;
@@ -12,6 +14,9 @@ use Drupal\views\ViewExecutable;
  * Use this base test class if you need to emulate a full Drupal installation.
  * When possible, ViewsKernelTestBase should be used instead. Both base classes
  * include the same methods.
+ *
+ * @deprecated in Drupal 8.4.0 and will be removed before Drupal 9.0.0.
+ *   Use \Drupal\Tests\views\Functional\ViewTestBase.
  *
  * @see \Drupal\Tests\views\Kernel\ViewsKernelTestBase
  * @see \Drupal\simpletest\WebTestBase
@@ -91,7 +96,7 @@ abstract class ViewTestBase extends WebTestBase {
    *
    * @param string $id
    *   The HTML ID of the button
-   * @param string $label
+   * @param string $expected_label
    *   The expected label for the button.
    * @param string $message
    *   (optional) A custom message to display with the assertion. If no custom
@@ -127,6 +132,8 @@ abstract class ViewTestBase extends WebTestBase {
 
   /**
    * Returns the schema definition.
+   *
+   * @internal
    */
   protected function schemaDefinition() {
     return ViewTestData::schemaDefinition();

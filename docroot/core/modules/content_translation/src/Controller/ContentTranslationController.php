@@ -196,14 +196,16 @@ class ContentTranslationController extends ControllerBase {
           if (isset($links['edit'])) {
             $links['edit']['title'] = $this->t('Edit');
           }
-          $status = ['data' => [
-            '#type' => 'inline_template',
-            '#template' => '<span class="status">{% if status %}{{ "Published"|t }}{% else %}{{ "Not published"|t }}{% endif %}</span>{% if outdated %} <span class="marker">{{ "outdated"|t }}</span>{% endif %}',
-            '#context' => [
-              'status' => $metadata->isPublished(),
-              'outdated' => $metadata->isOutdated(),
+          $status = [
+            'data' => [
+              '#type' => 'inline_template',
+              '#template' => '<span class="status">{% if status %}{{ "Published"|t }}{% else %}{{ "Not published"|t }}{% endif %}</span>{% if outdated %} <span class="marker">{{ "outdated"|t }}</span>{% endif %}',
+              '#context' => [
+                'status' => $metadata->isPublished(),
+                'outdated' => $metadata->isOutdated(),
+              ],
             ],
-          ]];
+          ];
 
           if ($is_original) {
             $language_name = $this->t('<strong>@language_name (Original language)</strong>', ['@language_name' => $language_name]);
@@ -337,7 +339,9 @@ class ContentTranslationController extends ControllerBase {
     // @todo Provide a way to figure out the default form operation. Maybe like
     //   $operation = isset($info['default_operation']) ? $info['default_operation'] : 'default';
     //   See https://www.drupal.org/node/2006348.
-    $operation = 'default';
+
+    // Use the add form handler, if available, otherwise default.
+    $operation = $entity->getEntityType()->hasHandlerClass('form', 'add') ? 'add' : 'default';
 
     $form_state_additions = [];
     $form_state_additions['langcode'] = $target->getId();
@@ -368,7 +372,9 @@ class ContentTranslationController extends ControllerBase {
     // @todo Provide a way to figure out the default form operation. Maybe like
     //   $operation = isset($info['default_operation']) ? $info['default_operation'] : 'default';
     //   See https://www.drupal.org/node/2006348.
-    $operation = 'default';
+
+    // Use the edit form handler, if available, otherwise default.
+    $operation = $entity->getEntityType()->hasHandlerClass('form', 'edit') ? 'edit' : 'default';
 
     $form_state_additions = [];
     $form_state_additions['langcode'] = $language->getId();

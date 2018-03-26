@@ -33,6 +33,7 @@ class ManageDisplayTest extends WebTestBase {
   protected function setUp() {
     parent::setUp();
     $this->drupalPlaceBlock('system_breadcrumb_block');
+    $this->drupalPlaceBlock('local_tasks_block');
 
     // Create a test user.
     $admin_user = $this->drupalCreateUser(['access content', 'administer content types', 'administer node fields', 'administer node form display', 'administer node display', 'administer taxonomy', 'administer taxonomy_term fields', 'administer taxonomy_term display', 'administer users', 'administer account settings', 'administer user display', 'bypass node access']);
@@ -84,7 +85,7 @@ class ManageDisplayTest extends WebTestBase {
 
     // Check whether formatter weights are respected.
     $result = $this->xpath('//select[@id=:id]/option', [':id' => 'edit-fields-field-test-type']);
-    $options = array_map(function($item) {
+    $options = array_map(function ($item) {
       return (string) $item->attributes()->value[0];
     }, $result);
     $expected_options = [
@@ -246,7 +247,7 @@ class ManageDisplayTest extends WebTestBase {
 
     // Check whether widget weights are respected.
     $result = $this->xpath('//select[@id=:id]/option', [':id' => 'edit-fields-field-test-type']);
-    $options = array_map(function($item) {
+    $options = array_map(function ($item) {
       return (string) $item->attributes()->value[0];
     }, $result);
     $expected_options = [
@@ -403,8 +404,11 @@ class ManageDisplayTest extends WebTestBase {
     $manage_display = 'admin/structure/types/manage/' . $this->type . '/display';
     $this->drupalGet($manage_display);
     $this->assertNoLink('Full content');
+    $this->assertLink('Teaser');
+
     $this->drupalGet($manage_display . '/teaser');
     $this->assertNoLink('Full content');
+    $this->assertLink('Default');
   }
 
   /**
@@ -448,7 +452,7 @@ class ManageDisplayTest extends WebTestBase {
   /**
    * Asserts that a string is found in the rendered node in a view mode.
    *
-   * @param EntityInterface $node
+   * @param \Drupal\Core\Entity\EntityInterface $node
    *   The node.
    * @param $view_mode
    *   The view mode in which the node should be displayed.
@@ -467,7 +471,7 @@ class ManageDisplayTest extends WebTestBase {
   /**
    * Asserts that a string is not found in the rendered node in a view mode.
    *
-   * @param EntityInterface $node
+   * @param \Drupal\Core\Entity\EntityInterface $node
    *   The node.
    * @param $view_mode
    *   The view mode in which the node should be displayed.
@@ -488,7 +492,7 @@ class ManageDisplayTest extends WebTestBase {
    * This helper function is used by assertNodeViewText() and
    * assertNodeViewNoText().
    *
-   * @param EntityInterface $node
+   * @param \Drupal\Core\Entity\EntityInterface $node
    *   The node.
    * @param $view_mode
    *   The view mode in which the node should be displayed.

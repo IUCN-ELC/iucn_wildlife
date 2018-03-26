@@ -54,20 +54,20 @@ class PythonPdf2txtExtractor extends TextExtractorPluginBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['python_path'] = array(
+    $form['python_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Path to python executable'),
       '#description' => $this->t('Enter the path to python executable. Example: "python".'),
       '#default_value' => $this->configuration['python_path'],
       '#required' => TRUE,
-    );
-    $form['python_pdf2txt_script'] = array(
+    ];
+    $form['python_pdf2txt_script'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Full path to the python pdf2txt script'),
       '#description' => $this->t('Enter the full path to the python pdf2txt script. Example: "/usr/bin/pdf2txt".'),
       '#default_value' => $this->configuration['python_pdf2txt_script'],
       '#required' => TRUE,
-    );
+    ];
     return $form;
   }
 
@@ -82,7 +82,7 @@ class PythonPdf2txtExtractor extends TextExtractorPluginBase {
     $python_pdf2txt_script = $values['text_extractor_config']['python_pdf2txt_script'];
     if (!file_exists($python_pdf2txt_script)) {
       if (isset($form['text_extractor_config']['python_pdf2txt_script'])) {
-        $form_state->setError($form['text_extractor_config']['python_pdf2txt_script'], $this->t('The file %path does not exist.', array('%path' => $python_pdf2txt_script)));
+        $form_state->setError($form['text_extractor_config']['python_pdf2txt_script'], $this->t('The file %path does not exist.', ['%path' => $python_pdf2txt_script]));
       }
     }
     // Check that the file is an executable Python Script.

@@ -9,7 +9,7 @@ plugin.plugin_configuration.search_api_processor.file_attachments:
       type: integer
       label: 'Number of files indexed per file field'
     max_filesize:
-      type: integer
+      type: string
       label: 'Maximum upload size'
     excluded_private:
       type: integer

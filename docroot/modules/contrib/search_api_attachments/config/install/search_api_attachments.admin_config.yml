@@ -4,7 +4,6 @@ preserve_cache: true
 
 solr_extractor_configuration:
   solr_server: ''
-  solr_tika_path: 'update/extract'
 
 pdftotext_extractor_configuration: []
 
@@ -15,3 +14,6 @@ tika_extractor_configuration:
 python_pdf2txt_extractor_configuration:
   python_path: 'python'
   python_pdf2txt_script: '/usr/bin/pdf2txt'
+
+docconv_extractor_configuration:
+  docconv_path: '/usr/bin/docconv'

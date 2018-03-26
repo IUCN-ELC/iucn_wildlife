@@ -4,7 +4,6 @@
  * @file
  * Implement hooks and help functions to delete extracted files cache content.
  */
-
 use Drupal\file\Entity\File;
 
 /**
@@ -43,4 +42,18 @@ function _search_api_attachments_delete_cache(File $file) {
   $collection = 'search_api_attachments';
   $key = $collection . ':' . $file->id();
   \Drupal::keyValue($collection)->delete($key);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function search_api_attachments_theme() {
+  return [
+    'saa' => [
+      'variables' => [
+        'message' => NULL,
+        'type' => NULL,
+      ],
+    ],
+  ];
 }

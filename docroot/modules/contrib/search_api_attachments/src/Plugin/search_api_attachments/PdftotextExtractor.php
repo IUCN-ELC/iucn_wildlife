@@ -54,12 +54,12 @@ class PdftotextExtractor extends TextExtractorPluginBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['pdftotext'] = array(
+    $form['pdftotext'] = [
       '#type' => 'markup',
       '#markup' => $this->t('No configuration needed for this extraction method.'),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
-    );
+    ];
     return $form;
   }
 

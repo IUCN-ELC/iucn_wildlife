@@ -4,7 +4,6 @@
  * @file
  * Hooks provided by the "Search API attachments" module.
  */
-
 /**
  * @addtogroup hooks
  * @{

@@ -5,12 +5,13 @@ package: Search
 dependencies:
   - search_api:search_api
   - search_api:search_api_test_db
+  - drupal:node
   - drupal:views
 # core: 8.x
 hidden: true
 
-# Information added by Drupal.org packaging script on 2016-07-06
-version: '8.x-1.0-alpha16'
+# Information added by Drupal.org packaging script on 2018-02-23
+version: '8.x-1.7'
 core: '8.x'
 project: 'search_api'
-datestamp: 1467813955
+datestamp: 1519387691

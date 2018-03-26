@@ -3,7 +3,7 @@
 namespace Drupal\Tests\search_api\Kernel;
 
 use Drupal\search_api\Query\ResultSetInterface;
-use Drupal\search_api\Utility;
+use Drupal\search_api\Utility\Utility;
 
 /**
  * Defines a trait for testing results.
@@ -23,7 +23,7 @@ trait ResultsTrait {
     $results = array_keys($result->getResultItems());
     sort($results);
 
-    $ids = array();
+    $ids = [];
     foreach ($expected as $entity_type => $items) {
       $datasource_id = "entity:$entity_type";
       foreach ($items as $i) {

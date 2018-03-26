@@ -3,6 +3,8 @@
 namespace Drupal\search_api_test\Plugin\search_api\tracker;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\PluginFormInterface;
+use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Tracker\TrackerPluginBase;
 use Drupal\search_api_test\TestPluginTrait;
 
@@ -12,33 +14,35 @@ use Drupal\search_api_test\TestPluginTrait;
  * @SearchApiTracker(
  *   id = "search_api_test",
  *   label = @Translation("Test tracker"),
+ *   description = @Translation("This is the test tracker plugin description."),
  * )
  */
-class TestTracker extends TrackerPluginBase {
+class TestTracker extends TrackerPluginBase implements PluginFormInterface {
 
+  use PluginFormTrait;
   use TestPluginTrait;
 
   /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
+    return [
       'foo' => 'test',
-      'dependencies' => array(),
-    );
+      'dependencies' => [],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    return array(
-      'foo' => array(
+    return [
+      'foo' => [
         '#type' => 'textfield',
         '#title' => 'Foo',
         '#default_value' => $this->configuration['foo'],
-      ),
-    );
+      ],
+    ];
   }
 
   /**
@@ -88,7 +92,7 @@ class TestTracker extends TrackerPluginBase {
    */
   public function getRemainingItems($limit = -1, $datasource_id = NULL) {
     $this->logMethodCall(__FUNCTION__, func_get_args());
-    return array();
+    return [];
   }
 
   /**
@@ -128,7 +132,7 @@ class TestTracker extends TrackerPluginBase {
   public function onDependencyRemoval(array $dependencies) {
     $remove = $this->getReturnValue(__FUNCTION__, FALSE);
     if ($remove) {
-      $this->configuration['dependencies'] = array();
+      $this->configuration['dependencies'] = [];
     }
     return $remove;
   }

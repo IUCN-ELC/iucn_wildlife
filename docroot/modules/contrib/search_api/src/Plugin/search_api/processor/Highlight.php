@@ -5,11 +5,13 @@ namespace Drupal\search_api\Plugin\search_api\processor;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\Render\Element;
+use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
-use Drupal\search_api\Utility;
+use Drupal\search_api\Utility\DataTypeHelperInterface;
 
 /**
  * Adds a highlighted excerpt to results and highlights returned fields.
@@ -21,11 +23,14 @@ use Drupal\search_api\Utility;
  *   label = @Translation("Highlight"),
  *   description = @Translation("Adds a highlighted excerpt to results and highlights returned fields."),
  *   stages = {
- *     "postprocess_query" = 0
+ *     "pre_index_save" = 0,
+ *     "postprocess_query" = 0,
  *   }
  * )
  */
-class Highlight extends ProcessorPluginBase {
+class Highlight extends ProcessorPluginBase implements PluginFormInterface {
+
+  use PluginFormTrait;
 
   /**
    * PCRE regular expression for a word boundary.
@@ -46,6 +51,13 @@ class Highlight extends ProcessorPluginBase {
   protected static $split;
 
   /**
+   * The data type helper.
+   *
+   * @var \Drupal\search_api\Utility\DataTypeHelperInterface|null
+   */
+  protected $dataTypeHelper;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition) {
@@ -63,93 +75,147 @@ class Highlight extends ProcessorPluginBase {
   }
 
   /**
+   * Retrieves the data type helper.
+   *
+   * @return \Drupal\search_api\Utility\DataTypeHelperInterface
+   *   The data type helper.
+   */
+  public function getDataTypeHelper() {
+    return $this->dataTypeHelper ?: \Drupal::service('search_api.data_type_helper');
+  }
+
+  /**
+   * Sets the data type helper.
+   *
+   * @param \Drupal\search_api\Utility\DataTypeHelperInterface $data_type_helper
+   *   The new data type helper.
+   *
+   * @return $this
+   */
+  public function setDataTypeHelper(DataTypeHelperInterface $data_type_helper) {
+    $this->dataTypeHelper = $data_type_helper;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preIndexSave() {
+    parent::preIndexSave();
+
+    if (empty($this->configuration['exclude_fields'])) {
+      return;
+    }
+
+    $renames = $this->index->getFieldRenames();
+
+    $selected_fields = array_flip($this->configuration['exclude_fields']);
+    $renames = array_intersect_key($renames, $selected_fields);
+    if ($renames) {
+      $new_fields = array_keys(array_diff_key($selected_fields, $renames));
+      $new_fields = array_merge($new_fields, array_values($renames));
+      $this->configuration['exclude_fields'] = $new_fields;
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
+    return [
       'prefix' => '<strong>',
       'suffix' => '</strong>',
       'excerpt' => TRUE,
       'excerpt_length' => 256,
       'highlight' => 'always',
-      'exclude_fields' => array(),
-    );
+      'highlight_partial' => FALSE,
+      'exclude_fields' => [],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form = parent::buildConfigurationForm($form, $form_state);
+    $parent_name = 'processors[highlight][settings]';
+    if (!empty($form['#parents'])) {
+      $parents = $form['#parents'];
+      $parent_name = $root = array_shift($parents);
+      if ($parents) {
+        $parent_name = $root . '[' . implode('][', $parents) . ']';
+      }
+    }
 
-    $form['highlight'] = array(
+    $form['highlight'] = [
       '#type' => 'select',
       '#title' => $this->t('Highlight returned field data'),
       '#description' => $this->t('Select whether returned fields should be highlighted.'),
-      '#options' => array(
+      '#options' => [
         'always' => $this->t('Always'),
         'server' => $this->t('If the server returns fields'),
         'never' => $this->t('Never'),
-      ),
+      ],
       '#default_value' => $this->configuration['highlight'],
-    );
-    $form['excerpt'] = array(
+    ];
+    $form['highlight_partial'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Highlight partial matches'),
+      '#description' => $this->t('When enabled, matches in parts of words will be highlighted as well.'),
+      '#default_value' => $this->configuration['highlight_partial'],
+    ];
+    $form['excerpt'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Create excerpt'),
       '#description' => $this->t('When enabled, an excerpt will be created for searches with keywords, containing all occurrences of keywords in a fulltext field.'),
       '#default_value' => $this->configuration['excerpt'],
-    );
-    $form['excerpt_length'] = array(
+    ];
+    $form['excerpt_length'] = [
       '#type' => 'number',
       '#title' => $this->t('Excerpt length'),
       '#description' => $this->t('The requested length of the excerpt, in characters'),
       '#default_value' => $this->configuration['excerpt_length'],
       '#min' => 50,
-      '#states' => array(
-        'visible' => array(
-          // @todo This shouldn't be dependent on the form array structure.
-          //   Use the '#process' trick instead.
-          ':input[name="processors[highlight][settings][excerpt]"]' => array(
+      '#states' => [
+        'visible' => [
+          ":input[name=\"{$parent_name}[excerpt]\"]" => [
             'checked' => TRUE,
-          ),
-        ),
-      ),
-    );
+          ],
+        ],
+      ],
+    ];
     // Exclude certain fulltext fields.
     $fields = $this->index->getFields();
-    $fulltext_fields = array();
-    foreach ($this->index->getFulltextFields() as $field) {
-      $fulltext_fields[$field] = $fields[$field]->getLabel() . ' (' . $field . ')';
+    $fulltext_fields = [];
+    foreach ($this->index->getFulltextFields() as $field_id) {
+      $fulltext_fields[$field_id] = $fields[$field_id]->getLabel() . ' (' . $field_id . ')';
     }
-    $form['exclude_fields'] = array(
+    $form['exclude_fields'] = [
       '#type' => 'checkboxes',
-      '#title' => t('Exclude fields from excerpt'),
-      '#description' => t('Exclude certain fulltext fields from being included in the excerpt.'),
+      '#title' => $this->t('Exclude fields from excerpt'),
+      '#description' => $this->t('Exclude certain fulltext fields from being included in the excerpt.'),
       '#options' => $fulltext_fields,
       '#default_value' => $this->configuration['exclude_fields'],
-      '#attributes' => array('class' => array('search-api-checkboxes-list')),
-      '#states' => array(
-        'visible' => array(
-          // @todo This shouldn't be dependent on the form array structure.
-          //   Use the '#process' trick instead.
-          ':input[name="processors[highlight][settings][excerpt]"]' => array(
+      '#attributes' => ['class' => ['search-api-checkboxes-list']],
+      '#states' => [
+        'visible' => [
+          ":input[name=\"{$parent_name}[excerpt]\"]" => [
             'checked' => TRUE,
-          ),
-        ),
-      ),
-    );
-    $form['prefix'] = array(
+          ],
+        ],
+      ],
+    ];
+    $form['prefix'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Highlighting prefix'),
       '#description' => $this->t('Text/HTML that will be prepended to all occurrences of search keywords in highlighted text'),
       '#default_value' => $this->configuration['prefix'],
-    );
-    $form['suffix'] = array(
+    ];
+    $form['suffix'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Highlighting suffix'),
       '#description' => $this->t('Text/HTML that will be appended to all occurrences of search keywords in highlighted text'),
       '#default_value' => $this->configuration['suffix'],
-    );
+    ];
 
     return $form;
   }
@@ -161,8 +227,7 @@ class Highlight extends ProcessorPluginBase {
     // Sanitize the storage for the "exclude_fields" setting.
     $excluded = &$form_state->getValue('exclude_fields');
     $excluded = array_keys(array_filter($excluded));
-
-    parent::submitConfigurationForm($form, $form_state);
+    $this->setConfiguration($form_state->getValues());
   }
 
   /**
@@ -190,14 +255,12 @@ class Highlight extends ProcessorPluginBase {
     }
     if ($this->configuration['highlight'] != 'never') {
       $highlighted_fields = $this->highlightFields($result_items, $keys);
-      if ($highlighted_fields) {
+      foreach ($highlighted_fields as $item_id => $item_fields) {
+        $item = $result_items[$item_id];
         // Maybe the backend or some other processor has already set highlighted
         // field values.
-        foreach ($results->getExtraData('highlighted_fields', array()) as $item_id => $old_highlighting) {
-          $highlighted_fields += array($item_id => array());
-          $highlighted_fields[$item_id] += $old_highlighting;
-        }
-        $results->setExtraData('highlighted_fields', $highlighted_fields);
+        $item_fields += $item->getExtraData('highlighted_fields', []);
+        $item->setExtraData('highlighted_fields', $item_fields);
       }
     }
   }
@@ -215,7 +278,7 @@ class Highlight extends ProcessorPluginBase {
   protected function addExcerpts(array $results, array $fulltext_fields, array $keys) {
     $items = $this->getFulltextFields($results, $fulltext_fields);
     foreach ($items as $item_id => $item) {
-      $text = array();
+      $text = [];
       foreach ($item as $values) {
         $text = array_merge($text, $values);
       }
@@ -241,9 +304,8 @@ class Highlight extends ProcessorPluginBase {
    */
   protected function highlightFields(array $results, array $keys) {
     $item_fields = $this->getFulltextFields($results, NULL, $this->configuration['highlight'] == 'always');
-    $highlighted_fields = array();
+    $highlighted_fields = [];
     foreach ($item_fields as $item_id => $fields) {
-      /** @var \Drupal\search_api\Item\FieldInterface $field */
       foreach ($fields as $field_id => $values) {
         $change = FALSE;
         foreach ($values as $i => $value) {
@@ -273,23 +335,24 @@ class Highlight extends ProcessorPluginBase {
    *   (optional) If FALSE, only field values already present will be returned.
    *   Otherwise, fields will be loaded if necessary.
    *
-   * @return \Drupal\search_api\Item\FieldInterface[][]
-   *   An two-dimensional array of fulltext fields, keyed first by item ID and
-   *   then field ID.
+   * @return mixed[][][]
+   *   Field values extracted from the result items' fulltext fields, keyed by
+   *   item ID, field ID and then numeric indices.
    */
   protected function getFulltextFields(array $result_items, array $fulltext_fields = NULL, $load = TRUE) {
     // All the index's fulltext fields, grouped by datasource.
-    $fields_by_datasource = array();
+    $fields_by_datasource = [];
     foreach ($this->index->getFields() as $field_id => $field) {
       if (isset($fulltext_fields) && !in_array($field_id, $fulltext_fields)) {
         continue;
       }
-      if (Utility::isTextType($field->getType())) {
+      if ($this->getDataTypeHelper()->isTextType($field->getType())) {
         $fields_by_datasource[$field->getDatasourceId()][$field->getPropertyPath()] = $field_id;
       }
     }
 
-    return $this->extractItemValues($result_items, $fields_by_datasource, $load);
+    return $this->getFieldsHelper()
+      ->extractItemValues($result_items, $fields_by_datasource, $load);
   }
 
   /**
@@ -302,9 +365,9 @@ class Highlight extends ProcessorPluginBase {
    *   An array of all unique positive keywords used in the query.
    */
   protected function getKeywords(QueryInterface $query) {
-    $keys = $query->getKeys();
+    $keys = $query->getOriginalKeys();
     if (!$keys) {
-      return array();
+      return [];
     }
     if (is_array($keys)) {
       return $this->flattenKeysArray($keys);
@@ -314,7 +377,7 @@ class Highlight extends ProcessorPluginBase {
     // Assure there are no duplicates. (This is actually faster than
     // array_unique() by a factor of 3 to 4.)
     // Remove quotes from keywords.
-    $keywords = array();
+    $keywords = [];
     foreach (array_filter($keywords_in) as $keyword) {
       if ($keyword = trim($keyword, "'\"")) {
         $keywords[$keyword] = $keyword;
@@ -335,10 +398,10 @@ class Highlight extends ProcessorPluginBase {
    */
   protected function flattenKeysArray(array $keys) {
     if (!empty($keys['#negation'])) {
-      return array();
+      return [];
     }
 
-    $keywords = array();
+    $keywords = [];
     foreach ($keys as $i => $key) {
       if (!Element::child($i)) {
         continue;
@@ -370,7 +433,7 @@ class Highlight extends ProcessorPluginBase {
    */
   protected function createExcerpt($text, array $keys) {
     // Prepare text by stripping HTML tags and decoding HTML entities.
-    $text = strip_tags(str_replace(array('<', '>'), array(' <', '> '), $text));
+    $text = strip_tags(str_replace(['<', '>'], [' <', '> '], $text));
     $text = Html::decodeEntities($text);
     $text = preg_replace('/\s+/', ' ', $text);
     $text = trim($text, ' ');
@@ -378,9 +441,9 @@ class Highlight extends ProcessorPluginBase {
 
     // Try to reach the requested excerpt length with about two fragments (each
     // with a keyword and some context).
-    $ranges = array();
+    $ranges = [];
     $length = 0;
-    $look_start = array();
+    $look_start = [];
     $remaining_keys = $keys;
 
     // Get the set excerpt length from the configuration. If the length is too
@@ -392,7 +455,7 @@ class Highlight extends ProcessorPluginBase {
     }
 
     while ($length < $excerpt_length && !empty($remaining_keys)) {
-      $found_keys = array();
+      $found_keys = [];
       foreach ($remaining_keys as $key) {
         if ($length >= $excerpt_length) {
           break;
@@ -407,9 +470,22 @@ class Highlight extends ProcessorPluginBase {
         // See if we can find $key after where we found it the last time. Since
         // we are requiring a match on a word boundary, make sure $text starts
         // and ends with a space.
-        $matches = array();
-        if (preg_match('/' . self::$boundary . preg_quote($key, '/') . self::$boundary . '/iu', ' ' . $text . ' ', $matches, PREG_OFFSET_CAPTURE, $look_start[$key])) {
-          $found_position = $matches[0][1];
+        $matches = [];
+
+        if (!$this->configuration['highlight_partial']) {
+          $found_position = FALSE;
+          $regex = '/' . self::$boundary . preg_quote($key, '/') . self::$boundary . '/iu';
+          if (preg_match($regex, ' ' . $text . ' ', $matches, PREG_OFFSET_CAPTURE, $look_start[$key])) {
+            $found_position = $matches[0][1];
+          }
+        }
+        elseif (function_exists('mb_stripos')) {
+          $found_position = mb_stripos($text, $key, $look_start[$key], 'UTF-8');
+        }
+        else {
+          $found_position = stripos($text, $key, $look_start[$key]);
+        }
+        if ($found_position !== FALSE) {
           $look_start[$key] = $found_position + 1;
           // Keep track of which keys we found this time, in case we need to
           // pass through again to find more text.
@@ -457,7 +533,7 @@ class Highlight extends ProcessorPluginBase {
     ksort($ranges);
 
     // Collapse overlapping text ranges into one. The sorting makes it O(n).
-    $new_ranges = array();
+    $new_ranges = [];
     $max_end = 0;
     $working_from = $working_to = NULL;
     foreach ($ranges as $this_from => $this_to) {
@@ -484,7 +560,7 @@ class Highlight extends ProcessorPluginBase {
     $new_ranges[$working_from] = $working_to;
 
     // Fetch text within the combined ranges we found.
-    $out = array();
+    $out = [];
     foreach ($new_ranges as $from => $to) {
       $out[] = Html::escape(substr($text, $from, $to - $from));
     }
@@ -509,7 +585,7 @@ class Highlight extends ProcessorPluginBase {
    *   The search keywords entered by the user.
    * @param bool $html
    *   (optional) Whether the text can contain HTML tags or not. In the former
-   *   case, text inside tags (i.e., tag names and attributes) won't be
+   *   case, text inside tags (that is, tag names and attributes) won't be
    *   highlighted.
    *
    * @return string
@@ -523,9 +599,13 @@ class Highlight extends ProcessorPluginBase {
       }
       return implode('', $texts);
     }
-    $replace = $this->configuration['prefix'] . '\0' . $this->configuration['suffix'];
     $keys = implode('|', array_map('preg_quote', $keys, array_fill(0, count($keys), '/')));
-    $text = preg_replace('/' . self::$boundary . '(' . $keys . ')' . self::$boundary . '/iu', $replace, ' ' . $text . ' ');
+    // If "Highlight partial matches" is disabled, we only want to highlight
+    // matches that are complete words. Otherwise, we want all of them.
+    $boundary = !$this->configuration['highlight_partial'] ? self::$boundary : '';
+    $regex = '/' . $boundary . '(?:' . $keys . ')' . $boundary . '/iu';
+    $replace = $this->configuration['prefix'] . '\0' . $this->configuration['suffix'];
+    $text = preg_replace($regex, $replace, ' ' . $text . ' ');
     return trim($text);
   }
 

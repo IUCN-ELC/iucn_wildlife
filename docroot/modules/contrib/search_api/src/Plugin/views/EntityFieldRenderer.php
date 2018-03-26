@@ -60,15 +60,28 @@ class EntityFieldRenderer extends ViewsEntityFieldRenderer {
    * @see EntityFieldRenderer::getRenderableFieldIds()
    */
   public function compatibleWithField(FieldHandlerInterface $field) {
-    if ($field instanceof SearchApiEntityField && $field->relationship == $this->relationship) {
-      // If there is no relationship set, we also need to compare the
-      // datasource ID.
-      if ($field->relationship || $field->getDatasourceId() == $this->datasourceId) {
-        return TRUE;
-      }
+    if ($field instanceof SearchApiEntityField
+        && $field->options['field_rendering']
+        && $field->relationship === $this->relationship
+        && $field->getDatasourceId() === $this->datasourceId
+        && !empty($field->definition['entity_type'])
+        && $field->definition['entity_type'] === $this->getEntityTypeId()) {
+      return TRUE;
     }
 
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEntityTranslationRenderer() {
+    if (!isset($this->entityTranslationRenderer)) {
+      $entity_type = $this->getEntityManager()
+        ->getDefinition($this->getEntityTypeId());
+      $this->entityTranslationRenderer = new EntityTranslationRenderer($this->view, $this->getLanguageManager(), $entity_type);
+    }
+    return $this->entityTranslationRenderer;
   }
 
   /**

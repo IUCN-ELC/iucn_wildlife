@@ -3,7 +3,6 @@
 namespace Drupal\search_api\Plugin\views\filter;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\search_api\UncacheableDependencyTrait;
 use Drupal\views\Plugin\views\filter\ManyToOne;
 
 /**
@@ -15,7 +14,6 @@ use Drupal\views\Plugin\views\filter\ManyToOne;
  */
 class SearchApiOptions extends ManyToOne {
 
-  use UncacheableDependencyTrait;
   use SearchApiFilterTrait;
 
   /**
@@ -25,6 +23,19 @@ class SearchApiOptions extends ManyToOne {
     parent::buildOptionsForm($form, $form_state);
 
     unset($form['reduce_duplicates']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getValueOptions() {
+    parent::getValueOptions();
+
+    if ($this->valueOptions === NULL) {
+      $this->valueOptions = [];
+    }
+
+    return $this->valueOptions;
   }
 
 }

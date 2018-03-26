@@ -33,7 +33,7 @@ class TextValue implements TextValueInterface {
    *
    * @var array
    */
-  protected $properties = array();
+  protected $properties = [];
 
   /**
    * Constructs a TextValue object.
@@ -124,7 +124,7 @@ class TextValue implements TextValueInterface {
   /**
    * {@inheritdoc}
    */
-  public function setProperties($properties) {
+  public function setProperties(array $properties) {
     $this->properties = $properties;
     return $this;
   }

@@ -104,8 +104,8 @@ interface ResultSetInterface extends \Traversable {
    * Returns the ignored search keys, if any.
    *
    * @return string[]
-   *   A numeric array of search keys that were ignored for this search
-   *   (e.g., because of being too short or stop words).
+   *   A numeric array of search keys that were ignored for this search (for
+   *   example, because of being too short or stop words).
    */
   public function getIgnoredSearchKeys();
 
@@ -145,11 +145,7 @@ interface ResultSetInterface extends \Traversable {
    * Retrieves extra data for this search result.
    *
    * @param string $key
-   *   The key of the extra data. The following keys are used in the Search API
-   *   module itself:
-   *   - highlighted_fields: An array mapping item IDs (contained in the result)
-   *     to arrays mapping field IDs to arrays of highlighted field values for
-   *     that field of that item.
+   *   The key of the extra data.
    * @param mixed $default
    *   (optional) The value to return if the data is not set.
    *

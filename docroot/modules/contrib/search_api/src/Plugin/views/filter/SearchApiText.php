@@ -1,7 +1,6 @@
 <?php
 
 namespace Drupal\search_api\Plugin\views\filter;
-use Drupal\search_api\UncacheableDependencyTrait;
 
 /**
  * Defines a filter for filtering on fulltext fields.
@@ -12,8 +11,6 @@ use Drupal\search_api\UncacheableDependencyTrait;
  */
 class SearchApiText extends SearchApiString {
 
-  use UncacheableDependencyTrait;
-
   /**
    * {@inheritdoc}
    */
@@ -23,7 +20,13 @@ class SearchApiText extends SearchApiString {
     $operators['=']['title'] = $this->t('contains');
     $operators['!=']['title'] = $this->t("doesn't contain");
 
-    $operators = array_intersect_key($operators, array('=' => 1, '!=' => 1));
+    $supported_operators = [
+      '=' => 1,
+      '!=' => 1,
+      'empty' => 1,
+      'not empty' => 1,
+    ];
+    $operators = array_intersect_key($operators, $supported_operators);
 
     return $operators;
   }

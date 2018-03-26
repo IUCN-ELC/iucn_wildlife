@@ -2,15 +2,19 @@
 
 namespace Drupal\search_api\Plugin\search_api\processor\Property;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\FieldInterface;
 use Drupal\search_api\Processor\ConfigurablePropertyBase;
-use Drupal\search_api\Utility;
+use Drupal\search_api\Processor\ConfigurablePropertyInterface;
+use Drupal\search_api\Utility\Utility;
 
 /**
  * Defines an "aggregated field" property.
+ *
+ * @see \Drupal\search_api\Plugin\search_api\processor\AggregatedFields
  */
 class AggregatedFieldProperty extends ConfigurablePropertyBase {
 
@@ -20,10 +24,10 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array(
+    return [
       'type' => 'union',
-      'fields' => array(),
-    );
+      'fields' => [],
+    ];
   }
 
   /**
@@ -36,41 +40,55 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
     $form['#attached']['library'][] = 'search_api/drupal.search_api.admin_css';
     $form['#tree'] = TRUE;
 
-    $form['type'] = array(
-      '#type' => 'select',
+    $form['type'] = [
+      '#type' => 'radios',
       '#title' => $this->t('Aggregation type'),
       '#options' => $this->getTypes(),
       '#default_value' => $configuration['type'],
       '#required' => TRUE,
-    );
+    ];
 
     foreach ($this->getTypes('description') as $type => $description) {
-      $form['type_descriptions'][$type] = array(
-        '#type' => 'item',
-        '#description' => $description,
-      );
-      $form['type_descriptions'][$type]['#states']['visible'][':input[name="type"]']['value'] = $type;
+      $form['type'][$type]['#description'] = $description;
     }
 
-    $form['fields'] = array(
+    $form['fields'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Contained fields'),
-      '#options' => array(),
-      '#attributes' => array('class' => array('search-api-checkboxes-list')),
+      '#options' => [],
+      '#attributes' => ['class' => ['search-api-checkboxes-list']],
       '#default_value' => $configuration['fields'],
       '#required' => TRUE,
-    );
+    ];
     $datasource_labels = $this->getDatasourceLabelPrefixes($index);
     $properties = $this->getAvailableProperties($index);
-    ksort($properties);
+    $field_options = [];
     foreach ($properties as $combined_id => $property) {
       list($datasource_id, $name) = Utility::splitCombinedId($combined_id);
-      $form['fields']['#options'][$combined_id] = $datasource_labels[$datasource_id] . $property->getLabel();
-      $form['fields'][$combined_id] = array(
-        '#attributes' => array('title' => $this->t('Machine name: @name', array('@name' => $name))),
-        '#description' => $property->getDescription(),
-      );
+      // Do not include the "aggregated field" property.
+      if (!$datasource_id && $name == 'aggregated_field') {
+        continue;
+      }
+      $label = $datasource_labels[$datasource_id] . $property->getLabel();
+      $field_options[$combined_id] = Html::escape($label);
+      if ($property instanceof ConfigurablePropertyInterface) {
+        $description = $property->getFieldDescription($field);
+      }
+      else {
+        $description = $property->getDescription();
+      }
+      $form['fields'][$combined_id] = [
+        '#attributes' => ['title' => $this->t('Machine name: @name', ['@name' => $name])],
+        '#description' => $description,
+      ];
     }
+    // Set the field options in a way that sorts them first by whether they are
+    // selected (to quickly see which one are included) and second by their
+    // labels.
+    asort($field_options, SORT_NATURAL);
+    $selected = array_flip($configuration['fields']);
+    $form['fields']['#options'] = array_intersect_key($field_options, $selected);
+    $form['fields']['#options'] += array_diff_key($field_options, $selected);
 
     return $form;
   }
@@ -79,10 +97,10 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
    * {@inheritdoc}
    */
   public function submitConfigurationForm(FieldInterface $field, array &$form, FormStateInterface $form_state) {
-    $values = array(
+    $values = [
       'type' => $form_state->getValue('type'),
       'fields' => array_keys(array_filter($form_state->getValue('fields'))),
-    );
+    ];
     $field->setConfiguration($values);
   }
 
@@ -95,7 +113,7 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
     $datasource_label_prefixes = $this->getDatasourceLabelPrefixes($index);
     $configuration = $field->getConfiguration();
 
-    $fields = array();
+    $fields = [];
     foreach ($configuration['fields'] as $combined_id) {
       list($datasource_id, $property_path) = Utility::splitCombinedId($combined_id);
       $label = $property_path;
@@ -106,7 +124,7 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
     }
     $type = $this->getTypes()[$configuration['type']];
 
-    $arguments = array('@type' => $type, '@fields' => implode(', ', $fields));
+    $arguments = ['@type' => $type, '@fields' => implode(', ', $fields)];
 
     return $this->t('A @type aggregation of the following fields: @fields.', $arguments);
   }
@@ -125,7 +143,7 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
   protected function getTypes($info = 'label') {
     switch ($info) {
       case 'label':
-        return array(
+        return [
           'union' => $this->t('Union'),
           'concat' => $this->t('Concatenation'),
           'sum' => $this->t('Sum'),
@@ -133,10 +151,11 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
           'max' => $this->t('Maximum'),
           'min' => $this->t('Minimum'),
           'first' => $this->t('First'),
-        );
+          'last' => $this->t('Last'),
+        ];
 
       case 'description':
-        return array(
+        return [
           'union' => $this->t('The Union aggregation does an union operation of all the values of the field. 2 fields with 2 values each become 1 field with 4 values.'),
           'concat' => $this->t('The Concatenation aggregation concatenates the text data of all contained fields.'),
           'sum' => $this->t('The Sum aggregation adds the values of all contained fields numerically.'),
@@ -144,10 +163,11 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
           'max' => $this->t('The Maximum aggregation computes the numerically largest contained field value.'),
           'min' => $this->t('The Minimum aggregation computes the numerically smallest contained field value.'),
           'first' => $this->t('The First aggregation will simply keep the first encountered field value.'),
-        );
+          'last' => $this->t('The Last aggregation will keep the last encountered field value.'),
+        ];
 
     }
-    return array();
+    return [];
   }
 
   /**
@@ -161,9 +181,9 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
    *   datasource-independent properties) to their label prefixes.
    */
   protected function getDatasourceLabelPrefixes(IndexInterface $index) {
-    $prefixes = array(
+    $prefixes = [
       NULL => $this->t('General') . ' » ',
-    );
+    ];
 
     foreach ($index->getDatasources() as $datasource_id => $datasource) {
       $prefixes[$datasource_id] = $datasource->label() . ' » ';
@@ -188,7 +208,7 @@ class AggregatedFieldProperty extends ConfigurablePropertyBase {
    * @see \Drupal\search_api\Utility::createCombinedId()
    */
   protected function getAvailableProperties(IndexInterface $index) {
-    $properties = array();
+    $properties = [];
 
     $datasource_ids = $index->getDatasourceIds();
     $datasource_ids[] = NULL;

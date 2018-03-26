@@ -2,10 +2,10 @@
 
 namespace Drupal\search_api\Display;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Url;
-use Drupal\search_api\Entity\Index;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -23,6 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "my_display",
  *   label = @Translation("My display"),
  *   description = @Translation("A few words about this search display"),
+ *   index = "search_index",
+ *   path = "/my/custom/search",
  * )
  * @endcode
  *
@@ -41,12 +43,20 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayInterface 
   protected $currentPath;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|null
+   */
+  protected $entityTypeManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $display = new static($configuration, $plugin_id, $plugin_definition);
 
     $display->setCurrentPath($container->get('path.current'));
+    $display->setEntityTypeManager($container->get('entity_type.manager'));
 
     return $display;
   }
@@ -75,6 +85,29 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayInterface 
   }
 
   /**
+   * Retrieves the entity type manager.
+   *
+   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   The entity type manager.
+   */
+  public function getEntityTypeManager() {
+    return $this->entityTypeManager ?: \Drupal::service('entity_type.manager');
+  }
+
+  /**
+   * Sets the entity type manager.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The new entity type manager.
+   *
+   * @return $this
+   */
+  public function setEntityTypeManager(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+    return $this;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function label() {
@@ -95,7 +128,19 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayInterface 
    */
   public function getIndex() {
     $plugin_definition = $this->getPluginDefinition();
-    return Index::load($plugin_definition['index']);
+    return $this->getEntityTypeManager()
+      ->getStorage('search_api_index')
+      ->load($plugin_definition['index']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUrl() {
+    if ($path = $this->getPath()) {
+      return Url::fromUserInput($path);
+    }
+    return NULL;
   }
 
   /**
@@ -103,19 +148,38 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayInterface 
    */
   public function getPath() {
     $plugin_definition = $this->getPluginDefinition();
-    return Url::fromUserInput($plugin_definition['path']);
+    if (!empty($plugin_definition['path'])) {
+      return $plugin_definition['path'];
+    }
+    return NULL;
   }
 
   /**
    * {@inheritdoc}
    */
   public function isRenderedInCurrentRequest() {
-    $plugin_definition = $this->getPluginDefinition();
-    if (isset($plugin_definition['path'])) {
+    if ($path = $this->getPath()) {
       $current_path = $this->getCurrentPath()->getPath();
-      return $current_path == $plugin_definition['path'];
+      return $current_path == $path;
     }
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    $dependencies = [];
+
+    // By default, add dependencies to the module providing this display and to
+    // the index it is based on.
+    $definition = $this->getPluginDefinition();
+    $dependencies['module'][] = $definition['provider'];
+
+    $index = $this->getIndex();
+    $dependencies[$index->getConfigDependencyKey()][] = $index->getConfigDependencyName();
+
+    return $dependencies;
   }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Drupal\search_api\Item;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TypedData\ComplexDataInterface;
 
 /**
@@ -246,8 +247,12 @@ interface ItemInterface extends \Traversable {
    * @param string $key
    *   The key of the extra data. The following keys are used in the Search API
    *   project itself:
-   *   - highlighted_fields: A sub-array of the item's fields, with their field
-   *     data highlighted for display to the user. Only used for search results.
+   *   - highlighted_fields: Contains highlighted fields data for the result.
+   *     The structure is an array, keyed by field IDs, mapped to arrays of
+   *     values for that field. If possible, the array for a field with
+   *     highlighting data should also include any non-highlighted field values,
+   *     to avoid having to determine which values are included and which
+   *     aren't.
    *   However, contrib modules can define arbitrary other keys. (Usually they
    *   should be prefixed with the module name, though.)
    * @param mixed $default
@@ -278,5 +283,17 @@ interface ItemInterface extends \Traversable {
    * @return $this
    */
   public function setExtraData($key, $data = NULL);
+
+  /**
+   * Checks whether a user has permission to view this item.
+   *
+   * @param \Drupal\Core\Session\AccountInterface|null $account
+   *   (optional) The user session for which to check access, or NULL to check
+   *   access for the current user.
+   *
+   * @return bool
+   *   TRUE if access is granted, FALSE otherwise.
+   */
+  public function checkAccess(AccountInterface $account = NULL);
 
 }

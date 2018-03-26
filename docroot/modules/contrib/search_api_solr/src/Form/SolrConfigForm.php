@@ -2,7 +2,7 @@
 
 namespace Drupal\search_api_solr\Form;
 
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -44,8 +44,8 @@ class SolrConfigForm extends FormBase {
 
       // Generate a fieldset for each file.
       foreach ($files_list as $file_name => $file_info) {
-        $file_date = format_date(strtotime($file_info['modified']));
-        $escaped_file_name = SafeMarkup::checkPlain($file_name);
+        $file_date = \Drupal::service('date.formatter')->format(strtotime($file_info['modified']));
+        $escaped_file_name = Html::escape($file_name);
 
         $form['files'][$file_name] = array(
           '#type'  => 'details',
@@ -57,8 +57,10 @@ class SolrConfigForm extends FormBase {
         $data .= '<p><em>' . $this->t('Last modified: @time.', array('@time' => $file_date)) . '</em></p>';
 
         if ($file_info['size'] > 0) {
-          $file_data = $search_api_server->getBackend()->getFile($file_name);
-          $data .= '<pre><code>' . SafeMarkup::checkPlain($file_data->getBody()) . '</code></pre>';
+          /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+          $backend = $search_api_server->getBackend();
+          $file_data = $backend->getSolrConnector()->getFile($file_name);
+          $data .= '<pre><code>' . Html::escape($file_data->getBody()) . '</code></pre>';
         }
         else {
           $data .= '<p><em>' . $this->t('The file is empty.') . '</em></p>';
@@ -68,7 +70,7 @@ class SolrConfigForm extends FormBase {
       }
     }
     catch (SearchApiException $e) {
-      watchdog_exception('search_api_solr', $e, '%type while retrieving config files of Solr server @server: !message in %function (line %line of %file).', array('@server' => $search_api_server->label()));
+      watchdog_exception('search_api_solr', $e, '%type while retrieving config files of Solr server @server: @message in %function (line %line of %file).', array('@server' => $search_api_server->label()));
       $form['info']['#markup'] = $this->t('An error occured while trying to load the list of files.');
     }
 

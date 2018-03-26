@@ -14,6 +14,16 @@ field_settings:
     datasource_id: 'entity:entity_test_mulrev_changed'
     property_path: name
     boost: 5.0
+  created:
+    label: Authored on
+    type: date
+    datasource_id: 'entity:entity_test_mulrev_changed'
+    property_path: created
+  changed:
+    label: Updated on
+    type: date
+    datasource_id: 'entity:entity_test_mulrev_changed'
+    property_path: changed
   body:
     label: Body
     type: text
@@ -34,6 +44,16 @@ field_settings:
     type: string
     datasource_id: 'entity:entity_test_mulrev_changed'
     property_path: category
+  category_ngram:
+    label: Category Ngram
+    type: solr_text_ngram
+    datasource_id: 'entity:entity_test_mulrev_changed'
+    property_path: category
+  category_ngram_string:
+    label: Category Ngram String
+    type: solr_string_ngram
+    datasource_id: 'entity:entity_test_mulrev_changed'
+    property_path: category
   width:
     label: Width
     type: decimal
@@ -41,26 +61,22 @@ field_settings:
     property_path: width
 processor_settings:
   add_url:
-    plugin_id: add_url
-    settings:
-      weights:
-        preprocess_index: -30
-  language:
-    plugin_id: language
-    settings:
-      weights:
-        preprocess_index: -50
+    weights:
+      preprocess_index: -30
+  aggregated_field:
+    weights:
+      add_properties: 20
+  rendered_item:
+    weights:
+      add_properties: 0
+      pre_index_save: -10
 options:
   cron_limit: -1
   index_directly: false
 datasource_settings:
-  'entity:entity_test_mulrev_changed':
-    plugin_id: 'entity:entity_test_mulrev_changed'
-    settings: {  }
+  'entity:entity_test_mulrev_changed': {  }
 tracker_settings:
-  'default':
-    plugin_id: default
-    settings: { }
+  'default': { }
 server: solr_search_server
 status: true
 langcode: en

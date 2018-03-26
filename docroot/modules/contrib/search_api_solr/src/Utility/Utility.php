@@ -55,16 +55,19 @@ class Utility {
           'prefix' => 's',
         ),
         'integer' => array(
-          'prefix' => 'i',
+          // Use trie field for better sorting.
+          'prefix' => 'it',
         ),
         'decimal' => array(
-          'prefix' => 'f',
+          // Use trie field for better sorting.
+          'prefix' => 'ft',
         ),
         'date' => array(
           'prefix' => 'd',
         ),
         'duration' => array(
-          'prefix' => 'i',
+          // Use trie field for better sorting.
+          'prefix' => 'it',
         ),
         'boolean' => array(
           'prefix' => 'b',
@@ -76,12 +79,18 @@ class Utility {
 
       // Extra data type info.
       $extra_types_info = array(
+        // Provided by Search API Location module.
         'location' => array(
           'prefix' => 'loc',
         ),
+        // @todo Who provides that type?
         'geohash' => array(
           'prefix' => 'geo',
         ),
+        // Provided by Search API Location module.
+        'rpt' => [
+          'prefix' => 'rpt',
+        ],
       );
 
       // For the extra types, only add our extra info if it's already been
@@ -138,7 +147,9 @@ class Utility {
    *   If a problem occurred while retrieving the files.
    */
   public static function getServerFiles(ServerInterface $server, $dir_name = NULL) {
-    $response = $server->getBackend()->getFile($dir_name);
+    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    $backend = $server->getBackend();
+    $response = $backend->getSolrConnector()->getFile($dir_name);
 
     // Search for directories and recursively merge directory files.
     $files_data = json_decode($response->getBody(), TRUE);
@@ -185,7 +196,7 @@ class Utility {
    *
    * Solr doesn't restrict the characters used to build field names. But using
    * non java identifiers within a field name can cause different kind of
-   * trouble when running querries. Java identifiers are only consist of
+   * trouble when running queries. Java identifiers are only consist of
    * letters, digits, '$' and '_'. See
    * https://issues.apache.org/jira/browse/SOLR-3996 and
    * http://docs.oracle.com/cd/E19798-01/821-1841/bnbuk/index.html
@@ -203,8 +214,8 @@ class Utility {
    * currently strictly enforced."
    *
    * This function therefore encodes all forbidden characters in their
-   * hexadecimal equivalent encapsulted by a leading sequence of '_X' and a
-   * termination charachter '_'. Example:
+   * hexadecimal equivalent encapsulated by a leading sequence of '_X' and a
+   * termination character '_'. Example:
    * "tm_entity:node/body" becomes "tm_entity_X3a_node_X2f_body".
    *
    * As a consequence the sequence '_X' itself needs to be encoded if it occurs
@@ -228,10 +239,11 @@ class Utility {
    * Decodes solr field names.
    *
    * This function therefore decodes all forbidden characters from their
-   * hexadecimal equivalent encapsulted by a leading sequence of '_X' and a
-   * termination charachter '_'. Example:
+   * hexadecimal equivalent encapsulated by a leading sequence of '_X' and a
+   * termination character '_'. Example:
    * "tm_entity_X3a_node_X2f_body" becomes "tm_entity:node/body".
-   * @ee encodeSolrDynamicFieldName() for details.
+   *
+   * @see encodeSolrDynamicFieldName() for details.
    *
    * @param string $field_name
    *   Encoded field name.

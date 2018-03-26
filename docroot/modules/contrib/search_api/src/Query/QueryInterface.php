@@ -55,8 +55,6 @@ interface QueryInterface extends ConditionSetInterface {
    *
    * @param \Drupal\search_api\IndexInterface $index
    *   The index for which the query should be created.
-   * @param \Drupal\search_api\Query\ResultsCacheInterface $results_cache
-   *   The results cache that should be used for this query.
    * @param array $options
    *   (optional) The options to set for the query.
    *
@@ -67,7 +65,52 @@ interface QueryInterface extends ConditionSetInterface {
    *   Thrown if a search on that index (or with those options) won't be
    *   possible.
    */
-  public static function create(IndexInterface $index, ResultsCacheInterface $results_cache, array $options = array());
+  public static function create(IndexInterface $index, array $options = []);
+
+  /**
+   * Retrieves the search ID.
+   *
+   * @param bool $generate
+   *   (optional) If TRUE and no search ID was set yet for this query, generate
+   *   one automatically. If FALSE, NULL will be returned in this case.
+   *
+   * @return string|null
+   *   The search ID, or NULL if none was set yet and $generate is FALSE.
+   */
+  public function getSearchId($generate = TRUE);
+
+  /**
+   * Sets the search ID.
+   *
+   * The search ID is a freely-chosen machine name identifying this search query
+   * for purposes of identifying the query later in the page request. It will be
+   * used, amongst other things, to identify the query in the search results
+   * cache service.
+   *
+   * If the set ID is the same as a display plugin ID, this will also
+   * automatically set that display plugin for this query. Queries for the same
+   * display or search page should therefore usually use the same search ID.
+   *
+   * @param string $search_id
+   *   The new search ID.
+   *
+   * @return $this
+   *
+   * @see \Drupal\search_api\Query\QueryInterface::getDisplayPlugin()
+   * @see \Drupal\search_api\Query\ResultsCacheInterface
+   */
+  public function setSearchId($search_id);
+
+  /**
+   * Retrieves the search display associated with this query (if any).
+   *
+   * If the search ID set for this query corresponds to a display plugin ID,
+   * that display will be returned. Otherwise, NULL is returned.
+   *
+   * @return \Drupal\search_api\Display\DisplayInterface|null
+   *   The search display associated with this query, if any; NULL otherwise.
+   */
+  public function getDisplayPlugin();
 
   /**
    * Retrieves the parse mode.
@@ -118,7 +161,7 @@ interface QueryInterface extends ConditionSetInterface {
    * @return \Drupal\search_api\Query\ConditionGroupInterface
    *   A condition group object that is set to use the specified conjunction.
    */
-  public function createConditionGroup($conjunction = 'AND', array $tags = array());
+  public function createConditionGroup($conjunction = 'AND', array $tags = []);
 
   /**
    * Sets the keys to search for.
@@ -208,6 +251,7 @@ interface QueryInterface extends ConditionSetInterface {
    * @return $this
    */
   public function setProcessingLevel($level);
+
   /**
    * Aborts this query.
    *
@@ -254,11 +298,11 @@ interface QueryInterface extends ConditionSetInterface {
    * Prepares the query object for the search.
    *
    * This method should always be called by execute() and contain all necessary
-   * operations before the query is passed to the server's search() method.
+   * operations that have to be execute before the query is passed to the
+   * server's search() method.
    *
    * @throws \Drupal\search_api\SearchApiException
-   *   Thrown if any wrong options were set on the query (e.g., conditions or
-   *   sorts on unknown fields).
+   *   Thrown if any wrong options were discovered.
    */
   public function preExecute();
 
@@ -371,15 +415,10 @@ interface QueryInterface extends ConditionSetInterface {
    *
    * @param string $name
    *   The name of an option. The following options are recognized by default:
-   *   - conjunction: The type of conjunction to use for this query – either
-   *     'AND' or 'OR'. 'AND' by default. This only influences the search keys,
-   *     condition groups will always use AND by default.
    *   - offset: The position of the first returned search results relative to
    *     the whole result in the index.
    *   - limit: The maximum number of search results to return. -1 means no
    *     limit.
-   *   - 'search id': A string that will be used as the identifier when storing
-   *     this search in the Search API's static cache.
    *   - 'skip result count': If present and set to TRUE, the search's result
    *     count will not be needed. Service classes can check for this option to
    *     possibly avoid executing expensive operations to compute the result
@@ -388,6 +427,12 @@ interface QueryInterface extends ConditionSetInterface {
    *     access checks, if available and enabled for the index.
    *   - search_api_bypass_access: If set to TRUE, entity access checks will be
    *     skipped, even if enabled for the index.
+   *   - search_api_retrieved_properties: A list of properties that will be
+   *     required from results by the code displaying the results list. This
+   *     option, if present, should be an array keyed by datasource ID and
+   *     (datasource-internal) property path, with combined property paths as
+   *     the values. (The "_object" pseudo-property can be used where a whole
+   *     object (entity or other) is required.)
    *   However, contrib modules might introduce arbitrary other keys with their
    *   own, special meaning. (Usually they should be prefixed with the module
    *   name, though, to avoid conflicts.)
@@ -470,8 +515,8 @@ interface QueryInterface extends ConditionSetInterface {
    *
    * @return string[]
    *   The tags associated with this search query, as both the array keys and
-   *   values. Returned by reference so it's possible to, e.g., remove existing
-   *   tags.
+   *   values. Returned by reference so it's possible, for example, to remove
+   *   existing tags.
    */
   public function &getTags();
 

@@ -245,6 +245,18 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: type
     type: string
+datasource_settings:
+  'entity:node':
+    plugin_id: 'entity:node'
+    settings:
+      bundles:
+        default: true
+        selected:
+          - page
+      languages:
+        default: false
+        selected:
+          - en
 processor_settings:
   aggregated_field:
     plugin_id: aggregated_field
@@ -263,23 +275,11 @@ processor_settings:
       max_filesize: 0
       excluded_private: 1
       excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
-options:
-  index_directly: false
-  cron_limit: 2
-datasource_settings:
-  'entity:node':
-    plugin_id: 'entity:node'
-    settings:
-      bundles:
-        default: true
-        selected:
-          - page
-      languages:
-        default: false
-        selected:
-          - en
 tracker_settings:
   default:
     plugin_id: default
     settings: {  }
+options:
+  index_directly: false
+  cron_limit: 2
 server: solr_server

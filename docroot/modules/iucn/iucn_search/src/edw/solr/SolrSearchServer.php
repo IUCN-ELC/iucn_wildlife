@@ -26,7 +26,7 @@ class SolrSearchServer {
     $server = $this->index->getServerInstance();
     $this->server = $server;
     $this->server_config = $server->getBackendConfig() + array('key' => $server->id());
-    $this->solrClient = $server->getBackend()->getSolrConnection();
+    $this->solrClient = $server->getBackend()->getSolrConnector();
 
     $this->setSolrFieldsMappings();
 
@@ -59,7 +59,7 @@ class SolrSearchServer {
   /**
    * Return the Solr client that executes the actual request (i.e. Solarium).
    *
-   * @return \Solarium\Client
+   * @return \Drupal\search_api_solr\SolrConnectorInterface
    * @throws \Exception
    *    When search server cannot be instantiated.
    */
@@ -117,36 +117,23 @@ class SolrSearchServer {
    * @return \Solarium\QueryType\Select\Query\Query
    */
   public function createSelectQuery($options = array()) {
-    return $this->getSolrClient()->createSelect($options);
+    return $this->getSolrClient()->getSelectQuery($options);
   }
 
   /**
    * Do a search on the Solr server.
    * @param \Solarium\QueryType\Select\Query\Query $query
    *
-   * @return \Solarium\QueryType\Select\Result\Result
+   * @return \Solarium\Core\Query\Result\ResultInterface
    */
   public function executeQuery(\Solarium\QueryType\Select\Query\Query $query) {
-    // Use the 'postbigrequest' plugin if no specific http method is
-    // configured. The plugin needs to be loaded before the request is
-    // created.
     $config = $this->getServerConfig();
+    $config['connector_config']['http_method'] = 'GET';
     $client = $this->getSolrClient();
-    if ($config['http_method'] == 'AUTO') {
-      // Set larger query limit - it might not be enough.
-      $client->getPlugin('postbigrequest')->setMaxQueryStringLength(2048);
-    }
-    $config['http_method'] = 'GET';
-    $request = $client->createRequest($query);
-    if (!empty($config['http_method'])) {
-      $request->setMethod($config['http_method']);
-    }
-    if (!empty($config['http_user']) && !empty($config['http_pass'])) {
-      $request->setAuthentication($config['http_user'], $config['http_pass']);
-    }
     // Send search request.
-    $response = $client->executeRequest($request);
-    $resultSet = $client->createResult($query, $response);
+    /** @var \Solarium\Core\Client\Response $response */
+    $response = $client->search($query);
+    $resultSet = $client->createSearchResult($query, $response);
     return $resultSet;
   }
 

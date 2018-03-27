@@ -2,15 +2,6 @@
 
 # Go to docroot/
 cd docroot/
-drush sql-drop -y
-
-env="prod"
-if [ ! -z "$1" ]; then
-  env=$1
-fi
-
-echo "Getting '$env' environment database ..."
-drush sql-sync "@$env" @self -y
 
 echo "Importing 'default' configuration..."
 drush cim sync -y

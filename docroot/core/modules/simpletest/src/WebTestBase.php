@@ -8,19 +8,21 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Utility\SafeMarkup;
-use Drupal\Core\Database\Database;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\EventSubscriber\AjaxResponseSubscriber;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Test\AssertMailTrait;
 use Drupal\Core\Test\FunctionalTestSetupTrait;
 use Drupal\Core\Url;
 use Drupal\system\Tests\Cache\AssertPageCacheContextsAndTagsTrait;
+use Drupal\Tests\EntityViewTrait;
+use Drupal\Tests\block\Traits\BlockCreationTrait as BaseBlockCreationTrait;
+use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\Traits\Core\CronRunTrait;
 use Drupal\Tests\TestFileCreationTrait;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\Tests\XdebugRequestTrait;
 use Zend\Diactoros\Uri;
 
@@ -38,7 +40,7 @@ abstract class WebTestBase extends TestBase {
     compareFiles as drupalCompareFiles;
   }
   use AssertPageCacheContextsAndTagsTrait;
-  use BlockCreationTrait {
+  use BaseBlockCreationTrait {
     placeBlock as drupalPlaceBlock;
   }
   use ContentTypeCreationTrait {
@@ -59,6 +61,9 @@ abstract class WebTestBase extends TestBase {
   }
 
   use XdebugRequestTrait;
+  use EntityViewTrait {
+    buildEntityView as drupalBuildEntityView;
+  }
 
   /**
    * The profile to install as a basis for testing.
@@ -91,7 +96,7 @@ abstract class WebTestBase extends TestBase {
   /**
    * The headers of the page currently loaded in the internal browser.
    *
-   * @var Array
+   * @var array
    */
   protected $headers;
 
@@ -163,6 +168,8 @@ abstract class WebTestBase extends TestBase {
 
   /**
    * The maximum number of redirects to follow when handling responses.
+   *
+   * @var int
    */
   protected $maximumRedirects = 5;
 
@@ -207,64 +214,6 @@ abstract class WebTestBase extends TestBase {
     parent::__construct($test_id);
     $this->skipClasses[__CLASS__] = TRUE;
     $this->classLoader = require DRUPAL_ROOT . '/autoload.php';
-  }
-
-  /**
-   * Builds the renderable view of an entity.
-   *
-   * Entities postpone the composition of their renderable arrays to #pre_render
-   * functions in order to maximize cache efficacy. This means that the full
-   * renderable array for an entity is constructed in drupal_render(). Some
-   * tests require the complete renderable array for an entity outside of the
-   * drupal_render process in order to verify the presence of specific values.
-   * This method isolates the steps in the render process that produce an
-   * entity's renderable array.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to prepare a renderable array for.
-   * @param string $view_mode
-   *   (optional) The view mode that should be used to build the entity.
-   * @param null $langcode
-   *   (optional) For which language the entity should be prepared, defaults to
-   *   the current content language.
-   * @param bool $reset
-   *   (optional) Whether to clear the cache for this entity.
-   * @return array
-   *
-   * @see drupal_render()
-   */
-  protected function drupalBuildEntityView(EntityInterface $entity, $view_mode = 'full', $langcode = NULL, $reset = FALSE) {
-    $ensure_fully_built = function(&$elements) use (&$ensure_fully_built) {
-      // If the default values for this element have not been loaded yet, populate
-      // them.
-      if (isset($elements['#type']) && empty($elements['#defaults_loaded'])) {
-        $elements += \Drupal::service('element_info')->getInfo($elements['#type']);
-      }
-
-      // Make any final changes to the element before it is rendered. This means
-      // that the $element or the children can be altered or corrected before the
-      // element is rendered into the final text.
-      if (isset($elements['#pre_render'])) {
-        foreach ($elements['#pre_render'] as $callable) {
-          $elements = call_user_func($callable, $elements);
-        }
-      }
-
-      // And recurse.
-      $children = Element::children($elements, TRUE);
-      foreach ($children as $key) {
-        $ensure_fully_built($elements[$key]);
-      }
-    };
-
-    $render_controller = $this->container->get('entity.manager')->getViewBuilder($entity->getEntityTypeId());
-    if ($reset) {
-      $render_controller->resetCache([$entity->id()]);
-    }
-    $build = $render_controller->view($entity, $view_mode, $langcode);
-    $ensure_fully_built($build);
-
-    return $build;
   }
 
   /**
@@ -446,69 +395,6 @@ abstract class WebTestBase extends TestBase {
   }
 
   /**
-   * Returns the parameters that will be used when Simpletest installs Drupal.
-   *
-   * @see install_drupal()
-   * @see install_state_defaults()
-   *
-   * @return array
-   *   Array of parameters for use in install_drupal().
-   */
-  protected function installParameters() {
-    $connection_info = Database::getConnectionInfo();
-    $driver = $connection_info['default']['driver'];
-    $connection_info['default']['prefix'] = $connection_info['default']['prefix']['default'];
-    unset($connection_info['default']['driver']);
-    unset($connection_info['default']['namespace']);
-    unset($connection_info['default']['pdo']);
-    unset($connection_info['default']['init_commands']);
-    // Remove database connection info that is not used by SQLite.
-    if ($driver == 'sqlite') {
-      unset($connection_info['default']['username']);
-      unset($connection_info['default']['password']);
-      unset($connection_info['default']['host']);
-      unset($connection_info['default']['port']);
-    }
-    $parameters = [
-      'interactive' => FALSE,
-      'parameters' => [
-        'profile' => $this->profile,
-        'langcode' => 'en',
-      ],
-      'forms' => [
-        'install_settings_form' => [
-          'driver' => $driver,
-          $driver => $connection_info['default'],
-        ],
-        'install_configure_form' => [
-          'site_name' => 'Drupal',
-          'site_mail' => 'simpletest@example.com',
-          'account' => [
-            'name' => $this->rootUser->name,
-            'mail' => $this->rootUser->getEmail(),
-            'pass' => [
-              'pass1' => $this->rootUser->pass_raw,
-              'pass2' => $this->rootUser->pass_raw,
-            ],
-          ],
-          // \Drupal\Core\Render\Element\Checkboxes::valueCallback() requires
-          // NULL instead of FALSE values for programmatic form submissions to
-          // disable a checkbox.
-          'enable_update_status_module' => NULL,
-          'enable_update_status_emails' => NULL,
-        ],
-      ],
-    ];
-
-    // If we only have one db driver available, we cannot set the driver.
-    include_once DRUPAL_ROOT . '/core/includes/install.inc';
-    if (count($this->getDatabaseTypes()) == 1) {
-      unset($parameters['forms']['install_settings_form']['driver']);
-    }
-    return $parameters;
-  }
-
-  /**
    * Preserve the original batch, and instantiate the test batch.
    */
   protected function setBatch() {
@@ -533,21 +419,6 @@ abstract class WebTestBase extends TestBase {
     // Restore the original Simpletest batch.
     $batch = &batch_get();
     $batch = $this->originalBatch;
-  }
-
-  /**
-   * Returns all supported database driver installer objects.
-   *
-   * This wraps drupal_get_database_types() for use without a current container.
-   *
-   * @return \Drupal\Core\Database\Install\Tasks[]
-   *   An array of available database driver installer objects.
-   */
-  protected function getDatabaseTypes() {
-    \Drupal::setContainer($this->originalContainer);
-    $database_types = drupal_get_database_types();
-    \Drupal::unsetContainer();
-    return $database_types;
   }
 
   /**

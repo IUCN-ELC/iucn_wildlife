@@ -45,10 +45,12 @@ class DisplayFeedTest extends PluginTestBase {
     $node_title = 'This "cool" & "neat" article\'s title';
     $node = $this->drupalCreateNode([
       'title' => $node_title,
-      'body' => [0 => [
-        'value' => 'A paragraph',
-        'format' => filter_default_format(),
-      ]],
+      'body' => [
+        0 => [
+          'value' => 'A paragraph',
+          'format' => filter_default_format(),
+        ],
+      ],
     ]);
 
     // Test the site name setting.
@@ -103,10 +105,12 @@ class DisplayFeedTest extends PluginTestBase {
     $node_title = 'This "cool" & "neat" article\'s title';
     $this->drupalCreateNode([
       'title' => $node_title,
-      'body' => [0 => [
-        'value' => 'A paragraph',
-        'format' => filter_default_format(),
-      ]],
+      'body' => [
+        0 => [
+          'value' => 'A paragraph',
+          'format' => filter_default_format(),
+        ],
+      ],
     ]);
 
     $this->drupalGet('test-feed-display-fields.xml');
@@ -147,6 +151,26 @@ class DisplayFeedTest extends PluginTestBase {
     // Ensure the feed attachment returns 'Not found'.
     $this->drupalGet('/test-attached-disabled.xml');
     $this->assertResponse(404);
+  }
+
+  /**
+   * Tests that the feed display works when the linked display is disabled.
+   */
+  public function testDisabledLinkedDisplay() {
+    $view = Views::getView('test_attached_disabled');
+    $view->setDisplay();
+    // Disable the page and link the feed to the page.
+    $view->displayHandlers->get('feed_1')->setOption('link_display', 'page_1');
+    $view->displayHandlers->get('page_1')->setOption('enabled', FALSE);
+    $view->save();
+
+    \Drupal::service('router.builder')->rebuild();
+
+    $this->drupalGet('test-attached-disabled');
+    $this->assertResponse(404);
+    // Ensure the feed can still be reached.
+    $this->drupalGet('test-attached-disabled.xml');
+    $this->assertResponse(200);
   }
 
 }

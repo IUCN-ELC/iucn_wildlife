@@ -90,7 +90,8 @@ function template_preprocess_views_view_fields(&$variables) {
 
   // Loop through the fields for this view.
   $previous_inline = FALSE;
-  $variables['fields'] = []; // ensure it's at least an empty array.
+  // Ensure it's at least an empty array.
+  $variables['fields'] = [];
   /** @var \Drupal\views\ResultRow $row */
   $row = $variables['row'];
   foreach ($view->field as $id => $field) {
@@ -123,7 +124,8 @@ function template_preprocess_views_view_fields(&$variables) {
         $object->raw = $row->{$view->field[$id]->field_alias};
       }
       else {
-        $object->raw = NULL; // make sure it exists to reduce NOTICE
+        // Make sure it exists to reduce NOTICE.
+        $object->raw = NULL;
       }
 
       if (!empty($variables['options']['separator']) && $previous_inline && $object->inline && $object->content) {
@@ -858,12 +860,13 @@ function template_preprocess_views_view_rss(&$variables) {
   // Figure out which display which has a path we're using for this feed. If
   // there isn't one, use the global $base_url
   $link_display_id = $view->display_handler->getLinkDisplay();
-  if ($link_display_id && $display = $view->displayHandlers->get($link_display_id)) {
+  /** @var \Drupal\views\Plugin\views\display\DisplayPluginBase $display */
+  if ($link_display_id && ($display = $view->displayHandlers->get($link_display_id)) && $display->isEnabled()) {
     $url = $view->getUrl(NULL, $link_display_id);
   }
 
   /** @var \Drupal\Core\Url $url */
-  if ($url) {
+  if (!empty($url)) {
     $url_options = ['absolute' => TRUE];
     if (!empty($view->exposed_raw_input)) {
       $url_options['query'] = $view->exposed_raw_input;

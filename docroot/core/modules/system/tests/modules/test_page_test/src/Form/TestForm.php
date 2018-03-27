@@ -35,6 +35,18 @@ class TestForm extends FormBase {
       '#default_value' => 'Test name',
     ];
 
+    $form['checkbox_enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => 'Checkbox enabled',
+      '#default_value' => TRUE,
+    ];
+
+    $form['checkbox_disabled'] = [
+      '#type' => 'checkbox',
+      '#title' => 'Checkbox disabled',
+      '#default_value' => FALSE,
+    ];
+
     $form['description'] = [
       '#type' => 'textfield',
       '#title' => 'Description',
@@ -50,6 +62,24 @@ class TestForm extends FormBase {
         3 => 'three',
       ],
       '#default_value' => 2,
+    ];
+
+    $form['duplicate_button'] = [
+      '#type' => 'submit',
+      '#name' => 'duplicate_button',
+      '#value' => 'Duplicate button 1',
+    ];
+
+    $form['duplicate_button_2'] = [
+      '#type' => 'submit',
+      '#name' => 'duplicate_button',
+      '#value' => 'Duplicate button 2',
+    ];
+
+    $form['test_textarea_with_newline'] = [
+      '#type' => 'textarea',
+      '#title' => 'Textarea with newline',
+      '#default_value' => "Test text with\nnewline",
     ];
 
     $form['save'] = [

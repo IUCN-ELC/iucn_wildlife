@@ -21,13 +21,16 @@
   ],
   "require": {
     "php": ">=5.4",
-    "behat/mink": "~1.7",
+    "behat/mink": "~1.6",
     "twig/twig": "~1.20|~2.0",
     "jcalderonzumba/gastonjs": "~1.0"
   },
   "require-dev": {
-    "mink/driver-testsuite": "dev-master",
-    "phpunit/phpunit": "~4.6"
+    "symfony/process": "~2.3",
+    "symfony/phpunit-bridge": "~2.7",
+    "symfony/css-selector": "~2.1",
+    "phpunit/phpunit": "~4.6",
+    "silex/silex": "~1.2"
   },
   "config": {
     "bin-dir": "bin"

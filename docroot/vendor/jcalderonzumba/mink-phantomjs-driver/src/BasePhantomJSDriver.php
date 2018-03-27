@@ -4,6 +4,7 @@ namespace Zumba\Mink\Driver;
 
 use Behat\Mink\Driver\CoreDriver;
 use Behat\Mink\Exception\DriverException;
+use Behat\Mink\Session;
 use Zumba\GastonJS\Browser\Browser;
 
 /**
@@ -12,6 +13,8 @@ use Zumba\GastonJS\Browser\Browser;
  */
 class BasePhantomJSDriver extends CoreDriver {
 
+  /** @var  Session */
+  protected $session;
   /** @var  Browser */
   protected $browser;
   /** @var  string */
@@ -67,6 +70,14 @@ class BasePhantomJSDriver extends CoreDriver {
       throw new DriverException("Failed to get elements with given $xpath");
     }
     return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   * @param Session $session
+   */
+  public function setSession(Session $session) {
+    $this->session = $session;
   }
 
   /**

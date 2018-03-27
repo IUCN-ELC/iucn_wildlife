@@ -77,7 +77,7 @@ class EntityAutocomplete extends Textfield {
     // Potentially the #value is set directly, so it contains the 'target_id'
     // array structure instead of a string.
     if ($input !== FALSE && is_array($input)) {
-      $entity_ids = array_map(function(array $item) {
+      $entity_ids = array_map(function (array $item) {
         return $item['target_id'];
       }, $input);
 
@@ -152,10 +152,9 @@ class EntityAutocomplete extends Textfield {
     $value = NULL;
 
     if (!empty($element['#value'])) {
-      $options = [
+      $options = $element['#selection_settings'] + [
         'target_type' => $element['#target_type'],
         'handler' => $element['#selection_handler'],
-        'handler_settings' => $element['#selection_settings'],
       ];
       /** @var /Drupal\Core\Entity\EntityReferenceSelection\SelectionInterface $handler */
       $handler = \Drupal::service('plugin.manager.entity_reference_selection')->getInstance($options);
@@ -318,8 +317,14 @@ class EntityAutocomplete extends Textfield {
    *   A string of entity labels separated by commas.
    */
   public static function getEntityLabels(array $entities) {
+    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+    $entity_repository = \Drupal::service('entity.repository');
+
     $entity_labels = [];
     foreach ($entities as $entity) {
+      // Set the entity in the correct language for display.
+      $entity = $entity_repository->getTranslationFromContext($entity);
+
       // Use the special view label, since some entities allow the label to be
       // viewed, even if the entity is not allowed to be viewed.
       $label = ($entity->access('view label')) ? $entity->label() : t('- Restricted access -');

@@ -127,7 +127,7 @@
   color: #fff;
   font-size: 14px;
   margin-bottom: 5px;
-  min-width: 140px;
+  min-width: 110px;
   padding: 5px 15px;
   text-align: center;
 }
@@ -931,8 +931,32 @@ body.path-frontpage {
   padding-bottom: 30px;
   padding-top: 30px;
 }
+.jumbotron .search-section {
+  margin: 0 auto;
+}
+@media (max-width: 767px) {
+  .jumbotron .search-section {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+@media (min-width: 768px) {
+  .jumbotron .search-section {
+    width: 64%;
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .jumbotron .search-section {
+    max-width: 940px;
+  }
+}
+@media (min-width: 1200px) {
+  .jumbotron .search-section {
+    max-width: 1140px;
+  }
+}
 .path-frontpage .jumbotron {
-  background-position: center bottom;
   height: calc(100vh - 182px);
   margin-bottom: 0;
   min-height: 231px;
@@ -940,10 +964,20 @@ body.path-frontpage {
 .path-frontpage .jumbotron > .container {
   display: table;
   height: 100%;
+  width: 100%;
+  padding: 0;
 }
 .path-frontpage .jumbotron > .container > .row {
   display: table-cell;
   vertical-align: middle;
+}
+@media (min-width: 768px) {
+  .path-frontpage .jumbotron .search-section {
+    min-width: 590px;
+    width: 35%;
+    max-width: 1140px;
+    min-width: 480px;
+  }
 }
 .path-frontpage #sliding-popup ~ .jumbotron {
   height: calc(100vh - 229px);
@@ -966,23 +1000,19 @@ body.path-frontpage {
   border: 0;
   box-shadow: 0 3px 9px rgba(0, 0, 0, .175);
   color: #fff;
-  -webkit-transition: all ease-in-out .15s;
-          transition: all ease-in-out .15s;
+  transition: all ease-in-out .15s;
 }
 .jumbotron .form-control::-moz-placeholder {
   color: #8b9bb1;
-  -webkit-transition: color ease-in-out .15s;
-          transition: color ease-in-out .15s;
+  transition: color ease-in-out .15s;
 }
 .jumbotron .form-control:-ms-input-placeholder {
   color: #8b9bb1;
-  -webkit-transition: color ease-in-out .15s;
-          transition: color ease-in-out .15s;
+  transition: color ease-in-out .15s;
 }
 .jumbotron .form-control::-webkit-input-placeholder {
   color: #8b9bb1;
-  -webkit-transition: color ease-in-out .15s;
-          transition: color ease-in-out .15s;
+  transition: color ease-in-out .15s;
 }
 .jumbotron .form-control:focus {
   background-color: #fff;
@@ -1004,8 +1034,7 @@ body.path-frontpage {
 }
 .jumbotron .form-control-feedback {
   color: #a2afc1;
-  -webkit-transition: color ease-in-out .15s;
-          transition: color ease-in-out .15s;
+  transition: color ease-in-out .15s;
 }
 @media (max-width: 767px) {
   .path-frontpage .jumbotron {
@@ -1039,10 +1068,8 @@ body.path-frontpage {
 }
 @media (min-width: 992px) {
   .page-title > .row {
-    -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
   }
@@ -1180,15 +1207,13 @@ body.path-frontpage {
   color: #fff;
 }
 .bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-container {
-  -webkit-transition-property: all;
-          transition-property: all;
+  transition-property: all;
 }
 .bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-handle-on.bootstrap-switch-default,
 .bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-handle-off.bootstrap-switch-default,
 .bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-handle-on.bootstrap-switch-primary,
 .bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-handle-off.bootstrap-switch-primary {
-  -webkit-transition: color .5s;
-          transition: color .5s;
+  transition: color .5s;
 }
 #sliding-popup {
   font-size: 14px;

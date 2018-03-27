@@ -102,6 +102,12 @@
   <lib dir="/opt/solr/contrib/extraction/lib" />
   <lib dir="/opt/solr/clustering/lib/" />
 
+  <lib dir="${solr.contrib.dir:../../../contrib}/extraction/lib" />
+  <lib dir="/opt/solr/contrib/extraction/lib"  regex=".*\.jar" />
+  <lib dir="/opt/solr/contrib/clustering/lib"  regex=".*\.jar" />
+  <lib dir="/opt/solr/dist"  regex=".*\.jar" />
+  <lib dir="${solr.contrib.dir:../../../contrib}/clustering/lib/" />
+
   <!-- an exact 'path' can be used instead of a 'dir' to specify a
        specific jar file.  This will cause a serious error to be logged
        if it can't be loaded.

@@ -3,6 +3,9 @@
 # Go to docroot/
 cd docroot/
 
+echo "Running database pending updates ..."
+drush updatedb
+
 echo "Importing 'default' configuration..."
 drush cim sync -y
 
@@ -11,9 +14,6 @@ drush en devel -y
 
 echo "Importing 'local' configuration..."
 drush cim local --partial -y
-
-echo "Running database pending updates ..."
-drush updatedb
 
 echo "Resetting admin password..."
 drush user-password iucn --password="password"

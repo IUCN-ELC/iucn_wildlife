@@ -13,7 +13,7 @@ echo "Getting '$env' environment database ..."
 drush sql-sync "@$env" @self -y
 
 echo "Running database pending updates ..."
-drush updatedb
+drush updatedb -y
 
 echo "Importing 'default' configuration..."
 drush cim sync -y

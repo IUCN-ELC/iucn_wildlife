@@ -4,7 +4,7 @@
 cd docroot/
 
 echo "Running database pending updates ..."
-drush updatedb
+drush updatedb -y
 
 echo "Importing 'default' configuration..."
 drush cim sync -y

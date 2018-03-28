@@ -27,6 +27,8 @@ libraries-extend:
     - bootstrap/drupal.ajax
   core/drupal.autocomplete:
     - bootstrap/drupal.autocomplete
+  core/drupal.dialog.ajax:
+    - bootstrap/drupal.dialog.ajax
   core/drupal.form:
     - bootstrap/drupal.form
   core/drupal.progress:
@@ -35,12 +37,13 @@ libraries-extend:
     - bootstrap/drupal.states
   core/drupal.tabledrag:
     - bootstrap/drupal.tabledrag
+  image_widget_crop/cropper.integration:
+    - bootstrap/image_widget_crop
   views/views.ajax:
     - bootstrap/views.ajax
 
 libraries-override:
   core/drupal.batch: bootstrap/drupal.batch
-  core/drupal.collapse: false
   core/drupal.dropbutton: bootstrap/dropdown
   core/drupal.vertical-tabs: bootstrap/drupal.vertical-tabs
   filter/drupal.filter: bootstrap/drupal.filter
@@ -70,16 +73,8 @@ libraries-override:
       theme:
         css/node.preview.css: false
 
-# The following are dynamic library overrides based on certain critera,
-# usually a theme setting.
-#
-# @see \Drupal\bootstrap\Plugin\Alter\LibraryInfo::alter()
-#
-#  core/drupal.dialog: bootstrap/drupal.dialog
-#  core/drupal.dialog.ajax: bootstrap/drupal.dialog.ajax
-
-# Information added by Drupal.org packaging script on 2016-07-05
-version: '8.x-3.0-rc1'
+# Information added by Drupal.org packaging script on 2018-03-11
+version: '8.x-3.11'
 core: '8.x'
 project: 'bootstrap'
-datestamp: 1467743642
+datestamp: 1520792888

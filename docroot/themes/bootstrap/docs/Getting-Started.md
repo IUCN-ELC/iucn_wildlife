@@ -12,16 +12,16 @@ Generally speaking, you should really read the entire [Bootstrap Framework]
 documentation site, if you haven't already. Here are the four basic "sections"
 that site is split into:
 
-- [Getting Started](http://getbootstrap.com/getting-started) - An overview of
+- [Getting Started](https://getbootstrap.com/docs/3.3/getting-started) - An overview of
   the [Bootstrap Framework], how to download and use, basic templates and
   examples, and more.
-- [CSS](http://getbootstrap.com/css/) - Global CSS settings, fundamental HTML
+- [CSS](https://getbootstrap.com/docs/3.3/css/) - Global CSS settings, fundamental HTML
   elements styled and enhanced with extensible classes, and an advanced grid
   system.
-- [Components](http://getbootstrap.com/components/) - Over a dozen reusable
+- [Components](https://getbootstrap.com/docs/3.3/components/) - Over a dozen reusable
   components built to provide iconography, dropdowns, input groups, navigation,
   alerts, and much more.
-- [JavaScript](http://getbootstrap.com/javascript/) - Bring the
+- [JavaScript](https://getbootstrap.com/docs/3.3/javascript/) - Bring the
   [Bootstrap Framework] components to life with over a dozen custom jQuery
   plugins. Easily include them all, or one by one.
 
@@ -45,14 +45,9 @@ implemented because of either extremely high usage or the fact it was designed
 explicitly for use with this base theme and has maintainers in both projects.
 
 **Supported modules:**
-- [Admin Menu](https://www.drupal.org/project/admin_menu)
-- [Bootstrap Core](https://www.drupal.org/project/bootstrap_core)
-- [jQuery Update](https://www.drupal.org/project/jquery_update)
-- [Icon API](https://www.drupal.org/project/icon)
-- [Picture](https://www.drupal.org/project/picture)
-- [Views](https://www.drupal.org/project/picture) _(partial support)_
-- [Webform](https://www.drupal.org/project/webform) _(partial support)_
+See project page for a list of supported modules.
 
+**"Un-supported" modules:**
 The following modules are "un-supported modules" and are not documented by the
 [Drupal Bootstrap] base theme. This does not mean that the base theme will not
 work with them or that they are "bad". It simply means that this project does
@@ -69,15 +64,10 @@ However, if you choose to use one of these modules, you are really doing so
 at your own expense. Do not expect support from this base theme or the project
 you are attempting to integrate the base theme with.
 
-**"Un-supported" modules:**
 - Color module (in core)
 - [Bootstrap API](https://www.drupal.org/project/bootstrap_api)
 - [Bootstrap Library](https://www.drupal.org/project/bootstrap_library)
-- [Display Suite](https://www.drupal.org/project/ds)
-- [Display Suite Bootstrap Layouts](https://www.drupal.org/project/ds_bootstrap_layouts)
-- [LESS module](https://drupal.org/project/less)
-- [Panels](https://www.drupal.org/project/panels)
-- [Panels Bootstrap Layouts](https://www.drupal.org/project/panels_bootstrap_layouts)
+- [LESS module](https://www.drupal.org/project/less)
 
 ---
 
@@ -85,9 +75,9 @@ you are attempting to integrate the base theme with.
 **A: No, not "officially"**
 
 The [Bootstrap Framework] itself does not officially support older Internet
-Explorer [compatibility modes](http://getbootstrap.com/getting-started/#support-ie-compatibility-modes).
+Explorer [compatibility modes](https://getbootstrap.com/docs/3.3/getting-started/#support-ie-compatibility-modes).
 To ensure you are using the latest rendering mode for IE, consider installing
-the [HTML5 Tools](https://drupal.org/project/html5_tools) module.
+the [HTML5 Tools](https://www.drupal.org/project/html5_tools) module.
 
 Internet Explorer 8 requires the use of [Respond.js] to enable media queries
 (Responsive Web Design). However, [Respond.js] does not work with CSS that is
@@ -133,5 +123,5 @@ Instead, you should create a custom sub-theme that isn't hosted on Drupal.org.
 [Respond.js]: https://github.com/scottjehl/Respond
 [Drush]: http://www.drush.org
 [Drupal Bootstrap]: https://www.drupal.org/project/bootstrap
-[Bootstrap Framework]: http://getbootstrap.com
-[jQuery Update]: https://drupal.org/project/jquery_update
+[Bootstrap Framework]: https://getbootstrap.com/docs/3.3/
+[jQuery Update]: https://www.drupal.org/project/jquery_update

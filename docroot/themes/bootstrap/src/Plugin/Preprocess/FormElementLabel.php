@@ -1,12 +1,7 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Preprocess\FormElementLabel.
- */
 
 namespace Drupal\bootstrap\Plugin\Preprocess;
 
-use Drupal\bootstrap\Annotation\BootstrapPreprocess;
 use Drupal\bootstrap\Utility\Element;
 use Drupal\bootstrap\Utility\Variables;
 
@@ -23,7 +18,10 @@ class FormElementLabel extends PreprocessBase implements PreprocessInterface {
    * {@inheritdoc}
    */
   public function preprocessElement(Element $element, Variables $variables) {
-    $variables->map(['attributes']);
+    // Map the element properties.
+    $variables->map(['attributes', 'is_checkbox', 'is_radio']);
+
+    // Preprocess attributes.
     $this->preprocessAttributes();
   }
 

@@ -1,4 +1,4 @@
-<!-- @file Documents the "Plugin System" for the Drupal Bootstrap base theme. -->
+<!-- @file Documents the Plugin System for the Drupal Bootstrap base theme. -->
 <!-- @defgroup -->
 <!-- @ingroup -->
 # Plugin System
@@ -31,8 +31,8 @@ container construction since a theme could vary from page to page (in theory).
 So, instead, this base theme implements its own annotated discovery plugins
 to leverage the powerful inheritance capabilities of PHP class instances.
 
-All of these plugins can be found in the following directories and are discussed,
-in length, below in their respective sub-topics:
+All of these plugins can be found in the following directories and are
+discussed, in length, below in their respective sub-topics:
 - `./bootstrap/src/Plugin/Alter`
 - `./bootstrap/src/Plugin/Form`
 - `./bootstrap/src/Plugin/Preprocess`
@@ -63,5 +63,8 @@ All plugins, except those that only have static methods, have the active Theme
 object available to them: e.g. `$this->theme`. This will allow you to do things
 like get a theme setting very, very easily: e.g.
 `$this->theme->getSetting('button_size')`.
+
+A helpful primer on Annotation-based plugins can be found at:
+https://www.drupal.org/node/1882526
 
 [Drupal Bootstrap]: https://www.drupal.org/project/bootstrap

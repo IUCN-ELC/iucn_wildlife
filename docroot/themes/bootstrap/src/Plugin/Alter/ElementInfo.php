@@ -1,12 +1,7 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Alter\ElementInfo.
- */
 
 namespace Drupal\bootstrap\Plugin\Alter;
 
-use Drupal\bootstrap\Annotation\BootstrapAlter;
 use Drupal\bootstrap\Bootstrap;
 use Drupal\bootstrap\Plugin\PluginBase;
 use Drupal\bootstrap\Plugin\PrerenderManager;
@@ -28,11 +23,22 @@ class ElementInfo extends PluginBase implements AlterInterface {
     // Sort the types for easier debugging.
     ksort($types, SORT_NATURAL);
 
+    $extra_variables = Bootstrap::extraVariables();
     $process_manager = new ProcessManager($this->theme);
     $pre_render_manager = new PrerenderManager($this->theme);
 
     foreach (array_keys($types) as $type) {
       $element = &$types[$type];
+
+      // By default, the "checkboxes" and "radios" element types invoke
+      // CompositeFormElementTrait::preRenderCompositeFormElement which wraps
+      // the element in a fieldset and thus ultimately a panel. This isn't
+      // (usually) the desired effect for these elements, so to avoid rendering
+      // them as Bootstrap panels, the #bootstrap_panel should be set to FALSE
+      // by default. This allows those who wish to opt back in to do so.
+      if ($type === 'checkboxes' || $type === 'radios') {
+        $element['#bootstrap_panel'] = FALSE;
+      }
 
       // Core does not actually use the "description_display" property on the
       // "details" or "fieldset" element types because the positioning of the
@@ -46,10 +52,10 @@ class ElementInfo extends PluginBase implements AlterInterface {
         $element['#panel_type'] = 'default';
       }
 
-      // Add extra variables to all elements.
-      foreach (Bootstrap::extraVariables() as $key => $value) {
-        if (!isset($variables["#$key"])) {
-          $variables["#$key"] = $value;
+      // Add extra variables as defaults to all elements.
+      foreach ($extra_variables as $key => $value) {
+        if (!isset($element["#$key"])) {
+          $element["#$key"] = $value;
         }
       }
 

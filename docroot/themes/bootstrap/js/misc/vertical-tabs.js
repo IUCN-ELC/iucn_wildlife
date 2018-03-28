@@ -29,7 +29,7 @@
       $(context).find('[data-vertical-tabs-panes]').once('vertical-tabs').each(function () {
         var $this = $(this).addClass('tab-content vertical-tabs-panes');
 
-        var focusID = $(':hidden.vertical-tabs-active-tab', this).val();
+        var focusID = $(':hidden.vertical-tabs__active-tab', this).val();
         if (typeof focusID === 'undefined' || !focusID.length) {
           focusID = false;
         }
@@ -148,8 +148,8 @@
     // Keyboard events added:
     // Pressing the Enter key will open the tab pane.
     this.link.on('keydown', function (event) {
-      event.preventDefault();
       if (event.keyCode === 13) {
+        event.preventDefault();
         self.focus();
         // Set focus on the first input field of the visible details/tab pane.
         $(".vertical-tabs-pane :input:visible:enabled:first").trigger('focus');

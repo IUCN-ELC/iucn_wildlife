@@ -18,10 +18,10 @@ bootstrap:
     - core/jquery
 
 bootstrap-overrides:
-  version: 3.3.6
+  version: 3.3.7
   css:
     theme:
-      /themes/bootstrap/css/3.3.6/overrides.min.css: { minified: true }
+      /themes/bootstrap/css/3.3.7/overrides.min.css: { minified: true }
   dependencies:
     - iucn_frontend/bootstrap
 

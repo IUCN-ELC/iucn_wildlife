@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Process\ProcessBase.
- */
 
 namespace Drupal\bootstrap\Plugin\Process;
 
@@ -24,7 +20,7 @@ class ProcessBase extends PluginBase implements ProcessInterface {
     if (!empty($element['#bootstrap_ignore_process'])) {
       return $element;
     }
-    static::processElement(Element::create($element), $form_state, $complete_form);
+    static::processElement(Element::create($element, $form_state), $form_state, $complete_form);
     return $element;
   }
 

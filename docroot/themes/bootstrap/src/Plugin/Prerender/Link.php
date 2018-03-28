@@ -1,13 +1,7 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Prerender\Link.
- */
 
 namespace Drupal\bootstrap\Plugin\Prerender;
 
-use Drupal\bootstrap\Annotation\BootstrapConstant;
-use Drupal\bootstrap\Annotation\BootstrapPrerender;
 use Drupal\bootstrap\Bootstrap;
 use Drupal\bootstrap\Utility\Element;
 use Drupal\Component\Render\FormattableMarkup;
@@ -54,7 +48,7 @@ class Link extends PrerenderBase {
       $position = $element->getProperty('icon_position', 'before');
 
       // Render #icon and trim it (so it doesn't add underlines in whitespace).
-      $rendered_icon = trim(Element::create($icon)->render());
+      $rendered_icon = trim(Element::create($icon)->renderPlain());
 
       // Default position is before.
       $markup = "$rendered_icon@title";

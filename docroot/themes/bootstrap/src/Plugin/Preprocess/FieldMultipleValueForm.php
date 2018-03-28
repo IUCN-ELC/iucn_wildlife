@@ -1,12 +1,7 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Preprocess\FieldMultipleValueForm.
- */
 
 namespace Drupal\bootstrap\Plugin\Preprocess;
 
-use Drupal\bootstrap\Annotation\BootstrapPreprocess;
 use Drupal\bootstrap\Utility\Element;
 use Drupal\bootstrap\Utility\Variables;
 
@@ -33,7 +28,10 @@ class FieldMultipleValueForm extends PreprocessBase implements PreprocessInterfa
             '#suffix' => '</label>',
           ],
           'colspan' => 2,
-          'class' => ['field-label'],
+          'class' => [
+            'field-label',
+            !empty($element['#required']) ? 'form-required' : '',
+          ],
         ],
         t('Order', [], ['context' => 'Sort order']),
       ];

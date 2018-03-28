@@ -1,11 +1,8 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Setting\SettingBase.
- */
 
 namespace Drupal\bootstrap\Plugin\Setting;
 
+use Drupal\bootstrap\Bootstrap;
 use Drupal\bootstrap\Plugin\PluginBase;
 use Drupal\bootstrap\Utility\Element;
 use Drupal\Core\Form\FormStateInterface;
@@ -22,7 +19,14 @@ class SettingBase extends PluginBase implements SettingInterface {
    * {@inheritdoc}
    */
   public function alterForm(array &$form, FormStateInterface $form_state, $form_id = NULL) {
-    $this->getElement($form, $form_state);
+    $this->alterFormElement(Element::create($form), $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function alterFormElement(Element $form, FormStateInterface $form_state, $form_id = NULL) {
+    $this->getSettingElement($form, $form_state);
   }
 
   /**
@@ -47,14 +51,22 @@ class SettingBase extends PluginBase implements SettingInterface {
    */
   public function getElementProperties() {
     $properties = $this->getPluginDefinition();
+    $ignore_keys = [
+      'class',
+      'defaultValue',
+      'definition',
+      'groups',
+      'id',
+      'provider',
+      'see',
+    ];
     foreach ($properties as $name => $value) {
-      if (in_array($name, ['class', 'defaultValue', 'definition', 'groups', 'id', 'provider', 'see'])) {
+      if (in_array($name, $ignore_keys)) {
         unset($properties[$name]);
       }
     }
     return $properties;
   }
-
 
   /**
    * {@inheritdoc}
@@ -65,53 +77,20 @@ class SettingBase extends PluginBase implements SettingInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @deprecated Will be removed in a future release. Use \Drupal\bootstrap\Plugin\Setting\SettingInterface::getGroupElement
    */
-  public function getElement(array &$form, FormStateInterface $form_state) {
-    // Construct the group elements.
-    $group = $this->getGroup($form, $form_state);
-    $plugin_id = $this->getPluginId();
-    if (!isset($group->$plugin_id)) {
-      // Set properties from the plugin definition.
-      foreach ($this->getElementProperties() as $name => $value) {
-        $group->$plugin_id->setProperty($name, $value);
-      }
-
-      // Set default value from the stored form state value or theme setting.
-      $default_value = $form_state->getValue($plugin_id, $this->theme->getSetting($plugin_id));
-      $group->$plugin_id->setProperty('default_value', $default_value);
-
-      // Append additional "see" link references to the description.
-      $description = (string) $group->$plugin_id->getProperty('description') ?: '';
-      /** @var \Drupal\Core\Render\Renderer $renderer */
-      $renderer = \Drupal::service('renderer');
-      $links = [];
-      foreach ($this->pluginDefinition['see'] as $url => $title) {
-        $link = [
-          '#type' => 'link',
-          '#url' => Url::fromUri($url),
-          '#title' => $title,
-          '#attributes' => [
-            'target' => '_blank',
-          ],
-        ];
-        $links[] = (string) $renderer->render($link);
-      }
-      if (!empty($links)) {
-        $description .= '<br>';
-        $description .= t('See also:');
-        $description .= ' ' . implode(', ', $links);
-        $group->$plugin_id->setProperty('description', $description);
-      }
-    }
-    return $group->$plugin_id;
+  public function getGroup(array &$form, FormStateInterface $form_state) {
+    Bootstrap::deprecated();
+    return $this->getGroupElement(Element::create($form), $form_state);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getGroup(array &$form, FormStateInterface $form_state) {
+  public function getGroupElement(Element $form, FormStateInterface $form_state) {
     $groups = $this->getGroups();
-    $group = Element::create($form);
+    $group = $form;
     $first = TRUE;
     foreach ($groups as $key => $title) {
       if (!isset($group->$key)) {
@@ -146,6 +125,64 @@ class SettingBase extends PluginBase implements SettingInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @deprecated Will be removed in a future release. Use \Drupal\bootstrap\Plugin\Setting\SettingInterface::getSettingElement
+   */
+  public function getElement(array &$form, FormStateInterface $form_state) {
+    Bootstrap::deprecated();
+    return $this->getSettingElement(Element::create($form), $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOptions() {
+    return isset($this->pluginDefinition['options']) ? (array) $this->pluginDefinition['options'] : [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSettingElement(Element $form, FormStateInterface $form_state) {
+    // Construct the group elements.
+    $group = $this->getGroupElement($form, $form_state);
+    $plugin_id = $this->getPluginId();
+    if (!isset($group->$plugin_id)) {
+      // Set properties from the plugin definition.
+      foreach ($this->getElementProperties() as $name => $value) {
+        $group->$plugin_id->setProperty($name, $value);
+      }
+
+      // Set default value from the stored form state value or theme setting.
+      $default_value = $form_state->getValue($plugin_id, $this->theme->getSetting($plugin_id));
+      $group->$plugin_id->setProperty('default_value', $default_value);
+
+      // Append additional "see" link references to the description.
+      $description = (string) $group->$plugin_id->getProperty('description') ?: '';
+      $links = [];
+      foreach ($this->pluginDefinition['see'] as $url => $title) {
+        $link = Element::createStandalone([
+          '#type' => 'link',
+          '#url' => Url::fromUri($url),
+          '#title' => $title,
+          '#attributes' => [
+            'target' => '_blank',
+          ],
+        ]);
+        $links[] = (string) $link->renderPlain();
+      }
+      if (!empty($links)) {
+        $description .= '<br>';
+        $description .= t('See also:');
+        $description .= ' ' . implode(', ', $links);
+        $group->$plugin_id->setProperty('description', $description);
+      }
+    }
+    return $group->$plugin_id;
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getTitle() {
     return !empty($this->pluginDefinition['title']) ? $this->pluginDefinition['title'] : NULL;
@@ -154,11 +191,25 @@ class SettingBase extends PluginBase implements SettingInterface {
   /**
    * {@inheritdoc}
    */
-  public static function submitForm(array &$form, FormStateInterface $form_state, $form_id = NULL) {}
+  public static function submitForm(array &$form, FormStateInterface $form_state) {
+    static::submitFormElement(Element::create($form), $form_state);
+  }
 
   /**
    * {@inheritdoc}
    */
-  public static function validateForm(array &$form, FormStateInterface $form_state, $form_id = NULL) {}
+  public static function submitFormElement(Element $form, FormStateInterface $form_state) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function validateForm(array &$form, FormStateInterface $form_state) {
+    static::validateFormElement(Element::create($form), $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function validateFormElement(Element $form, FormStateInterface $form_state) {}
 
 }

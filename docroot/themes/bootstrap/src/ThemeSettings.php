@@ -1,11 +1,8 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\ThemeSettings.
- */
 
 namespace Drupal\bootstrap;
 
+use Drupal\Core\Theme\ThemeSettings as CoreThemeSettings;
 use Drupal\Component\Utility\DiffArray;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Config\Config;
@@ -56,7 +53,7 @@ class ThemeSettings extends Config {
     $this->defaults = \Drupal::config('system.theme.global')->get();
 
     // Retrieve the theme setting plugin discovery defaults (code).
-    foreach ($theme->getSettingPlugins() as $name => $setting) {
+    foreach ($theme->getSettingPlugin() as $name => $setting) {
       $this->defaults[$name] = $setting->getDefaultValue();
     }
 
@@ -110,10 +107,10 @@ class ThemeSettings extends Config {
     if ($apply_overrides) {
       // Apply overrides.
       if (isset($this->moduleOverrides) && is_array($this->moduleOverrides)) {
-        $original_data = NestedArray::mergeDeepArray(array($original_data, $this->moduleOverrides), TRUE);
+        $original_data = NestedArray::mergeDeepArray([$original_data, $this->moduleOverrides], TRUE);
       }
       if (isset($this->settingsOverrides) && is_array($this->settingsOverrides)) {
-        $original_data = NestedArray::mergeDeepArray(array($original_data, $this->settingsOverrides), TRUE);
+        $original_data = NestedArray::mergeDeepArray([$original_data, $this->settingsOverrides], TRUE);
       }
     }
 
@@ -144,14 +141,14 @@ class ThemeSettings extends Config {
    *   A array diff of overridden config theme settings.
    */
   public function getThemeConfig(Theme $theme, $active_theme = FALSE) {
-    $config = new \Drupal\Core\Theme\ThemeSettings($theme->getName());
+    $config = new CoreThemeSettings($theme->getName());
 
     // Retrieve configured theme-specific settings, if any.
     try {
       if ($theme_settings = \Drupal::config($theme->getName() . '.settings')->get()) {
-        // Remove the schema version if not the active theme.
+        // Remove schemas if not the active theme.
         if (!$active_theme) {
-          unset($theme_settings['schema']);
+          unset($theme_settings['schemas']);
         }
         $config->merge($theme_settings);
       }
@@ -229,7 +226,19 @@ class ThemeSettings extends Config {
    *   TRUE or FALSE
    */
   public function overridesValue($name, $value) {
-    return !!DiffArray::diffAssocRecursive([$name => $value], [$name => $this->get($name)]);
+    // Retrieve the currently stored value for comparison purposes.
+    $current_value = $this->get($name);
+
+    // Due to the nature of DiffArray::diffAssocRecursive, if the provided
+    // value is an empty array, it cannot be iterated over to determine if
+    // the values are different. Instead, it must be checked explicitly.
+    // @see https://www.drupal.org/node/2771121
+    if ($value === [] && $current_value !== []) {
+      return TRUE;
+    }
+
+    // Otherwise, determine if value is overridden by any array differences.
+    return !!DiffArray::diffAssocRecursive([$name => $value], [$name => $current_value]);
   }
 
   /**

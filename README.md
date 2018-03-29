@@ -24,16 +24,16 @@ www.wildlex.org
     127.0.0.1 wildlex.local db solr6
     ```
 
-* On Linux/Mac use `sudo vim /etc/hosts`
-* On Windows right-click on `Notepad` and select `Run as Administrator` then edit `C:\WINDOWS\system32\drivers\etc\hosts`
+    * On Linux/Mac use `sudo vim /etc/hosts`
+    * On Windows right-click on `Notepad` and select `Run as Administrator` then edit `C:\WINDOWS\system32\drivers\etc\hosts`
 
-2. `cp docker-compose.override.example-dev.yml docker-compose.override.yml`
+2. `cp docker-compose.override.example-dev.yml docker-compose.override.yml` and customize (look for TODO).
 
 3. Optional
    * Change the port mapping for service `nginx` if you already have a web server running on port `80`, example: `127.0.0.1:8080:80`
    * If you are going to access the mysql database directly, uncomment the ports mapping from service `db`.
 
-4. `cp docroot/sites/default/settings.local.example-dev.php docroot/sites/default/settings.local.php` (remember the database settings must match that in `docker-compose.override.yml`)
+4. `cp docroot/sites/default/settings.local.example-dev.php docroot/sites/default/settings.local.php` and customize (look for TODO). Remember the database settings must match that in `docker-compose.override.yml`)
 
 5. run `docker-compose up` in the project directory and make sure that there are no errors in the console. On production use `docker-compose up -d` to start the daemons in background.
 

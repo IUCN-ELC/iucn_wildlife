@@ -24,7 +24,6 @@ module:
   google_analytics: 0
   image: 0
   iucn_search: 0
-  kint: 0
   link: 0
   linkit: 0
   menu_link_attributes: 0

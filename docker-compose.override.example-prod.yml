@@ -5,21 +5,23 @@ services:
   nginx:
     container_name: wl_frontend
     ports:
-    - "127.0.0.1:80:80"
+    - "127.0.0.1:8891:80"
     environment:
-    - TZ="Europe/Bucharest"
+    - TZ="Europe/Berlin"
+    restart: "unless-stopped"
 
   php71:
     container_name: wl_php
-    #volumes:
-    #  - /home/user/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+    restart: "unless-stopped"
 
   solr6:
     container_name: wl_solr6
+    restart: "unless-stopped"
 
   db:
     container_name: wl_db
+    restart: "unless-stopped"
 #    ports:
 #    - "127.0.0.1:13306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "@TODO"

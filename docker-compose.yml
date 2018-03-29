@@ -7,8 +7,8 @@ services:
     depends_on:
     - php71
     volumes:
-    - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf:z
-    - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf:z
+    - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf
+    - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf
     - ./docroot:/var/www/html/docroot:z
 
   php71:
@@ -16,14 +16,30 @@ services:
     depends_on:
     - db
     volumes:
-    - .:/var/www/html/:Z
+    - ./docroot/.htaccess:/var/www/html/docroot/.htaccess
+    - ./docroot/autoload.php:/var/www/html/docroot/autoload.php
+    - ./docroot/core:/var/www/html/docroot/core
+    - ./docroot/index.php:/var/www/html/docroot/index.php
+    - ./docroot/modules:/var/www/html/docroot/modules
+    - ./docroot/profiles:/var/www/html/docroot/profiles
+    - ./docroot/robots.txt:/var/www/html/docroot/robots.txt
+    - ./docroot/sites/default/files:/var/www/html/docroot/sites/default/files:Z
+    - ./docroot/sites/default/default.services.yml:/var/www/html/docroot/sites/default/default.services.yml
+    - ./docroot/sites/default/default.settings.php:/var/www/html/docroot/sites/default/default.settings.php
+    - ./docroot/sites/default/settings.local.php:/var/www/html/docroot/sites/default/settings.local.php
+    - ./docroot/sites/default/settings.php:/var/www/html/docroot/sites/default/settings.php
+    - ./docroot/themes:/var/www/html/docroot/themes:ro
+    - ./docroot/vendor:/var/www/html/docroot/vendor:ro
+    - ./drush:/var/www/html/drush
+    - ./patches:/var/www/html/patches:ro
+    - ./update.sh:/var/www/html/update.sh:ro
 
   db:
     image: mariadb
     environment:
       MYSQL_DATABASE: "drupal"
     volumes:
-    - .docker/conf-mysqld/server.cnf:/etc/mysql/conf.d/server.cnf:z
+    - .docker/conf-mysqld/server.cnf:/etc/mysql/conf.d/server.cnf
 
   solr6:
     image: library/solr:6

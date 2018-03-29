@@ -13,10 +13,10 @@ www.wildlex.org
 
 1. Go to an empty directory and clone this repository:
 
-```
+    ```
     cd ~/Work
     git clone https://github.com/IUCN-ELC/iucn_wildlife
-```
+    ```
 
 2. Edit your local `/etc/hosts`, and add the `server_name` from `./.docker/conf_nginx/project.conf` and db/solr6 containers:
 

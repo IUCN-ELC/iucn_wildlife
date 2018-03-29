@@ -11,24 +11,36 @@ www.wildlex.org
 
 ## Quick start
 
-1. `cp docker-compose.override.template.yml docker-compose.override.yml`
-2. Optional
-   * If you have SSH access to the staging/production server, edit docker-compose.override.yml and uncomment the php71 volume containing id_rsa and also `cp drush/aliases/aliases.local.php.example drush/aliases/aliases.local.php`, then edit aliases.local.php and set your own user
-   * Change the ports mapping for service nginx if you already have a web server running on port 80.
-   * If you are going to access the mysql database directly, uncomment the ports mapping from service db.
+1. Go to an empty directory and clone this repository:
 
-3. `cp docroot/sites/default/settings.local.php.example docroot/sites/default/settings.local.php`
-(remember the database settings must match docker-compose.override.yml)
+```
+    cd ~/Work
+    git clone https://github.com/IUCN-ELC/iucn_wildlife
+```
 
-4. Edit your local /etc/hosts and add the `server_name` from `./.docker/conf_nginx/project.conf` and db/solr6 containers:
+2. Edit your local `/etc/hosts`, and add the `server_name` from `./.docker/conf_nginx/project.conf` and db/solr6 containers:
 
     ```
     127.0.0.1 wildlex.local db solr6
     ```
 
-5. run `docker-compose up`, make sure that there are no errors in the console. If everything looks ok, CTRL+C and `docker-compose up -d`
+* On Linux/Mac use `sudo vim /etc/hosts`
+* On Windows right-click on `Notepad` and select `Run as Administrator` then edit `C:\WINDOWS\system32\drivers\etc\hosts`
+
+2. `cp docker-compose.override.example-dev.yml docker-compose.override.yml`
+
+3. Optional
+   * Change the port mapping for service `nginx` if you already have a web server running on port `80`, example: `127.0.0.1:8080:80`
+   * If you are going to access the mysql database directly, uncomment the ports mapping from service `db`.
+
+4. `cp docroot/sites/default/settings.local.example-dev.php docroot/sites/default/settings.local.php` (remember the database settings must match that in `docker-compose.override.yml`)
+
+5. run `docker-compose up` in the project directory and make sure that there are no errors in the console. On production use `docker-compose up -d` to start the daemons in background.
+
+On Fedora Linux you must switch to `root` account before, for example: `sudo docker-compose up`
 
 6. Open http://wildlex.local. You should see a default Drupal install.php
+
 
 ## Installing Drupal
 Choose one of the two solutions.
@@ -45,18 +57,27 @@ Choose one of the two solutions.
 1. Restore database contents:
     ```
     $ curl -o db.sql.gz https://www.wildlex.org/sites/default/files/db.sql.gz
-    $ gunzip db.sql.gz
-    $ docker cp db.sql wl_db:/tmp
+    $ docker cp db.sql.gz wl_db:/tmp
     $ docker exec -it wl_db bash
-    $ mysql -u root -proot drupal < /tmp/db.sql
+    $ gunzip -c db.sql.gz | mysql -u root -proot drupal
     ```
+
 2. Update the instance
+
     ```
     $ ./update.sh
     ```
 ## Running drush
 
-TODO: Cristi
+
+Below are some common Drupal commands to help you speed-up development:
+
+```
+drush uli <uid|username>                     # Get a one-time login link to reset password or log in as another user.
+drush upwd --password=newpass <uid|username> # Reset the password for an user
+drush rsync @ENV:%files @self:%files         # Sync the "files" folder with other instances (prod, test, staging etc.).
+drush sql-sync @ENV @self                    # Sync database with another instance you have access to
+```
 
 ## Create sql-dump
 

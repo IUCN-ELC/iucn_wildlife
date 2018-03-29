@@ -7,24 +7,23 @@ services:
     depends_on:
     - php71
     volumes:
-    - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf
-    - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf
-    - .:/var/www/html/
+    - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf:z
+    - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf:z
+    - ./docroot:/var/www/html/docroot:z
 
   php71:
     image: cristiroma/php-fpm:latest
     depends_on:
     - db
     volumes:
-    - .:/var/www/html/
+    - .:/var/www/html/:Z
 
   db:
     image: mariadb
     environment:
       MYSQL_DATABASE: "drupal"
     volumes:
-    - .docker/conf-mysqld/server.cnf:/etc/mysql/conf.d/server.cnf
-    - .docker/conf-mysqld/client.cnf:/etc/mysql/conf.d/client.cnf
+    - .docker/conf-mysqld/server.cnf:/etc/mysql/conf.d/server.cnf:z
 
   solr6:
     image: library/solr:6

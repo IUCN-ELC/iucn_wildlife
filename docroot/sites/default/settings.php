@@ -706,6 +706,19 @@ $settings['container_yamls'][] = __DIR__ . '/services.yml';
  */
 $settings['trusted_host_patterns'] = array();
 
+/** Assume a development environment */
+$settings['environment'] = 'dev'; // 'live', 'test' or 'dev'
+
+/** Reverse proxy configuration settings. */
+$settings['reverse_proxy'] = TRUE;
+$settings['reverse_proxy_addresses'] = [$_SERVER['REMOTE_ADDR']];
+if (PHP_SAPI !== 'cli') {
+  // Fix HTTPS if we're behind load balancer.
+  if (getenv('HTTPS') !== 'on' && getenv('HTTP_X_FORWARDED_PROTO') === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+  }
+}
+
 /**
  * Load local development override configuration, if available.
  *

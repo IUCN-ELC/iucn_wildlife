@@ -5,6 +5,8 @@ iucn.search:
     _title: ''
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'
 
 iucn.search.legislation:
   path: '/legislation'
@@ -13,6 +15,8 @@ iucn.search.legislation:
     _title: ''
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'
 
 iucn.search.literature:
   path: '/literature'
@@ -21,6 +25,8 @@ iucn.search.literature:
     _title: ''
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'
 
 iucn.admin_config_iucn:
   path: '/admin/config/iucn'

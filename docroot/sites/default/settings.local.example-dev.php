@@ -19,9 +19,6 @@ $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
 /** Allow test modules and themes to be installed. */
 $settings['extension_discovery_scan_tests'] = TRUE;
 
-/** Enable access to rebuild.php.  */
-$settings['rebuild_access'] = TRUE;
-
 /** Views show SQL and performance on dev */
 $config['views.settings']['ui']['show']['sql_query']['enabled'] = TRUE;
 $config['views.settings']['ui']['show']['performance_statistics'] = TRUE;

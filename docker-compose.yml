@@ -16,23 +16,23 @@ services:
     depends_on:
     - db
     volumes:
-    - ./docroot/.htaccess:/var/www/html/docroot/.htaccess
-    - ./docroot/autoload.php:/var/www/html/docroot/autoload.php
-    - ./docroot/core:/var/www/html/docroot/core
-    - ./docroot/index.php:/var/www/html/docroot/index.php
-    - ./docroot/modules:/var/www/html/docroot/modules
-    - ./docroot/profiles:/var/www/html/docroot/profiles
-    - ./docroot/robots.txt:/var/www/html/docroot/robots.txt
+    - ./config/default:/var/www/html/config/default
+    - ./docroot/.htaccess:/var/www/html/docroot/.htaccess:ro
+    - ./docroot/autoload.php:/var/www/html/docroot/autoload.php:ro
+    - ./docroot/core:/var/www/html/docroot/core:ro
+    - ./docroot/index.php:/var/www/html/docroot/index.php:ro
+    - ./docroot/modules:/var/www/html/docroot/modules:ro
+    - ./docroot/profiles:/var/www/html/docroot/profiles:ro
     - ./docroot/sites/default/files:/var/www/html/docroot/sites/default/files:Z
-    - ./docroot/sites/default/default.services.yml:/var/www/html/docroot/sites/default/default.services.yml
-    - ./docroot/sites/default/default.settings.php:/var/www/html/docroot/sites/default/default.settings.php
-    - ./docroot/sites/default/settings.local.php:/var/www/html/docroot/sites/default/settings.local.php
-    - ./docroot/sites/default/settings.php:/var/www/html/docroot/sites/default/settings.php
+    - ./docroot/sites/default/default.services.yml:/var/www/html/docroot/sites/default/default.services.yml:ro
+    - ./docroot/sites/default/default.settings.php:/var/www/html/docroot/sites/default/default.settings.php:ro
+    - ./docroot/sites/default/settings.local.php:/var/www/html/docroot/sites/default/settings.local.php:ro
+    - ./docroot/sites/default/settings.php:/var/www/html/docroot/sites/default/settings.php:ro
+    - ./docroot/sites/development.services.yml:/var/www/html/docroot/sites/development.services.yml:ro
     - ./docroot/themes:/var/www/html/docroot/themes:ro
     - ./docroot/vendor:/var/www/html/docroot/vendor:ro
     - ./drush:/var/www/html/drush
     - ./patches:/var/www/html/patches:ro
-    - ./update.sh:/var/www/html/update.sh:ro
 
   db:
     image: mariadb

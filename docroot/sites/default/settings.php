@@ -245,12 +245,8 @@ $databases = array();
  * @endcode
  */
 $config_directories = array(
-  'vcs' => $app_root . '/../config/default',
-  'local' => $app_root . '/../config/local',
-  'dev' => $app_root . '/../config/dev',
-  'prod' => $app_root . '/../config/prod',
+  CONFIG_SYNC_DIRECTORY => $app_root . '/../config/default',
 );
-$config_directories[CONFIG_SYNC_DIRECTORY] = $config_directories['vcs'];
 
 /**
  * Settings:
@@ -733,16 +729,6 @@ if (file_exists(__DIR__ . '/settings.local.php')) {
   include __DIR__ . '/settings.local.php';
 }
 
-
-// On Acquia Cloud, this include file configures Drupal to use the correct
-// database in each site environment (Dev, Stage, or Prod). To use this
-// settings.php for development on your local workstation, set $db_url
-// (Drupal 5 or 6) or $databases (Drupal 7 or 8) as described in comments above.
-if (file_exists('/var/www/site-php')) {
-  require('/var/www/site-php/iucnwildlifed8/iucnwildlifed8-settings.inc');
-}
-
 $databases['default']['default']['init_commands']['lock_wait_timeout'] = "SET SESSION innodb_lock_wait_timeout = 3600";
 $databases['default']['default']['init_commands']['wait_timeout'] = "SET SESSION wait_timeout = 3600";
-
 $databases['migrate']['default'] = $databases['default']['default'];

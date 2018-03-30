@@ -9,10 +9,15 @@ services:
     environment:
     - TZ="Europe/Berlin"
     restart: "unless-stopped"
+    volumes:
+    - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
 
   php71:
     container_name: wl_php
     restart: "unless-stopped"
+    volumes:
+    - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
+    - ./update-production.sh:/var/www/html/update-production.sh:ro
 
   solr6:
     container_name: wl_solr6

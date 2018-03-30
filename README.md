@@ -43,32 +43,22 @@ On Fedora Linux you must switch to `root` account before, for example: `sudo doc
 
 
 ## Installing Drupal
-Choose one of the two solutions.
 
-### a. Use the install script (requires SSH access to the production server)
-1. Run installation script: ```./install.sh prod```
-2. Restore sites/default/files.
-    ```
-    $ cd docroot
-    $ drush -v rsync @prod:%files @self:%files
-    ```
-
-### b. Retrieve the database using ```curl```
+### Retrieve the database using ```curl```
 1. Restore database contents:
     ```
     $ curl -o db.sql.gz https://www.wildlex.org/sites/default/files/db.sql.gz
-    $ docker cp db.sql.gz wl_db:/tmp
+    $ docker cp db.sql.gz wl_db:/
     $ docker exec -it wl_db bash
-    $ gunzip -c db.sql.gz | mysql -u root -proot drupal
+    $ gunzip -c /db.sql.gz | mysql -u root -proot drupal
     ```
 
 2. Update the instance
 
     ```
-    $ ./update.sh
+    $ ./devify.sh
     ```
 ## Running drush
-
 
 Below are some common Drupal commands to help you speed-up development:
 
@@ -90,21 +80,14 @@ $ drush sql-dump --gzip --structure-tables-list=cache,cache_*,watchdog > db.sql.
 #### Export
 
 ```
-$ drush config-export sync # shared between environments
-$ drush config-get <config-name> > config/<env>/<config-name>.yml # environment-specific overrides
+$ drush config-export # shared between environments
 ```
-
-**config-name:** The config object name, for example "system.site".  
-**env:** The environment name, for example "local", "dev", "prod".
 
 #### Import
 
 ```
-$ drush config-import sync # shared between environments
-$ drush config-import <env> --partial # environment-specific overrides
+$ drush config-import # shared between environments
 ```
-
-**env:** The environment name, for example "local", "dev", "prod".
 
 ### Theme development
 
@@ -116,10 +99,47 @@ $ npm install
 $ grunt build # or watch
 ```
 
-
 ## Running tests
 
 Use the `test.sh` script to run project related test. Example:
 
 * `./test.sh` - Run all tests from the iucn_search group
 * `./test.sh FacetTest` - Run a single test
+
+## Production/Test deployment
+
+1. Go to an empty directory and clone this repository:
+
+    ```
+    cd /opt/
+    git clone https://github.com/IUCN-ELC/iucn_wildlife
+    ```
+
+2. `cp docker-compose.override.example-prod.yml docker-compose.override.yml` and customize (look for TODO).
+
+3. Make sure the front-end server is mapped to an unused port, example: `127.0.0.1:8092:80`
+
+4. `cp docroot/sites/default/settings.local.example-prod.php docroot/sites/default/settings.local.php` and customize (look for TODO)
+
+5. run `docker-compose up` in the project directory and check for errors. Restart with `docker-compose up -d`
+
+On Fedora Linux you must switch to `root` account before, for example: `sudo docker-compose up -d`
+
+6. Open http://wildlex.org. You should see a default Drupal install.php
+
+7. Load a backup and 'files' dump, see above.
+
+8. Set permissions on files. In host execute the following commands:
+
+```
+    chown -R 33:33 docroot/sites/default/files
+    chown -R root:33 docroot/sites/default/settings.local.hp
+```
+
+9. Configure robots.txt. In `docker.composer.override.yml` mount the proper robots file:
+
+```
+  php71:
+    volumes:
+    - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
+```

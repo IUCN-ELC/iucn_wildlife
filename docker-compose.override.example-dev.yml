@@ -8,11 +8,16 @@ services:
     - "127.0.0.1:80:80"
     environment:
     - TZ="Europe/Bucharest"
+    volumes:
+    - ./docroot/robots.dev.txt:/var/www/html/docroot/robots.txt
+
 
   php71:
     container_name: wl_php
 #    volumes:
 #    - /home/user/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+    volumes:
+    - ./devify.sh:/var/www/html/devify.sh:ro
 
   solr6:
     container_name: wl_solr6

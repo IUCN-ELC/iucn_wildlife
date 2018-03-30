@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_search\edw\solr;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigValueException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -131,22 +132,24 @@ class SolrFacet {
     asort($options);
     $widget = $this->getWidget();
     $request_param_name = $this->id . '_operator';
+    $request_param_value = Html::escape($params[$request_param_name]);
     $exposedOperator = [];
     if (!empty($this->config['exposeOperator']) && $this->config['exposeOperator'] == TRUE) {
-      $operator_default_value = !empty($params[$request_param_name]) && strtoupper($params[$request_param_name]) === self::$OPERATOR_AND;
+      $operator_default_value = !empty($request_param_value) && strtoupper($request_param_value) === self::$OPERATOR_AND;
       $exposedOperator = [
         '#type' => 'checkbox',
         '#default_value' => $operator_default_value,
         '#return_value' => 'AND',
       ];
     }
+    $param_value = Html::escape($_GET[$this->id]);
     switch ($widget) {
       case 'checkboxes':
         $ret = array(
           '#type' => $widget,
           '#title' => $this->getTitle(),
           '#options' => $options,
-          '#default_value' => !empty($_GET[$this->id]) ? $_GET[$this->id] : [],
+          '#default_value' => !empty($param_value) ? $param_value : [],
         );
         break;
       case 'select':
@@ -164,7 +167,7 @@ class SolrFacet {
           $this->id => [
             '#type' => $widget,
             '#options' => $options,
-            '#default_value' => !empty($_GET[$this->id]) ? $_GET[$this->id] : [],
+            '#default_value' => !empty($param_value) ? $param_value : [],
             '#multiple' => TRUE,
             '#attributes' => [
               'data-placeholder' => $this->getConfigValue('placeholder', ''),

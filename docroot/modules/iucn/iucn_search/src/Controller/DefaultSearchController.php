@@ -7,6 +7,7 @@
 
 namespace Drupal\iucn_search\Controller;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Link;
@@ -52,7 +53,6 @@ abstract class DefaultSearchController extends ControllerBase {
       /** @var Node $node */
       $node = Node::load($nid);
       if (!empty($node)) {
-        Cache::invalidateTags($node->getCacheTags());
         $results[$nid] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, $this->items_viewmode);
       }
     }
@@ -104,7 +104,8 @@ abstract class DefaultSearchController extends ControllerBase {
   }
 
   public function searchPage() {
-    $current_page = !empty($_GET['page']) ? $_GET['page'] : 0;
+    $page_value = Html::escape($_GET['page']);
+    $current_page = !empty($page_value) ? $page_value : 0;
     $results = array();
     $found = 0;
 
@@ -121,8 +122,10 @@ abstract class DefaultSearchController extends ControllerBase {
       $numFound = $this->formatPlural($found, 'Found one search result', 'Found @count search results');
 
       $sorts = $this->getSortFields();
-      $activeSort = !empty($_GET['sort']) ? $_GET['sort'] : $this->getDefaultSorting()['sort'];
-      $activeOrder = !empty($_GET['sortOrder']) ? $_GET['sortOrder'] : $this->getDefaultSorting()['sortOrder'];
+      $sort = Html::escape($_GET['sort']);
+      $sortOrder = Html::escape($_GET['sortOrder']);
+      $activeSort = !empty($sort) ? $sort : $this->getDefaultSorting()['sort'];
+      $activeOrder = !empty($sortOrder) ? $sortOrder : $this->getDefaultSorting()['sortOrder'];
       $getCopy = $_GET;
       $sortMarkup = [];
       foreach ($sorts as $key => $sort) {

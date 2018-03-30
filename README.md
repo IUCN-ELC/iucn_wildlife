@@ -57,9 +57,9 @@ Choose one of the two solutions.
 1. Restore database contents:
     ```
     $ curl -o db.sql.gz https://www.wildlex.org/sites/default/files/db.sql.gz
-    $ docker cp db.sql.gz wl_db:/tmp
+    $ docker cp db.sql.gz wl_db:/
     $ docker exec -it wl_db bash
-    $ gunzip -c db.sql.gz | mysql -u root -proot drupal
+    $ gunzip -c /db.sql.gz | mysql -u root -proot drupal
     ```
 
 2. Update the instance

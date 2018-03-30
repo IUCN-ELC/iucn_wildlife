@@ -1,4 +1,4 @@
-<!-- @file Documentation landing page and topics for the http://drupal-bootstrap.org site. -->
+<!-- @file Documentation landing page and topics for the https://drupal-bootstrap.org site. -->
 <!-- @mainpage -->
 # Drupal Bootstrap Documentation
 
@@ -24,7 +24,8 @@ a base theme like this.
 
 #### @link sub_theming Sub-Theming @endlink
 - @link sub_theming_cdn CDN Starterkit @endlink
-- @link sub_theming_less LESS Starterkit @endlink
+- @link sub_theming_less Less Starterkit @endlink
+- @link sub_theming_sass Sass Starterkit @endlink
 
 #### @link templates Templates @endlink
 
@@ -51,7 +52,7 @@ documentation. For clarity, we will always attempt to use this word verbosely
 in one of the following ways:
 
 - **[Drupal Bootstrap]** refers to the Drupal base theme project.
-- **[Bootstrap Framework](http://getbootstrap.com)** refers to the external
+- **[Bootstrap Framework](https://getbootstrap.com/docs/3.3/)** refers to the external
   front end framework.
 - **[drupal_bootstrap](https://api.drupal.org/apis/drupal_bootstrap)** refers
   to Drupal's bootstrapping process or phase.

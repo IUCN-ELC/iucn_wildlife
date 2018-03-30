@@ -1,14 +1,8 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Setting\Advanced\Cdn\CdnCustomCssMin.
- */
 
 namespace Drupal\bootstrap\Plugin\Setting\Advanced\Cdn;
 
-use Drupal\bootstrap\Annotation\BootstrapSetting;
 use Drupal\bootstrap\Plugin\Setting\SettingBase;
-use Drupal\Core\Annotation\Translation;
 
 /**
  * The "cdn_custom_css_min" theme setting.
@@ -21,7 +15,7 @@ use Drupal\Core\Annotation\Translation;
  *   type = "textfield",
  *   weight = 2,
  *   title = @Translation("Minified Bootstrap CSS URL"),
- *   defaultValue = "https://cdn.jsdelivr.net/bootstrap/3.3.5/css/bootstrap.min.css",
+ *   defaultValue = "https://cdn.jsdelivr.net/bootstrap/3.3.7/css/bootstrap.min.css",
  *   description = @Translation("Additionally, you can provide the minimized version of the file. It will be used instead if site aggregation is enabled."),
  *   groups = {
  *     "advanced" = @Translation("Advanced"),

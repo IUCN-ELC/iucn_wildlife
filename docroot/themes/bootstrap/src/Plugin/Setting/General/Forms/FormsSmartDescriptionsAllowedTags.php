@@ -1,14 +1,9 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Setting\General\Forms\FormsSmartDescriptionsAllowedTags.
- */
 
 namespace Drupal\bootstrap\Plugin\Setting\General\Forms;
 
-use Drupal\bootstrap\Annotation\BootstrapSetting;
 use Drupal\bootstrap\Plugin\Setting\SettingBase;
-use Drupal\Core\Annotation\Translation;
+use Drupal\bootstrap\Utility\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -33,9 +28,9 @@ class FormsSmartDescriptionsAllowedTags extends SettingBase {
   /**
    * {@inheritdoc}
    */
-  public function alterForm(array &$form, FormStateInterface $form_state, $form_id = NULL) {
-    $element = $this->getElement($form, $form_state);
-    $element->setProperty('states', [
+  public function alterFormElement(Element $form, FormStateInterface $form_state, $form_id = NULL) {
+    $setting = $this->getSettingElement($form, $form_state);
+    $setting->setProperty('states', [
       'visible' => [
         ':input[name="forms_smart_descriptions"]' => ['checked' => TRUE],
       ],

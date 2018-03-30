@@ -7,13 +7,14 @@
 
 namespace Drupal\iucn_search\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Link;
 use Drupal\iucn_search\Controller\SearchPageController;
 use Drupal\iucn_search\edw\solr\SolrFacet;
+use Drupal\taxonomy\Entity\Term;
 
 class SearchFiltersForm extends FormBase {
 
@@ -40,7 +41,7 @@ class SearchFiltersForm extends FormBase {
     $fqParams = SearchPageController::getSearch()->getFilterQueryParameters();
     $fqReset = [];
     foreach ($fqParams as $field => $value) {
-      $term = \Drupal\taxonomy\Entity\Term::load($value);
+      $term = Term::load($value);
       if ($term) {
         if (!array_key_exists($field, $facets)) {
           $hiddenInputs[$field] = [
@@ -64,12 +65,14 @@ class SearchFiltersForm extends FormBase {
       '#type'  => 'range_slider'
     ];
 
-    if (!empty($_GET['yearmin'])) {
-      $year['#from'] = $_GET['yearmin'];
+    $yearMin = !empty($_GET['yearmin']) ? Html::escape($_GET['yearmin']) : 0;
+    if (!empty($yearMin)) {
+      $year['#from'] = $yearMin;
     }
 
-    if (!empty($_GET['yearmax'])) {
-      $year['#to'] = $_GET['yearmax'];
+    $yearMax = !empty($_GET['yearmax']) ? Html::escape($_GET['yearmax']) : 0;
+    if (!empty($yearMax)) {
+      $year['#to'] = $yearMax;
     }
 
     $form = [

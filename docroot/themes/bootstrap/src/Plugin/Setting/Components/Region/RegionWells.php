@@ -1,14 +1,9 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Setting\Components\Region\RegionWells.
- */
 
 namespace Drupal\bootstrap\Plugin\Setting\Components\Region;
 
-use Drupal\bootstrap\Annotation\BootstrapSetting;
 use Drupal\bootstrap\Plugin\Setting\SettingBase;
-use Drupal\Core\Annotation\Translation;
+use Drupal\bootstrap\Utility\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -36,7 +31,7 @@ use Drupal\Core\Form\FormStateInterface;
  *     "region_wells" = @Translation("Region Wells"),
  *   },
  *   see = {
- *     "http://getbootstrap.com/components/#wells" = @Translation("Bootstrap Wells"),
+ *     "https://getbootstrap.com/docs/3.3/components/#wells" = @Translation("Bootstrap Wells"),
  *   },
  * )
  */
@@ -45,11 +40,11 @@ class RegionWells extends SettingBase {
   /**
    * {@inheritdoc}
    */
-  public function alterForm(array &$form, FormStateInterface $form_state, $form_id = NULL) {
-    parent::alterForm($form, $form_state, $form_id);
+  public function alterFormElement(Element $form, FormStateInterface $form_state, $form_id = NULL) {
+    parent::alterFormElement($form, $form_state, $form_id);
 
-    $group = $this->getGroup($form, $form_state);
-    $setting = $this->getElement($form, $form_state);
+    $group = $this->getGroupElement($form, $form_state);
+    $setting = $this->getSettingElement($form, $form_state);
 
     // Move description.
     $group->setProperty('description', $setting->getProperty('description'));
@@ -84,7 +79,7 @@ class RegionWells extends SettingBase {
   /**
    * {@inheritdoc}
    */
-  public static function submitForm(array &$form, FormStateInterface $form_state, $form_id = NULL) {
+  public static function submitFormElement(Element $form, FormStateInterface $form_state, $form_id = NULL) {
     $values = $form_state->getValues();
 
     // Extract the regions from individual dynamic settings.

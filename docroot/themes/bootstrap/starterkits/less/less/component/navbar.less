@@ -1,13 +1,15 @@
 /**
  * Navbar styling.
  */
-@tablet:  ~"screen and (min-width: @{screen-sm-min})";
-@normal:  ~"screen and (min-width: @{screen-md-min})";
-@wide:    ~"screen and (min-width: @{screen-lg-min})";
+@mobile:          ~"screen and (max-width: @{screen-xs-max})";
+@tablet:          ~"screen and (min-width: @{screen-sm-min})";
+@normal:          ~"screen and (min-width: @{screen-md-min})";
+@wide:            ~"screen and (min-width: @{screen-lg-min})";
+@grid-breakpoint: ~"screen and (min-width: @{grid-float-breakpoint})";
 
 body {
   // Fix horizontal scrolling on iOS devices.
-  // http://drupal.org/node/1870076
+  // https://www.drupal.org/node/1870076
   position: relative;
 
   &.navbar-is-static-top {
@@ -23,6 +25,24 @@ body {
   @media @tablet {
     margin-top: (@grid-gutter-width / 2);
   }
+  @media @mobile {
+    &.toolbar-vertical {
+      &.navbar-is-fixed-top,
+      &.navbar-is-fixed-bottom {
+        .toolbar-bar {
+          position: fixed;
+        }
+        header {
+          z-index: 500;
+        }
+      }
+      // Default toolbar fixed height value.
+      // @see core/modules/toolbar/css/toolbar.icons.theme.css@261
+      &.navbar-is-fixed-top header {
+        top: 39px;
+      }
+    }
+  }
 }
 .navbar.container {
   @media @tablet {
@@ -35,9 +55,14 @@ body {
     max-width: ((@container-lg - @grid-gutter-width));
   }
 }
-.navbar.container > .container,
-.navbar.container-fluid > .container-fluid {
-  margin: 0;
-  padding: 0;
-  width: auto;
+
+// Branding.
+.navbar .logo {
+  margin-right: -(@grid-gutter-width / 2);
+  padding-left: (@grid-gutter-width / 2);
+  padding-right: (@grid-gutter-width / 2);
+  @media @grid-breakpoint {
+    margin-right: 0;
+    padding-left: 0;
+  }
 }

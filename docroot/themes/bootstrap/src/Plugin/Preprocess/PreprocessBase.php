@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Preprocess\PreprocessBase.
- */
 
 namespace Drupal\bootstrap\Plugin\Preprocess;
 
@@ -21,21 +17,21 @@ class PreprocessBase extends PluginBase implements PreprocessInterface {
   /**
    * The theme hook invoked.
    *
-   * @type string
+   * @var string
    */
   protected $hook;
 
   /**
    * The theme hook info array from the theme registry.
    *
-   * @type array
+   * @var array
    */
   protected $info;
 
   /**
    * The Variables object.
    *
-   * @type \Drupal\bootstrap\Utility\Variables
+   * @var \Drupal\bootstrap\Utility\Variables
    */
   protected $variables;
 
@@ -47,6 +43,11 @@ class PreprocessBase extends PluginBase implements PreprocessInterface {
     $this->info = $info;
     $this->variables = Variables::create($variables);
     if ($this->variables->element) {
+      // Check for errors and set the "has_error" property flag.
+      if (!$this->variables->element->hasProperty('has_error')) {
+        $errors = $this->variables->element->getProperty('errors');
+        $this->variables->element->setProperty('has_error', isset($errors) || ($this->variables->element->getProperty('required') && $this->theme->getSetting('forms_required_has_error')));
+      }
       $this->preprocessElement($this->variables->element, $this->variables);
     }
     $this->preprocessVariables($this->variables);

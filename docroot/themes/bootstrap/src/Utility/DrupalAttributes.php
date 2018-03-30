@@ -1,10 +1,8 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Utility\DrupalAttributes.
- */
 
 namespace Drupal\bootstrap\Utility;
+
+use Drupal\Core\Template\Attribute;
 
 /**
  * Class for managing multiple types of attributes commonly found in Drupal.
@@ -175,7 +173,11 @@ class DrupalAttributes extends ArrayObject {
    */
   public function getAttributes($type = DrupalAttributes::ATTRIBUTES) {
     if (!isset($this->attributes[$type])) {
-      $this->attributes[$type] = new Attributes($this->offsetGet($this->attributePrefix . $type, []));
+      $attributes = &$this->offsetGet($this->attributePrefix . $type, []);
+      if ($attributes instanceof Attribute) {
+        $attributes = $attributes->toArray();
+      }
+      $this->attributes[$type] = new Attributes($attributes);
     }
     return $this->attributes[$type];
   }
@@ -341,6 +343,5 @@ class DrupalAttributes extends ArrayObject {
     $this->getAttributes($type)->setAttributes($values);
     return $this;
   }
-
 
 }

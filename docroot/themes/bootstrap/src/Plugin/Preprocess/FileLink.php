@@ -1,12 +1,7 @@
 <?php
-/**
- * @file
- * Contains \Drupal\bootstrap\Plugin\Preprocess\FileLink.
- */
 
 namespace Drupal\bootstrap\Plugin\Preprocess;
 
-use Drupal\bootstrap\Annotation\BootstrapPreprocess;
 use Drupal\bootstrap\Bootstrap;
 use Drupal\bootstrap\Utility\Element;
 use Drupal\bootstrap\Utility\Variables;
@@ -104,6 +99,8 @@ class FileLink extends PreprocessBase {
       ->getArray();
 
     $options['attributes']['title'] = t('Open @mime in new window', ['@mime' => $mime['label']]);
+    $options['attributes']['target'] = '_blank';
+
     if ($this->theme->getSetting('tooltip_enabled')) {
       $options['attributes']['data-toggle'] = 'tooltip';
       $options['attributes']['data-placement'] = 'bottom';

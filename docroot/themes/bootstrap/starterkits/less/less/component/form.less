@@ -2,6 +2,16 @@
  * Form styles.
  */
 
+// Checkboxes / radio buttons.
+.checkbox, .radio {
+  // Remove top/bottom margins when in table context, because this is most
+  // likely a tableselect checkbox element.
+  table &.form-no-label {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+}
+
 // Browsers do not recognize pseudo :after selectors, we must create a wrapper
 // around the select element to style it properly.
 // @see http://stackoverflow.com/q/21103542
@@ -53,8 +63,6 @@
       content: '\e114'; // .glyphicon-chevron-down
       display: inline-block;
       font-family: 'Glyphicons Halflings';
-      //margin-left: -10px;
-      //margin-top: 2px;
     }
     .has-error & {
       color: @state-danger-text;
@@ -68,12 +76,27 @@
   }
 }
 
-// Use CSS for required mark.
-// Inspired from https://www.drupal.org/node/2152217.
+// Use CSS/SVG image for required mark.
+// @see https://www.drupal.org/node/2152217
+// @see https://www.drupal.org/node/2274631
 .form-required:after {
-  color: #e00;
-  /* Use a Unicode symbol to prevent screen-readers from announcing the text. */
-  content: " \204E ";
-  line-height: 1;
-  vertical-align: super;
+  background-image: url(../images/required.svg);
+  background-size: 10px 7px;
+  content:"";
+  display: inline-block;
+  line-height:1;
+  height: 7px;
+  width: 10px;
+}
+
+// Form action buttons.
+.form-actions {
+  .btn, .btn-group {
+    margin-right: 10px;
+  }
+  .btn-group {
+    .btn {
+      margin-right: 0;
+    }
+  }
 }

@@ -16,7 +16,6 @@ services:
     container_name: wl_php
     restart: "unless-stopped"
     volumes:
-    - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
     - ./update-production.sh:/var/www/html/update-production.sh:ro
 
   solr6:

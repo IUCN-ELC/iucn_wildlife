@@ -312,10 +312,9 @@ function iucn_search_cron() {
 
 function iucn_search_query_filter() {
   if (!empty($_GET['q'])) {
-    return $_GET['q'];
+    $q = \Drupal\Component\Utility\Html::escape($_GET['q']);
   }
-
-  return '';
+  return !empty($q) ? $q : '';
 }
 
 /**

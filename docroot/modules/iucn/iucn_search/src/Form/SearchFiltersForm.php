@@ -65,12 +65,12 @@ class SearchFiltersForm extends FormBase {
       '#type'  => 'range_slider'
     ];
 
-    $yearMin = Html::escape($_GET['yearmin']);
+    $yearMin = !empty($_GET['yearmin']) ? Html::escape($_GET['yearmin']) : 0;
     if (!empty($yearMin)) {
       $year['#from'] = $yearMin;
     }
 
-    $yearMax = Html::escape($_GET['yearmax']);
+    $yearMax = !empty($_GET['yearmax']) ? Html::escape($_GET['yearmax']) : 0;
     if (!empty($yearMax)) {
       $year['#to'] = $yearMax;
     }

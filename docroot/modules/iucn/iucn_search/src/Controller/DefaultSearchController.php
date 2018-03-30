@@ -104,8 +104,7 @@ abstract class DefaultSearchController extends ControllerBase {
   }
 
   public function searchPage() {
-    $page_value = Html::escape($_GET['page']);
-    $current_page = !empty($page_value) ? $page_value : 0;
+    $current_page = !empty($_GET['page']) ? Html::escape($_GET['page']) : 0;
     $results = array();
     $found = 0;
 
@@ -122,10 +121,8 @@ abstract class DefaultSearchController extends ControllerBase {
       $numFound = $this->formatPlural($found, 'Found one search result', 'Found @count search results');
 
       $sorts = $this->getSortFields();
-      $sort = Html::escape($_GET['sort']);
-      $sortOrder = Html::escape($_GET['sortOrder']);
-      $activeSort = !empty($sort) ? $sort : $this->getDefaultSorting()['sort'];
-      $activeOrder = !empty($sortOrder) ? $sortOrder : $this->getDefaultSorting()['sortOrder'];
+      $activeSort = !empty($_GET['sort']) ? Html::escape($_GET['sort']) : $this->getDefaultSorting()['sort'];
+      $activeOrder = !empty($_GET['sortOrder']) ? Html::escape($_GET['sortOrder']) : $this->getDefaultSorting()['sortOrder'];
       $getCopy = $_GET;
       $sortMarkup = [];
       foreach ($sorts as $key => $sort) {

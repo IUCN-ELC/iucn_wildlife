@@ -311,7 +311,9 @@ function iucn_search_cron() {
 }
 
 function iucn_search_query_filter() {
-  $q = \Drupal\Component\Utility\Html::escape($_GET['q']);
+  if (!empty($_GET['q'])) {
+    $q = \Drupal\Component\Utility\Html::escape($_GET['q']);
+  }
   return !empty($q) ? $q : '';
 }
 

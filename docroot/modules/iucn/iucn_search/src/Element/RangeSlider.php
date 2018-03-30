@@ -32,13 +32,12 @@ class RangeSlider extends FormElement {
    * {@inheritdoc}
    */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
-    $min = Html::escape($_GET['yearmin']);
-    $max = Html::escape($_GET['yearmax']);
+    $min = !empty($_GET['yearmin']) ? Html::escape($_GET['yearmin']) : $element['#min'];
+    $max = !empty($_GET['yearmax']) ? Html::escape($_GET['yearmax']) : $element['#max'];;
     $value = [
-      'from' => !empty($min) ? $min : $element['#min'],
-      'to' => !empty($max) ? $max : $element['#max']
+      'from' => $min,
+      'to' => $max,
     ];
-
     return $value;
   }
 

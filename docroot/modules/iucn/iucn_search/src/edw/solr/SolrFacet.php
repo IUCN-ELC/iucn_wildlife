@@ -132,24 +132,24 @@ class SolrFacet {
     asort($options);
     $widget = $this->getWidget();
     $request_param_name = $this->id . '_operator';
-    $request_param_value = Html::escape($params[$request_param_name]);
+    $request_param_value = !empty($params[$request_param_name]) ? Html::escape($params[$request_param_name]) : '';
     $exposedOperator = [];
     if (!empty($this->config['exposeOperator']) && $this->config['exposeOperator'] == TRUE) {
-      $operator_default_value = !empty($request_param_value) && strtoupper($request_param_value) === self::$OPERATOR_AND;
+      $operator_default_value = strtoupper($request_param_value) === self::$OPERATOR_AND;
       $exposedOperator = [
         '#type' => 'checkbox',
         '#default_value' => $operator_default_value,
         '#return_value' => 'AND',
       ];
     }
-    $param_value = Html::escape($_GET[$this->id]);
+    $default_value = !empty($_GET[$this->id]) ? Html::escape($_GET[$this->id]) : [];
     switch ($widget) {
       case 'checkboxes':
         $ret = array(
           '#type' => $widget,
           '#title' => $this->getTitle(),
           '#options' => $options,
-          '#default_value' => !empty($param_value) ? $param_value : [],
+          '#default_value' => $default_value,
         );
         break;
       case 'select':
@@ -167,7 +167,7 @@ class SolrFacet {
           $this->id => [
             '#type' => $widget,
             '#options' => $options,
-            '#default_value' => !empty($param_value) ? $param_value : [],
+            '#default_value' => $default_value,
             '#multiple' => TRUE,
             '#attributes' => [
               'data-placeholder' => $this->getConfigValue('placeholder', ''),

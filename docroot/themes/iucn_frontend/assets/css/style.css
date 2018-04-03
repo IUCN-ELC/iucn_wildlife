@@ -831,6 +831,17 @@ body.path-frontpage {
     float: none;
   }
 }
+.form-required:after {
+  background-image: none;
+  background-size: none;
+  color: #e00;
+  content: " \204E ";
+  display: inline;
+  height: auto;
+  line-height: 1;
+  vertical-align: super;
+  width: auto;
+}
 @font-face {
   font-family: "ecolex-icons";
   src: url("../fonts/ecolex-icons.eot");
@@ -902,6 +913,7 @@ body.path-frontpage {
   margin-bottom: 12px;
   margin-right: 20px;
   margin-top: 12px;
+  padding-right: 0;
 }
 .navbar-nav > li > a.link-primary {
   background-color: #e67e22;

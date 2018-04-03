@@ -142,7 +142,7 @@ class SolrFacet {
         '#return_value' => 'AND',
       ];
     }
-    $default_value = !empty($_GET[$this->id]) ? Html::escape($_GET[$this->id]) : [];
+    $default_value = $this->getRequestParameter($_GET, $this->id);
     switch ($widget) {
       case 'checkboxes':
         $ret = array(
@@ -192,6 +192,34 @@ class SolrFacet {
       throw new ConfigValueException("Could not determine entity_type for given field {$this->getConfigValue('bundle')}:{$this->id}");
     }
   }
+
+  /**
+   * Retrieve a parameter from GET and sanitize.
+   *
+   * @param array $source
+   *   Array with source values (i.e. $_GET)
+   * @param string $name
+   *   Parameter name
+   * @param mixed $default
+   *   Default value
+   * @return mixed
+   *   Parameter value
+   */
+  protected function getRequestParameter($source, $name, $default = NULL) {
+    $ret = $default;
+    if (!empty($_GET[$name])) {
+      if (is_string($_GET[$name])) {
+        return $ret = Html::escape($_GET[$name]);
+      }
+      else if (is_array($_GET[$name])) {
+        $ret = [];
+        foreach ($_GET[$name] as $k => $value) {
+          $ret[$k] = Html::escape($value);
+        }
+      }
+    }
+    return $ret;
+}
 
   public function setValues(array $values) {
     $this->values = $values;

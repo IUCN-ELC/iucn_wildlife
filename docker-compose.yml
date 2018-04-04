@@ -3,7 +3,7 @@ version: '2.0'
 services:
 
   nginx:
-    image: nginx:latest
+    image: nginx:1.13
     depends_on:
     - php71
     volumes:
@@ -35,14 +35,14 @@ services:
     - ./patches:/var/www/html/patches:ro
 
   db:
-    image: mariadb
+    image: mariadb:10.3
     environment:
       MYSQL_DATABASE: "drupal"
     volumes:
     - .docker/conf-mysqld/server.cnf:/etc/mysql/conf.d/server.cnf
 
   solr6:
-    image: library/solr:6
+    image: library/solr:6.6
     volumes:
       - .docker/conf-solr/core-template:/core-template
     entrypoint:

@@ -31,7 +31,7 @@ services:
     - ./docroot/sites/development.services.yml:/var/www/html/docroot/sites/development.services.yml:ro
     - ./docroot/themes:/var/www/html/docroot/themes:ro
     - ./docroot/vendor:/var/www/html/docroot/vendor:ro
-    - ./drush:/var/www/html/drush
+    - ./drush:/var/www/html/drush:ro
     - ./patches:/var/www/html/patches:ro
 
   db:

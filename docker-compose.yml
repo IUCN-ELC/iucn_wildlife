@@ -7,8 +7,8 @@ services:
     depends_on:
     - php71
     volumes:
-    - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf
-    - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf
+    - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf:ro
+    - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf:ro
     - ./docroot:/var/www/html/docroot:z
 
   php71:
@@ -43,10 +43,14 @@ services:
 
   solr6:
     image: library/solr:6.6
-    volumes:
-      - .docker/conf-solr/core-template:/core-template
-    entrypoint:
-      - docker-entrypoint.sh
-      - solr-precreate
-      - drupal
-      - /core-template
+     volumes:
+       - .docker/conf-solr/core-template:/core-template:ro
+       - solr-data:/opt/solr/server/solr/mycores
+     entrypoint:
+       - docker-entrypoint.sh
+       - solr-precreate
+       - drupal
+       - /core-template
+
+volumes:
+  solr-data:

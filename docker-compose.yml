@@ -43,14 +43,14 @@ services:
 
   solr6:
     image: library/solr:6.6
-     volumes:
-       - .docker/conf-solr/core-template:/core-template:ro
-       - solr-data:/opt/solr/server/solr/mycores
-     entrypoint:
-       - docker-entrypoint.sh
-       - solr-precreate
-       - drupal
-       - /core-template
+    volumes:
+    - .docker/conf-solr/core-template:/core-template:ro
+    - solr-data:/opt/solr/server/solr/mycores
+    entrypoint:
+    - docker-entrypoint.sh
+    - solr-precreate
+    - drupal
+    - /core-template
 
 volumes:
   solr-data:

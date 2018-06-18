@@ -12,7 +12,7 @@ services:
     - ./docroot:/var/www/html/docroot:z
 
   php71:
-    image: cristiroma/php-fpm:latest
+    image: eaudeweb/php-fpm:7.1-1.0.2
     depends_on:
     - db
     volumes:

@@ -1,6 +1,8 @@
 # Sensitive information #
 #########################
 
+htpasswd
+docroot/sync/
 docroot/modules/contrib/examples/
 config/default/simpletest.settings.yml
 docker-compose.override.yml

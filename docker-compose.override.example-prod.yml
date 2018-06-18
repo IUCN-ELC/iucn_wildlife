@@ -5,18 +5,18 @@ services:
   nginx:
     container_name: wl_frontend
     ports:
-    - "127.0.0.1:8891:80"
+      - "127.0.0.1:8891:80"
     environment:
-    - TZ="Europe/Berlin"
+      - TZ="Europe/Berlin"
     restart: "unless-stopped"
     volumes:
-    - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
+      - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
 
   php71:
     container_name: wl_php
     restart: "unless-stopped"
     volumes:
-    - ./update-production.sh:/var/www/html/update-production.sh:ro
+      - ./update-production.sh:/var/www/html/update-production.sh:ro
 
   solr6:
     container_name: wl_solr6
@@ -25,7 +25,3 @@ services:
   db:
     container_name: wl_db
     restart: "unless-stopped"
-#    ports:
-#    - "127.0.0.1:13306:3306"
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "@TODO"

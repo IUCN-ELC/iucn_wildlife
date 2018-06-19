@@ -1,8 +1,0 @@
-uuid: 40fc55de-ed20-4930-b427-394bacd1bdc4
-langcode: en
-status: true
-dependencies: {  }
-id: homepage-links
-label: 'Homepage links'
-description: ''
-locked: false

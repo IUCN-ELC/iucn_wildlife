@@ -1,9 +1,0 @@
-uuid: eba0ba24-c5c8-456a-8d3b-59a5916f2126
-langcode: en
-status: true
-dependencies: {  }
-name: Instances
-vid: instances
-description: ''
-hierarchy: 0
-weight: 0

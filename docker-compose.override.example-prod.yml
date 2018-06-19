@@ -12,14 +12,12 @@ services:
     volumes:
       - ./htpasswd:/etc/nginx.d/htpasswd
       - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
-      - ./docroot/sync:/var/www/html/docroot/sync
 
   php71:
     container_name: wl_php
     restart: "unless-stopped"
     volumes:
       - ./update-production.sh:/var/www/html/update-production.sh:ro
-      - ./docroot/sync:/var/www/html/docroot/sync
 
   solr6:
     container_name: wl_solr6

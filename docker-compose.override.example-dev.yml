@@ -9,7 +9,7 @@ services:
     environment:
     - TZ="Europe/Bucharest"
     volumes:
-    - ./docroot/robots.dev.txt:/var/www/html/docroot/robots.txt
+    - ./web/robots.dev.txt:/var/www/html/web/robots.txt
 
 
   php71:

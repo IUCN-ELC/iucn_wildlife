@@ -9,7 +9,7 @@ services:
     volumes:
       - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf:ro
       - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf:ro
-      - ./docroot:/var/www/html/docroot:z
+      - ./web:/var/www/html/web:z
 
   php71:
     image: eaudeweb/php-fpm:7.1-1.0.2
@@ -17,20 +17,20 @@ services:
       - db
     volumes:
       - ./config/default:/var/www/html/config/default
-      - ./docroot/.htaccess:/var/www/html/docroot/.htaccess:ro
-      - ./docroot/autoload.php:/var/www/html/docroot/autoload.php:ro
-      - ./docroot/core:/var/www/html/docroot/core:ro
-      - ./docroot/index.php:/var/www/html/docroot/index.php:ro
-      - ./docroot/modules:/var/www/html/docroot/modules:ro
-      - ./docroot/profiles:/var/www/html/docroot/profiles:ro
-      - ./docroot/sites/default/files:/var/www/html/docroot/sites/default/files:Z
-      - ./docroot/sites/default/default.services.yml:/var/www/html/docroot/sites/default/default.services.yml:ro
-      - ./docroot/sites/default/default.settings.php:/var/www/html/docroot/sites/default/default.settings.php:ro
-      - ./docroot/sites/default/settings.local.php:/var/www/html/docroot/sites/default/settings.local.php:ro
-      - ./docroot/sites/default/settings.php:/var/www/html/docroot/sites/default/settings.php:ro
-      - ./docroot/sites/development.services.yml:/var/www/html/docroot/sites/development.services.yml:ro
-      - ./docroot/themes:/var/www/html/docroot/themes:ro
-      - ./docroot/vendor:/var/www/html/docroot/vendor:ro
+      - ./web/.htaccess:/var/www/html/web/.htaccess:ro
+      - ./web/autoload.php:/var/www/html/web/autoload.php:ro
+      - ./web/core:/var/www/html/web/core:ro
+      - ./web/index.php:/var/www/html/web/index.php:ro
+      - ./web/modules:/var/www/html/web/modules:ro
+      - ./web/profiles:/var/www/html/web/profiles:ro
+      - ./web/sites/default/files:/var/www/html/web/sites/default/files:Z
+      - ./web/sites/default/default.services.yml:/var/www/html/web/sites/default/default.services.yml:ro
+      - ./web/sites/default/default.settings.php:/var/www/html/web/sites/default/default.settings.php:ro
+      - ./web/sites/default/settings.local.php:/var/www/html/web/sites/default/settings.local.php:ro
+      - ./web/sites/default/settings.php:/var/www/html/web/sites/default/settings.php:ro
+      - ./web/sites/development.services.yml:/var/www/html/web/sites/development.services.yml:ro
+      - ./web/themes:/var/www/html/web/themes:ro
+      - ./web/vendor:/var/www/html/web/vendor:ro
       - ./drush:/var/www/html/drush:ro
       - ./patches:/var/www/html/patches:ro
 

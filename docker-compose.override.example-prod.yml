@@ -11,7 +11,7 @@ services:
     restart: "unless-stopped"
     volumes:
       - ./htpasswd:/etc/nginx.d/htpasswd
-      - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
+      - ./web/robots.prod.txt:/var/www/html/web/robots.txt
 
   php71:
     container_name: wl_php

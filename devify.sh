@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Go to docroot/
-cd docroot/
+# Go to web/
+cd web/
 
 echo "Enable devel module..."
 drush en devel -y

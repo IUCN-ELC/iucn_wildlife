@@ -33,7 +33,7 @@ www.wildlex.org
    * Change the port mapping for service `nginx` if you already have a web server running on port `80`, example: `127.0.0.1:8080:80`
    * If you are going to access the mysql database directly, uncomment the ports mapping from service `db`.
 
-4. `cp docroot/sites/default/settings.local.example-dev.php docroot/sites/default/settings.local.php` and customize (look for TODO). Remember the database settings must match that in `docker-compose.override.yml`)
+4. `cp web/sites/default/settings.local.example-dev.php web/sites/default/settings.local.php` and customize (look for TODO). Remember the database settings must match that in `docker-compose.override.yml`)
 
 5. run `docker-compose up` in the project directory and make sure that there are no errors in the console. On production use `docker-compose up -d` to start the daemons in background.
 
@@ -119,7 +119,7 @@ Use the `test.sh` script to run project related test. Example:
 
 3. Make sure the front-end server is mapped to an unused port, example: `127.0.0.1:8092:80`
 
-4. `cp docroot/sites/default/settings.local.example-prod.php docroot/sites/default/settings.local.php` and customize (look for TODO)
+4. `cp web/sites/default/settings.local.example-prod.php web/sites/default/settings.local.php` and customize (look for TODO)
 
 5. run `docker-compose up` in the project directory and check for errors. Restart with `docker-compose up -d`
 
@@ -132,8 +132,8 @@ On Fedora Linux you must switch to `root` account before, for example: `sudo doc
 8. Set permissions on files. In host execute the following commands:
 
 ```
-    chown -R 33:33 docroot/sites/default/files
-    chown -R root:33 docroot/sites/default/settings.local.hp
+    chown -R 33:33 web/sites/default/files
+    chown -R root:33 web/sites/default/settings.local.hp
 ```
 
 9. Configure robots.txt. In `docker.composer.override.yml` mount the proper robots file:
@@ -141,5 +141,5 @@ On Fedora Linux you must switch to `root` account before, for example: `sudo doc
 ```
   php71:
     volumes:
-    - ./docroot/robots.prod.txt:/var/www/html/docroot/robots.txt
+    - ./web/robots.prod.txt:/var/www/html/web/robots.txt
 ```

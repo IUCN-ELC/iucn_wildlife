@@ -5,26 +5,21 @@ services:
   nginx:
     container_name: wl_frontend
     ports:
-    - "127.0.0.1:80:80"
+      - "127.0.0.1:80:80"
     environment:
-    - TZ="Europe/Bucharest"
+      - TZ="Europe/Bucharest"
     volumes:
-    - ./web/robots.dev.txt:/var/www/html/web/robots.txt
-
+      - .:/var/www/html:ro
 
   php71:
     container_name: wl_php
-#    volumes:
-#    - /home/user/.ssh/id_rsa:/root/.ssh/id_rsa:ro
     volumes:
-    - ./devify.sh:/var/www/html/devify.sh:ro
+      - .:/var/www/html:z
 
   solr6:
     container_name: wl_solr6
 
   db:
     container_name: wl_db
-#    ports:
-#    - "127.0.0.1:13306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "root"

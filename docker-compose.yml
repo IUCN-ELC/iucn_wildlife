@@ -9,7 +9,6 @@ services:
     volumes:
       - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf:ro
       - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf:ro
-      - ./web:/var/www/html/web:z
 
   php71:
     image: eaudeweb/php-fpm:7.1-1.0.2

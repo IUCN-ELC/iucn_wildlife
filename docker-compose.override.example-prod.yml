@@ -4,20 +4,39 @@ services:
 
   nginx:
     container_name: wl_frontend
+    restart: "unless-stopped"
     ports:
       - "127.0.0.1:8891:80"
     environment:
       - TZ="Europe/Berlin"
-    restart: "unless-stopped"
     volumes:
-      - ./htpasswd:/etc/nginx.d/htpasswd
-      - ./web/robots.prod.txt:/var/www/html/web/robots.txt
+      - ./htpasswd:/etc/nginx.d/htpasswd:ro
+      - ./web/autoload.php:/var/www/html/web/autoload.php:ro
+      - ./web/core:/var/www/html/web/core:ro
+      - ./web/index.php:/var/www/html/web/index.php:ro
+      - ./web/modules:/var/www/html/web/modules:ro
+      - ./web/profiles:/var/www/html/web/profiles:ro
+      - ./web/robots.prod.txt:/var/www/html/web/robots.txt:ro
+      - ./web/sites/default/files:/var/www/html/web/sites/default/files:ro
+      - ./web/themes:/var/www/html/web/themes:ro
 
   php71:
     container_name: wl_php
     restart: "unless-stopped"
     volumes:
+      - ./config:/var/www/html/config:ro
       - ./update-production.sh:/var/www/html/update-production.sh:ro
+      - ./vendor:/var/www/html/vendor:ro
+      - ./web/autoload.php:/var/www/html/web/autoload.php:ro
+      - ./web/core:/var/www/html/web/core:ro
+      - ./web/index.php:/var/www/html/web/index.php:ro
+      - ./web/modules:/var/www/html/web/modules:ro
+      - ./web/profiles:/var/www/html/web/profiles:ro
+      - ./web/sites/default/files:/var/www/html/web/sites/default/files:Z
+      - ./web/sites/default/default.services.yml:/var/www/html/web/sites/default/default.services.yml:ro
+      - ./web/sites/default/settings.local.php:/var/www/html/web/sites/default/settings.local.php:ro
+      - ./web/sites/default/settings.php:/var/www/html/web/sites/default/settings.php:ro
+      - ./web/themes:/var/www/html/web/themes:ro
 
   solr6:
     container_name: wl_solr6

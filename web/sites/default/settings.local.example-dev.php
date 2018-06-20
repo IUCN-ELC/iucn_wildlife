@@ -39,7 +39,6 @@ assert_options(ASSERT_ACTIVE, TRUE);
  * Enable local development services.
  */
 $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
-var_dump(DRUPAL_ROOT . '/sites/development.services.yml');
 
 /**
  * Show all error messages, with backtrace information.
@@ -130,6 +129,11 @@ $settings['rebuild_access'] = TRUE;
  * directory.
  */
 $settings['skip_permissions_hardening'] = TRUE;
+
+/**
+ * Hash salt used to protect sensitive data
+ */
+$settings['hash_salt'] = '@TODO - Add here a string of about 70 characters';
 
 /** Views show SQL and performance on dev */
 $config['views.settings']['ui']['show']['sql_query']['enabled'] = TRUE;

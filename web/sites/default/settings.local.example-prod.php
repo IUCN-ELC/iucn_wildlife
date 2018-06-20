@@ -27,7 +27,7 @@ $config['system.logging']['error_level'] = 'hide';
 $config['system.file']['path']['temporary'] = '/tmp';
 
 /** Performance tuning */
-$config['system.performance']['cache']['page']['max_age'] = 1000;
+$config['system.performance']['cache']['page']['max_age'] = 3600;
 $config['system.performance']['css']['preprocess'] = TRUE;
 $config['system.performance']['js']['preprocess'] = TRUE;
 

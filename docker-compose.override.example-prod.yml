@@ -24,6 +24,8 @@ services:
     container_name: wl_php
     restart: "unless-stopped"
     volumes:
+      - ./composer.json:/var/www/html/composer.json:ro
+      - ./composer.lock:/var/www/html/composer.lock:ro
       - ./config:/var/www/html/config:ro
       - ./update-production.sh:/var/www/html/update-production.sh:ro
       - ./vendor:/var/www/html/vendor:ro

@@ -33,3 +33,4 @@ $config['system.performance']['js']['preprocess'] = TRUE;
 
 // Disabling stage file proxy if enabled on production
 $config['stage_file_proxy.settings']['origin'] = FALSE;
+$config_directories['sync'] = '../config/default';

@@ -151,3 +151,4 @@ $databases['default']['default'] = [
 ];
 
 $settings['trusted_host_patterns'] = ['wildlex.local'];
+$config_directories['sync'] = '../config/default';

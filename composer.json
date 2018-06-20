@@ -78,6 +78,12 @@
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
             "drush/contrib/{$name}": ["type:drupal-drush"]
+        },
+        "patches": {
+            "solarium/solarium": {
+                "Bug when posting HTTP files": "patches/0001-Fix-solarium-library.patch"
+            }
         }
+
     }
 }

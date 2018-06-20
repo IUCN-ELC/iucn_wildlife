@@ -5,8 +5,12 @@ _core:
 favicon:
   mimetype: image/vnd.microsoft.icon
   path: ''
-  url: 'http://iucnwildlifed8vggq2jmz5y.devcloud.acquia-sites.com/themes/bootstrap/favicon.ico'
+  url: 'http://www.wildlex.org/themes/iucn_frontend/favicon.ico'
   use_default: true
+breadcrumb: '0'
+region_wells:
+  jumbotron_top: ''
+  sidebar: ''
 features:
   comment_user_picture: true
   comment_user_verification: true
@@ -16,15 +20,6 @@ logo:
   path: ''
   url: ''
   use_default: true
-schema: 8000
-breadcrumb: '0'
-region_wells:
-  navigation: ''
-  navigation_collapsible: ''
-  jumbotron_top: ''
-  header: ''
-  highlighted: ''
-  help: ''
-  content: ''
-  sidebar: ''
-  footer: ''
+schemas:
+  bootstrap: 8000
+  iucn_frontend: 8000

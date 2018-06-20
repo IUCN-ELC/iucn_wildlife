@@ -15,24 +15,6 @@ services:
     image: eaudeweb/php-fpm:7.1-1.0.2
     depends_on:
       - db
-    volumes:
-      - ./config/default:/var/www/html/config/default
-      - ./web/.htaccess:/var/www/html/web/.htaccess:ro
-      - ./web/autoload.php:/var/www/html/web/autoload.php:ro
-      - ./web/core:/var/www/html/web/core:ro
-      - ./web/index.php:/var/www/html/web/index.php:ro
-      - ./web/modules:/var/www/html/web/modules:ro
-      - ./web/profiles:/var/www/html/web/profiles:ro
-      - ./web/sites/default/files:/var/www/html/web/sites/default/files:Z
-      - ./web/sites/default/default.services.yml:/var/www/html/web/sites/default/default.services.yml:ro
-      - ./web/sites/default/default.settings.php:/var/www/html/web/sites/default/default.settings.php:ro
-      - ./web/sites/default/settings.local.php:/var/www/html/web/sites/default/settings.local.php:ro
-      - ./web/sites/default/settings.php:/var/www/html/web/sites/default/settings.php:ro
-      - ./web/sites/development.services.yml:/var/www/html/web/sites/development.services.yml:ro
-      - ./web/themes:/var/www/html/web/themes:ro
-      - ./web/vendor:/var/www/html/web/vendor:ro
-      - ./drush:/var/www/html/drush:ro
-      - ./patches:/var/www/html/patches:ro
 
   db:
     image: mariadb:10.3

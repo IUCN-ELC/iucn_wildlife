@@ -13,7 +13,7 @@ permissions:
   - 'access content'
   - 'access shortcuts'
   - 'access site-wide contact form'
-  - 'display EU Cookie Compliance popup'
+  - 'display eu cookie compliance popup'
   - 'post comments'
   - 'search content'
   - 'skip comment approval'

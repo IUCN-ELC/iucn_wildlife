@@ -12,7 +12,7 @@ _core:
   default_config_hash: 1nGjaIrY9azKyikRoo0FTLRRSILozzYtUExZ4sLK_0E
 domain: ''
 popup_enabled: true
-popup_clicking_confirmation: false
+popup_clicking_confirmation: true
 popup_position: true
 popup_agree_button_message: 'Got it!'
 popup_disagree_button_message: 'Learn more'
@@ -24,8 +24,26 @@ popup_link: /
 popup_link_new_window: true
 popup_height: null
 popup_width: 100%
-popup_delay: 1
+popup_delay: 1000
 popup_bg_hex: '212121'
 popup_text_hex: '999'
 domains_option: 1
 domains_list: ''
+cookie_lifetime: 100
+mobile_popup_info:
+  value: ''
+  format: basic_html
+show_disagree_button: false
+popup_scrolling_confirmation: false
+use_mobile_message: false
+mobile_breakpoint: 768
+exclude_admin_theme: false
+eu_only: null
+eu_only_js: null
+use_bare_css: false
+disagree_do_not_show_popup: false
+reload_page: false
+cookie_name: ''
+exclude_uid_1: false
+better_support_for_screen_readers: false
+fixed_top_position: false

@@ -9,11 +9,14 @@ services:
     volumes:
       - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf:ro
       - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf:ro
+      - .:/var/www/html/
 
   php71:
     image: eaudeweb/php-fpm:7.1-1.0.2
     depends_on:
       - db
+    volumes:
+      - .:/var/www/html/
 
   db:
     image: mariadb:10.3

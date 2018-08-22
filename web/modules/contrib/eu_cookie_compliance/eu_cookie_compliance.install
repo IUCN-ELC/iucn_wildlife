@@ -1,0 +1,113 @@
+<?php
+
+/**
+ * @file
+ * Update scripts for the EU Cookie Compliance module.
+ */
+
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_install().
+ */
+function eu_cookie_compliance_install() {
+  $roles = Role::loadMultiple();
+  $permission = 'display eu cookie compliance popup';
+  foreach ($roles as $rid => $role) {
+    user_role_grant_permissions($rid, [$permission]);
+  }
+
+  $cookie_policy = _eu_cookie_compliance_find_privacy_policy();
+  if ($cookie_policy != FALSE) {
+    \Drupal::configFactory()
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('popup_link', $cookie_policy)
+      ->save();
+  }
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function eu_cookie_compliance_requirements($phase) {
+  $requirements = array();
+  $popup_link = Drupal::config('eu_cookie_compliance.settings')->get('popup_link');
+  $show_policy = Drupal::config('eu_cookie_compliance.settings')->get('show_disagree_button');
+
+  if ($popup_link == '<front>' && $show_policy) {
+    $requirements['eu_cookie_compliance'] = array(
+      'title' => t('EU Cookie Compliance'),
+      'severity' => REQUIREMENT_ERROR,
+      'description' => t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'),
+    );
+    if ($phase == 'runtime') {
+      $requirements['eu_cookie_compliance'] += array(
+        'value' => t('Privacy Policy link not provided'),
+      );
+    }
+  }
+
+  return $requirements;
+}
+
+/**
+ * Force default value for "cookie_lifetime" item.
+ */
+function eu_cookie_compliance_update_8101() {
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('cookie_lifetime', 100)->save();
+}
+
+/**
+ * Reverse the setting for "Consent by clicking" (solving a module beta bug).
+ */
+function eu_cookie_compliance_update_8102() {
+  $consent_by_clicking_value = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('popup_clicking_confirmation');
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('popup_clicking_confirmation', !$consent_by_clicking_value)->save();
+}
+
+/**
+ * Fix bug with mobile banner message from beta 9.
+ */
+function eu_cookie_compliance_update_8103() {
+  $mobile_popup_info = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('mobile_popup_info');
+  if (!is_array($mobile_popup_info) && $mobile_popup_info == '') {
+    \Drupal::configFactory()
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('mobile_popup_info', [
+        'value' => '',
+        'format' => filter_default_format(),
+      ])->save();
+  }
+}
+
+/**
+ * Change seconds to milliseconds for animation duration.
+ */
+function eu_cookie_compliance_update_8104() {
+  $popup_delay = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('popup_delay');
+  if ($popup_delay < 10) {
+    \Drupal::configFactory()
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('popup_delay', $popup_delay * 1000)->save();
+  }
+}
+
+/**
+ * Create new config value for show or hide the cookie policy button.
+ */
+function eu_cookie_compliance_update_8105() {
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('show_disagree_button', TRUE)
+    ->save();
+}

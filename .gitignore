@@ -19,6 +19,12 @@ docker.env
 .docker/conf-nginx/auth.passwords
 
 docker-compose.override.yml
+
+# Backups #
+############
+backup
+backups
+
 # Ignore configuration files that may contain sensitive information.
 web/sites/*/settings.local.php
 .idea

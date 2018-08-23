@@ -237,7 +237,6 @@ field_settings:
     type: string
   saa_field_files:
     label: 'Search api attachments: Files'
-    datasource_id: null
     property_path: saa_field_files
     type: text
   type:
@@ -256,9 +255,9 @@ datasource_settings:
       selected:
         - en
 processor_settings:
+  rendered_item: {  }
   aggregated_field: {  }
   add_url: {  }
-  rendered_item: {  }
   file_attachments:
     excluded_extensions: 'aif art avi bmp gif ico mov oga ogv png psd ra ram rgb flv'
     number_indexed: 0
@@ -266,8 +265,9 @@ processor_settings:
     excluded_private: 1
     excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
 tracker_settings:
-  default: {  }
+  default:
+    indexing_order: fifo
 options:
   index_directly: false
-  cron_limit: 2
+  cron_limit: 1
 server: solr_server

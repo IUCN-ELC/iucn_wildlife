@@ -44,6 +44,7 @@ dependencies:
     - field.field.node.court_decision.field_region
     - field.field.node.court_decision.field_related_website
     - field.field.node.court_decision.field_seat_of_court
+    - field.field.node.court_decision.field_source
     - field.field.node.court_decision.field_species
     - field.field.node.court_decision.field_subdivision
     - field.field.node.court_decision.field_territorial_subdivisions
@@ -66,7 +67,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 33
+    weight: 34
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -79,14 +80,14 @@ content:
     type: text_textarea
     region: content
   field_abstract_files:
-    weight: 40
+    weight: 41
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
   field_available_in:
-    weight: 25
+    weight: 26
     settings:
       size: 60
       placeholder: ''
@@ -94,7 +95,7 @@ content:
     type: string_textfield
     region: content
   field_charges:
-    weight: 51
+    weight: 52
     settings:
       rows: 5
       placeholder: ''
@@ -102,7 +103,7 @@ content:
     type: string_textarea
     region: content
   field_country:
-    weight: 46
+    weight: 47
     settings:
       match_operator: CONTAINS
       size: 60
@@ -111,7 +112,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_court:
-    weight: 44
+    weight: 45
     settings:
       match_operator: CONTAINS
       size: 60
@@ -147,7 +148,7 @@ content:
     third_party_settings: {  }
     region: content
   field_decision:
-    weight: 50
+    weight: 51
     settings:
       rows: 5
       placeholder: ''
@@ -155,7 +156,7 @@ content:
     type: string_textarea
     region: content
   field_decision_status:
-    weight: 28
+    weight: 29
     settings:
       match_operator: CONTAINS
       size: 60
@@ -173,14 +174,14 @@ content:
     third_party_settings: {  }
     region: content
   field_files:
-    weight: 31
+    weight: 32
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
   field_instance:
-    weight: 26
+    weight: 27
     settings:
       match_operator: CONTAINS
       size: 60
@@ -189,7 +190,7 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_internet_reference:
-    weight: 27
+    weight: 28
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -214,7 +215,7 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_keywords:
-    weight: 41
+    weight: 42
     settings:
       match_operator: CONTAINS
       size: 60
@@ -223,7 +224,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_language_of_document:
-    weight: 39
+    weight: 40
     settings:
       match_operator: CONTAINS
       size: 60
@@ -232,7 +233,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_legislation_cited:
-    weight: 52
+    weight: 53
     settings:
       size: 60
       placeholder: ''
@@ -240,7 +241,7 @@ content:
     type: string_textfield
     region: content
   field_money_value:
-    weight: 48
+    weight: 49
     settings:
       size: 60
       placeholder: ''
@@ -256,7 +257,7 @@ content:
     third_party_settings: {  }
     region: content
   field_offences:
-    weight: 42
+    weight: 43
     settings:
       match_operator: CONTAINS
       size: 60
@@ -265,7 +266,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_official_publication:
-    weight: 38
+    weight: 39
     settings:
       size: 60
       placeholder: ''
@@ -289,7 +290,7 @@ content:
     type: string_textfield
     region: content
   field_penalty:
-    weight: 47
+    weight: 48
     settings:
       rows: 5
       placeholder: ''
@@ -305,7 +306,7 @@ content:
     third_party_settings: {  }
     region: content
   field_reference_to_cou:
-    weight: 17
+    weight: 18
     settings:
       size: 60
       placeholder: ''
@@ -313,7 +314,7 @@ content:
     type: string_textfield
     region: content
   field_reference_to_faolex:
-    weight: 19
+    weight: 20
     settings:
       size: 60
       placeholder: ''
@@ -321,7 +322,7 @@ content:
     type: string_textfield
     region: content
   field_reference_to_faolex_countr:
-    weight: 22
+    weight: 23
     settings:
       match_operator: CONTAINS
       size: 60
@@ -330,13 +331,13 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_reference_to_faolex_date:
-    weight: 21
+    weight: 22
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
     region: content
   field_reference_to_faolex_title:
-    weight: 20
+    weight: 21
     settings:
       size: 60
       placeholder: ''
@@ -344,7 +345,7 @@ content:
     type: string_textfield
     region: content
   field_reference_to_legislation:
-    weight: 18
+    weight: 19
     settings:
       size: 60
       placeholder: ''
@@ -352,14 +353,6 @@ content:
     type: string_textfield
     region: content
   field_reference_to_national_legi:
-    weight: 23
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_reference_to_treaties:
     weight: 24
     settings:
       size: 60
@@ -367,8 +360,16 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_reference_to_treaties:
+    weight: 25
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_reference_to_treaties_titl:
-    weight: 53
+    weight: 54
     settings:
       size: 60
       placeholder: ''
@@ -376,7 +377,7 @@ content:
     type: string_textfield
     region: content
   field_region:
-    weight: 37
+    weight: 38
     settings:
       match_operator: CONTAINS
       size: 60
@@ -400,8 +401,14 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_source:
+    weight: 17
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_species:
-    weight: 43
+    weight: 44
     settings:
       match_operator: CONTAINS
       size: 60
@@ -410,15 +417,6 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_subdivision:
-    weight: 29
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
-  field_territorial_subdivisions:
     weight: 30
     settings:
       match_operator: CONTAINS
@@ -427,15 +425,24 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
     region: content
+  field_territorial_subdivisions:
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
   field_transnational:
-    weight: 49
+    weight: 50
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_type_of_case:
-    weight: 54
+    weight: 55
     settings:
       match_operator: CONTAINS
       size: 60
@@ -461,7 +468,7 @@ content:
     third_party_settings: {  }
     region: content
   field_wildlife_legislation:
-    weight: 45
+    weight: 46
     settings:
       match_operator: CONTAINS
       size: 60
@@ -471,7 +478,7 @@ content:
     region: content
   path:
     type: path
-    weight: 36
+    weight: 37
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -479,21 +486,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 34
+    weight: 35
     third_party_settings: {  }
     region: content
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 120
+    weight: 56
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 35
+    weight: 36
     third_party_settings: {  }
     region: content
   title:
@@ -506,7 +513,7 @@ content:
     region: content
   uid:
     type: entity_reference_autocomplete_tags
-    weight: 32
+    weight: 33
     settings:
       match_operator: CONTAINS
       size: 60

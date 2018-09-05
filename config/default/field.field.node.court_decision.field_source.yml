@@ -1,0 +1,29 @@
+uuid: d1c12a0c-07e2-4801-83a6-fc7c35896685
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_source
+    - node.type.court_decision
+    - taxonomy.vocabulary.sources
+id: node.court_decision.field_source
+field_name: field_source
+entity_type: node
+bundle: court_decision
+label: Source
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      sources: sources
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: species
+field_type: entity_reference

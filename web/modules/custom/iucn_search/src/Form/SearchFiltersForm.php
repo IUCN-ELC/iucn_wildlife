@@ -118,6 +118,7 @@ class SearchFiltersForm extends FormBase {
   }
 
   private function getRenderedFacets($facets = []) {
+
     $return = [];
 
     // @todo: handle exception

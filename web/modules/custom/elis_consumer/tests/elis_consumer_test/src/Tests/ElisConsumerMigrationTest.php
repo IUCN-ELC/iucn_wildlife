@@ -199,7 +199,8 @@ class ElisConsumerMigrationTest extends WebTestBase {
     $this->assertEqual('Bunda', $node1->field_seat_of_court->getValue()[0]['value']);
 
     // courtJurisdiction => field_court_jurisdiction
-    $this->assertEqual('General', Term::load($node1->field_court_jurisdiction->getValue()[0]['target_id'])->getName());
+    $this->assertEqual('General', Term::load($node1->
+    field_court_jurisdiction->getValue()[0]['target_id'])->getName());
 
     // instance => field_instance
     $this->assertEqual('Grand Chamber', Term::load($node1->field_instance->getValue()[0]['target_id'])->getName());

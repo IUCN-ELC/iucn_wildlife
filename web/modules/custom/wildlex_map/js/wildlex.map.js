@@ -1,5 +1,15 @@
+(function($, Drupal, drupalSettings) {
+  Drupal.behaviors.yourbehavior = {
+    attach: function (context, settings) {
+      var series = drupalSettings.series;
+      // You can init map here.
+
+
+
+
+
 // example data from server
-var series = [
+/*var series = [
   ["BLR",75],["BLZ",43],["RUS",50],["RWA",88],["SRB",21],["TLS",43],
   ["REU",21],["TKM",19],["TJK",60],["ROU",4],["TKL",44],["GNB",38],
   ["GUM",67],["GTM",2],["SGS",95],["GRC",60],["GNQ",57],["GLP",53],
@@ -16,7 +26,7 @@ var series = [
   ["NIU",6],["COK",19],["XKX",32],["CIV",27],["CHE",65],["COL",64],
   ["CHN",16],["CMR",70],["CHL",15],["CCK",85],["CAN",76],["COG",20],
   ["CAF",93],["COD",36],["CZE",77],["CYP",65],["CXR",14],["CRI",31],
-  ["CUW",67],["CPV",63],["CUB",40],["SWZ",58],["SYR",96],["SXM",31]];
+  ["CUW",67],["CPV",63],["CUB",40],["SWZ",58],["SYR",96],["SXM",31]];*/
 
 /*var series = [
   ["RUS",10]
@@ -85,8 +95,9 @@ new Datamap({
   }
 });
 
+    }
+  };
 
 
-
-
+})(jQuery, Drupal, drupalSettings);
 

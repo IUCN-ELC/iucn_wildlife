@@ -2,6 +2,4 @@ type: module
 name: 'Wildlex map'
 description: ''
 package: wildlex_map
-dependencies:
-- migrate
 core: '8.x'

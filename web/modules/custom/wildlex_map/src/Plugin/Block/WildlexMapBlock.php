@@ -5,6 +5,10 @@ namespace Drupal\wildlex_map\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\wildlex_map\CountriesCourtDecisionsService;
 
 /**
  * Provides a 'Wildlex map' Block.
@@ -14,21 +18,46 @@ use Drupal\node\Entity\Node;
  *   admin_label = @Translation("Wildlex map"),
  * )
  */
-class WildlexMapBlock extends BlockBase {
+class WildlexMapBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  protected $courtDecisions;
+
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CountriesCourtDecisionsService $court_decisions) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+
+    $this->courtDecisions = $court_decisions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('wildlex_map.countries_court_decisions')
+    );
+  }
+
   public function build() {
+
+  $markup = <<<EOD
+    <div id="wildlex_map">
+        <a href="#" class="btn btn-primary zoom-button" data-zoom="reset">reset</a>
+        <a href="#" class="btn btn-primary zoom-button" data-zoom="out">zoom out</a>
+        <a href="#" class="btn btn-primary zoom-button" data-zoom="in">zoom in</a>
+        <!--<div id="zoom-info"></div>-->
+    </div>
+EOD;
+
+    
+
     $content = [
-      '#markup' => '<div id="wildlex_map_container"></div>',
+      '#markup' => $markup,
       '#attached' => [
           'drupalSettings' => [
-              'series'=> [
-                ["SHN",91],["FIN",51],["FJI",22],["FLK",4],["FSM",69],["FRO",70],
-                ["NIC",66],["NLD",53],["NOR",7],["NAM",63],["VUT",15],["NCL",66],
-                ["NER",34],["NFK",33],["NGA",45],["NZL",96],["NPL",21],["NRU",13],
-                ["NIU",6],["COK",19],["XKX",32],["CIV",27],["CHE",65],["COL",64],
-                ["CHN",16],["CMR",70],["CHL",15],["CCK",85],["CAN",76],["COG",20],
-                ["CAF",93],["COD",36],["CZE",77],["CYP",65],["CXR",14],["CRI",31],
-                ["CUW",67],["CPV",63],["CUB",40],["SWZ",58],["SYR",96],["SXM",31],
-              ],
+              'series'=> $this->courtDecisions->get(),
             ],
           'library' => [
             'wildlex_map/d3.js',
@@ -44,4 +73,6 @@ class WildlexMapBlock extends BlockBase {
   public function courtDecisions(){
 
   }
+
+
 }

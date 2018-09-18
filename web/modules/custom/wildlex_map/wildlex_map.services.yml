@@ -1,0 +1,4 @@
+services:
+  wildlex_map.countries_court_decisions:
+    class: Drupal\wildlex_map\CountriesCourtDecisionsService
+    arguments: ['@plugin.manager.search_api.parse_mode']

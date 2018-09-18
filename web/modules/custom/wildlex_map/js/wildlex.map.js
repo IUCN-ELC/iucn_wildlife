@@ -1,103 +1,248 @@
 (function($, Drupal, drupalSettings) {
-  Drupal.behaviors.yourbehavior = {
-    attach: function (context, settings) {
-      var series = drupalSettings.series;
-      // You can init map here.
+  Drupal.behaviors.willex_map = {
+    attach: function(context, settings) {
+      $('#wildlex_map').once('willex_map').each(function() {
 
+        function Zoom(args) {
+          $.extend(this, {
+            $buttons: $(".zoom-button"),
+            $info: $("#zoom-info"),
+            scale: {
+              max: 50,
+              currentShift: 0
+            },
+            $container: args.$container,
+            datamap: args.datamap
+          });
+          this.init();
+        }
 
+        Zoom.prototype.init = function() {
+          var paths = this.datamap.svg.selectAll("path"),
+            subunits = this.datamap.svg.selectAll(".datamaps-subunit");
+          // preserve stroke thickness
+          paths.style("vector-effect", "non-scaling-stroke");
+          // disable click on drag end
+          subunits.call(
+            d3.behavior.drag().on("dragend", function() {
+              d3.event.sourceEvent.stopPropagation();
+            })
+          );
+          this.scale.set = this._getScalesArray();
+          this.d3Zoom = d3.behavior.zoom().scaleExtent([1, this.scale.max]);
+          this._displayPercentage(1);
+          this.listen();
+        };
+        Zoom.prototype.listen = function() {
+          this.$buttons.off("click").on("click", this._handleClick.bind(this));
+          this.datamap.svg
+            .call(this.d3Zoom.on("zoom", this._handleScroll.bind(this)))
+            .on("dblclick.zoom", null); // disable zoom on double-click
+        };
+        Zoom.prototype.reset = function() {
+          this._shift("reset");
+        };
+        Zoom.prototype._handleScroll = function() {
+          var translate = d3.event.translate,
+            scale = d3.event.scale,
+            limited = this._bound(translate, scale);
+          this.scrolled = true;
+          this._update(limited.translate, limited.scale);
+        };
+        Zoom.prototype._handleClick = function(event) {
+          var direction = $(event.target).data("zoom");
+          this._shift(direction);
+          return false;
+        };
+        Zoom.prototype._shift = function(direction) {
+          var center = [this.$container.width() / 2, this.$container.height() / 2],
+            translate = this.d3Zoom.translate(),
+            translate0 = [],
+            l = [],
+            view = {
+              x: translate[0],
+              y: translate[1],
+              k: this.d3Zoom.scale()
+            },
+            bounded;
+          translate0 = [
+            (center[0] - view.x) / view.k,
+            (center[1] - view.y) / view.k
+          ];
+          if (direction == "reset") {
+            view.k = 1;
+            this.scrolled = true;
+          } else {
+            view.k = this._getNextScale(direction);
+          }
+          l = [translate0[0] * view.k + view.x, translate0[1] * view.k + view.y];
+          view.x += center[0] - l[0];
+          view.y += center[1] - l[1];
+          bounded = this._bound([view.x, view.y], view.k);
+          this._animate(bounded.translate, bounded.scale);
+        };
+        Zoom.prototype._bound = function(translate, scale) {
+          var width = this.$container.width(),
+            height = this.$container.height();
+          translate[0] = Math.min(
+            (width / height) * (scale - 1),
+            Math.max(width * (1 - scale), translate[0])
+          );
+          translate[1] = Math.min(0, Math.max(height * (1 - scale), translate[1]));
+          return {
+            translate: translate,
+            scale: scale
+          };
+        };
+        Zoom.prototype._update = function(translate, scale) {
+          this.d3Zoom
+            .translate(translate)
+            .scale(scale);
+          this.datamap.svg.selectAll("g")
+            .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
+          this._displayPercentage(scale);
+        };
+        Zoom.prototype._animate = function(translate, scale) {
+          var _this = this,
+            d3Zoom = this.d3Zoom;
+          d3.transition().duration(350).tween("zoom", function() {
+            var iTranslate = d3.interpolate(d3Zoom.translate(), translate),
+              iScale = d3.interpolate(d3Zoom.scale(), scale);
+            return function(t) {
+              _this._update(iTranslate(t), iScale(t));
+            };
+          });
+        };
+        Zoom.prototype._displayPercentage = function(scale) {
+          var value;
+          value = Math.round(Math.log(scale) / Math.log(this.scale.max) * 100);
+          this.$info.text(value + "%");
+        };
+        Zoom.prototype._getScalesArray = function() {
+          var array = [],
+            scaleMaxLog = Math.log(this.scale.max);
+          for (var i = 0; i <= 10; i++) {
+            array.push(Math.pow(Math.E, 0.1 * i * scaleMaxLog));
+          }
+          return array;
+        };
+        Zoom.prototype._getNextScale = function(direction) {
+          var scaleSet = this.scale.set,
+            currentScale = this.d3Zoom.scale(),
+            lastShift = scaleSet.length - 1,
+            shift, temp = [];
+          if (this.scrolled) {
+            for (shift = 0; shift <= lastShift; shift++) {
+              temp.push(Math.abs(scaleSet[shift] - currentScale));
+            }
+            shift = temp.indexOf(Math.min.apply(null, temp));
+            if (currentScale >= scaleSet[shift] && shift < lastShift) {
+              shift++;
+            }
+            if (direction == "out" && shift > 0) {
+              shift--;
+            }
+            this.scrolled = false;
+          } else {
+            shift = this.scale.currentShift;
+            if (direction == "out") {
+              shift > 0 && shift--;
+            } else {
+              shift < lastShift && shift++;
+            }
+          }
+          this.scale.currentShift = shift;
+          return scaleSet[shift];
+        };
 
+        var series = drupalSettings.series;
+        var dataset = {};
+        var onlyValues = series.map(function(obj) {
+          return obj[1];
+        });
+        var minValue = Math.min.apply(null, onlyValues),
+          maxValue = Math.max.apply(null, onlyValues);
+        var paletteScale = d3.scale.linear()
+          .domain([minValue, maxValue])
+          .range(["#f2e0d0", "#e67e22"]); // color
+        series.forEach(function(item) {
+          var iso = item[0],
+            value = item[1],
+            country_id = item[2];
+          dataset[iso] = {
+            numberOfThings: value,
+            fillColor: paletteScale(value),
+            countryId: country_id
+          };
+        });
 
+        function Datamap() {
+          this.$container = $("#wildlex_map");
+          this.instance = new Datamaps({
+            responsive: false,
+            element: this.$container.get(0),
+            fills: {
+              defaultFill: '#f8efe7'
+            },
+            data: dataset,
+            geographyConfig: {
+              borderColor: '#DEDEDE',
+              highlightBorderWidth: 1,
+              highlightFillColor: function(geo) {
+                return geo['fillColor'] || '#f8efe7';
+              },
+              highlightBorderColor: '#B7B7B7',
+              popupTemplate: function(geo, data) {
+                // don't show tooltip if country don't present in dataset
+                if (!data) {
+                  // tooltip content
+                  return ['<div class="hoverinfo">',
+                    '<strong>', geo.properties.name, '</strong>',
+                    '<br>', Drupal.t('No available court decisions'),
+                    '</div>'
+                  ].join('');
 
-// example data from server
-/*var series = [
-  ["BLR",75],["BLZ",43],["RUS",50],["RWA",88],["SRB",21],["TLS",43],
-  ["REU",21],["TKM",19],["TJK",60],["ROU",4],["TKL",44],["GNB",38],
-  ["GUM",67],["GTM",2],["SGS",95],["GRC",60],["GNQ",57],["GLP",53],
-  ["JPN",59],["GUY",24],["GGY",4],["GUF",21],["GEO",42],["GRD",65],
-  ["GBR",14],["GAB",47],["SLV",15],["GIN",19],["GMB",63],["GRL",56],
-  ["ERI",57],["MNE",93],["MDA",39],["MDG",71],["MAF",16],["MAR",8],
-  ["MCO",25],["UZB",81],["MMR",21],["MLI",95],["MAC",33],["MNG",93],
-  ["MHL",15],["MKD",52],["MUS",19],["MLT",69],["MWI",37],["MDV",44],
-  ["MTQ",13],["MNP",21],["MSR",89],["MRT",20],["IMN",72],["UGA",59],
-  ["TZA",62],["MYS",75],["MEX",80],["ISR",77],["FRA",54],["IOT",56],
-  ["SHN",91],["FIN",51],["FJI",22],["FLK",4],["FSM",69],["FRO",70],
-  ["NIC",66],["NLD",53],["NOR",7],["NAM",63],["VUT",15],["NCL",66],
-  ["NER",34],["NFK",33],["NGA",45],["NZL",96],["NPL",21],["NRU",13],
-  ["NIU",6],["COK",19],["XKX",32],["CIV",27],["CHE",65],["COL",64],
-  ["CHN",16],["CMR",70],["CHL",15],["CCK",85],["CAN",76],["COG",20],
-  ["CAF",93],["COD",36],["CZE",77],["CYP",65],["CXR",14],["CRI",31],
-  ["CUW",67],["CPV",63],["CUB",40],["SWZ",58],["SYR",96],["SXM",31]];*/
+                }
+                // tooltip content
+                return ['<div class="hoverinfo">',
+                  '<strong>', geo.properties.name, '</strong>',
+                  '<br>', Drupal.t('Court decisions'), ': <strong>', data.numberOfThings, '</strong>',
+                  '</div>'
+                ].join('');
+              }
+            },
+            projection: 'mercator',
+            setProjection: function(element) {
+              var projection = d3.geo.mercator()
+                .translate([element.offsetWidth / 2, element.offsetHeight / 2 + 100]);
+              var path = d3.geo.path().projection(projection);
+              return {
+                path: path,
+                projection: projection
+              };
+            },
+            done: this._handleMapReady.bind(this)
+          });
+        }
 
-/*var series = [
-  ["RUS",10]
-];*/
+        Datamap.prototype._handleMapReady = function(datamap) {
+          this.zoom = new Zoom({
+            $container: this.$container,
+            datamap: datamap
+          });
+          datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+            if (typeof dataset[geography.properties.iso] != "undefined") {
+              var obj = dataset[geography.properties.iso];
+              var url = "/search?field_country[]=" + obj.countryId;
+              $(location).attr("href", url);
+            }
+            return false;
+          });
+        }
 
+        var map = new Datamap();
 
-// Datamaps expect data in format:
-// { "USA": { "fillColor": "#42a844", numberOfWhatever: 75},
-//   "FRA": { "fillColor": "#8dc386", numberOfWhatever: 43 } }
-var dataset = {};
-
-// We need to colorize every country based on "numberOfWhatever"
-// colors should be uniq for every value.
-// For this purpose we create palette(using min/max series-value)
-var onlyValues = series.map(function(obj){ return obj[1]; });
-var minValue = Math.min.apply(null, onlyValues),
-  maxValue = Math.max.apply(null, onlyValues);
-
-// create color palette function
-// color can be whatever you wish
-var paletteScale = d3.scale.linear()
-  .domain([minValue,maxValue])
-  .range(["#EFEFFF","#02386F"]); // blue color
-
-// fill dataset in appropriate format
-series.forEach(function(item){ //
-  // item example value ["USA", 70]
-  var iso = item[0],
-    value = item[1];
-  dataset[iso] = { numberOfThings: value, fillColor: paletteScale(value) };
-});
-
-// render map
-new Datamap({
-  element: document.getElementById('wildlex_map_container'),
-  projection: 'mercator', // big world map
-  // countries don't listed in dataset will be painted with this color
-  fills: { defaultFill: '#F5F5F5' },
-  data: dataset,
-  geographyConfig: {
-    borderColor: '#DEDEDE',
-    highlightBorderWidth: 2,
-    // don't change color on mouse hover
-    highlightFillColor: function(geo) {
-      return geo['fillColor'] || '#F5F5F5';
-    },
-    // only change border
-    highlightBorderColor: '#B7B7B7',
-    // show desired information in tooltip
-    popupTemplate: function(geo, data) {
-      // don't show tooltip if country don't present in dataset
-      if (!data) {
-        // tooltip content
-        return ['<div class="hoverinfo">',
-          '<strong>', geo.properties.name, '</strong>',
-          '<br>Count: <strong>0</strong>',
-          '</div>'].join('');
-
-      }
-      // tooltip content
-      return ['<div class="hoverinfo">',
-        '<strong>', geo.properties.name, '</strong>',
-        '<br>Count: <strong>', data.numberOfThings, '</strong>',
-        '</div>'].join('');
+      });
     }
   }
-});
-
-    }
-  };
-
-
 })(jQuery, Drupal, drupalSettings);
-

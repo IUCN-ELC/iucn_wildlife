@@ -1,0 +1,26 @@
+uuid: b57f9a8b-be79-4cac-ae26-68da82cfce2d
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - wildlex_map
+  theme:
+    - iucn_frontend
+id: wildlexmap
+theme: iucn_frontend
+region: content
+weight: -7
+provider: null
+plugin: wildlex_map
+settings:
+  id: wildlex_map
+  label: 'Wildlex map'
+  provider: wildlex_map
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: /map
+    negate: false
+    context_mapping: {  }

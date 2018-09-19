@@ -1181,10 +1181,13 @@ body.path-frontpage {
   position: relative;
   width: 100%;
   height: 650px;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
 }
 .datamaps-subunit[data-info] {
   cursor: pointer;
+}
+.wildlex_map-buttons {
+  margin-bottom: 20px;
 }
 .bootstrap-switch {
   border-color: #eee;

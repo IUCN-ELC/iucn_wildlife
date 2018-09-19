@@ -3,10 +3,7 @@
 namespace Drupal\wildlex_map\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
-use Drupal\node\Entity\Node;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\wildlex_map\CountriesCourtDecisionsService;
 
@@ -42,16 +39,16 @@ class WildlexMapBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
   public function build() {
 
-  $markup = <<<EOD
-    <div id="wildlex_map">
-        <a href="#" class="btn btn-primary zoom-button" data-zoom="reset">reset</a>
-        <a href="#" class="btn btn-primary zoom-button" data-zoom="out">zoom out</a>
-        <a href="#" class="btn btn-primary zoom-button" data-zoom="in">zoom in</a>
-        <!--<div id="zoom-info"></div>-->
-    </div>
+    $markup = <<<EOD
+      <div id="wildlex_map">
+        <div class="wildlex_map-buttons">
+          <a href="#" class="btn btn-primary zoom-button" data-zoom="reset">reset</a>
+          <a href="#" class="btn btn-primary zoom-button" data-zoom="out">zoom out</a>
+          <a href="#" class="btn btn-primary zoom-button" data-zoom="in">zoom in</a>
+          <!--<div id="zoom-info"></div>-->
+        </div>
+      </div>
 EOD;
-
-    
 
     $content = [
       '#markup' => $markup,
@@ -69,10 +66,5 @@ EOD;
       ];
     return $content;
   }
-
-  public function courtDecisions(){
-
-  }
-
 
 }

@@ -198,7 +198,7 @@
                   // tooltip content
                   return ['<div class="hoverinfo">',
                     '<strong>', geo.properties.name, '</strong>',
-                    '<br>', Drupal.t('No available court decisions'),
+                    '<br>', Drupal.t('No court decisions'),
                     '</div>'
                   ].join('');
 

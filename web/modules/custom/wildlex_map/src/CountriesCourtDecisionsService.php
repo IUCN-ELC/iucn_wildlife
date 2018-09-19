@@ -1,13 +1,10 @@
 <?php
 
 namespace Drupal\wildlex_map;
-use Drupal\Core\Entity\EntityManagerInterface;
-use Solarium\QueryType\Select\Query\Query;
-use Drupal\search_api\Query\QueryInterface;
-use Drupal\search_api_solr\SolrConnector\SolrConnectorPluginManager;
-use Drupal\Component\Utility\Html;
+
 use Drupal\search_api\ParseMode\ParseModePluginManager;
 use Drupal\search_api\Entity\Index;
+use Drupal\Core\Database\Connection;
 
 /**
  * Class CountriesCourtDecisionsService.
@@ -22,10 +19,18 @@ class CountriesCourtDecisionsService {
   private $parseModeManager;
 
   /**
+   * The database connection to use.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $connection;
+
+  /**
    * Class constructor.
    */
-  public function __construct(ParseModePluginManager $parse_mode_manager) {
+  public function __construct(ParseModePluginManager $parse_mode_manager, Connection $connection) {
     $this->parseModeManager = $parse_mode_manager;
+    $this->connection = $connection;
   }
 
   public function get(){
@@ -46,35 +51,40 @@ class CountriesCourtDecisionsService {
           'min_count' => 1,
           'missing' => TRUE,
         ],
-        'country' => [
-          'field' => 'field_country',
-          'limit' => 0,
-          'operator' => 'AND',
-          'min_count' => 1,
-          'missing' => TRUE,
-        ],
       ]);
     }
     $results = $query->execute();
     $facets = $results->getExtraData('search_api_facets', []);
 
     $series = [];
+    $countriesIso = $this->countriesIso();
+
     if (isset($facets['iso']) && $facets['iso'] && $countries = $facets['iso']) {
       foreach ($countries as $key => $country) {
-        if (isset($facets['country'][$key])){
+         $iso = $this->process(($country['filter']), '\"');
           $series[] = [
-            $this->process(($country['filter']), '\"'),
+            $iso,
             $country['count'],
-            $this->process($facets['country'][$key]['filter']),
+            (isset($countriesIso[$iso]) ? $countriesIso[$iso]['entity_id'] : NULL),
+          //(isset($countriesIso[$iso]) ? $countriesIso[$iso]['name'] : NULL),
           ];
-        }
       }
     }
-
     return $series;
   }
 
   protected function process($value = ''){
     return trim(($value), '\"');
   }
+
+  protected function countriesIso(){
+    /** @var $query \Drupal\Core\Database\Query\Select */
+    $query = $this->connection->select('taxonomy_term__field_iso','f');
+    $query->fields('f', ['entity_id', 'field_iso_value']);
+  //$query->fields('fd', ['name']);
+  //$query->innerJoin('taxonomy_term_field_data', 'fd', "f.entity_id = fd.tid");
+    $results = $query->execute()->fetchAllAssoc('field_iso_value', \PDO::FETCH_ASSOC);
+    return $results;
+  }
+
 }

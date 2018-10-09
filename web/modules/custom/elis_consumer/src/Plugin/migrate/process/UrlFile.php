@@ -83,7 +83,7 @@ class UrlFile extends ProcessPluginBase {
       if (!file_prepare_directory($destination_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
         $migrate_executable->saveMessage("$destination_path is not writable", MigrationInterface::MESSAGE_WARNING);
       }
-      $target = 'public://' . $destination_path . '/' . $filename;
+      $target = 'public://' . $destination_path . '/' . rawurldecode($filename);
       /** @var FileInterface $file */
       if ($file = file_save_data($data, $target, FILE_EXISTS_REPLACE)) {
         return $file->id();

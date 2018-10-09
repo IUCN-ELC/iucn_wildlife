@@ -1,0 +1,19 @@
+uuid: 660f6574-7e70-4b3c-a5bf-1c0c237917df
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_penalty_note
+field_name: field_penalty_note
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

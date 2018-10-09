@@ -5,7 +5,9 @@ dependencies:
   config:
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_abstract_files
+    - field.field.node.court_decision.field_appealed
     - field.field.node.court_decision.field_available_in
+    - field.field.node.court_decision.field_charge_sheet
     - field.field.node.court_decision.field_charges
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
@@ -17,6 +19,7 @@ dependencies:
     - field.field.node.court_decision.field_decision_status
     - field.field.node.court_decision.field_ecolex_subjects
     - field.field.node.court_decision.field_files
+    - field.field.node.court_decision.field_held
     - field.field.node.court_decision.field_instance
     - field.field.node.court_decision.field_internet_reference
     - field.field.node.court_decision.field_isis_number
@@ -31,6 +34,7 @@ dependencies:
     - field.field.node.court_decision.field_original_id
     - field.field.node.court_decision.field_original_title
     - field.field.node.court_decision.field_penalty
+    - field.field.node.court_decision.field_penalty_note
     - field.field.node.court_decision.field_reference_number
     - field.field.node.court_decision.field_reference_to_cou
     - field.field.node.court_decision.field_reference_to_faolex
@@ -41,6 +45,7 @@ dependencies:
     - field.field.node.court_decision.field_reference_to_national_legi
     - field.field.node.court_decision.field_reference_to_treaties
     - field.field.node.court_decision.field_reference_to_treaties_titl
+    - field.field.node.court_decision.field_references
     - field.field.node.court_decision.field_region
     - field.field.node.court_decision.field_related_website
     - field.field.node.court_decision.field_seat_of_court
@@ -86,6 +91,13 @@ content:
     third_party_settings: {  }
     type: file_generic
     region: content
+  field_appealed:
+    weight: 50
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_available_in:
     weight: 26
     settings:
@@ -94,8 +106,15 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_charge_sheet:
+    weight: 56
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
   field_charges:
-    weight: 52
+    weight: 55
     settings:
       rows: 5
       placeholder: ''
@@ -148,7 +167,7 @@ content:
     third_party_settings: {  }
     region: content
   field_decision:
-    weight: 51
+    weight: 54
     settings:
       rows: 5
       placeholder: ''
@@ -179,6 +198,14 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
+    region: content
+  field_held:
+    weight: 51
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
     region: content
   field_instance:
     weight: 27
@@ -233,7 +260,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_legislation_cited:
-    weight: 53
+    weight: 57
     settings:
       size: 60
       placeholder: ''
@@ -241,7 +268,7 @@ content:
     type: string_textfield
     region: content
   field_money_value:
-    weight: 49
+    weight: 52
     settings:
       size: 60
       placeholder: ''
@@ -291,6 +318,14 @@ content:
     region: content
   field_penalty:
     weight: 48
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_penalty_note:
+    weight: 49
     settings:
       rows: 5
       placeholder: ''
@@ -369,12 +404,20 @@ content:
     type: string_textfield
     region: content
   field_reference_to_treaties_titl:
-    weight: 54
+    weight: 58
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_references:
+    weight: 61
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_region:
     weight: 38
@@ -435,14 +478,14 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_transnational:
-    weight: 50
+    weight: 53
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_type_of_case:
-    weight: 55
+    weight: 59
     settings:
       match_operator: CONTAINS
       size: 60
@@ -493,7 +536,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 56
+    weight: 60
     region: content
     third_party_settings: {  }
   sticky:

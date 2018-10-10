@@ -5,6 +5,7 @@ namespace Drupal\wildlex_map;
 use Drupal\search_api\ParseMode\ParseModePluginManager;
 use Drupal\search_api\Entity\Index;
 use Drupal\Core\Database\Connection;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class CountriesCourtDecisionsService.
@@ -26,23 +27,60 @@ class CountriesCourtDecisionsService {
   protected $connection;
 
   /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  protected $server;
+
+  protected $index;
+
+
+
+  /**
    * Class constructor.
    */
-  public function __construct(ParseModePluginManager $parse_mode_manager, Connection $connection) {
+  public function __construct(ParseModePluginManager $parse_mode_manager, Connection $connection, RequestStack $request_stack) {
     $this->parseModeManager = $parse_mode_manager;
     $this->connection = $connection;
+    $this->requestStack = $request_stack;
+    /* @var $index \Drupal\search_api\IndexInterface */
+    $this->index = Index::load('default_node_index');
+
+    $this->server = $this->index->getServerInstance();
   }
 
+  public function getRequest(){
+    $keys = $this->requestStack->getCurrentRequest()->query->keys();
+    var_dump($keys);
+    $index_keys = $this->index->getFields();
+    var_dump($index_keys);
+    var_dump(array_intersect($keys,$index_keys));
+  }
+
+
+
   public function get(){
-    /* @var $index \Drupal\search_api\IndexInterface */
-    $index = Index::load('default_node_index');
+
+    $this->getRequest();
 
     /* @var $query \Drupal\search_api\Query\QueryInterface */
-    $query = $index->query();
+    $query = $this->index->query();
     $query->addCondition('type', 'court_decision');
+    //$query->addCondition('field_type_of_text', [6,1516], 'IN');
+    //$query->addCondition('field_type_of_text', 1516);
 
-    $server = $index->getServerInstance();
-    if ($server->supportsFeature('search_api_facets')) {
+
+
+    /*foreach ($index->getFields() as $k=>$v){
+      echo "$k<br/>";
+    }
+    die();*/
+
+
+    if ($this->server->supportsFeature('search_api_facets')) {
       $query->setOption('search_api_facets', [
         'iso' => [
           'field' => 'field_iso',

@@ -80,12 +80,18 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       'referenceToFaolex' => 'Reference to FAOLEX legislation',
       'wildlifeSpecies' => 'Species',
       'wildlifePenalty' => 'Penaly of the case',
+      'wildlifePenaltyNote' => 'Penaly note of the case',
       'wildlifeValue' => 'Financial value of the case',
       'wildlifeTransnational' => 'Transnational (Y/N)',
       'wildlifeDecision' => 'Decision of the court',
       'wildlifeCharges' => 'Charges against accused person(s)',
+      'wildlifeAppealed' => 'Appealed (Y/N)',
+      'wildlifeHeld' => 'Held text',
+      'wildlifeReferences' => 'References (links)',
       'referenceToNationalLegislationNotes' => 'Cited legislations',
       'courtCase' => 'Type of case',
+      'source' => 'Source',
+      'wildlifeChargeSheet' => 'Charge Sheet'
     );
   }
 
@@ -95,6 +101,10 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
     $row->setSourceProperty('linkToFullText', $linkToFullText);
     $linkToAbstract = str_replace('server2.php/', '', $row->getSourceProperty('linkToAbstract'));
     $row->setSourceProperty('linkToAbstract', $linkToAbstract);
+    if ($row->getSourceProperty('wildlifeChargeSheet')) {
+      $wildlifeChargeSheet = 'http://www2.ecolex.org/server2neu.php/libcat/docs/cou/charge/' . rawurlencode($row->getSourceProperty('wildlifeChargeSheet'));
+      $row->setSourceProperty('wildlifeChargeSheet', $wildlifeChargeSheet);
+    }
     $this->fixDateFields($row, [
       'dateOfEntry',
       'dateOfModification',

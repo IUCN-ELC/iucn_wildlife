@@ -8,6 +8,9 @@ dependencies:
 _core:
   default_config_hash: WtlDxNC8CWujIXrQHLxTOROKGl7fQVZsoR6OcoIGWyc
 id: elis_consumer_court_decisions
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: null
 migration_group: elis
 label: 'Elis court decisions'
@@ -96,6 +99,7 @@ process:
     source: wildlifeSpecies
     plugin: taxonomy_term
   field_penalty: wildlifePenalty
+  field_penalty_note: wildlifePenaltyNote
   field_money_value: wildlifeValue
   field_transnational:
     source: wildlifeTransnational
@@ -103,6 +107,17 @@ process:
   field_decision: wildlifeDecision
   field_charges: wildlifeCharges
   field_legislation_cited: referenceToNationalLegislationNotes
+  field_source:
+    source: source
+    plugin: taxonomy_term
+  field_appealed:
+    source: wildlifeAppealed
+    plugin: boolean
+  field_help: wildlifeHeld
+  field_references: wildlifeReferences
+  field_charge_sheet:
+    source: wildlifeChargeSheet
+    plugin: url_file
 destination:
   plugin: 'entity:node'
 migration_dependencies: {  }

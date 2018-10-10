@@ -1,0 +1,27 @@
+uuid: cc218bd7-be2b-401a-833e-5ed1be95fcb7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_charge_sheet
+    - node.type.court_decision
+  module:
+    - file
+id: node.court_decision.field_charge_sheet
+field_name: field_charge_sheet
+entity_type: node
+bundle: court_decision
+label: 'Charge sheet'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: court_decisions
+  file_extensions: 'csv doc docx odt pdf ppt pptx rtf txt xls xlsx'
+  max_filesize: ''
+  description_field: true
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

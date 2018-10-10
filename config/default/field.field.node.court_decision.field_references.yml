@@ -1,0 +1,23 @@
+uuid: 99947e58-f254-4994-92ed-5f2953a32ff7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_references
+    - node.type.court_decision
+  module:
+    - link
+id: node.court_decision.field_references
+field_name: field_references
+entity_type: node
+bundle: court_decision
+label: References
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

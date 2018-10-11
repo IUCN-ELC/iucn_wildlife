@@ -54,7 +54,7 @@ EOD;
       '#markup' => $markup,
       '#attached' => [
           'drupalSettings' => [
-              'series'=> $this->courtDecisions->get(),
+              'series'=> $this->courtDecisions->get('court_decision'),
             ],
           'library' => [
             'wildlex_map/d3.js',

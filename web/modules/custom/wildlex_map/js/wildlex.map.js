@@ -2,7 +2,6 @@
   Drupal.behaviors.willex_map = {
     attach: function(context, settings) {
       $('#wildlex_map').once('willex_map').each(function() {
-
         function Zoom(args) {
           $.extend(this, {
             $buttons: $(".zoom-button"),
@@ -179,6 +178,8 @@
         function Datamap() {
           this.$container = $("#wildlex_map");
           this.instance = new Datamaps({
+            height: 650, //if not null, datamaps will grab the height of 'element'
+            width: 850, //if not null, datamaps will grab the width of 'element'
             responsive: false,
             element: this.$container.get(0),
             fills: {
@@ -198,7 +199,7 @@
                   // tooltip content
                   return ['<div class="hoverinfo">',
                     '<strong>', geo.properties.name, '</strong>',
-                    '<br>', Drupal.t('No court decisions'),
+                    '<br>', Drupal.t('No'), ' ', drupalSettings.content_type,
                     '</div>'
                   ].join('');
 
@@ -206,21 +207,21 @@
                 // tooltip content
                 return ['<div class="hoverinfo">',
                   '<strong>', geo.properties.name, '</strong>',
-                  '<br>', Drupal.t('Court decisions'), ': <strong>', data.numberOfThings, '</strong>',
+                  '<br>', drupalSettings.content_type, ': <strong>', data.numberOfThings, '</strong>',
                   '</div>'
                 ].join('');
               }
             },
             projection: 'mercator',
-            setProjection: function(element) {
-              var projection = d3.geo.mercator()
-                .translate([element.offsetWidth / 2, element.offsetHeight / 2 + 100]);
-              var path = d3.geo.path().projection(projection);
-              return {
-                path: path,
-                projection: projection
-              };
-            },
+            // setProjection: function(element) {
+            //   var projection = d3.geo.mercator()
+            //     .translate([element.offsetWidth / 2, element.offsetHeight / 2 + 100]);
+            //   var path = d3.geo.path().projection(projection);
+            //   return {
+            //     path: path,
+            //     projection: projection
+            //   };
+            // },
             done: this._handleMapReady.bind(this)
           });
         }
@@ -233,7 +234,7 @@
           datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
             if (typeof dataset[geography.properties.iso] != "undefined") {
               var obj = dataset[geography.properties.iso];
-              var url = "/search?field_country[]=" + obj.countryId;
+              var url = drupalSettings.search_base_url + "field_country[]=" + obj.countryId;
               $(location).attr("href", url);
             }
             return false;

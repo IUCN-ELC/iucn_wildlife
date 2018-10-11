@@ -16,6 +16,7 @@ use Drupal\iucn_search\edw\solr\SearchResult;
 use Drupal\iucn_search\edw\solr\SolrSearch;
 use Drupal\iucn_search\edw\solr\SolrSearchServer;
 use Drupal\node\Entity\Node;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class DefaultSearchController extends ControllerBase {
 
@@ -42,9 +43,19 @@ abstract class DefaultSearchController extends ControllerBase {
    */
   abstract public function getContentType();
 
-  public function __construct() {
+  private $countries_map;
+
+  public function __construct($countries_map) {
     $this->route = $this->getRoute();
     $this->content_type = $this->getContentType()['machine_name'];
+    $this->countries_map = $countries_map;
+  }
+
+
+
+  public static function create(ContainerInterface $container) {
+    $countries_map = $container->get('wildlex_map.countries_map');
+    return new static($countries_map);
   }
 
   protected function handleResults($rows) {
@@ -97,6 +108,7 @@ abstract class DefaultSearchController extends ControllerBase {
       $server_config = new SolrSearchServer('default_node_index');
       $query = $_GET + $parameters;
       $query['q'] = iucn_search_query_filter();
+
       self::$search = new SolrSearch($query, $server_config);
     }
 
@@ -119,6 +131,7 @@ abstract class DefaultSearchController extends ControllerBase {
       }
 
       $numFound = $this->formatPlural($found, 'Found one search result', 'Found @count search results');
+      $numFound .= ' <srtrong><a href="#" data-toggle="modal" data-target="#search_modal"><i class="glyphicon glyphicon-map-marker"></i>' . $this->t('open map') .'</a></srtrong>';
 
       $sorts = $this->getSortFields();
       $activeSort = !empty($_GET['sort']) ? Html::escape($_GET['sort']) : $this->getDefaultSorting()['sort'];
@@ -140,6 +153,10 @@ abstract class DefaultSearchController extends ControllerBase {
           '#markup' => $markup,
         ];
       }
+
+
+
+
 
       if (empty($results)) {
         if ($found) {
@@ -171,6 +188,21 @@ abstract class DefaultSearchController extends ControllerBase {
 
       $content = [
         '#cache' => ['contexts' => ['url']],
+        '#markup' => $this->countries_map->modalMarkup($this->getContentType()),
+        '#attached' => [
+          'drupalSettings' => [
+            'series'=> $this->countries_map->get($this->content_type),
+            'content_type' => ucfirst($this->getContentType()['plural']),
+            'search_base_url' => $this->countries_map->searchBaseUrl($this->content_type),
+          ],
+          'library' => [
+            'iucn_search/iucn_search.map.js',
+            'wildlex_map/d3.js',
+            'wildlex_map/topojson.js',
+            'wildlex_map/datamaps.js',
+            'wildlex_map/wildlex.map.js'
+          ],
+        ],
         'meta' => [
           '#attributes' => ['class' => ['search-header']],
           '#type' => 'container',

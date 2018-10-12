@@ -150,7 +150,12 @@ class CountriesMapService {
   }
 
   public function modalMarkup($content_type){
-    $modal_title = t("Search results for @content_type_name" , ['@content_type_name' => $content_type['plural']]);
+
+    if($content_type['singular'] == t('court decision')) {
+      $content_type['singular'] = t('court decisions');
+    }
+
+    $modal_title = t("Search results for @content_type_name" , ['@content_type_name' => $content_type['singular']]);
     return '
           <div class="modal fade" id="search_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

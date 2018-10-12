@@ -131,7 +131,7 @@ abstract class DefaultSearchController extends ControllerBase {
       }
 
       $numFound = $this->formatPlural($found, 'Found one search result', 'Found @count search results');
-      $numFound .= ' <srtrong><a href="#" data-toggle="modal" data-target="#search_modal"><i class="glyphicon glyphicon-map-marker"></i>' . $this->t('open map') .'</a></srtrong>';
+      $numFound .= ' <srtrong><a href="#" data-toggle="modal" data-target="#search_modal" class="search-modal-opener">' . $this->t('Open map') .'</a></srtrong>';
 
       $sorts = $this->getSortFields();
       $activeSort = !empty($_GET['sort']) ? Html::escape($_GET['sort']) : $this->getDefaultSorting()['sort'];
@@ -186,13 +186,17 @@ abstract class DefaultSearchController extends ControllerBase {
         ];
       }
 
+      $content_type_name = $this->getContentType()['singular'];
+      if($content_type_name == t('court decision')){
+        $content_type_name = t('court decisions');
+      }
       $content = [
         '#cache' => ['contexts' => ['url']],
         '#markup' => $this->countries_map->modalMarkup($this->getContentType()),
         '#attached' => [
           'drupalSettings' => [
             'series'=> $this->countries_map->get($this->content_type),
-            'content_type' => ucfirst($this->getContentType()['plural']),
+            'content_type' => ucfirst($content_type_name),
             'search_base_url' => $this->countries_map->searchBaseUrl($this->content_type),
           ],
           'library' => [

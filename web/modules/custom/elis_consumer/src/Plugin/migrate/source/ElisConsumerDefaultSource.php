@@ -184,11 +184,49 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
 
   protected function fixDateFields(Row &$row, array $sourceFields) {
     foreach ($sourceFields as $field) {
-      $p = preg_match('/(\d\d\d\d)\-(\d\d)\-00/', $row->getSourceProperty($field), $matches);
-      if ($p) {
-        $month = $matches[2] != '00' ? $matches[2] : '01';
-        $row->setSourceProperty($field, "{$matches[1]}-{$month}-01");
+      if(empty($row->getSourceProperty($field))) {
+        continue;
       }
+      $error = FALSE;
+      $p = preg_match('/(\d\d\d\d)\-(\d\d)\-(\d\d)/', $row->getSourceProperty($field), $matches);
+      if ($p) {
+        $year = "{$matches[1]}";
+        if ($matches[2] > 0 && $matches[2] <= 12) {
+          $month ="{$matches[2]}";
+        } else {
+          $month ='01';
+          $error = TRUE;
+        }
+
+        if ($day = \DateTime::createFromFormat('Y-m-d', "$year-$month-{$matches[3]}")) {
+          if ($day->format('Y-m-d') == "$year-$month-{$matches[3]}") {
+            $day ="{$matches[3]}";
+          } else {
+            $day ='01';
+            $error = TRUE;
+          }
+        } else {
+          $day ='01';
+          $error = TRUE;
+        }
+      } else {
+        $year = '1900';
+        $month ='01';
+        $day ='01';
+        $error = TRUE;
+      }
+      if ($error) {
+        \Drupal::logger('elis_consumer')->error(
+          "Received wrong date: @date, field: @field,id: @id, title: @title - set the date to: @new_date",
+          [
+            '@date' => ($row->getSourceProperty($field) ? $row->getSourceProperty($field) : 'empty'),
+            '@field' => $field,
+            '@id' => $row->getSourceProperty('id'),
+            '@title' => $row->getSourceProperty('titleOfText'),
+            '@new_date' => "$year-$month-$day",
+          ]);
+      }
+      $row->setSourceProperty($field, "$year-$month-$day");
     }
   }
 

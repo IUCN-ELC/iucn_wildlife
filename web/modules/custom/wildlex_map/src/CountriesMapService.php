@@ -98,7 +98,7 @@ class CountriesMapService {
     }
 
     if ($yearmin = $this->requestStack->getCurrentRequest()->query->get('yearmin')) {
-      $query->addCondition('field_date_of_text', "{$yearmin}-01-01T00:00:00Z", '>');
+      $query->addCondition('field_date_of_text', "{$yearmin}-01-01T00:00:00Z", '>=');
     }
     if ($yearmax = $this->requestStack->getCurrentRequest()->query->get('yearmax')) {
       $query->addCondition('field_date_of_text', "{$yearmax}-12-31T23:59:59Z", '<');

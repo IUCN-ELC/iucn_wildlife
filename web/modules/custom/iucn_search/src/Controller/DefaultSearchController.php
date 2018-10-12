@@ -131,7 +131,7 @@ abstract class DefaultSearchController extends ControllerBase {
       }
 
       $numFound = $this->formatPlural($found, 'Found one search result', 'Found @count search results');
-      $numFound .= ' <srtrong><a href="#" data-toggle="modal" data-target="#search_modal" class="search-modal-opener">' . $this->t('Open map') .'</a></srtrong>';
+      $numFound .= ' <srtrong><a href="#" data-toggle="modal" data-target="#search_modal" class="search-modal-opener">' . $this->t('Show on map') .'</a></srtrong>';
 
       $sorts = $this->getSortFields();
       $activeSort = !empty($_GET['sort']) ? Html::escape($_GET['sort']) : $this->getDefaultSorting()['sort'];

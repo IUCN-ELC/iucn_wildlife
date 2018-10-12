@@ -161,6 +161,9 @@
         });
         var minValue = Math.min.apply(null, onlyValues),
           maxValue = Math.max.apply(null, onlyValues);
+        if(minValue == maxValue){
+          minValue = 0;
+        }
         var paletteScale = d3.scale.linear()
           .domain([minValue, maxValue])
           .range(["#f2e0d0", "#e67e22"]); // color

@@ -1200,6 +1200,10 @@ body.path-frontpage {
   border-color: #e67e22;
   color: #e67e22;
 }
+#search_modal .btn-primary {
+  background: transparent;
+  color: #e67e22;
+}
 .datamaps-subunit[data-info] {
   cursor: pointer;
 }

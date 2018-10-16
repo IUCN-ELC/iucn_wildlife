@@ -78,7 +78,7 @@ content:
     type: text_default
     region: content
   field_appealed:
-    weight: 33
+    weight: 18
     label: above
     settings:
       format: default
@@ -88,14 +88,14 @@ content:
     type: boolean
     region: content
   field_charge_sheet:
-    weight: 13
+    weight: 31
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_list
     region: content
   field_charges:
-    weight: 12
+    weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -143,20 +143,20 @@ content:
     region: content
   field_files:
     type: file_list
-    weight: 29
+    weight: 30
     label: above
     settings: {  }
     third_party_settings: {  }
     region: content
   field_held:
-    weight: 34
+    weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_language_of_document:
-    weight: 10
+    weight: 11
     label: above
     settings:
       link: true
@@ -164,7 +164,7 @@ content:
     type: entity_reference_label
     region: content
   field_legislation_cited:
-    weight: 22
+    weight: 23
     label: above
     settings:
       link_to_entity: false
@@ -180,14 +180,14 @@ content:
     type: string
     region: content
   field_penalty:
-    weight: 18
+    weight: 19
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_penalty_note:
-    weight: 19
+    weight: 20
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -195,14 +195,14 @@ content:
     region: content
   field_reference_number:
     type: string
-    weight: 11
+    weight: 12
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     region: content
   field_reference_to_cou:
-    weight: 21
+    weight: 22
     label: above
     settings:
       link_to_entity: false
@@ -210,7 +210,7 @@ content:
     type: string
     region: content
   field_reference_to_faolex:
-    weight: 25
+    weight: 26
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -218,7 +218,7 @@ content:
     type: string
     region: content
   field_reference_to_faolex_countr:
-    weight: 28
+    weight: 29
     label: hidden
     settings:
       link: false
@@ -226,7 +226,7 @@ content:
     type: entity_reference_label
     region: content
   field_reference_to_faolex_date:
-    weight: 27
+    weight: 28
     label: hidden
     settings:
       timezone_override: ''
@@ -235,7 +235,7 @@ content:
     type: datetime_custom
     region: content
   field_reference_to_faolex_title:
-    weight: 26
+    weight: 27
     label: hidden
     settings:
       link_to_entity: false
@@ -243,14 +243,6 @@ content:
     type: string
     region: content
   field_reference_to_legislation:
-    weight: 23
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_reference_to_national_legi:
     weight: 24
     label: above
     settings:
@@ -258,8 +250,16 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_reference_to_national_legi:
+    weight: 25
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_reference_to_treaties:
-    weight: 20
+    weight: 21
     label: above
     settings:
       link_to_entity: false
@@ -267,7 +267,7 @@ content:
     type: string
     region: content
   field_reference_to_treaties_titl:
-    weight: 30
+    weight: 32
     label: above
     settings:
       link_to_entity: false
@@ -275,14 +275,14 @@ content:
     type: string
     region: content
   field_references:
-    weight: 35
+    weight: 34
     label: above
     settings:
       trim_length: 80
+      target: _blank
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
+      rel: '0'
     third_party_settings: {  }
     type: link
     region: content
@@ -296,7 +296,7 @@ content:
     region: content
   field_related_website:
     type: link
-    weight: 31
+    weight: 33
     region: content
     label: above
     settings:
@@ -315,10 +315,10 @@ content:
     type: string
     region: content
   field_source:
-    weight: 32
+    weight: 35
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content

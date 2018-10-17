@@ -1,0 +1,6 @@
+services:
+  wildlex_map.wildlex_map_countries_iso:
+    class: Drupal\wildlex_map\Command\CountriesIsoCommand
+    arguments: ['@entity.manager']
+    tags:
+      - { name: drupal.command }

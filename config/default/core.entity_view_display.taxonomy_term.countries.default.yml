@@ -1,0 +1,30 @@
+uuid: 2f730785-7665-4212-bc92-a5210db74d0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.countries.field_iso
+    - taxonomy.vocabulary.countries
+  module:
+    - text
+id: taxonomy_term.countries.default
+targetEntityType: taxonomy_term
+bundle: countries
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_iso:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

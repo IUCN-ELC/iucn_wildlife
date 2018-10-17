@@ -137,8 +137,13 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
     if (empty($this->data)) {
       $rows = $this->source->getData();
       foreach($rows as $id => $row) {
-        if (!empty((string)$row->projectInformation) && strtoupper((string)$row->projectInformation) == 'WILD') {
-          $this->data[$id] = $row;
+        if ($row->projectInformation->count() > 0) {
+          foreach ($row->projectInformation as $key => $projectInformation) {
+            if(strtoupper($projectInformation) == 'WILD') {
+              $this->data[$id] = $row;
+              break;
+            }
+          }
         }
       }
     }
@@ -184,11 +189,63 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
 
   protected function fixDateFields(Row &$row, array $sourceFields) {
     foreach ($sourceFields as $field) {
-      $p = preg_match('/(\d\d\d\d)\-(\d\d)\-00/', $row->getSourceProperty($field), $matches);
-      if ($p) {
-        $month = $matches[2] != '00' ? $matches[2] : '01';
-        $row->setSourceProperty($field, "{$matches[1]}-{$month}-01");
+      if(empty($row->getSourceProperty($field))) {
+        continue;
       }
+      $error = FALSE;
+      //Set the defaults.
+      $year = '1900';
+      $month ='01';
+      $day ='01';
+      $e_posisition = 0;
+
+      $p = preg_match('/(\d\d\d\d)\-(\d\d)\-(\d\d)/', $row->getSourceProperty($field), $matches);
+      if ($p) {
+        $year = "{$matches[1]}";
+        if ($matches[2] > 0 && $matches[2] <= 12) {
+          $month ="{$matches[2]}";
+        } else {
+          $error = TRUE;
+          $e_posisition = 1;
+        }
+
+        if ($day = \DateTime::createFromFormat('Y-m-d', "$year-$month-{$matches[3]}")) {
+          if ($day->format('Y-m-d') == "$year-$month-{$matches[3]}") {
+            $day ="{$matches[3]}";
+          } else {
+            $error = TRUE;
+            $e_posisition = 2;
+          }
+        } else {
+          $error = TRUE;
+          $e_posisition = 3;
+        }
+      } else {
+        $error = TRUE;
+        $e_posisition = 4;
+        $s = preg_match('/(\d\d\d\d)/', $row->getSourceProperty($field), $smatches);
+        if ($s) {
+          $year = "{$smatches[1]}";
+        }
+      }
+
+
+      if ($error) {
+        \Drupal::logger('elis_consumer')->error(
+          "@e_posisition: Received wrong date: @date, field: @field,id: @id, title: @title - set the date to: @new_date",
+          [
+            '@e_posisition' => $e_posisition,
+            '@date' => ($row->getSourceProperty($field) ? $row->getSourceProperty($field) : 'empty'),
+            '@field' => $field,
+            '@id' => $row->getSourceProperty('id'),
+            '@title' => $row->getSourceProperty('titleOfText'),
+            '@new_date' => "$year-$month-$day",
+          ]);
+      }
+
+
+
+      $row->setSourceProperty($field, "$year-$month-$day");
     }
   }
 

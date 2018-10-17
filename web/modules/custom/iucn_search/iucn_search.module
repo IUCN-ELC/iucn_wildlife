@@ -54,7 +54,7 @@ function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\Sol
     'field_language_of_document' => [
       'title' => t('Language'),
       'placeholder' => t('Add languages…'),
-      'bundle' => 'document_languages',
+      'bundle' => 'document_types',
     ],
   ];
 

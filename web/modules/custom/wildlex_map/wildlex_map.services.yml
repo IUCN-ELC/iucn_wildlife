@@ -1,0 +1,5 @@
+services:
+  wildlex_map.countries_map:
+    class: Drupal\wildlex_map\CountriesMapService
+    arguments: ['@plugin.manager.search_api.parse_mode', '@database', '@request_stack']
+

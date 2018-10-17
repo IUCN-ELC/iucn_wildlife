@@ -26,8 +26,11 @@ dependencies:
     - field.storage.node.field_territorial_subdivisions
     - field.storage.node.field_type_of_text
     - field.storage.node.field_wildlife_legislation
+    - field.storage.taxonomy_term.field_iso
+    - field.storage.node.field_source
     - search_api.server.solr_server
   module:
+    - taxonomy
     - search_api
     - search_api_attachments
     - node
@@ -36,6 +39,10 @@ name: 'Default node index'
 description: ''
 read_only: false
 field_settings:
+  saa_field_files:
+    label: 'Search api attachments: Files'
+    property_path: saa_field_files
+    type: text
   field_abstract:
     label: Abstract
     datasource_id: 'entity:node'
@@ -235,15 +242,30 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: langcode
     type: string
-  saa_field_files:
-    label: 'Search api attachments: Files'
-    property_path: saa_field_files
-    type: text
   type:
     label: 'Content type'
     datasource_id: 'entity:node'
     property_path: type
     type: string
+  field_source:
+    label: Source
+    datasource_id: 'entity:node'
+    property_path: field_source
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_source
+  field_iso:
+    label: 'Country » Taxonomy term » ISO'
+    datasource_id: 'entity:node'
+    property_path: 'field_country:entity:field_iso'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_country
+        - field.storage.taxonomy_term.field_iso
+      module:
+        - taxonomy
 datasource_settings:
   'entity:node':
     bundles:

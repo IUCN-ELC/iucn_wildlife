@@ -151,7 +151,7 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
   }
 
   public function count($refresh = FALSE) {
-    return 'n/a';
+    return -1;
   }
 
   public function getIds() {

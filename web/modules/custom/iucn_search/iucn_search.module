@@ -272,7 +272,7 @@ function iucn_search_cron() {
   $reindex = FALSE;
 
   /** @var \Drupal\migrate\Plugin\MigrationPluginManager $service */
-  $service = \Drupal::service('plugin.manager.config_entity_migration');
+  $service = \Drupal::service('plugin.manager.migration');
   $migrate_last_imported_store = \Drupal::keyValue('migrate_last_imported');
   foreach ($migrations as $migrationName) {
     $last_run = \Drupal::state()

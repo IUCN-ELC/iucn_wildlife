@@ -107,7 +107,7 @@ process:
   field_appealed:
     source: wildlifeAppealed
     plugin: boolean
-  field_help: wildlifeHeld
+  field_held: wildlifeHeld
   field_references: wildlifeReferences
   field_charge_sheet:
     source: wildlifeChargeSheet

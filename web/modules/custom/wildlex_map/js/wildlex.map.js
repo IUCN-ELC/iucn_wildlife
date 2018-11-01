@@ -202,7 +202,7 @@
                   // tooltip content
                   return ['<div class="hoverinfo">',
                     '<strong>', geo.properties.name, '</strong>',
-                    '<br>', Drupal.t('No'), ' ', drupalSettings.content_type,
+                    '<br>', Drupal.t('No'), ' ', drupalSettings.content_type, ' ',Drupal.t('matching the search criteria'),
                     '</div>'
                   ].join('');
 

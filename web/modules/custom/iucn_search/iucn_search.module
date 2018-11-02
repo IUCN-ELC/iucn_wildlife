@@ -269,27 +269,47 @@ function iucn_search_cron() {
     'elis_consumer_court_decisions',
   ];
 
-  $reindex = FALSE;
-
   /** @var \Drupal\migrate\Plugin\MigrationPluginManager $service */
   $service = \Drupal::service('plugin.manager.migration');
   $migrate_last_imported_store = \Drupal::keyValue('migrate_last_imported');
+
+  $run_interval = \Drupal::config('migrate_cron')->get('run_interval');
+  if (!$run_interval) {
+    $run_interval = 0;
+  }
+
+
+  // First, set all migration status to "Idle".
   foreach ($migrations as $migrationName) {
     $last_run = \Drupal::state()
       ->get('iucn_search.migration_last_run.' . $migrationName, NULL);
-    if (empty($last_run) || (time() - $last_run) >= 3600 /* 1 hour */) {
+    if (empty($last_run) || (time() - $last_run) >= $run_interval /* custom */) {
       /** @var \Drupal\migrate\Plugin\Migration $migration */
       if ($migration = $service->createInstance($migrationName)) {
-        if ($migration->getStatus() == \Drupal\migrate\Plugin\MigrationInterface::STATUS_IDLE) {
-          $migration->setTrackLastImported(TRUE);
-          $migration->getIdMap()->prepareUpdate();
-          $executable = new \Drupal\migrate\MigrateExecutable($migration, new \Drupal\migrate\MigrateMessage());
-          $executable->import();
-          \Drupal::state()
-            ->set('iucn_search.migration_last_run.' . $migrationName, time());
-          $migrate_last_imported_store->set($migration->id(), round(microtime(TRUE) * 1000));
-          $reindex = TRUE;
+        if ($migration->getStatus() != \Drupal\migrate\Plugin\MigrationInterface::STATUS_IDLE) {
+          $migration->setStatus(\Drupal\migrate\Plugin\MigrationInterface::STATUS_IDLE);
         }
+      }
+    }
+  }
+
+  foreach ($migrations as $migrationName) {
+    $last_run = \Drupal::state()
+      ->get('iucn_search.migration_last_run.' . $migrationName, NULL);
+    if (empty($last_run) || (time() - $last_run) >= $run_interval /* custom */) {
+      /** @var \Drupal\migrate\Plugin\Migration $migration */
+      if ($migration = $service->createInstance($migrationName)) {
+        \Drupal::state()
+          ->set('iucn_search.migration_last_run.' . $migrationName, time());
+
+
+
+        // Run the migration.
+        $migration->setTrackLastImported(TRUE);
+        $migration->getIdMap()->prepareUpdate();
+        $executable = new \Drupal\migrate\MigrateExecutable($migration, new \Drupal\migrate\MigrateMessage());
+        $executable->import();
+        $migrate_last_imported_store->set($migration->id(), round(microtime(TRUE) * 1000));
       }
       else {
         \Drupal::logger('migrate')
@@ -298,16 +318,6 @@ function iucn_search_cron() {
     }
   }
 
-  if ($reindex === TRUE) {
-    $indexes = Index::loadMultiple();
-    foreach ($indexes as $index) {
-      /** @var \Drupal\search_api\Entity\Index $index */
-      if ($index->status()) {
-        $index->clear();
-        $index->indexItems();
-      }
-    }
-  }
 }
 
 function iucn_search_query_filter() {

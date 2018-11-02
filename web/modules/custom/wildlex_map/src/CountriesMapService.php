@@ -6,6 +6,7 @@ use Drupal\search_api\ParseMode\ParseModePluginManager;
 use Drupal\search_api\Entity\Index;
 use Drupal\Core\Database\Connection;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Class CountriesCourtDecisionsService.
@@ -149,13 +150,75 @@ class CountriesMapService {
     return $results;
   }
 
-  public function modalMarkup($content_type){
+
+  public function getTermNames($tids) {
+    $terms = [];
+    foreach ($tids as $tid) {
+      $term = Term::load($tid);
+      $terms[] = $term->label();
+    }
+    return $terms;
+  }
+
+  public function modalMarkup($content_type, $items_count = 0){
 
     if($content_type['singular'] == t('court decision')) {
       $content_type['singular'] = t('court decisions');
     }
 
-    $modal_title = t("Search results for @content_type_name" , ['@content_type_name' => $content_type['singular']]);
+
+    $request = $this->getRequest();
+    $filters = NULL;
+    foreach ($request as $field_name => $field_values) {
+
+      switch ($field_name) {
+        case 'field_country':
+          $label =  t('Country');
+          break;
+        case 'field_territorial_subdivisions':
+          $label =   t('Territorial subdivision');
+          break;
+        case 'field_type_of_text':
+          $label =  t('Type of court');
+          break;
+        case 'field_species':
+          $label =  t('Species');
+          break;
+        case 'field_language_of_document':
+          $label =  t('Language');
+          break;
+          break;
+        default:
+          break;
+      }
+      $filters[] = sprintf('<strong>%s</strong> (%s)',
+        $label,
+        implode(', ', $this->getTermNames($field_values))
+      );
+
+    }
+
+    $yearmin = $this->requestStack->getCurrentRequest()->query->get('yearmin');
+    $yearmax = $this->requestStack->getCurrentRequest()->query->get('yearmax');
+
+
+    if (isset($yearmin) || isset($yearmax)) {
+      $filters[] = sprintf('<strong>%s</strong> (%s)',
+        t('Year/period'),
+        (isset($yearmin) ? t('from ') . $yearmin : '') . (isset($yearmax) ? t(' to ') . $yearmax : '')
+      );
+    }
+
+    $modal_title = t("Showing <strong>@items_count</strong> <em>@content_type_name</em>" ,
+      [
+        '@content_type_name' => $content_type['singular'],
+        '@items_count' => $items_count,
+        ]);
+
+    if ($filters) {
+      $modal_title .= t(' filtered by ') . implode(', ', $filters);
+    }
+
     return '
           <div class="modal fade" id="search_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -164,11 +227,10 @@ class CountriesMapService {
             <h5 class="modal-title" id="exampleModalLongTitle">'. $modal_title .'</h5>
           </div>
           <div class="modal-body">
-                        <div id="wildlex_map">
-                        </div>
-            
+            <div id="wildlex_map"></div>
           </div>          
           <div class="modal-footer">
+                <div class="wildlex_map_legend" id="legend1"></div>
                 <a href="#" class="btn btn-primary zoom-button" data-zoom="in">Zoom in</a>
                 <a href="#" class="btn btn-primary zoom-button" data-zoom="out">Zoom out</a>
                 <a href="#" class="btn btn-primary zoom-button" data-zoom="reset">Reset zoom</a>

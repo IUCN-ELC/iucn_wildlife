@@ -202,7 +202,7 @@
                   // tooltip content
                   return ['<div class="hoverinfo">',
                     '<strong>', geo.properties.name, '</strong>',
-                    '<br>', Drupal.t('No'), ' ', drupalSettings.content_type,
+                    '<br>', Drupal.t('No'), ' ', drupalSettings.content_type, ' ',Drupal.t('matching the search criteria'),
                     '</div>'
                   ].join('');
 
@@ -246,6 +246,68 @@
 
         var map = new Datamap();
 
+
+        var w = 250, h = 50;
+
+        var key = d3.select("#legend1")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h);
+
+        var legend = key.append("defs")
+          .append("svg:linearGradient")
+          .attr("id", "gradient")
+          .attr("x1", "0%")
+          .attr("y1", "100%")
+          .attr("x2", "100%")
+          .attr("y2", "100%")
+          .attr("spreadMethod", "pad");
+
+        legend.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", "#f2e0d1")
+          .attr("stop-opacity", 1);
+
+        legend.append("stop")
+          .attr("offset", "33%")
+          .attr("stop-color", "#ecb07c")
+          .attr("stop-opacity", 1);
+
+        legend.append("stop")
+          .attr("offset", "66%")
+          .attr("stop-color", "#e68026")
+          .attr("stop-opacity", 1);
+
+        legend.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", "#e15300")
+          .attr("stop-opacity", 1);
+
+        key.append("rect")
+          .attr("width", w)
+          .attr("height", h - 30)
+          .style("fill", "url(#gradient)")
+          .attr("transform", "translate(0,10)");
+
+        var y = d3.scale.linear()
+          .range([250, 0])
+          .domain([maxValue, 0]);
+
+        /*var yAxis = d3.axisBottom()
+          .scale(y)
+          .ticks(5);*/
+        var yAxis = d3.svg.axis().scale(y).ticks(5);
+
+
+        key.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(0,30)")
+          .call(yAxis)
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end");
       });
     }
   }

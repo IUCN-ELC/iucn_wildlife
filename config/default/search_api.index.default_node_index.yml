@@ -26,8 +26,8 @@ dependencies:
     - field.storage.node.field_territorial_subdivisions
     - field.storage.node.field_type_of_text
     - field.storage.node.field_wildlife_legislation
-    - field.storage.taxonomy_term.field_iso
     - field.storage.node.field_source
+    - field.storage.taxonomy_term.field_iso
     - search_api.server.solr_server
   module:
     - taxonomy
@@ -290,6 +290,6 @@ tracker_settings:
   default:
     indexing_order: fifo
 options:
-  index_directly: false
+  index_directly: true
   cron_limit: 1
 server: solr_server

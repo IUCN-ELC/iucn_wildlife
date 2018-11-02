@@ -155,9 +155,6 @@ abstract class DefaultSearchController extends ControllerBase {
       }
 
 
-
-
-
       if (empty($results)) {
         if ($found) {
           // The SOLR returned results but we couldn't find them in Drupal
@@ -192,7 +189,7 @@ abstract class DefaultSearchController extends ControllerBase {
       }
       $content = [
         '#cache' => ['contexts' => ['url']],
-        '#markup' => $this->countries_map->modalMarkup($this->getContentType()),
+        '#markup' => $this->countries_map->modalMarkup($this->getContentType(), $found),
         '#attached' => [
           'drupalSettings' => [
             'series'=> $this->countries_map->get($this->content_type),

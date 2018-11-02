@@ -1210,6 +1210,27 @@ body.path-frontpage {
 .wildlex_map-buttons {
   margin-bottom: 20px;
 }
+.wildlex_map_legend {
+  float: left;
+  margin: -5px 0 0 0;
+}
+.wildlex_map_legend svg {
+  overflow: visible;
+}
+.wildlex_map_legend .axis text {
+  font: 10px sans-serif;
+}
+.wildlex_map_legend .axis .tick line {
+  stroke: #000;
+}
+.wildlex_map_legend .axis .tick:first-child text {
+  text-anchor: start !important;
+}
+.wildlex_map_legend .axis line,
+.wildlex_map_legend .axis path {
+  fill: none;
+  shape-rendering: crispEdges;
+}
 .bootstrap-switch {
   border-color: #eee;
   border-radius: 10px;

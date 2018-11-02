@@ -38,10 +38,30 @@
 .wildlex_map-buttons {
   margin-bottom: 20px;
 }
-
-
-
-
-
-
-
+.wildlex_map_legend{
+  float: left;
+  margin: -5px 0 0 0;
+  svg {
+    overflow: visible;
+  }
+  .axis text {
+    font: 10px sans-serif;
+  }
+  .axis {
+    .tick{
+      line{
+        stroke: #000;
+      }
+    }
+    .tick:first-child{
+      text {
+        text-anchor: start !important;
+      }
+    }
+  }
+  .axis line, .axis path {
+    fill: none;
+    //stroke: #000;
+    shape-rendering: crispEdges;
+  }
+}

@@ -227,11 +227,10 @@ class CountriesMapService {
             <h5 class="modal-title" id="exampleModalLongTitle">'. $modal_title .'</h5>
           </div>
           <div class="modal-body">
-                        <div id="wildlex_map">
-                        </div>
-            
+            <div id="wildlex_map"></div>
           </div>          
           <div class="modal-footer">
+                <div class="wildlex_map_legend" id="legend1"></div>
                 <a href="#" class="btn btn-primary zoom-button" data-zoom="in">Zoom in</a>
                 <a href="#" class="btn btn-primary zoom-button" data-zoom="out">Zoom out</a>
                 <a href="#" class="btn btn-primary zoom-button" data-zoom="reset">Reset zoom</a>

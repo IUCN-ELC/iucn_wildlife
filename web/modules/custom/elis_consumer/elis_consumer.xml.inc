@@ -165,13 +165,13 @@ function elis_consumer_xml_http_request($url, $xml_encoding) {
   if ($response = elis_consumer_http_request($url, array('Accept' => 'application/xml'))) {
     try {
       libxml_clear_errors();
-      if (strtolower($xml_encoding) == 'utf-8') {
+      if (mb_detect_encoding($response, 'UTF-8', TRUE) == 'UTF-8') {
         $data = trim($response);
-      }
-      else {
+        $ret = simplexml_load_string($data);
+      } else {
         $data = trim(utf8_decode($response));
+        $ret = simplexml_load_string(utf8_encode($data));
       }
-      $ret = simplexml_load_string(utf8_encode($data));
     } catch (\Exception $e) {
       $error = libxml_get_last_error();
       $msg = sprintf('elis_consumer_xml_http_request: Cannot parse XML (%s), line %d:%d, %s', $error->file, $error->line, $error->column, $error->message);

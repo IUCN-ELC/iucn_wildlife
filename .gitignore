@@ -14,6 +14,7 @@ web/UPGRADE.txt
 web/web.config
 
 .docker/solr-data/
+.docker/.docker/conf-nginx/basic-auth.passwords
 .docker/conf-varnish/secret
 docker.env
 .docker/conf-nginx/auth.passwords

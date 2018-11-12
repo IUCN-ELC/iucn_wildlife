@@ -50,6 +50,7 @@ dependencies:
     - field.field.node.court_decision.field_related_website
     - field.field.node.court_decision.field_seat_of_court
     - field.field.node.court_decision.field_source
+    - field.field.node.court_decision.field_source_website
     - field.field.node.court_decision.field_species
     - field.field.node.court_decision.field_subdivision
     - field.field.node.court_decision.field_territorial_subdivisions
@@ -321,6 +322,18 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_source_website:
+    weight: 36
+    label: above
+    settings:
+      trim_length: 80
+      target: _blank
+      url_only: false
+      url_plain: false
+      rel: '0'
+    third_party_settings: {  }
+    type: link
     region: content
   field_species:
     weight: 14

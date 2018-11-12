@@ -104,6 +104,7 @@ process:
   field_source:
     source: source
     plugin: taxonomy_term
+  field_source_website: sourceWebsite
   field_appealed:
     source: wildlifeAppealed
     plugin: boolean

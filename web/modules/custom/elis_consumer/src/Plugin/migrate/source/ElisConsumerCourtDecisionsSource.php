@@ -91,6 +91,7 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       'referenceToNationalLegislationNotes' => 'Cited legislations',
       'courtCase' => 'Type of case',
       'source' => 'Source',
+      'sourceWebsite' => 'Source Website',
       'wildlifeChargeSheet' => 'Charge Sheet'
     );
   }

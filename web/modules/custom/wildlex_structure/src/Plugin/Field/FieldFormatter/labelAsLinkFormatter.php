@@ -79,25 +79,48 @@ class labelAsLinkFormatter extends EntityReferenceFormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-
+    $uri = FALSE;
     $link_field = $this->getSetting('link_field');
 
     /* @var \Drupal\node\Entity\Node $node */
     $node = $items->getEntity();
     if ($node && $node->{$link_field}) {
-      foreach ($node->{$link_field} as $delta => $item) {
-        // By default use the full URL as the link text.
-        $uri = $this->buildUrl($item);
+      if ($node->{$link_field}->getFieldDefinition()->getType() == 'link') {
+        foreach ($node->{$link_field} as $delta => $item) {
+          // By default use the full URL as the link text.
+          $uri = $this->buildUrl($item);
+        }
       }
     }
+      if ($this->getEntitiesToView($items, $langcode)) {
+        foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
+          $label = $entity->label();
+          if ($uri && !$entity->isNew()) {
+            $elements[$delta] = [
+              '#type' => 'link',
+              '#title' => $label,
+              '#url' => $uri,
+              '#options' => $uri->getOptions(),
+            ];
 
-    if ($this->getEntitiesToView($items, $langcode)) {
-      foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
-        $label = $entity->label();
-        if (isset($uri) && !$entity->isNew()) {
-          $elements[$delta] = [
+            if (!empty($items[$delta]->_attributes)) {
+              $elements[$delta]['#options'] += ['attributes' => []];
+              $elements[$delta]['#options']['attributes'] += $items[$delta]->_attributes;
+              // Unset field item attributes since they have been included in the
+              // formatter output and shouldn't be rendered in the field template.
+              unset($items[$delta]->_attributes);
+            }
+          }
+          else {
+            $elements[$delta] = ['#plain_text' => $label];
+          }
+          $elements[$delta]['#cache']['tags'] = $entity->getCacheTags();
+        }
+      } else {
+        if ($uri) {
+          $elements[] = [
             '#type' => 'link',
-            '#title' => $label,
+            '#title' => $uri->toString(),
             '#url' => $uri,
             '#options' => $uri->getOptions(),
           ];
@@ -110,29 +133,10 @@ class labelAsLinkFormatter extends EntityReferenceFormatterBase {
             unset($items[$delta]->_attributes);
           }
         }
-        else {
-          $elements[$delta] = ['#plain_text' => $label];
-        }
-        $elements[$delta]['#cache']['tags'] = $entity->getCacheTags();
       }
-    } else {
-      if (isset($uri)) {
-        $elements[] = [
-          '#type' => 'link',
-          '#title' => $uri->toString(),
-          '#url' => $uri,
-          '#options' => $uri->getOptions(),
-        ];
 
-        if (!empty($items[$delta]->_attributes)) {
-          $elements[$delta]['#options'] += ['attributes' => []];
-          $elements[$delta]['#options']['attributes'] += $items[$delta]->_attributes;
-          // Unset field item attributes since they have been included in the
-          // formatter output and shouldn't be rendered in the field template.
-          unset($items[$delta]->_attributes);
-        }
-      }
-    }
+
+
     return $elements;
   }
 

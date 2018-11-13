@@ -66,6 +66,7 @@ dependencies:
     - link
     - text
     - user
+    - wildlex_structure
 id: node.court_decision.default
 targetEntityType: node
 bundle: court_decision
@@ -319,21 +320,10 @@ content:
     weight: 35
     label: above
     settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_source_website:
-    weight: 36
-    label: above
-    settings:
-      trim_length: 80
+      link_field: field_source_website
       target: _blank
-      url_only: false
-      url_plain: false
-      rel: '0'
     third_party_settings: {  }
-    type: link
+    type: label_as_link_formatter
     region: content
   field_species:
     weight: 14
@@ -394,6 +384,7 @@ hidden:
   field_official_publication: true
   field_original_id: true
   field_original_title: true
+  field_source_website: true
   field_subdivision: true
   field_url: true
   field_wildlife_legislation: true

@@ -50,6 +50,7 @@ dependencies:
     - field.field.node.court_decision.field_related_website
     - field.field.node.court_decision.field_seat_of_court
     - field.field.node.court_decision.field_source
+    - field.field.node.court_decision.field_source_website
     - field.field.node.court_decision.field_species
     - field.field.node.court_decision.field_subdivision
     - field.field.node.court_decision.field_territorial_subdivisions
@@ -65,6 +66,7 @@ dependencies:
     - link
     - text
     - user
+    - wildlex_structure
 id: node.court_decision.default
 targetEntityType: node
 bundle: court_decision
@@ -318,9 +320,10 @@ content:
     weight: 35
     label: above
     settings:
-      link: false
+      link_field: field_source_website
+      target: _blank
     third_party_settings: {  }
-    type: entity_reference_label
+    type: label_as_link_formatter
     region: content
   field_species:
     weight: 14
@@ -381,6 +384,7 @@ hidden:
   field_official_publication: true
   field_original_id: true
   field_original_title: true
+  field_source_website: true
   field_subdivision: true
   field_url: true
   field_wildlife_legislation: true

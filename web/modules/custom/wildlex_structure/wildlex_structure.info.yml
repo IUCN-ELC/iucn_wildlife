@@ -1,0 +1,5 @@
+name: 'wildlex_structure'
+type: module
+description: 'Wildlex misc functionalities.'
+core: 8.x
+package: 'Custom'

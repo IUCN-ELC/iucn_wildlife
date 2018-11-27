@@ -35,7 +35,7 @@
 
   .path-frontpage & {
     // background-position: center bottom;
-    height: calc(100vh - 182px);
+    height: calc(100vh - 182px - @navbar-increase);
     margin-bottom: 0;
     min-height: 231px;
 
@@ -139,19 +139,20 @@
 @media (max-width: 767px) {
   .jumbotron {
     .path-frontpage & {
-      height: calc(100vh - 239px);
+      height: calc(100vh - 239px - @navbar-increase);
+      min-height: 340px;
     }
 
     .path-frontpage #sliding-popup ~ & {
-      height: calc(100vh - 286px);
+      height: calc(100vh - 286px - @navbar-increase);
     }
 
     .path-frontpage.toolbar-fixed & {
-      height: calc(100vh - 278px);
+      height: calc(100vh - 278px - @navbar-increase);
     }
 
     .path-frontpage.toolbar-fixed.toolbar-tray-open & {
-      height: calc(100vh - 318px);
+      height: calc(100vh - 318px - @navbar-increase);
     }
   }
 }

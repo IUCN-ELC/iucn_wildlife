@@ -802,6 +802,9 @@ body.path-frontpage {
 .footer .logos a {
   display: block;
 }
+.footer .logos img {
+  max-width: 100%;
+}
 #block-iucn-frontend-footer {
   float: right;
   margin-top: 14px;
@@ -823,7 +826,10 @@ body.path-frontpage {
     text-align: center;
   }
   .footer .logos {
-    display: inline-block;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
     float: none;
   }
   #block-iucn-frontend-footer {

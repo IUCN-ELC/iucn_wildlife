@@ -831,6 +831,9 @@ body.path-frontpage {
     float: none;
   }
 }
+.iucn-logo {
+  margin-right: 1em;
+}
 .form-required:after {
   background-image: none;
   background-size: none;
@@ -914,6 +917,11 @@ body.path-frontpage {
   margin-right: 20px;
   margin-top: 12px;
   padding-right: 0;
+  height: 64px;
+}
+.navbar .logo img {
+  height: 100%;
+  width: auto;
 }
 .navbar-nav > li > a.link-primary {
   background-color: #e67e22;

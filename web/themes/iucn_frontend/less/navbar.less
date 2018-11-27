@@ -6,7 +6,10 @@
     margin-right: 20px;
     margin-top: 12px;
     padding-right: 0;
-    height: 64px;
+    height: @navbar-logo-height--mobile;
+    @media (min-width: 1200px) {
+      height: @navbar-logo-height;
+    }
     img {
       height: 100%;
       width: auto;
@@ -30,4 +33,16 @@
       color: #fff;
     }
   }
+}
+
+@media (min-width: 1200px) {
+  .navbar-nav>li>a {
+    padding-top: (33px + (@navbar-increase / 2));
+    padding-bottom: (33px + (@navbar-increase / 2));
+  }
+}
+
+.navbar-toggle {
+  margin-top: (27px + (@navbar-increase--mobile / 2));
+  margin-bottom: (27px + (@navbar-increase--mobile / 2));
 }

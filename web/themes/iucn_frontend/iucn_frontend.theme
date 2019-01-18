@@ -4,7 +4,7 @@ function iucn_frontend_preprocess_page(array &$variables) {
 
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
-  $variables['q'] = iucn_search_query_filter();
+  $variables['q'] = !empty($_GET['q']) ? htmlspecialchars($_GET['q'], ENT_SUBSTITUTE, 'UTF-8') : '';
   $get = $_GET;
   unset($get['q']);
   $variables['url_query'] = $get;

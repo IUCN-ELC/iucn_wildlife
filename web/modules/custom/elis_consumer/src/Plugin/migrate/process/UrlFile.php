@@ -53,14 +53,13 @@ class UrlFile extends ProcessPluginBase {
     }
 
     $filename = basename($url);
-    $path = $fi->getSetting('file_directory') ?? '';
-    $realpath = 'n/a';
+    $path = $fi->getSetting('file_directory') . '/' ?? '';
     // Keep the original tree structure for all imported files.
     $tree = explode('server2neu.php/', $url);
     if (isset($tree[1])) {
-      $tree_path = '/' . str_replace($filename, '', $tree[1]);
+      $tree_path =  str_replace($filename, '', $tree[1]);
       $realpath = \Drupal::service('file_system')
-          ->realpath("public://$path") . $tree_path;
+          ->realpath("public://$path") . '/' . $tree_path;
 
       if (!file_prepare_directory(
         $realpath,
@@ -108,7 +107,7 @@ class UrlFile extends ProcessPluginBase {
       ) {
         return null;
       }
-      $target = 'public://' . $destination_path . '/' . rawurldecode($filename);
+      $target = 'public://' . $destination_path . rawurldecode($filename);
       if ($file = file_save_data($data, $target, FILE_EXISTS_REPLACE)) {
         return $file->id();
       }

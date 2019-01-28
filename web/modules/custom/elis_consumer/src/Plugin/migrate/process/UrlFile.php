@@ -8,13 +8,10 @@
 namespace Drupal\elis_consumer\Plugin\migrate\process;
 
 use Drupal\field\Entity\FieldConfig;
-use Drupal\file\FileInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Row;
-use Drupal\migrate\Annotation\MigrateProcessPlugin;
-
 
 /**
  * This plugin downloads remote file and saves it as Drupal file.
@@ -24,83 +21,112 @@ use Drupal\migrate\Annotation\MigrateProcessPlugin;
  * )
  */
 class UrlFile extends ProcessPluginBase {
-
   /**
    * {@inheritdoc}
    */
-  public function transform($url, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function transform($url,
+                            MigrateExecutableInterface $migrate_executable,
+                            Row $row,
+                            $destination_property
+  ) {
     $url = trim($url);
     if (empty($url)) {
-      return NULL;
+      return null;
     }
+
     $bundle = $row->getDestination()['type'];
     $fi = FieldConfig::loadByName('node', $bundle, $destination_property);
-    $extensions = $fi->getSetting('file_extensions');
-    if (!empty($extensions)) {
-      $extensions = explode(' ', $extensions);
-    }
-    else {
-      $extensions = array();
-    }
-    // Not allowed
+
+    // Get the allowed file extensions.
+    $ext = $fi->getSetting('file_extensions');
+    $extensions = $ext ? explode(' ', $ext) : [];
+
+    // Check if file extension is allowed.
     $pi = pathinfo($url, PATHINFO_EXTENSION);
     if (!in_array($pi, $extensions)) {
       $ext = implode(',', $extensions);
-      $migrate_executable->saveMessage("Invalid extension: `$pi` (allowed:$ext) for " . $url . "\n", MigrationInterface::MESSAGE_WARNING);
-      return NULL;
+      $migrate_executable->saveMessage(
+        "Invalid extension: `$pi` (allowed:$ext) for " . $url . "\n",
+        MigrationInterface::MESSAGE_WARNING
+      );
+      return null;
     }
 
     $filename = basename($url);
-    $path = $fi->getSetting('file_directory');
-    $path = !empty($path) ? $path . '/' : '';
-    $file = $this->createFile($url, $path, $filename, $migrate_executable);
-    if (!$file) {
-      $migrate_executable->saveMessage("Could not append to $destination_property, file at $url", MigrationInterface::MESSAGE_WARNING);
-    }
-    return $file;
-  }
+    $path = $fi->getSetting('file_directory') . '/' ?? '';
+    // Keep the original tree structure for all imported files.
+    $tree = explode('server2neu.php/', $url);
+    if (isset($tree[1])) {
+      $tree_path =  str_replace($filename, '', $tree[1]);
+      $realpath = \Drupal::service('file_system')
+          ->realpath("public://$path") . '/' . $tree_path;
 
+      if (!file_prepare_directory(
+        $realpath,
+        FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS
+      )) {
+        $migrate_executable->saveMessage("$realpath is not writable", MigrationInterface::MESSAGE_WARNING);
+        return null;
+      }
+      $path .= $tree_path;
+    }
+
+    // Create the file.
+    if ($file = $this->createFile($url, $path, $filename)) {
+      return $file;
+    }
+
+    $migrate_executable->saveMessage("Could not append to $destination_property, file at $url", MigrationInterface::MESSAGE_WARNING);
+    return null;
+  }
 
   /**
    * {@inheritdoc}
    */
-  public function multiple() {
-    return FALSE;
+  public function multiple()
+  {
+    return false;
   }
-
 
   /**
    * @param string $url
-   * @return integer
+   * @param string $destination_path
+   * @param string $filename
+   * @return integer|null
    *  File ID (fid)
    */
-  protected function createFile($url, $destination_path, $filename, $migrate_executable) {
+  protected function createFile(
+    $url,
+    $destination_path,
+    $filename
+  ) {
     if ($data = $this->download($url)) {
-      // Ecolex specific - does not return 404, but 200 with 404 page :rofl:
-      if (preg_match('/Server Error/', $data) || preg_match('/HTTP Status 404/', $data)) {
-        return NULL;
+      // Ecolex specific - does not return 404, but 200 with 404 page.
+      if (preg_match('/Server Error/', $data)
+        || preg_match('/HTTP Status 404/', $data)
+      ) {
+        return null;
       }
-      if (!file_prepare_directory($destination_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
-        $migrate_executable->saveMessage("$destination_path is not writable", MigrationInterface::MESSAGE_WARNING);
-      }
-      $target = 'public://' . $destination_path . '/' . rawurldecode($filename);
-      /** @var FileInterface $file */
+      $target = 'public://' . $destination_path . rawurldecode($filename);
       if ($file = file_save_data($data, $target, FILE_EXISTS_REPLACE)) {
         return $file->id();
       }
     }
-    return NULL;
+    return null;
   }
 
-
-  protected function download($url, $headers = array()) {
+  /**
+   * {@inheritdoc}
+   */
+  protected function download($url, $headers = [])
+  {
     if (empty($url)) {
-      return NULL;
+      return null;
     }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
@@ -109,7 +135,7 @@ class UrlFile extends ProcessPluginBase {
     $ret = curl_exec($ch);
     $info = curl_getinfo($ch);
     if ($info['http_code'] != 200) {
-      $ret = NULL;
+      $ret = null;
     }
     curl_close($ch);
     return $ret;

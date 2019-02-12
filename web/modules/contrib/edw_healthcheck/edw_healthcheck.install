@@ -1,0 +1,16 @@
+<?php
+
+use Drupal\user\Entity\Role;
+
+/**
+* Implements hook_install().
+*
+* Declares initial set of sensors.
+*/
+function edw_healthcheck_install() {
+  if (empty(Role::load('edw_healthcheck_role'))) {
+    $role = \Drupal\user\Entity\Role::create(array('id' => 'edw_healthcheck_role', 'label' => 'EDW HealthCheck Access Role'));
+    $role->save();
+    user_role_grant_permissions('edw_healthcheck_role', ['edw healthcheck access']);
+  }
+}

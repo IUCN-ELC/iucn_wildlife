@@ -1,0 +1,148 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: stefan
+ * Date: 7/12/18
+ * Time: 4:40 PM
+ */
+
+use Drupal\edw_healthcheck\Form\SettingsForm;
+
+/**
+ * @file
+ * Main file for EDWHealthCheck service monitoring.
+ */
+
+use Drupal\edw_healthcheck\Helper\EDWHealthCheckHelper;
+
+if (class_exists(EDWHealthCheckHelper::class)) {
+  // Class won't exist during the installation.
+  EDWHealthCheckHelper::setEDWHealthcheckStatusConstants();
+}
+
+/**
+ * Mapping of defines to text strings that EDWHealthcheck understands.
+ */
+function edw_healthcheck_status() {
+  return [
+    'HEALTHCHECK_STATUS_OK' => 'OK',
+    'HEALTHCHECK_STATUS_UNKNOWN' => 'UNKNOWN',
+    'HEALTHCHECK_STATUS_WARNING' => 'WARNING',
+    'HEALTHCHECK_STATUS_CRITICAL' => 'CRITICAL',
+  ];
+}
+
+/**
+ * Functions to be performed by the base edw_healthcheck module.
+ */
+function edw_healthcheck_functions() {
+  $functions = [
+    'modules' => t('Check the number of modules for edw_healthcheck performance data'),
+    'themes' => t('Check the number of themes for edw_healthcheck performance data'),
+  ];
+  return $functions;
+}
+
+/**
+ * Custom invoke function that checks which modules to include.
+ *
+ * @param string $hook
+ *    String parameter that represents the signature of the hook.
+ *
+ * @return array
+ *    An array keyed by the module's name
+ */
+function edw_healthcheck_invoke_all($hook = 'edw_healthcheck') {
+  $return = [];
+  $args = func_get_args();
+  $module_handler = \Drupal::moduleHandler();
+  $config = \Drupal::config('edw_healthcheck.settings');
+  foreach ($module_handler->getImplementations($hook) as $module) {
+    // If we're running the checks, see if the checks for that module
+    // are enabled, otherwise just continue.
+    if ($hook == 'edw_healthcheck' && !SettingsForm::getModuleHookEnabled($module, $config)) {
+      continue;
+    }
+    $result = $module_handler->invoke($module, $hook, $args);
+    $return[$module] = $result;
+  }
+
+  return $return;
+}
+
+/**
+ * Implements hook_edw_healthcheck_info().
+ */
+function edw_healthcheck_edw_healthcheck_info() {
+  return [
+    'name' => 'EDWHealthCheck monitoring',
+    'id' => 'HEALTHCHECK',
+  ];
+}
+
+/**
+ * Implements hook_edw_healthcheck().
+ */
+function edw_healthcheck_edw_healthcheck() {
+  $config = \Drupal::config('edw_healthcheck.settings');
+
+  $status = [];
+  foreach (edw_healthcheck_functions() as $function => $description) {
+    if ($config->get('edw_healthcheck.function.' . $function)) {
+      $func = 'edw_healthcheck_check_' . $function;
+      $result = $func();
+      $status[$result['key']] = $result['data'];
+    }
+  }
+
+  return $status;
+}
+
+/**
+ * Report the number of enabled modules.
+ *
+ * @return array
+ *    An array containing the modules information.
+ */
+function edw_healthcheck_check_modules() {
+  $plugin_manager = \Drupal::service('plugin.manager.edw_healthcheck');
+  $plugin = $plugin_manager->createInstance('modules_edw_healthcheck');
+  return [
+    'key' => 'MOD',
+    'data' => $plugin->getData(),
+  ];
+}
+
+/**
+ * Implements hook_edw_healthcheck_checks().
+ */
+function edw_healthcheck_edw_healthcheck_checks() {
+  return edw_healthcheck_functions();
+}
+
+/**
+ * Implements hook_edw_healthcheck_check().
+ */
+function edw_healthcheck_edw_healthcheck_check($function) {
+  // We don't bother to check if the function has been enabled by the user.
+  // Since this runs via drush, web security is not an issue.
+  $func = 'edw_healthcheck_check_' . $function;
+  $result = $func();
+  $status[$result['key']] = $result['data'];
+  return $status;
+}
+
+/**
+ * Report the number of enabled themes.
+ *
+ * @return array with performance information
+ *    An array containing the themes information.
+ */
+function edw_healthcheck_check_themes() {
+  $plugin_manager = \Drupal::service('plugin.manager.edw_healthcheck');
+  $plugin = $plugin_manager->createInstance('themes_edw_healthcheck');
+  return [
+    'key' => 'THM',
+    'data' => $plugin->getData(),
+  ];
+}

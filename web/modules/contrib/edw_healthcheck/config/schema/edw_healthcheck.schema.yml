@@ -1,0 +1,74 @@
+# Schema for the configuration files of the edw_healthcheck module.
+
+edw_healthcheck.settings:
+  type: config_object
+  label: 'EDWHealthcheck settings'
+  mapping:
+    edw_healthcheck:
+      type: mapping
+      label: 'EDWHealthcheck'
+      mapping:
+        status:
+            type: mapping
+            label: 'Error levels'
+            mapping:
+                ok:
+                    type: integer
+                    label: 'Status OK'
+                warning:
+                    type: integer
+                    label: 'Status WARNING'
+                critical:
+                    type: integer
+                    label: 'Status CRITICAL'
+                unknown:
+                    type: integer
+                    label: 'STATUS UNKNOWN'
+        min_report_severity:
+          type: integer
+          label: 'Mininum report severity'
+        edw_healthcheckpage:
+          type: mapping
+          label: 'EDWHealthCheck page settings'
+          mapping:
+            path:
+              type: path
+              label: 'EDWHealthCheck page path'
+            enabled:
+              type: boolean
+              label: 'Enable EDWHealthCheck page?'
+            controller:
+              type: string
+              label: 'EDWHealthCheck page controller'
+        components:
+          type: mapping
+          label: 'Monitored components'
+          mapping:
+            core:
+              type: mapping
+              label: 'Drupal Core'
+              mapping:
+                enabled:
+                  type: boolean
+                  label: 'Enable monitoring for the Drupal Core?'
+            modules:
+              type: mapping
+              label: 'Active Modules'
+              mapping:
+                enabled:
+                  type: boolean
+                  label: 'Enable monitoring for the Modules?'
+            themes:
+              type: mapping
+              label: 'Installed Themes'
+              mapping:
+                enabled:
+                  type: boolean
+                  label: 'Enable monitoring for the Themes?'
+            last_cron:
+              type: mapping
+              label: 'Last Cron Execution'
+              mapping:
+                enabled:
+                  type: boolean
+                  label: 'Enable monitoring for the Last Cron?'

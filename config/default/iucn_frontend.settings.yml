@@ -9,17 +9,26 @@ favicon:
   use_default: true
 breadcrumb: '0'
 region_wells:
+  navigation: ''
+  navigation_collapsible: ''
   jumbotron_top: ''
+  header: ''
+  highlighted: ''
+  help: ''
+  content: ''
   sidebar: ''
+  footer: ''
+schemas:
+  bootstrap: 8000
+  iucn_frontend: 8000
+logo:
+  path: 'public://WILDLEXlogo_large.png'
+  url: ''
+  use_default: true
+table: ''
 features:
   comment_user_picture: true
   comment_user_verification: true
   favicon: true
   node_user_picture: true
-logo:
-  path: ''
-  url: ''
-  use_default: true
-schemas:
-  bootstrap: 8000
-  iucn_frontend: 8000
+table_responsive: -1

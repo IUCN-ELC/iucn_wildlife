@@ -1,0 +1,14 @@
+uuid: ba0b7be2-1936-4cf5-8df2-e53a7be841f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.edw_healthcheck_role
+  module:
+    - user
+id: user_add_role_action.edw_healthcheck_role
+label: 'Add the EDW HealthCheck Access Role role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: edw_healthcheck_role

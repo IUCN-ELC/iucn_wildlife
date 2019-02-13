@@ -23,6 +23,7 @@
         "drupal/core": "8.6.*",
         "drupal/ctools": "^3.0",
         "drupal/editor_file": "^1.2",
+        "drupal/edw_healthcheck": "^1.6",
         "drupal/eu_cookie_compliance": "^1.0",
         "drupal/google_analytics": "^2.2",
         "drupal/linkit": "~5.0",

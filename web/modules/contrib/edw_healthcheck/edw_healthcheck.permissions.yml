@@ -1,0 +1,3 @@
+edw healthcheck access:
+  title: 'Access the EDW HealthCheck module'
+  description: 'Access to the JSON data exported by the EDW HealthCheck module.'

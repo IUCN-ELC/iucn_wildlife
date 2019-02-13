@@ -1,0 +1,18 @@
+edw_healthcheck.settings:
+  path: '/admin/config/system/edw_healthcheck'
+  defaults:
+    _form: '\Drupal\edw_healthcheck\Form\SettingsForm'
+    _title: 'EDWHealthCheck monitoring'
+  requirements:
+    _permission: 'administer site configuration'
+
+edw_healthcheck.status:
+  path: '/edw_healthcheck/{topic}'
+  defaults:
+    _controller: '\Drupal\edw_healthcheck\Controller\EDWHealthCheckPageController::content'
+    _title: 'EDWHealthCheck Monitoring'
+    topic: 'all'
+  options:
+    _auth: ['basic_auth', 'cookie']
+  requirements:
+    _permission: 'edw healthcheck access'

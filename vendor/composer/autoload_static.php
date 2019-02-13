@@ -134,6 +134,7 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         ),
         'E' => 
         array (
+            'EauDeWeb\\Robo\\Task\\Curl\\' => 24,
             'EauDeWeb\\' => 9,
         ),
         'D' => 
@@ -407,6 +408,10 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         'Goutte\\' => 
         array (
             0 => __DIR__ . '/..' . '/fabpot/goutte/Goutte',
+        ),
+        'EauDeWeb\\Robo\\Task\\Curl\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/eaudeweb/robo-curl/src',
         ),
         'EauDeWeb\\' => 
         array (

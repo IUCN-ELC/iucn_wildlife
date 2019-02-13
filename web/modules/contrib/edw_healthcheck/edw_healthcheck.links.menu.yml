@@ -1,0 +1,5 @@
+edw_healthcheck.settings:
+  title: 'EDWHealthCheck monitoring'
+  description: 'Settings for EDWHealthCheck monitoring'
+  parent: system.admin_config_system
+  route_name: edw_healthcheck.settings

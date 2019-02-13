@@ -1,0 +1,4 @@
+services:
+  plugin.manager.edw_healthcheck:
+    class: Drupal\edw_healthcheck\Plugin\EDWHealthCheckPlugin\EDWHealthCheckPluginManager
+    parent: default_plugin_manager

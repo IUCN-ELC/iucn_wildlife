@@ -1,5 +1,6 @@
 module:
   automated_cron: 0
+  basic_auth: 0
   block: 0
   block_content: 0
   breakpoint: 0
@@ -14,6 +15,7 @@ module:
   dynamic_page_cache: 0
   editor: 0
   editor_file: 0
+  edw_healthcheck: 0
   elis_consumer: 0
   eu_cookie_compliance: 0
   field: 0
@@ -47,6 +49,7 @@ module:
   text: 0
   token: 0
   toolbar: 0
+  update: 0
   user: 0
   views_ui: 0
   wildlex_map: 0

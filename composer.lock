@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c6973806e8277fdf221179724655f37",
+    "content-hash": "6bfa45dc597ffed065a44276e0612d13",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2276,6 +2276,57 @@
             }
         },
         {
+            "name": "drupal/edw_healthcheck",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/edw_healthcheck",
+                "reference": "8.x-1.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/edw_healthcheck-8.x-1.6.zip",
+                "reference": "8.x-1.6",
+                "shasum": "c536da357f9c12ea989c475397c697017eb01c57"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.6",
+                    "datestamp": "1548244080",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Kopezaur",
+                    "homepage": "https://www.drupal.org/user/3580286"
+                },
+                {
+                    "name": "leontin",
+                    "homepage": "https://www.drupal.org/user/3599349"
+                }
+            ],
+            "description": "Check the status and versioning of a Drupal application and its modules",
+            "homepage": "https://www.drupal.org/project/edw_healthcheck",
+            "support": {
+                "source": "http://cgit.drupalcode.org/edw_healthcheck"
+            }
+        },
+        {
             "name": "drupal/eu_cookie_compliance",
             "version": "1.0.0",
             "source": {
@@ -3222,20 +3273,21 @@
         },
         {
             "name": "eaudeweb/heavy-lifter",
-            "version": "1.0.3",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eaudeweb/heavy-lifter.git",
-                "reference": "7edb1d5cec001dfa267bf1b41ca7649dd5ddfa68"
+                "reference": "46004752432da3306c8de82a2186ba0e2834d148"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eaudeweb/heavy-lifter/zipball/7edb1d5cec001dfa267bf1b41ca7649dd5ddfa68",
-                "reference": "7edb1d5cec001dfa267bf1b41ca7649dd5ddfa68",
+                "url": "https://api.github.com/repos/eaudeweb/heavy-lifter/zipball/46004752432da3306c8de82a2186ba0e2834d148",
+                "reference": "46004752432da3306c8de82a2186ba0e2834d148",
                 "shasum": ""
             },
             "require": {
                 "boedah/robo-drush": "^4.1",
+                "eaudeweb/robo-curl": "^1.0",
                 "php": ">=5.6.0",
                 "webflo/drupal-finder": "^1.1"
             },
@@ -3259,7 +3311,47 @@
                 }
             ],
             "description": "Common commands for your Drupal project to get you up to speed",
-            "time": "2018-11-21T17:21:57+00:00"
+            "time": "2019-02-13T10:39:22+00:00"
+        },
+        {
+            "name": "eaudeweb/robo-curl",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eaudeweb/robo-curl.git",
+                "reference": "c646df96e4a0e46721033f1ec18af474c4002dc7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eaudeweb/robo-curl/zipball/c646df96e4a0e46721033f1ec18af474c4002dc7",
+                "reference": "c646df96e4a0e46721033f1ec18af474c4002dc7",
+                "shasum": ""
+            },
+            "require": {
+                "consolidation/robo": "~1",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "robo-tasks",
+            "autoload": {
+                "psr-4": {
+                    "EauDeWeb\\Robo\\Task\\Curl\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cristian Romanescu",
+                    "email": "cristian@romanescu.ro"
+                }
+            ],
+            "description": "Robo command wrapper for cURL command line client",
+            "time": "2018-11-19T21:31:41+00:00"
         },
         {
             "name": "egulias/email-validator",

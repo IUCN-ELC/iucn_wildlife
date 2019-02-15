@@ -45,6 +45,7 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         array (
             'Zumba\\Mink\\Driver\\' => 18,
             'Zumba\\GastonJS\\' => 15,
+            'ZipStream\\' => 10,
             'Zend\\Stdlib\\' => 12,
             'Zend\\Feed\\' => 10,
             'Zend\\Escaper\\' => 13,
@@ -98,6 +99,7 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
             'Symfony\\Bridge\\PsrHttpMessage\\' => 30,
             'Symfony\\Bridge\\PhpUnit\\' => 23,
             'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 49,
+            'Solarium\\' => 9,
         ),
         'R' => 
         array (
@@ -196,6 +198,10 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         'Zumba\\GastonJS\\' => 
         array (
             0 => __DIR__ . '/..' . '/jcalderonzumba/gastonjs/src',
+        ),
+        'ZipStream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
         'Zend\\Stdlib\\' => 
         array (
@@ -348,6 +354,10 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 
         array (
             0 => __DIR__ . '/..' . '/stecman/symfony-console-completion/src',
+        ),
+        'Solarium\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/solarium/solarium/src',
         ),
         'Robo\\' => 
         array (
@@ -559,10 +569,6 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
             'Stack' => 
             array (
                 0 => __DIR__ . '/..' . '/stack/builder/src',
-            ),
-            'Solarium\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/solarium/solarium/library',
             ),
         ),
         'P' => 

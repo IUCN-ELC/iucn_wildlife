@@ -302,8 +302,6 @@ function iucn_search_cron() {
         \Drupal::state()
           ->set('iucn_search.migration_last_run.' . $migrationName, time());
 
-
-
         // Run the migration.
         $migration->setTrackLastImported(TRUE);
         $migration->getIdMap()->prepareUpdate();

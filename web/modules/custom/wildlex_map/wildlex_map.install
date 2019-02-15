@@ -1,0 +1,9 @@
+<?php
+
+function wildlex_map_update_8001(&$sandbox) {
+  \Drupal::service('module_installer')->install(['comment']);
+  field_cron();
+  $limit = \Drupal::config('field.settings')->get('purge_batch_size');
+  field_purge_batch($limit);
+  \Drupal::service('module_installer')->uninstall(['comment']);
+}

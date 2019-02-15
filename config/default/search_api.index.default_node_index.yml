@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_abstract
     - field.storage.node.field_country
+    - field.storage.taxonomy_term.field_iso
     - field.storage.node.field_court
     - field.storage.node.field_court_jurisdiction
     - field.storage.node.field_date_of_entry
@@ -19,30 +20,25 @@ dependencies:
     - field.storage.node.field_language_of_document
     - field.storage.node.field_offences
     - field.storage.node.field_original_title
-    - field.storage.node.field_original_id
     - field.storage.node.field_region
+    - field.storage.node.field_source
     - field.storage.node.field_species
     - field.storage.node.field_subdivision
     - field.storage.node.field_territorial_subdivisions
     - field.storage.node.field_type_of_text
+    - field.storage.node.field_original_id
     - field.storage.node.field_wildlife_legislation
-    - field.storage.node.field_source
-    - field.storage.taxonomy_term.field_iso
     - search_api.server.solr_server
   module:
+    - node
     - taxonomy
     - search_api
     - search_api_attachments
-    - node
 id: default_node_index
 name: 'Default node index'
 description: ''
 read_only: false
 field_settings:
-  saa_field_files:
-    label: 'Search api attachments: Files'
-    property_path: saa_field_files
-    type: text
   field_abstract:
     label: Abstract
     datasource_id: 'entity:node'
@@ -131,6 +127,17 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_instance
+  field_iso:
+    label: 'Country » Taxonomy term » ISO'
+    datasource_id: 'entity:node'
+    property_path: 'field_country:entity:field_iso'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_country
+        - field.storage.taxonomy_term.field_iso
+      module:
+        - taxonomy
   field_justices:
     label: Justices
     datasource_id: 'entity:node'
@@ -163,14 +170,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_offences
-  field_original_title:
-    label: 'Original title'
-    datasource_id: 'entity:node'
-    property_path: field_original_title
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_original_title
   field_original_id:
     label: 'View in ECOLEX'
     datasource_id: 'entity:node'
@@ -179,6 +178,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_original_id
+  field_original_title:
+    label: 'Original title'
+    datasource_id: 'entity:node'
+    property_path: field_original_title
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_original_title
   field_region:
     label: Region
     datasource_id: 'entity:node'
@@ -187,6 +194,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_region
+  field_source:
+    label: Source
+    datasource_id: 'entity:node'
+    property_path: field_source
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_source
   field_species:
     label: Species
     datasource_id: 'entity:node'
@@ -227,45 +242,52 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_wildlife_legislation
-  title:
-    label: Title
-    datasource_id: 'entity:node'
-    property_path: title
-    type: text
-  nid:
-    label: ID
-    datasource_id: 'entity:node'
-    property_path: nid
-    type: integer
   langcode:
     label: Language
     datasource_id: 'entity:node'
     property_path: langcode
     type: string
+    dependencies:
+      module:
+        - node
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
+  saa_field_abstract_files:
+    label: 'Search api attachments: Abstract files'
+    property_path: saa_field_abstract_files
+    type: text
+    boost: !!float 2
+  saa_field_charge_sheet:
+    label: 'Search api attachments: Charge sheet'
+    property_path: saa_field_charge_sheet
+    type: text
+    boost: 0.8
+  saa_field_files:
+    label: 'Search api attachments: Files'
+    property_path: saa_field_files
+    type: text
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    dependencies:
+      module:
+        - node
   type:
     label: 'Content type'
     datasource_id: 'entity:node'
     property_path: type
     type: string
-  field_source:
-    label: Source
-    datasource_id: 'entity:node'
-    property_path: field_source
-    type: integer
     dependencies:
-      config:
-        - field.storage.node.field_source
-  field_iso:
-    label: 'Country » Taxonomy term » ISO'
-    datasource_id: 'entity:node'
-    property_path: 'field_country:entity:field_iso'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_country
-        - field.storage.taxonomy_term.field_iso
       module:
-        - taxonomy
+        - node
 datasource_settings:
   'entity:node':
     bundles:
@@ -277,15 +299,15 @@ datasource_settings:
       selected:
         - en
 processor_settings:
-  rendered_item: {  }
-  aggregated_field: {  }
   add_url: {  }
+  aggregated_field: {  }
   file_attachments:
     excluded_extensions: 'aif art avi bmp gif ico mov oga ogv png psd ra ram rgb flv'
     number_indexed: 0
     max_filesize: '0'
     excluded_private: 1
     excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
+  rendered_item: {  }
 tracker_settings:
   default:
     indexing_order: fifo

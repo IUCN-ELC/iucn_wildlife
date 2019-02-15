@@ -30,7 +30,7 @@ $config['system.file']['path']['temporary'] = '/tmp';
 $config['system.performance']['cache']['page']['max_age'] = 3600;
 $config['system.performance']['css']['preprocess'] = TRUE;
 $config['system.performance']['js']['preprocess'] = TRUE;
-$config['migrate_cron']['run_interval'] = 10800; // 3 hours
+$config['migrate_cron']['run_interval'] = 86400; // 24 hours
 
 // Disabling stage file proxy if enabled on production
 $config['stage_file_proxy.settings']['origin'] = FALSE;

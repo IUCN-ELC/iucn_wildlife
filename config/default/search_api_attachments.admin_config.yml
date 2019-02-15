@@ -3,7 +3,8 @@ preserve_cache: true
 solr_extractor_configuration:
   solr_server: solr_server
   solr_tika_path: update/extract
-pdftotext_extractor_configuration: {  }
+pdftotext_extractor_configuration:
+  pdftotext_path: pdftotext
 tika_extractor_configuration:
   java_path: java
   tika_path: ''

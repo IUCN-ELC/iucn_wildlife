@@ -6,7 +6,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigValueException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
-use Solarium\QueryType\Select\Query\Component\FacetSet;
 use Solarium\QueryType\Select\Query\Query;
 
 class SolrFacet {
@@ -85,10 +84,7 @@ class SolrFacet {
     }
   }
 
-  /**
-   * @param FacetSet $facetSet
-   */
-  public function createSolrFacet(FacetSet &$facetSet) {
+  public function createSolrFacet(&$facetSet) {
     $field = $facetSet->createFacetField($this->id)->setField($this->solr_field_id);
     $operator = $this->getOperator();
     if (!empty($operator) && strtoupper($operator) === 'OR') {

@@ -132,3 +132,4 @@ $settings['skip_permissions_hardening'] = TRUE;
 
 //search cron lasts only 15 seconds, is not enough to index all nodes imported from migrations
 $config['search_api.settings']['cron_worker_runtime'] = 120;
+$config['migrate_cron']['run_interval'] = 86400; // 24 hours

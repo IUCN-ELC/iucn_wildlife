@@ -43,7 +43,7 @@ class UrlFile extends ProcessPluginBase {
 
     // Check if file extension is allowed.
     $pi = pathinfo($url, PATHINFO_EXTENSION);
-    if (!in_array($pi, $extensions)) {
+    if (!in_array(strtolower($pi), $extensions)) {
       $ext = implode(',', $extensions);
       $migrate_executable->saveMessage(
         "Invalid extension: `$pi` (allowed:$ext) for " . $url . "\n",

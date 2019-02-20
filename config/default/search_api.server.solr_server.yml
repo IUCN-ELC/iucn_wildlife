@@ -16,10 +16,10 @@ backend_config:
   connector: standard
   connector_config:
     scheme: http
-    host: solr6
+    host: localhost
     port: '8983'
     path: /solr
-    core: drupal
+    core: wildlex
     timeout: 25
     index_timeout: 20
     optimize_timeout: 10

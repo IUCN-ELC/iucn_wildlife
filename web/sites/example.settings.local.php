@@ -133,3 +133,51 @@ $settings['skip_permissions_hardening'] = TRUE;
 //search cron lasts only 15 seconds, is not enough to index all nodes imported from migrations
 $config['search_api.settings']['cron_worker_runtime'] = 120;
 $config['migrate_cron']['run_interval'] = 86400; // 24 hours
+
+/** Configure database connection */
+$databases['default']['default'] = array (
+  'database' => 'widllex',
+  'username' => 'widllex',
+  'password' => 'secret',
+  'prefix' => '',
+  'host' => 'db',
+  'port' => '3306',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
+);
+
+/** Which environment type are we running? */
+$settings['environment'] = 'dev'; // 'live', 'test' or 'dev'
+
+/** Hash salt used to protect sensitive data */
+$settings['hash_salt'] = 'Super secret hash salt 123';
+
+/** Add here the known domains for this Drupal */
+$settings['trusted_host_patterns'] = ['wildlex.local'];
+
+/** Set temporary path */
+$config['system.file']['path']['temporary'] = '/tmp';
+
+/** Views show SQL and performance on dev */
+$config['views.settings']['ui']['show']['sql_query']['enabled'] = TRUE;
+$config['views.settings']['ui']['show']['performance_statistics'] = TRUE;
+
+$config_directories['sync'] = '../config/default';
+
+//search cron lasts only 15 seconds, is not enough to index all nodes imported from migrations
+$config['search_api.settings']['cron_worker_runtime'] = 120;
+
+$config['search_api.server.solr_server'] = [
+  'backend_config' => [
+    'connector' => 'standard',
+    'connector_config' => [
+      'scheme' => 'http',
+      'host' => 'localhost',
+      'path' => '/solr',
+      'core' => 'wildlex',
+      'port' => '8983',
+    ],
+  ],
+];
+
+$config['google_analytics.settings']['account'] = 'UA-';

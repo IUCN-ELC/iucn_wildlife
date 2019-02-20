@@ -1,4 +1,4 @@
-account: UA-83700334-1
+account: UA-0-0
 domain_mode: 0
 cross_domains: ''
 visibility:
@@ -34,3 +34,4 @@ cache: false
 debug: false
 _core:
   default_config_hash: 5YkLBJiAXgH9BDLkDIb1ozqfCXWwvZggf4XfcXgfjzc
+premium: false

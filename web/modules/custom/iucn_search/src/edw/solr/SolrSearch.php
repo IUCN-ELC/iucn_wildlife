@@ -7,7 +7,6 @@
 
 namespace Drupal\iucn_search\edw\solr;
 
-use Solarium\QueryType\Select\Query\Component\FacetSet;
 use Solarium\QueryType\Select\Result\Document;
 
 
@@ -162,13 +161,9 @@ class SolrSearch {
     return $this->facets;
   }
 
-  /**
-   * @param \Solarium\QueryType\Select\Result\FacetSet $facetSet
-   */
-  private function updateFacetValues(\Solarium\QueryType\Select\Result\FacetSet $facetSet) {
+  private function updateFacetValues($facetSet) {
     /** @var SolrFacet $facet */
     foreach ($this->getFacets() as $facet_id => $facet) {
-      /** @var \Solarium\QueryType\Select\Result\Facet\Field $solrFacet */
       if ($solrFacet = $facetSet->getFacet($facet_id)) {
         $values = $solrFacet->getValues();
         if ($request_parameters = $this->getParameter($facet_id)) {

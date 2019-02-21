@@ -138,7 +138,7 @@ $settings['hash_salt'] = '@TODO - Add here a string of about 70 characters';
 /** Views show SQL and performance on dev */
 $config['views.settings']['ui']['show']['sql_query']['enabled'] = TRUE;
 $config['views.settings']['ui']['show']['performance_statistics'] = TRUE;
-$config['migrate_cron']['run_interval'] = 10800; // 3 hours
+$config['migrate_cron']['run_interval'] = 86400; // 24 hours
 
 $databases['default']['default'] = [
   'database' => 'drupal',

@@ -5,5 +5,12 @@ eu_cookie_compliance.settings:
     _title: 'EU Cookie Compliance'
   requirements:
     _permission: 'administer eu cookie compliance popup'
+eu_cookie_compliance.store_consent:
+  path: '/eu-cookie-compliance/store_consent/{target}'
+  defaults:
+    _controller: \Drupal\eu_cookie_compliance\Controller\StoreConsent::store
+    _title: 'EU Cookie Compliance store consent'
+  requirements:
+    _access: 'TRUE'
 route_callbacks:
   - '\Drupal\eu_cookie_compliance\Routing\CheckIfEuCountryJs::routes'

@@ -12,8 +12,17 @@
  *
  * Variables available:
  * - message:  Contains the text that will be display whithin the banner
- * - agree_button: Label for the agree button
- * - disagree_button: Label for the disagree button
+ * - agree_button: Label for the primary/agree button. Note that this is the
+ *   primary button. For backwards compatibility, the name remains agree_button.
+ * - disagree_button: Contains Cookie policy button title. (Note: for historical
+ *   reasons, this label is called "disagree" even though it just displays the
+ *   privacy policy.)
+ * - secondary_button_label: Contains the secondary button label. The current
+ *   action depends on whether you're running the module in Opt-out or Opt-in
+ *   mode.
+ * - primary_button_class: Contains class names for the primary button.
+ * - secondary_button_class: Contains class names for the secondary button
+ *   (if visible).
  */
 #}
 
@@ -21,11 +30,14 @@
   <div class ="popup-content info eu-cookie-compliance-content">
     <div id="popup-text" class="eu-cookie-compliance-message">
       {{ message }}
-    </div>
-    <div id="popup-buttons" class="eu-cookie-compliance-buttons">
-      <button type="button" class="agree-button eu-cookie-compliance-agree-button">{{ agree_button }}</button>
       {% if disagree_button %}
         <button type="button" class="find-more-button eu-cookie-compliance-more-button">{{ disagree_button }}</button>
+      {% endif %}
+    </div>
+    <div id="popup-buttons" class="eu-cookie-compliance-buttons">
+      <button type="button" class="{{ primary_button_class }}">{{ agree_button }}</button>
+      {% if secondary_button_label %}
+        <button type="button" class="{{ secondary_button_class }}" >{{ secondary_button_label }}</button>
       {% endif %}
     </div>
   </div>

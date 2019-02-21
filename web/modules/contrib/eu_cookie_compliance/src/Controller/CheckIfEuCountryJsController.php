@@ -15,6 +15,10 @@ class CheckIfEuCountryJsController extends ControllerBase {
    */
   public function content() {
     $data = eu_cookie_compliance_user_in_eu();
+
+    // Allow other modules to alter the geo IP matching logic.
+    \Drupal::moduleHandler()->alter('eu_cookie_compliance_geoip_match', $data);
+
     return new JsonResponse($data, 200, ['Cache-Control' => 'private']);
   }
 

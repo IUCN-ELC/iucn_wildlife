@@ -72,7 +72,7 @@ class SqlCommands extends CommandBase {
         //Drupal 7
         $execStack->dir('docroot');
         $execStack->exec("$drush sql-drop -y");
-        $execStack->exec("$drush sql-query --file $dest");
+        $execStack->exec("$drush sql-query --file=$dest");
       }
 
       // Add the anonymize command if required
@@ -113,16 +113,16 @@ class SqlCommands extends CommandBase {
     if ($this->isDrush9()) {
       $task = $this->taskExec($drush)
         ->rawArg('sql:dump')
-        ->rawArg('--structure-tables-list=cache,cache_*,watchdog,sessions,history');
+        ->rawArg('--structure-tables-list=cache,cache_*,watchdog,sessions,history')
+        ->option('result-file', $output);
 
     } else { // Drupal 7
       $task = $this->taskExec($drush)
         ->rawArg('sql-dump')
         ->rawArg('--structure-tables-list=cache,cache_*,watchdog,sessions,history')
+        ->rawArg("--result-file=$output")
         ->dir('docroot');
-
     }
-    $task->option('result-file', $output);
 
     if ($options['gzip']) {
       $task->arg('--gzip');

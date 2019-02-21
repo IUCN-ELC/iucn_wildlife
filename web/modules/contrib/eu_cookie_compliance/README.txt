@@ -14,7 +14,7 @@ The module displays a banner at the bottom or the top of website to make
 users aware of the fact that cookies are being set. The user may then give
 his/her consent or move to a page that provides more details. Consent is given
 by user pressing the agree buttons or by continuing browsing the website. Once
-consent is given another banner appears with a “Thank you” message.
+consent is given another banner appears with a "Thank you" message.
 
 The module provides a settings page where the banner can be customized. There
 are also template files for the banners that can be overridden by your theme.

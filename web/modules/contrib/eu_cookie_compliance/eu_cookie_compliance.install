@@ -6,11 +6,76 @@
  */
 
 use Drupal\user\Entity\Role;
+use Drupal\Core\Database\Database;
+use Drupal\filter\Entity\FilterFormat;
+
+/**
+ * Implements hook_schema().
+ */
+function eu_cookie_compliance_schema() {
+  $schema['eu_cookie_compliance_basic_consent'] = [
+    'description' => 'Basic consent storage for EU Cookie Compliance / GDPR.',
+    'fields' => [
+      'cid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique consent storage ID.',
+      ],
+      'uid' => [
+        'description' => '{users}.uid for user.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'description' => 'Time of consent.',
+        'type' => 'int',
+        'unsigned' => FALSE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'ip_address' => [
+        'description' => 'The IP address.',
+        'type' => 'varchar',
+        // Maximum length of an ipv6 IP address.
+        'length' => 45,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'consent_type' => [
+        'description' => 'The type of consent, such as "banner" for the banner and form_id for forms.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'revision_id' => [
+        'description' => 'Revision of the privacy policy at the time of consent.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['cid'],
+    'indexes' => [
+      'uid' => ['uid'],
+    ],
+    'foreign keys' => [
+      'uid' => ['users' => 'uid'],
+    ],
+  ];
+
+  return $schema;
+}
 
 /**
  * Implements hook_install().
  */
 function eu_cookie_compliance_install() {
+  module_load_include('module', 'eu_cookie_compliance', 'eu_cookie_compliance');
+
   $roles = Role::loadMultiple();
   $permission = 'display eu cookie compliance popup';
   foreach ($roles as $rid => $role) {
@@ -24,26 +89,27 @@ function eu_cookie_compliance_install() {
       ->set('popup_link', $cookie_policy)
       ->save();
   }
+
+  eu_cookie_compliance_module_set_weight();
 }
 
 /**
  * Implements hook_requirements().
  */
 function eu_cookie_compliance_requirements($phase) {
-  $requirements = array();
-  $popup_link = Drupal::config('eu_cookie_compliance.settings')->get('popup_link');
-  $show_policy = Drupal::config('eu_cookie_compliance.settings')->get('show_disagree_button');
+  $requirements = [];
 
-  if ($popup_link == '<front>' && $show_policy) {
-    $requirements['eu_cookie_compliance'] = array(
-      'title' => t('EU Cookie Compliance'),
-      'severity' => REQUIREMENT_ERROR,
-      'description' => t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'),
-    );
-    if ($phase == 'runtime') {
-      $requirements['eu_cookie_compliance'] += array(
-        'value' => t('Privacy Policy link not provided'),
-      );
+  if ($phase == 'runtime') {
+    $popup_link = Drupal::config('eu_cookie_compliance.settings')->get('popup_link');
+    $show_policy = Drupal::config('eu_cookie_compliance.settings')->get('show_disagree_button');
+
+    if ($popup_link == '<front>' && $show_policy) {
+      $requirements['eu_cookie_compliance'] = [
+        'title' => t('EU Cookie Compliance'),
+        'severity' => REQUIREMENT_WARNING,
+        'description' => t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'),
+        'value' => t('Privacy policy link not provided'),
+      ];
     }
   }
 
@@ -110,4 +176,131 @@ function eu_cookie_compliance_update_8105() {
     ->getEditable('eu_cookie_compliance.settings')
     ->set('show_disagree_button', TRUE)
     ->save();
+}
+
+/**
+ * Create new config value to handle consent options.
+ */
+function eu_cookie_compliance_update_8106() {
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('method', 'default')
+    ->set('disagree_button_label', 'No, thanks')
+    ->set('disabled_javascripts', '')
+    ->set('whitelisted_cookies', '')
+    ->save();
+}
+
+/**
+ * Add table to handle basic consent.
+ */
+function eu_cookie_compliance_update_8107() {
+  $schema['eu_cookie_compliance_basic_consent'] = [
+    'description' => 'Basic consent storage for EU Cookie Compliance / GDPR.',
+    'fields' => [
+      'cid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique consent storage ID.',
+      ],
+      'uid' => [
+        'description' => '{users}.uid for user.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'description' => 'Time of consent.',
+        'type' => 'int',
+        'unsigned' => FALSE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'ip_address' => [
+        'description' => 'The IP address.',
+        'type' => 'varchar',
+        // Maximum length of an ipv6 IP address.
+        'length' => 45,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'consent_type' => [
+        'description' => 'The type of consent, such as "banner" for the banner and form_id for forms.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'revision_id' => [
+        'description' => 'Revision of the privacy policy at the time of consent.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['cid'],
+    'indexes' => [
+      'uid' => ['uid'],
+    ],
+    'foreign keys' => [
+      'uid' => ['users' => 'uid'],
+    ],
+  ];
+
+  Database::getConnection()->schema()->createTable('eu_cookie_compliance_basic_consent', $schema['eu_cookie_compliance_basic_consent']);
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('consent_storage_method', 'do_not_store')
+    ->save();
+}
+
+/**
+ * Change module weight to load after other modules, ensure all JSs are handled.
+ */
+function eu_cookie_compliance_update_8108() {
+  module_load_include('module', 'eu_cookie_compliance', 'eu_cookie_compliance');
+  eu_cookie_compliance_module_set_weight();
+}
+
+/**
+ * Add config variables for the withdraw banner.
+ */
+function eu_cookie_compliance_update_8109() {
+  $default_filter_format = filter_default_format();
+  $full_html_format = FilterFormat::load('full_html');
+  if ($default_filter_format == 'restricted_html' && !empty($full_html_format) && $full_html_format->get('status')) {
+    $default_filter_format = 'full_html';
+  }
+
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('withdraw_message', [
+      'value' => '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>',
+      'format' => $default_filter_format,
+    ])
+    ->set('withdraw_action_button_label', 'Withdraw consent')
+    ->set('withdraw_tab_button_label', 'Privacy settings')
+    ->set('withdraw_enabled', TRUE)
+    ->save();
+}
+
+/**
+ * Disable withdraw tab and banner in the consent method "Consent by default".
+ */
+function eu_cookie_compliance_update_8110() {
+  $withdraw_enabled = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('withdraw_enabled');
+  $method = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('method');
+
+  if ($method == 'default' && $withdraw_enabled == 1) {
+    \Drupal::configFactory()
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('withdraw_enabled', FALSE)
+      ->save();
+  }
 }

@@ -5,10 +5,10 @@ package: User interface
 # core: 8.x
 configure: eu_cookie_compliance.settings
 dependencies:
-  - filter
+  - drupal:filter
 
-# Information added by Drupal.org packaging script on 2018-04-01
-version: '8.x-1.0'
+# Information added by Drupal.org packaging script on 2018-07-12
+version: '8.x-1.2'
 core: '8.x'
 project: 'eu_cookie_compliance'
-datestamp: 1522572790
+datestamp: 1531429147

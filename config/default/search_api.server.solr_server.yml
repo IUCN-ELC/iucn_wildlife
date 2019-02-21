@@ -20,8 +20,8 @@ backend_config:
     port: '8983'
     path: /solr
     core: wildlex
-    timeout: 5
-    index_timeout: 5
+    timeout: 25
+    index_timeout: 20
     optimize_timeout: 10
     finalize_timeout: 30
     commit_within: 1000

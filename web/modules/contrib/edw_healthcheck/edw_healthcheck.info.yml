@@ -7,8 +7,8 @@ dependencies:
  - drupal:update
  - drupal:basic_auth
 
-# Information added by Drupal.org packaging script on 2019-01-23
-version: '8.x-1.6'
+# Information added by Drupal.org packaging script on 2019-02-21
+version: '8.x-1.7'
 core: '8.x'
 project: 'edw_healthcheck'
-datestamp: 1548244086
+datestamp: 1550744905

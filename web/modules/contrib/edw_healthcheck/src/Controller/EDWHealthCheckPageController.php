@@ -3,9 +3,12 @@
 namespace Drupal\edw_healthcheck\Controller;
 
 use Drupal\Component\Plugin\Exception\PluginException;
+use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\edw_healthcheck\Plugin\EDWHealthCheckPlugin\EDWHealthCheckPluginManager;
 use Drupal\edw_healthcheck\Render\JsonEDWHealthCheckRender;
+use Drupal\update\UpdateManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -27,6 +30,9 @@ class EDWHealthCheckPageController extends ControllerBase {
    */
   protected $pluginManager;
 
+  /** @var UpdateManager */
+  protected $updateManager;
+
   /**
    * The EDWHealthCheck module's config.
    *
@@ -37,11 +43,25 @@ class EDWHealthCheckPageController extends ControllerBase {
   protected $config;
 
   /**
-   * Constructor.
+   * {@inheritdoc}
    */
-  public function __construct() {
-    $this->pluginManager = \Drupal::service('plugin.manager.edw_healthcheck');
-    $this->config = \Drupal::config('edw_healthcheck.settings');
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('plugin.manager.edw_healthcheck'),
+      $container->get('update.manager'),
+      $container->get('config.factory')
+    );
+  }
+
+
+  public function __construct(
+    EDWHealthCheckPluginManager $pluginManager,
+    UpdateManager $updateManager,
+    ConfigFactory $configFactory
+  ) {
+    $this->pluginManager = $pluginManager;
+    $this->updateManager = $updateManager;
+    $this->config = $configFactory->get('edw_healthcheck.settings');
   }
 
   /**
@@ -65,10 +85,13 @@ class EDWHealthCheckPageController extends ControllerBase {
       ->setMaxAge(0)
       ->setExpires();
 
+    if (in_array($topic, ['all', 'core', 'modules'])) {
+      $this->updateManager->refreshUpdateData();
+    }
+
     if ($topic == 'all') {
       $data = array_merge($this->getPluginData('core'),
         $this->getPluginData('modules'),
-        $this->getPluginData('themes'),
         $this->getPluginData('last_cron')
       );
     } else {

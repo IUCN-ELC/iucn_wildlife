@@ -3290,16 +3290,16 @@
         },
         {
             "name": "eaudeweb/heavy-lifter",
-            "version": "1.1.1",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eaudeweb/heavy-lifter.git",
-                "reference": "46004752432da3306c8de82a2186ba0e2834d148"
+                "reference": "76c009177cdac3b34f60fecdb71318db93f2ff15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eaudeweb/heavy-lifter/zipball/46004752432da3306c8de82a2186ba0e2834d148",
-                "reference": "46004752432da3306c8de82a2186ba0e2834d148",
+                "url": "https://api.github.com/repos/eaudeweb/heavy-lifter/zipball/76c009177cdac3b34f60fecdb71318db93f2ff15",
+                "reference": "76c009177cdac3b34f60fecdb71318db93f2ff15",
                 "shasum": ""
             },
             "require": {
@@ -3328,7 +3328,7 @@
                 }
             ],
             "description": "Common commands for your Drupal project to get you up to speed",
-            "time": "2019-02-13T10:39:22+00:00"
+            "time": "2019-02-20T16:58:11+00:00"
         },
         {
             "name": "eaudeweb/robo-curl",

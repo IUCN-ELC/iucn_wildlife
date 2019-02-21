@@ -164,9 +164,6 @@ $config['views.settings']['ui']['show']['performance_statistics'] = TRUE;
 
 $config_directories['sync'] = '../config/default';
 
-//search cron lasts only 15 seconds, is not enough to index all nodes imported from migrations
-$config['search_api.settings']['cron_worker_runtime'] = 120;
-
 $config['search_api.server.solr_server'] = [
   'backend_config' => [
     'connector' => 'standard',

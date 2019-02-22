@@ -1,0 +1,8 @@
+<?php
+
+function wildlex_structure_update_8001() {
+  \Drupal::database()
+    ->delete('key_value')
+    ->condition('collection', 'update_fetch_task')
+    ->execute();
+}

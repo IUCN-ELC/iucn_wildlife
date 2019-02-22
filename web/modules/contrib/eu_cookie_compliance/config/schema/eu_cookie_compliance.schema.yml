@@ -15,22 +15,16 @@ eu_cookie_compliance.settings:
       label: 'Consent by scrolling'
     eu_only:
       type: boolean
-      label: 'Only display banner in EU countries'
+      label: 'Only display banner in EU countries.'
     eu_only_js:
       type: boolean
-      label: 'Only display banner in EU countries (Javascript based)'
+      label: 'Only display banner in EU countries (Javascript based).'
     popup_position:
       type: boolean
       label: 'Place the banner at the top of the website'
     fixed_top_position:
       type: boolean
-      label: 'If the banner is at the top, don’t scroll the banner with the page'
-    popup_agree_button_message:
-      type: label
-      label: 'Agree button message'
-    popup_disagree_button_message:
-      type: label
-      label: 'Cookie Policy button message'
+      label: "If the banner is at the top, don't scroll the banner with the page."
     popup_info:
       type: mapping
       label: 'Cookie information banner message'
@@ -51,21 +45,24 @@ eu_cookie_compliance.settings:
         format:
           type: string
           label: 'Cookie information banner message - mobile - Format'
+    popup_agree_button_message:
+      type: label
+      label: 'Agree button message'
+    popup_disagree_button_message:
+      type: label
+      label: 'Cookie Policy button message'
     mobile_breakpoint:
       type: integer
       label: 'Mobile breakpoint'
     popup_agreed_enabled:
       type: boolean
-      label: 'Enable “Thank you” banner'
+      label: 'Enable "Thank you" banner.'
     popup_hide_agreed:
       type: boolean
-      label: 'Clicking hides “Thank you” banner'
-    popup_find_more_button_message:
+      label: 'Clicking hides "Thank you" banner.'
+    disagree_button_label:
       type: label
-      label: 'More info button label'
-    popup_hide_button_message:
-      type: label
-      label: 'Hide button label'
+      label: 'Disagree button label'
     popup_agreed:
       type: mapping
       label: 'Thank you banner message'
@@ -76,12 +73,18 @@ eu_cookie_compliance.settings:
         format:
           type: string
           label: 'Thank you banner message - Format'
+    popup_find_more_button_message:
+      type: label
+      label: 'More info button label'
+    popup_hide_button_message:
+      type: label
+      label: 'Hide button label'
     popup_link:
       type: label
       label: 'Privacy policy link'
     popup_link_new_window:
       type: boolean
-      label: 'Open privacy policy link in a new window'
+      label: 'Open privacy policy link in a new window.'
     popup_height:
       type: integer
       label: 'Banner height in pixels'
@@ -96,10 +99,10 @@ eu_cookie_compliance.settings:
       label: 'Show "Cookie Policy" and "More info" buttons'
     popup_bg_hex:
       type: string
-      label: 'Background Color'
+      label: 'Background color'
     popup_text_hex:
       type: string
-      label: 'Text Color'
+      label: 'Text color'
     domain:
       type: string
       label: 'Domain'
@@ -107,14 +110,17 @@ eu_cookie_compliance.settings:
       type: integer
       label: 'Add/Remove banner on specified domains'
     domains_list:
-      type: text
+      type: string
       label: 'Domains list'
     exclude_paths:
-      type: text
+      type: string
       label: 'Exclude paths'
     exclude_admin_theme:
       type: boolean
-      label: 'Exclude admin pages'
+      label: 'Exclude admin pages.'
+    cookie_session:
+      type: integer
+      label: 'Cookie session'
     cookie_lifetime:
       type: integer
       label: 'Cookie lifetime'
@@ -126,16 +132,47 @@ eu_cookie_compliance.settings:
       label: 'Include minimal CSS, I want to style the overlay in the theme CSS'
     disagree_do_not_show_popup:
       type: boolean
-      label: 'Don’t show cookie policy when the user clicks the “Cookie Policy” button.'
+      label: 'Do not show cookie policy when the user clicks the "Cookie Policy" button.'
     reload_page:
       type: boolean
-      label: 'Reload page after user clicks the “Agree” button.'
+      label: 'Reload page after user clicks the "Agree" button.'
     cookie_name:
       type: string
       label: 'Cookie name'
     exclude_uid_1:
       type: boolean
-      label: 'Don’t show the banner for UID 1.'
+      label: "Don't show the banner for UID 1."
     better_support_for_screen_readers:
       type: boolean
       label: 'Let screen readers see the banner before other links on the page'
+    method:
+      type: string
+      label: 'Consent method'
+    disabled_javascripts:
+      type: string
+      label: 'Disable JavaScripts'
+    whitelisted_cookies:
+      type: string
+      label: 'Whitelisted cookies'
+    consent_storage_method:
+      type: string
+      label: 'Consent storage method'
+    withdraw_message:
+      type: mapping
+      label: 'Withdraw consent banner message'
+      mapping:
+        value:
+          type: text
+          label: 'Withdraw consent banner message - Value'
+        format:
+          type: string
+          label: 'Withdraw consent banner message - Format'
+    withdraw_tab_button_label:
+      type: label
+      label: 'Privacy settings tab label'
+    withdraw_action_button_label:
+      type: label
+      label: 'Withdraw consent action button label'
+    withdraw_enabled:
+      type: boolean
+      label: 'Enable floating privacy settings tab and withdraw consent banner'

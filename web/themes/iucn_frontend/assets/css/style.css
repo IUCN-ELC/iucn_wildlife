@@ -802,6 +802,9 @@ body.path-frontpage {
 .footer .logos a {
   display: block;
 }
+.footer .logos img {
+  max-width: 100%;
+}
 #block-iucn-frontend-footer {
   float: right;
   margin-top: 14px;
@@ -823,13 +826,19 @@ body.path-frontpage {
     text-align: center;
   }
   .footer .logos {
-    display: inline-block;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
     float: none;
   }
   #block-iucn-frontend-footer {
     display: inline-block;
     float: none;
   }
+}
+.iucn-logo {
+  margin-right: 1em;
 }
 .form-required:after {
   background-image: none;
@@ -914,6 +923,16 @@ body.path-frontpage {
   margin-right: 20px;
   margin-top: 12px;
   padding-right: 0;
+  height: 80px;
+}
+@media (min-width: 1200px) {
+  .navbar .logo {
+    height: 90px;
+  }
+}
+.navbar .logo img {
+  height: 100%;
+  width: auto;
 }
 .navbar-nav > li > a.link-primary {
   background-color: #e67e22;
@@ -928,6 +947,16 @@ body.path-frontpage {
   background-color: #bf6516;
   border-color: #b66015;
   color: #fff;
+}
+@media (min-width: 1200px) {
+  .navbar-nav > li > a {
+    padding-top: 46px;
+    padding-bottom: 46px;
+  }
+}
+.navbar-toggle {
+  margin-top: 35px;
+  margin-bottom: 35px;
 }
 .region-jumbotron-top #block-underdevelopmentdisclaimer {
   text-align: center;
@@ -969,7 +998,7 @@ body.path-frontpage {
   }
 }
 .path-frontpage .jumbotron {
-  height: calc(100vh - 182px);
+  height: calc(100vh - 182px - 26px);
   margin-bottom: 0;
   min-height: 231px;
 }
@@ -1050,16 +1079,17 @@ body.path-frontpage {
 }
 @media (max-width: 767px) {
   .path-frontpage .jumbotron {
-    height: calc(100vh - 239px);
+    height: calc(100vh - 239px - 26px);
+    min-height: 340px;
   }
   .path-frontpage #sliding-popup ~ .jumbotron {
-    height: calc(100vh - 286px);
+    height: calc(100vh - 286px - 26px);
   }
   .path-frontpage.toolbar-fixed .jumbotron {
-    height: calc(100vh - 278px);
+    height: calc(100vh - 278px - 26px);
   }
   .path-frontpage.toolbar-fixed.toolbar-tray-open .jumbotron {
-    height: calc(100vh - 318px);
+    height: calc(100vh - 318px - 26px);
   }
 }
 .page-title {

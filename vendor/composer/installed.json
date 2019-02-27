@@ -1986,6 +1986,76 @@
         "description": "Composer Plugin for updating the Drupal scaffold files when using drupal/core"
     },
     {
+        "name": "drupal/bootstrap",
+        "version": "3.17.0",
+        "version_normalized": "3.17.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/bootstrap",
+            "reference": "8.x-3.17"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/bootstrap-8.x-3.17.zip",
+            "reference": "8.x-3.17",
+            "shasum": "7fec8e6bc1435b97952844315035b36c2dbc07b2"
+        },
+        "require": {
+            "drupal/core": "~8.0"
+        },
+        "type": "drupal-theme",
+        "extra": {
+            "branch-alias": {
+                "dev-3.x": "3.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-3.17",
+                "datestamp": "1548102180",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            },
+            "patches_applied": {
+                "Error: Unsupported operand types during providers JSON discovery": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Mark Carver (markcarver)",
+                "homepage": "https://www.drupal.org/u/markcarver",
+                "role": "Maintainer"
+            },
+            {
+                "name": "John McCormick (neardark)",
+                "homepage": "https://www.drupal.org/u/neardark",
+                "role": "Co-maintainer"
+            },
+            {
+                "name": "Fabiano Sant'Ana (wundo)",
+                "homepage": "https://www.drupal.org/u/wundo",
+                "role": "Co-maintainer"
+            },
+            {
+                "name": "wundo",
+                "homepage": "https://www.drupal.org/user/25523"
+            }
+        ],
+        "description": "Built to use Bootstrap, a sleek, intuitive, and powerful front-end framework for faster and easier web development.",
+        "homepage": "https://www.drupal.org/project/bootstrap",
+        "support": {
+            "source": "http://cgit.drupalcode.org/bootstrap",
+            "docs": "https://drupal-bootstrap.org",
+            "issues": "https://www.drupal.org/project/issues/bootstrap",
+            "irc": "irc://irc.freenode.org/drupal-bootstrap"
+        }
+    },
+    {
         "name": "drupal/coder",
         "version": "8.3.1",
         "version_normalized": "8.3.1.0",

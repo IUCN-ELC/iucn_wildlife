@@ -152,6 +152,10 @@ class CountriesMapService {
 
 
   public function getTermNames($tids) {
+    if (is_numeric($tids)) {
+      $tids = (array) $tids;
+    }
+
     $terms = [];
     foreach ($tids as $tid) {
       $term = Term::load($tid);
@@ -187,8 +191,13 @@ class CountriesMapService {
         case 'field_language_of_document':
           $label =  t('Language');
           break;
+        case 'field_court':
+          $label =  t('Court');
           break;
         default:
+          \Drupal::logger('wildlex_map')
+            ->warning("Field {$field_name} was not expected in filters!");
+          $label = '';
           break;
       }
       $filters[] = sprintf('<strong>%s</strong> (%s)',

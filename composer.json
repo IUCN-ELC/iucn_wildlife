@@ -19,6 +19,7 @@
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
+        "drupal/bootstrap": "^3.17",
         "drupal/console": "^1.0.2",
         "drupal/core": "8.6.*",
         "drupal/ctools": "^3.0",
@@ -82,6 +83,9 @@
             "drush/contrib/{$name}": ["type:drupal-drush"]
         },
         "patches": {
+            "drupal/bootstrap": {
+                "Error: Unsupported operand types during providers JSON discovery": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
+            }
         }
 
     }

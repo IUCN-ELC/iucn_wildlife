@@ -108,6 +108,9 @@ abstract class DefaultSearchController extends ControllerBase {
       $server_config = new SolrSearchServer('default_node_index');
       $query = $_GET + $parameters;
       $query['q'] = iucn_search_query_filter();
+      if (empty($query['q'])) {
+        $query['q'] = '*';
+      }
 
       self::$search = new SolrSearch($query, $server_config);
     }

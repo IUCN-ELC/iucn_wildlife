@@ -283,6 +283,7 @@ function eu_cookie_compliance_update_8109() {
     ->set('withdraw_action_button_label', 'Withdraw consent')
     ->set('withdraw_tab_button_label', 'Privacy settings')
     ->set('withdraw_enabled', TRUE)
+    ->set('popup_info_template', 'legacy')
     ->save();
 }
 

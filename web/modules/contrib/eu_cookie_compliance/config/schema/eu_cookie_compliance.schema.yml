@@ -45,6 +45,9 @@ eu_cookie_compliance.settings:
         format:
           type: string
           label: 'Cookie information banner message - mobile - Format'
+    popup_info_template:
+      type: string
+      label: 'Template to use for "consent by default" method'
     popup_agree_button_message:
       type: label
       label: 'Agree button message'

@@ -20,7 +20,7 @@ class BasicConsentStorage extends ConsentStorageBase {
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id = NULL, $plugin_definition = NULL, ConfigFactoryInterface $config_factory = NULL) {
-    return parent::__construct($configuration, $plugin_id, $plugin_definition, $config_factory);
+
   }
 
   /**

@@ -283,6 +283,7 @@ function eu_cookie_compliance_update_8109() {
     ->set('withdraw_action_button_label', 'Withdraw consent')
     ->set('withdraw_tab_button_label', 'Privacy settings')
     ->set('withdraw_enabled', TRUE)
+    ->set('popup_info_template', 'legacy')
     ->save();
 }
 
@@ -301,6 +302,22 @@ function eu_cookie_compliance_update_8110() {
     \Drupal::configFactory()
       ->getEditable('eu_cookie_compliance.settings')
       ->set('withdraw_enabled', FALSE)
+      ->save();
+  }
+}
+
+/**
+ * Adding config variable for the withdraw banner.
+ */
+function eu_cookie_compliance_update_8111() {
+  $popup_info_template = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('popup_info_template');
+
+  if ($popup_info_template === NULL) {
+    \Drupal::configFactory()
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('popup_info_template', 'legacy')
       ->save();
   }
 }

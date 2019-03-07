@@ -1,6 +1,5 @@
 /**
- * @file
- * eu_cookie_compliance.js
+ * @file eu_cookie_compliance.js
  *
  * Defines the behavior of the eu cookie compliance banner.
  */
@@ -8,7 +7,6 @@
 (function ($, Drupal, drupalSettings) {
 
   'use strict';
-  var euCookieComplianceBlockCookies;
 
   Drupal.behaviors.euCookieCompliancePopup = {
     attach: function (context) {
@@ -195,7 +193,7 @@
     $('.decline-button').click(Drupal.eu_cookie_compliance.declineAction);
 
     if (clickingConfirms) {
-      $('a, input[type=submit], button[type=submit]').not('.popup-content *').bind('click.euCookieCompliance', Drupal.eu_cookie_compliance.acceptAction);
+      $('a, input[type=submit], button[type=submit]').bind('click.euCookieCompliance', Drupal.eu_cookie_compliance.acceptAction);
     }
 
     if (scrollConfirms) {
@@ -261,7 +259,7 @@
 
   Drupal.eu_cookie_compliance.declineAction = function () {
     Drupal.eu_cookie_compliance.setStatus(0);
-    var popup = $('#sliding-popup');
+    let popup = $('#sliding-popup');
     if (popup.hasClass('sliding-popup-top')) {
       popup.animate({ top: popup.outerHeight() * -1 }).trigger('eu_cookie_compliance_popup_close');
     }
@@ -271,8 +269,7 @@
   };
 
   Drupal.eu_cookie_compliance.withdrawAction = function () {
-    Drupal.eu_cookie_compliance.setStatus(0);
-
+    Drupal.eu_cookie_compliance.setStatus(null);
     location.reload();
   };
 
@@ -416,8 +413,8 @@
     var euCookieComplianceWhitelist = drupalSettings.eu_cookie_compliance.whitelisted_cookies.split(/\r\n|\n|\r/g);
 
     // Add the EU Cookie Compliance cookie.
-    euCookieComplianceWhitelist.push((typeof drupalSettings.eu_cookie_compliance.cookie_name === 'undefined' || drupalSettings.eu_cookie_compliance.cookie_name === '') ? 'cookie-agreed' : drupalSettings.eu_cookie_compliance.cookie_name);
-    euCookieComplianceBlockCookies = setInterval(function () {
+    euCookieComplianceWhitelist.push((drupalSettings.eu_cookie_compliance.cookie_name === '') ? 'cookie-agreed' : drupalSettings.eu_cookie_compliance.cookie_name);
+    var euCookieComplianceBlockCookies = setInterval(function () {
       // Load all cookies from jQuery.
       var cookies = $.cookie();
 

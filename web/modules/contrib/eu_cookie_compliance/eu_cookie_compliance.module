@@ -18,7 +18,6 @@ use Drupal\smart_ip\SmartIp;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Component\Serialization\Json;
-use Drupal\Component\Utility\Xss;
 
 /**
  * Implements hook_help().
@@ -132,7 +131,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       $data['css'] .= '#sliding-popup.sliding-popup-top { position: fixed; }';
     }
 
-    $method = $config->get('method') ? $config->get('method') : 'default';
+    $method = $config->get('method');
 
     if ($method == 'auto') {
       $dnt = isset($_SERVER['HTTP_DNT']) ? $_SERVER['HTTP_DNT'] : NULL;
@@ -144,9 +143,6 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       }
     }
 
-    // Set default value for $popup_info_template.
-    $popup_info_template = 'eu_cookie_compliance_popup_info';
-
     switch ($method) {
       case 'default':
         $click_confirmation = $config->get('popup_clicking_confirmation');
@@ -155,11 +151,6 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
         $primary_button_class = 'agree-button eu-cookie-compliance-default-button';
         $secondary_button_label = '';
         $secondary_button_class = '';
-        $info_templates = [
-          'legacy' => 'eu_cookie_compliance_popup_info_consent_default',
-          'new' => 'eu_cookie_compliance_popup_info',
-        ];
-        $popup_info_template = $info_templates[$config->get('popup_info_template')];
         break;
 
       case 'opt_in':
@@ -181,11 +172,11 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
         break;
     }
 
-    $popup_text_info = str_replace(["\r", "\n"], '', Xss::filter($config->get('popup_info.value')));
-    $popup_text_agreed = str_replace(["\r", "\n"], '', Xss::filter($config->get('popup_agreed.value')));
-    $withdraw_markup = str_replace(["\r", "\n"], '', Xss::filter($config->get('withdraw_message.value')));
+    $popup_text_info = str_replace(["\r", "\n"], '', $config->get('popup_info.value'));
+    $popup_text_agreed = str_replace(["\r", "\n"], '', $config->get('popup_agreed.value'));
+    $withdraw_markup = str_replace(["\r", "\n"], '', $config->get('withdraw_message.value'));
     $html_info = [
-      '#theme' => $popup_info_template,
+      '#theme' => 'eu_cookie_compliance_popup_info',
       '#message' => check_markup($popup_text_info, $config->get('popup_info.format'), FALSE),
       '#agree_button' => $primary_button_label,
       '#disagree_button' => ($config->get('show_disagree_button') == TRUE) ? $config->get('popup_disagree_button_message') : FALSE,
@@ -193,9 +184,9 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       '#primary_button_class' => $primary_button_class,
       '#secondary_button_class' => $secondary_button_class,
     ];
-    $mobile_popup_text_info = str_replace(["\r", "\n"], '', Xss::filter($config->get('mobile_popup_info.value')));
+    $mobile_popup_text_info = str_replace(["\r", "\n"], '', $config->get('mobile_popup_info.value'));
     $mobile_html_info = [
-      '#theme' => $popup_info_template,
+      '#theme' => 'eu_cookie_compliance_popup_info',
       '#message' => check_markup($mobile_popup_text_info, $config->get('popup_info.format'), FALSE),
       '#agree_button' => $primary_button_label,
       '#disagree_button' => ($config->get('show_disagree_button') == TRUE) ? $config->get('popup_disagree_button_message') : FALSE,
@@ -243,7 +234,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     }
     else {
       // Guard against translations being entered without leading slash.
-      if (substr($popup_link, 0, 1) != '/' && substr($popup_link, 0, 1) != '?' && substr($popup_link, 0, 1) != '#') {
+      if (substr( $popup_link, 0, 1) != '/' && substr( $popup_link, 0, 1) != '?' && substr( $popup_link, 0, 1) != '#') {
         $popup_link = '/' . $popup_link;
       }
       $popup_link = $popup_link === '<front>' ? '/' : $popup_link;
@@ -312,7 +303,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       [
         '#type' => 'html_tag',
         '#tag' => 'script',
-        '#value' => 'function euCookieComplianceLoadScripts() {' . $load_disabled_scripts . 'Drupal.attachBehaviors();}',
+        '#value' => 'function euCookieComplianceLoadScripts() {' . $load_disabled_scripts . '}',
       ],
       'eu-cookie-compliance-js',
     ];
@@ -358,17 +349,6 @@ function eu_cookie_compliance_theme($existing, $type, $theme, $path) {
   return [
     'eu_cookie_compliance_popup_info' => [
       'template' => 'eu_cookie_compliance_popup_info',
-      'variables' => [
-        'message' => NULL,
-        'agree_button' => NULL,
-        'disagree_button' => NULL,
-        'secondary_button_label' => NULL,
-        'primary_button_class' => NULL,
-        'secondary_button_class' => NULL,
-      ],
-    ],
-    'eu_cookie_compliance_popup_info_consent_default' => [
-      'template' => 'eu_cookie_compliance_popup_info_consent_default',
       'variables' => [
         'message' => NULL,
         'agree_button' => NULL,
@@ -433,14 +413,6 @@ function eu_cookie_compliance_user_in_eu() {
     $smart_ip_session = SmartIp::query($ip_address);
     $country_code = isset($smart_ip_session['countryCode']) ? $smart_ip_session['countryCode'] : NULL;
   }
-
-  // If the CloudFlare provided country header is available, use it as a
-  // fallback. See:
-  // https://support.cloudflare.com/hc/en-us/articles/200168236-What-does-Cloudflare-IP-Geolocation-do-
-  if (empty($country_code) && (isset($_SERVER['HTTP_CF_IPCOUNTRY']))) {
-    $country_code = $_SERVER['HTTP_CF_IPCOUNTRY'];
-  }
-
   if (in_array($country_code, $eu_countries) || $country_code == '' || $country_code == '-') {
     $geoip_match = TRUE;
   }
@@ -481,8 +453,6 @@ function _eu_cookie_compliance_explode_multiple_lines($text) {
   if (count($text) == 1) {
     $text = explode("\n", $text[0]);
   }
-
-  array_walk($text, '_eu_cookie_compliance_convert_relative_uri');
   return $text;
 }
 
@@ -541,21 +511,4 @@ function eu_cookie_compliance_module_set_weight() {
     }
   }
   module_set_weight('eu_cookie_compliance', $weight);
-}
-
-/**
- * Convert uri to relative path.
- *
- * Example public://file.js to /sites/default/files/file.js.
- *
- * @param string $element
- *   Url to transform.
- * @param string $key
- *   Key.
- *
- * @return mixed
- *   Paths converted.
- */
-function _eu_cookie_compliance_convert_relative_uri(&$element, $key) {
-  $element = preg_replace('/^\//', '', file_url_transform_relative(file_create_url($element)));
 }

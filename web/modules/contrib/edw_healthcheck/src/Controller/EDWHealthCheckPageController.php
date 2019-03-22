@@ -92,9 +92,11 @@ class EDWHealthCheckPageController extends ControllerBase {
     if ($topic == 'all') {
       $data = array_merge($this->getPluginData('core'),
         $this->getPluginData('modules'),
-        $this->getPluginData('last_cron')
+        $this->getPluginData('last_cron'),
+        $this->getPluginData('enabled_modules')
       );
-    } else {
+    }
+    else {
       $data = $this->getPluginData($topic);
     }
 
@@ -120,7 +122,7 @@ class EDWHealthCheckPageController extends ControllerBase {
    *    Exception.
    */
   protected function getPluginData($type) {
-    if (!in_array($type, ['core', 'modules', 'themes', 'last_cron'])) {
+    if (!in_array($type, ['core', 'modules', 'themes', 'last_cron', 'enabled_modules'])) {
       return [];
     }
 

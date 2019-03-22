@@ -2785,18 +2785,18 @@
     },
     {
         "name": "drupal/edw_healthcheck",
-        "version": "1.7.0",
-        "version_normalized": "1.7.0.0",
+        "version": "1.8.0",
+        "version_normalized": "1.8.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupal.org/project/edw_healthcheck",
-            "reference": "8.x-1.7"
+            "reference": "8.x-1.8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/edw_healthcheck-8.x-1.7.zip",
-            "reference": "8.x-1.7",
-            "shasum": "9b2e4f2c2d0f8546c37022a15d80edd5fbe3180b"
+            "url": "https://ftp.drupal.org/files/projects/edw_healthcheck-8.x-1.8.zip",
+            "reference": "8.x-1.8",
+            "shasum": "46e6f9aeeecc0e1f4b217102941860b736d95080"
         },
         "require": {
             "drupal/core": "*"
@@ -2807,8 +2807,8 @@
                 "dev-1.x": "1.x-dev"
             },
             "drupal": {
-                "version": "8.x-1.7",
-                "datestamp": "1550744888",
+                "version": "8.x-1.8",
+                "datestamp": "1550838184",
                 "security-coverage": {
                     "status": "not-covered",
                     "message": "Project has not opted into security advisory coverage!"

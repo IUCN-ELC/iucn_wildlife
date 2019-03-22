@@ -12,7 +12,7 @@ use Drupal\edw_healthcheck\Helper\EDWHealthCheckHelper;
 /**
  * Renders the edw_healthcheck data in the table format.
  *
- * This format is used to print in Console output, when executing drush commands.
+ * This format is used to print console output, when executing drush commands.
  */
 class ConsoleEDWHealthCheckRender implements EDWHealthCheckRenderInterface {
 

@@ -57,7 +57,7 @@ edw_healthcheck.settings:
               mapping:
                 enabled:
                   type: boolean
-                  label: 'Enable monitoring for the Modules?'
+                  label: 'Enable monitoring for the status of the Modules?'
             themes:
               type: mapping
               label: 'Installed Themes'
@@ -72,3 +72,11 @@ edw_healthcheck.settings:
                 enabled:
                   type: boolean
                   label: 'Enable monitoring for the Last Cron?'
+            enabled_modules:
+              type: mapping
+              label: 'Enabled Modules'
+              mapping:
+                enabled:
+                  type: boolean
+                  label: 'Enable monitoring for the list of Enabled Modules?'
+

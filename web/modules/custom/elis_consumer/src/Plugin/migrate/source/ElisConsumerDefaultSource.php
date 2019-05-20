@@ -15,6 +15,7 @@ use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
+use Drupal\taxonomy\Entity\Term;
 
 abstract class ElisConsumerDefaultSource extends SourcePluginBase {
 
@@ -255,4 +256,43 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
     return TRUE;
   }
 
+  public function rebuildSpeciesTerm(Row $row) {
+    $speciesName = $row->getSourceProperty('wildlifeSpecies');
+    $linkPage = $row->getSourceProperty('wildlifeSpeciesDOI');
+
+    $termStorage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $needSave = false;
+    $term = $termStorage->loadByProperties(
+      [
+        'vid' => 'species',
+        'name' => $speciesName
+      ]
+    );
+
+    if (empty($term)) {
+      $term = Term::create(
+        [
+          'vid' => 'species',
+          'name' => $speciesName
+        ]
+      );
+      $needSave = true;
+    } else {
+      $term = reset($term);
+    }
+
+    $doiTermLink = null;
+    if (!empty($term->get('field_doi_link_page')->getValue())) {
+      $doiTermLink = $term->get('field_doi_link_page')->uri;
+    }
+
+    if ($doiTermLink != $linkPage) {
+      $term->set('field_doi_link_page', $linkPage);
+      $needSave = true;
+    }
+
+    if ($needSave) {
+      $term->save();
+    }
+  }
 }

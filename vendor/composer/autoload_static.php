@@ -121,6 +121,10 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         array (
             'League\\Container\\' => 17,
         ),
+        'J' => 
+        array (
+            'JsonSchema\\' => 11,
+        ),
         'I' => 
         array (
             'Interop\\Container\\' => 18,
@@ -136,6 +140,7 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         ),
         'E' => 
         array (
+            'Egulias\\EmailValidator\\' => 23,
             'EauDeWeb\\Robo\\Task\\Curl\\' => 24,
             'EauDeWeb\\' => 9,
         ),
@@ -393,6 +398,10 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         array (
             0 => __DIR__ . '/..' . '/league/container/src',
         ),
+        'JsonSchema\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
+        ),
         'Interop\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
@@ -420,6 +429,10 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         'Goutte\\' => 
         array (
             0 => __DIR__ . '/..' . '/fabpot/goutte/Goutte',
+        ),
+        'Egulias\\EmailValidator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
         ),
         'EauDeWeb\\Robo\\Task\\Curl\\' => 
         array (
@@ -587,6 +600,10 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
             ),
+            'PEAR' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/pear_exception',
+            ),
         ),
         'J' => 
         array (
@@ -601,10 +618,6 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
         ),
         'E' => 
         array (
-            'Egulias\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/egulias/email-validator/src',
-            ),
             'EasyRdf_' => 
             array (
                 0 => __DIR__ . '/..' . '/easyrdf/easyrdf/lib',
@@ -637,6 +650,24 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
                 0 => __DIR__ . '/..' . '/dflydev/dot-access-configuration/src',
             ),
         ),
+        'C' => 
+        array (
+            'Console' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/console_getopt',
+            ),
+        ),
+        'A' => 
+        array (
+            'Archive_Tar' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/archive_tar',
+            ),
+        ),
+    );
+
+    public static $fallbackDirsPsr0 = array (
+        0 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
@@ -1206,6 +1237,7 @@ class ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5
             $loader->prefixLengthsPsr4 = ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInit2d5d827a6214dd1725350ce80aeefae5::$classMap;
 
         }, null, ClassLoader::class);

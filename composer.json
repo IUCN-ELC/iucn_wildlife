@@ -21,7 +21,7 @@
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/bootstrap": "^3.17",
         "drupal/console": "^1.0.2",
-        "drupal/core": "8.6.*",
+        "drupal/core": "~8.6",
         "drupal/ctools": "^3.0",
         "drupal/editor_file": "^1.2",
         "drupal/edw_healthcheck": "^1.6",

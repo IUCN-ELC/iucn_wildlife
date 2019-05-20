@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Court jurisdictions'
 vid: court_jurisdictions
 description: ''
-hierarchy: 0
 weight: 0

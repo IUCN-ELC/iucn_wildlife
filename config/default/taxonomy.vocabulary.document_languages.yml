@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Document languages'
 vid: document_languages
 description: ''
-hierarchy: 0
 weight: 0

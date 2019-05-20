@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Case types'
 vid: case_types
 description: ''
-hierarchy: 0
 weight: 0

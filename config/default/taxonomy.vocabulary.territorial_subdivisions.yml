@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Territorial subdivisions'
 vid: territorial_subdivisions
 description: ''
-hierarchy: 0
 weight: 0

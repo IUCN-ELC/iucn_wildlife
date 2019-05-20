@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'ECOLEX subjects'
 vid: ecolex_subjects
 description: ''
-hierarchy: 0
 weight: 0

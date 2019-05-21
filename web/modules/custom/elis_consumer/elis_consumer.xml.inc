@@ -168,6 +168,12 @@ function elis_consumer_xml_http_request($url, $xml_encoding) {
       if (mb_detect_encoding($response, 'UTF-8', TRUE) == 'UTF-8') {
         $data = trim($response);
         $ret = simplexml_load_string($data);
+        if (empty($ret)) {
+          libxml_clear_errors();
+          //remove all self closing tags like <head\>
+          $data = preg_replace('/\<(\w)*\/\>/', '', $data);
+          $ret = simplexml_load_string($data);
+        }
       } else {
         $data = trim(utf8_decode($response));
         $ret = simplexml_load_string(utf8_encode($data));

@@ -277,6 +277,11 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
         ]
       );
       $needSave = true;
+
+      $violations = $term->validate();
+      if ($this->count($violations)) {
+        \Drupal::logger('elis_consumer')->error("Validation errors when trying to save term {$speciesName} !");
+      }
     } else {
       $term = reset($term);
     }

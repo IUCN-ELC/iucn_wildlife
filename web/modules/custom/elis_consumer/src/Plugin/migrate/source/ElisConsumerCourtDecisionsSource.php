@@ -94,6 +94,7 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       'sourceWebsite' => 'Source Website',
       'wildlifeChargeSheet' => 'Charge Sheet',
       'wildlifeSpeciesDOI' => 'Species link from DOI system',
+      'wildlifeSpeciesDOIMapping' => 'Mapping between species name and species DOI',
     );
   }
 

@@ -331,7 +331,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_label_for_species
     region: content
   field_territorial_subdivisions:
     weight: 2

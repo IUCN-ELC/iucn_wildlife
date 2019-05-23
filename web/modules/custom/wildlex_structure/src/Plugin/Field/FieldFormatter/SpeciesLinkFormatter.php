@@ -65,6 +65,7 @@ class SpeciesLinkFormatter extends EntityReferenceFormatterBase {
       $label = $entity->label();
       // If the link is to be displayed and the entity has a uri, display a
       // link.
+      $uri = null;
       if ($output_as_link && !$entity->isNew() && !empty($entity->get('field_doi_link_page')->getValue())) {
         try {
           $uri = $entity->get('field_doi_link_page')->uri;

@@ -261,6 +261,42 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
     return TRUE;
   }
 
+  /**
+   * @param \Drupal\migrate\Row $row
+   * @param array $properties
+   *
+   * @throws \Exception
+   */
+  protected function fixLinkFields(Row $row, $properties = []) {
+    $rowId = $row->getSourceProperty('id');
+    foreach ($properties as $field) {
+      $values = $row->getSourceProperty($field);
+      if (empty($values)) {
+        continue;
+      }
+
+      if (!is_array($values)) {
+        $values = [$values];
+      }
+
+      foreach ($values as $key => $value) {
+        if (!filter_var($value, FILTER_VALIDATE_URL)) {
+          \Drupal::logger('elis_consumer')
+            ->notice("Row '@rowId' has invalid url provided for field '@field', value: '@value'!",
+              [
+                '@field' => $field,
+                '@value' => $value,
+                '@rowId' => $rowId,
+              ]
+            );
+
+          unset($values[$key]);
+        }
+      }
+      $row->setSourceProperty($field, $values);
+    }
+  }
+
 
   /**
    * @param \Drupal\migrate\Row $row
@@ -273,17 +309,29 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
     $wildlifeSpeciesDOIMapping = !empty($row->getSourceProperty('wildlifeSpeciesDOIMapping'))
       ? json_decode($row->getSourceProperty('wildlifeSpeciesDOIMapping'), TRUE)
       : [];
-    foreach($wildlifeSpeciesDOIMapping as $speciesName => $doiURL) {
+    foreach ($wildlifeSpeciesDOIMapping as $speciesName => $doiURL) {
       $term = $this->findTerm($speciesName);
       $needSave = empty($term->id());
       $existingDOILink = $term->get('field_doi_link_page')->getString();
       if ($existingDOILink != $doiURL) {
+        if (!filter_var($doiURL, FILTER_VALIDATE_URL)) {
+          \Drupal::logger('elis_consumer')
+            ->notice("Row @rowId has invalid url provided for field @field with value @value!",
+              [
+                '@field' => 'wildlifeSpeciesDOI',
+                '@value' => $doiURL,
+                '@rowId' => $doiURL,
+              ]
+            );
+          continue;
+        }
         $term->set('field_doi_link_page', $doiURL);
-        $needSave = true;
+        $needSave = TRUE;
       }
+
       if ($needSave) {
         $violations = $term->validate();
-        if ($this->count($violations)) {
+        if ($violations->count()) {
           Drupal::logger('elis_consumer')->error(
             "Record id: @id - Validation errors while trying to save term: @speciesNames (@errors)",
             ['@id' => $id, '@speciesNames' => $speciesName, '@errors' => $violations]
@@ -293,7 +341,6 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
       }
     }
   }
-
 
   /**
    * @param string $name

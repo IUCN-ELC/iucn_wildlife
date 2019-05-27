@@ -63,7 +63,7 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form['edw_healthcheck_components']['edw_healthcheck_enable_modules_component'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('Enable EDWHealthCheck monitoring for the active Modules.'),
+        '#title' => $this->t('Enable EDWHealthCheck monitoring for the status of active Modules.'),
         '#default_value' => $config->get('edw_healthcheck.components.modules.enabled'),
         '#attributes' => ($config->get('edw_healthcheck.statuspage.enabled') == FALSE ? ['disabled' => TRUE] : []),
         '#states' => [
@@ -91,6 +91,16 @@ class SettingsForm extends ConfigFormBase {
           ':input[name="edw_healthcheck_enable_status_page"]' => ['checked' => FALSE]],
       ],
     ];
+    $form['edw_healthcheck_components']['edw_healthcheck_enable_enabled_modules_component'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable EDWHealthCheck monitoring for the list of enabled modules.'),
+      '#default_value' => $config->get('edw_healthcheck.components.enabled_modules.enabled'),
+      '#attributes' => ($config->get('edw_healthcheck.statuspage.enabled') == FALSE ? ['disabled' => TRUE] : []),
+      '#states' => [
+        'disabled' => [
+          ':input[name="edw_healthcheck_enable_status_page"]' => ['checked' => FALSE]],
+      ],
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -111,6 +121,7 @@ class SettingsForm extends ConfigFormBase {
     $config->set('edw_healthcheck.components.modules.enabled', $form_state->getValue('edw_healthcheck_enable_modules_component'));
     $config->set('edw_healthcheck.components.themes.enabled', $form_state->getValue('edw_healthcheck_enable_themes_component'));
     $config->set('edw_healthcheck.components.last_cron.enabled', $form_state->getValue('edw_healthcheck_enable_last_cron_component'));
+    $config->set('edw_healthcheck.components.enabled_modules.enabled', $form_state->getValue('edw_healthcheck_enable_enabled_modules_component'));
 
     $config->save();
 

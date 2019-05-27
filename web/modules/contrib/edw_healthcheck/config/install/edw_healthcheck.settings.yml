@@ -18,3 +18,5 @@ edw_healthcheck:
       enabled: true
     last_cron:
       enabled: true
+    enabled_modules:
+      enabled: true

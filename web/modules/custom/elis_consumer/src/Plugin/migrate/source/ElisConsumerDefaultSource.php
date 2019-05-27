@@ -10,11 +10,13 @@ namespace Drupal\elis_consumer\Plugin\migrate\source;
 
 include_once __DIR__ . '/../../../../elis_consumer.xml.inc';
 
+use ArrayIterator;
+use Drupal;
 use Drupal\elis_consumer\ElisXMLConsumer;
-use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
+use Drupal\taxonomy\Entity\Term;
 
 abstract class ElisConsumerDefaultSource extends SourcePluginBase {
 
@@ -165,7 +167,7 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
     foreach($data as &$doc) {
       $doc = $this->getItem($doc);
     }
-    $iterator = new \ArrayIterator($data);
+    $iterator = new ArrayIterator($data);
     return $iterator;
   }
 
@@ -226,7 +228,7 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
 
 
       if ($error) {
-        \Drupal::logger('elis_consumer')->info(
+        Drupal::logger('elis_consumer')->info(
           "Received wrong date: @date, field: @field,id: @id, title: @title - set the date to: @new_date",
           [
             '@date' => ($row->getSourceProperty($field) ? $row->getSourceProperty($field) : 'empty'),
@@ -236,13 +238,17 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
             '@new_date' => "$year-$month-$day",
           ]);
       }
-
-
-
       $row->setSourceProperty($field, "$year-$month-$day");
     }
   }
 
+
+  /**
+   * @param \Drupal\migrate\Row $row
+   *
+   * @return bool
+   * @throws \Exception
+   */
   public function prepareRow(Row $row) {
     $titleOfText = $this->getTitle($row);
     if (empty($titleOfText)) {
@@ -255,4 +261,65 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
     return TRUE;
   }
 
+
+  /**
+   * @param \Drupal\migrate\Row $row
+   *
+   * @throws \Exception
+   */
+  public function rebuildSpeciesTerm(Row $row) {
+    $id = $row->getSourceProperty('id');
+    // Transport data from XML parser to prepareRow, funny ... I know :-)
+    $wildlifeSpeciesDOIMapping = !empty($row->getSourceProperty('wildlifeSpeciesDOIMapping'))
+      ? json_decode($row->getSourceProperty('wildlifeSpeciesDOIMapping'), TRUE)
+      : [];
+    foreach($wildlifeSpeciesDOIMapping as $speciesName => $doiURL) {
+      $term = $this->findTerm($speciesName);
+      $needSave = empty($term->id());
+      $existingDOILink = $term->get('field_doi_link_page')->getString();
+      if ($existingDOILink != $doiURL) {
+        $term->set('field_doi_link_page', $doiURL);
+        $needSave = true;
+      }
+      if ($needSave) {
+        $violations = $term->validate();
+        if ($this->count($violations)) {
+          Drupal::logger('elis_consumer')->error(
+            "Record id: @id - Validation errors while trying to save term: @speciesNames (@errors)",
+            ['@id' => $id, '@speciesNames' => $speciesName, '@errors' => $violations]
+          );
+        }
+        $term->save();
+      }
+    }
+  }
+
+
+  /**
+   * @param string $name
+   * @return \Drupal\taxonomy\Entity\Term
+   *
+   * @throws  \Exception
+   */
+  public function findTerm($name) {
+    $termStorage = Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    /** @var \Drupal\taxonomy\Entity\Term $term */
+    $term = $termStorage->loadByProperties(
+      [
+        'vid' => 'species',
+        'name' => $name
+      ]
+    );
+    if (empty($term)) {
+      $term = Term::create(
+        [
+          'vid' => 'species',
+          'name' => $name
+        ]
+      );
+    } else {
+      $term = reset($term);
+    }
+    return $term;
+  }
 }

@@ -1,0 +1,23 @@
+uuid: 24a3ef4c-8c48-4fd4-bf45-f6209d29b5e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.species.field_doi_link_page
+    - taxonomy.vocabulary.species
+  module:
+    - text
+id: taxonomy_term.species.default
+targetEntityType: taxonomy_term
+bundle: species
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_doi_link_page: true

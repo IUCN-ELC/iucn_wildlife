@@ -99,9 +99,9 @@ class ElisXMLConsumer {
    * @param array $interval
    *     Date interval (ie. [1999, 2000, 2001 ... ]
    * @param bool $monthly
-   *     Query remote by month (TRUE) or by year (FALSE). By default we filter by
-   *     year, but when there are more than ~700 records, ELIS does not return
-   *     more records, so we fallback to monthly query.
+   *     Query remote by month (TRUE) or by year (FALSE). By default we filter
+   *     by year, but when there are more than ~700 records, ELIS does not
+   *     return more records, so we fallback to monthly query.
    */
   protected function pullRemoteData(&$data, &$interval, $monthly = FALSE) {
     $months = array('*');
@@ -137,6 +137,21 @@ class ElisXMLConsumer {
             $id = (string) $doc->{$this->keyField};
             if (!empty($id)) {
               elis_consumer_log('                ' . $id, 'notice');
+              $specieDOIMapping = [];
+              $lastSpeciesFound = '';
+              /** @var \SimpleXMLElement $tag */
+              foreach($doc as $tag) {
+                if ($tag->getName() == 'wildlifeSpecies') {
+                  $lastSpeciesFound = trim((string)$tag);
+                }
+                if ($tag->getName() == 'wildlifeSpeciesDOI') {
+                  if (!empty($lastSpeciesFound) && !empty((string)trim($tag))) {
+                    // Look for the last encountered wildlifeSpecies and assign to it.
+                    $specieDOIMapping[$lastSpeciesFound] = trim((string)$tag);
+                  }
+                }
+              }
+              $doc->addChild('wildlifeSpeciesDOIMapping', json_encode($specieDOIMapping));
               $data[$id] = $doc;
               $i++;
             }
@@ -168,6 +183,12 @@ function elis_consumer_xml_http_request($url, $xml_encoding) {
       if (mb_detect_encoding($response, 'UTF-8', TRUE) == 'UTF-8') {
         $data = trim($response);
         $ret = simplexml_load_string($data);
+        if (empty($ret)) {
+          libxml_clear_errors();
+          //remove all self closing tags like <head\>
+          $data = preg_replace('/\<(\w)*\/\>/', '', $data);
+          $ret = simplexml_load_string($data);
+        }
       } else {
         $data = trim(utf8_decode($response));
         $ret = simplexml_load_string(utf8_encode($data));

@@ -1,0 +1,23 @@
+uuid: 52b4691b-80bd-4a84-9a5c-26d2d923c901
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_doi_link_page
+    - taxonomy.vocabulary.species
+  module:
+    - link
+id: taxonomy_term.species.field_doi_link_page
+field_name: field_doi_link_page
+entity_type: taxonomy_term
+bundle: species
+label: 'DOI link page'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

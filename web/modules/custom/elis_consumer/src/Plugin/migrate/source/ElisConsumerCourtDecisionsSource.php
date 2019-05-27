@@ -92,7 +92,9 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       'courtCase' => 'Type of case',
       'source' => 'Source',
       'sourceWebsite' => 'Source Website',
-      'wildlifeChargeSheet' => 'Charge Sheet'
+      'wildlifeChargeSheet' => 'Charge Sheet',
+      'wildlifeSpeciesDOI' => 'Species link from DOI system',
+      'wildlifeSpeciesDOIMapping' => 'Mapping between species name and species DOI',
     );
   }
 
@@ -106,6 +108,9 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       $wildlifeChargeSheet = 'http://www2.ecolex.org/server2neu.php/libcat/docs/cou/charge/' . rawurlencode($row->getSourceProperty('wildlifeChargeSheet'));
       $row->setSourceProperty('wildlifeChargeSheet', $wildlifeChargeSheet);
     }
+
+    $this->rebuildSpeciesTerm($row);
+
     $this->fixDateFields($row, [
       'dateOfEntry',
       'dateOfModification',

@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Wildlife legislations'
 vid: wildlife_legislations
 description: ''
-hierarchy: 0
 weight: 0

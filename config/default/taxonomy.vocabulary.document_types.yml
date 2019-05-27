@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Document types'
 vid: document_types
 description: ''
-hierarchy: 0
 weight: 0

@@ -5,5 +5,4 @@ dependencies: {  }
 name: Species
 vid: species
 description: ''
-hierarchy: 0
 weight: 0

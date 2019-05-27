@@ -6,7 +6,9 @@ dependencies:
     - core.entity_view_mode.node.search_result
     - field.field.node.court_decision.field_abstract
     - field.field.node.court_decision.field_abstract_files
+    - field.field.node.court_decision.field_appealed
     - field.field.node.court_decision.field_available_in
+    - field.field.node.court_decision.field_charge_sheet
     - field.field.node.court_decision.field_charges
     - field.field.node.court_decision.field_country
     - field.field.node.court_decision.field_court
@@ -18,6 +20,7 @@ dependencies:
     - field.field.node.court_decision.field_decision_status
     - field.field.node.court_decision.field_ecolex_subjects
     - field.field.node.court_decision.field_files
+    - field.field.node.court_decision.field_held
     - field.field.node.court_decision.field_instance
     - field.field.node.court_decision.field_internet_reference
     - field.field.node.court_decision.field_isis_number
@@ -32,6 +35,7 @@ dependencies:
     - field.field.node.court_decision.field_original_id
     - field.field.node.court_decision.field_original_title
     - field.field.node.court_decision.field_penalty
+    - field.field.node.court_decision.field_penalty_note
     - field.field.node.court_decision.field_reference_number
     - field.field.node.court_decision.field_reference_to_cou
     - field.field.node.court_decision.field_reference_to_faolex
@@ -42,9 +46,12 @@ dependencies:
     - field.field.node.court_decision.field_reference_to_national_legi
     - field.field.node.court_decision.field_reference_to_treaties
     - field.field.node.court_decision.field_reference_to_treaties_titl
+    - field.field.node.court_decision.field_references
     - field.field.node.court_decision.field_region
     - field.field.node.court_decision.field_related_website
     - field.field.node.court_decision.field_seat_of_court
+    - field.field.node.court_decision.field_source
+    - field.field.node.court_decision.field_source_website
     - field.field.node.court_decision.field_species
     - field.field.node.court_decision.field_subdivision
     - field.field.node.court_decision.field_territorial_subdivisions
@@ -64,10 +71,11 @@ bundle: court_decision
 mode: search_result
 content:
   field_abstract:
-    type: text_default
+    type: text_trimmed
     weight: 6
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 350
     third_party_settings: {  }
     region: content
   field_country:
@@ -121,7 +129,9 @@ content:
     third_party_settings: {  }
 hidden:
   field_abstract_files: true
+  field_appealed: true
   field_available_in: true
+  field_charge_sheet: true
   field_charges: true
   field_date_of_entry: true
   field_date_of_modification: true
@@ -129,6 +139,7 @@ hidden:
   field_decision_status: true
   field_ecolex_subjects: true
   field_files: true
+  field_held: true
   field_instance: true
   field_internet_reference: true
   field_isis_number: true
@@ -143,6 +154,7 @@ hidden:
   field_original_id: true
   field_original_title: true
   field_penalty: true
+  field_penalty_note: true
   field_reference_number: true
   field_reference_to_cou: true
   field_reference_to_faolex: true
@@ -153,9 +165,12 @@ hidden:
   field_reference_to_national_legi: true
   field_reference_to_treaties: true
   field_reference_to_treaties_titl: true
+  field_references: true
   field_region: true
   field_related_website: true
   field_seat_of_court: true
+  field_source: true
+  field_source_website: true
   field_species: true
   field_subdivision: true
   field_transnational: true

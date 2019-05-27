@@ -5,5 +5,4 @@ dependencies: {  }
 name: Instances
 vid: instances
 description: ''
-hierarchy: 0
 weight: 0

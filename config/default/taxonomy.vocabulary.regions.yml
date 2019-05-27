@@ -5,5 +5,4 @@ dependencies: {  }
 name: Regions
 vid: regions
 description: ''
-hierarchy: 0
 weight: 0

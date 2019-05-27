@@ -94,6 +94,7 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       'sourceWebsite' => 'Source Website',
       'wildlifeChargeSheet' => 'Charge Sheet',
       'wildlifeSpeciesDOI' => 'Species link from DOI system',
+      'wildlifeSpeciesDOIMapping' => 'Mapping between species name and species DOI',
     );
   }
 
@@ -108,6 +109,20 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       $row->setSourceProperty('wildlifeChargeSheet', $wildlifeChargeSheet);
     }
 
+    $this->fixLinkFields($row, [
+      'wildlifeReferences'
+    ]);
+
+    $species = NULL;
+    if (!empty($row->getSourceProperty('wildlifeSpecies'))) {
+      $species = $row->getSourceProperty('wildlifeSpecies');
+    }
+
+    if (is_array($species)) {
+      $species = array_unique($species);
+    }
+
+    $row->setSourceProperty('wildlifeSpecies', $species);
     $this->rebuildSpeciesTerm($row);
 
     $this->fixDateFields($row, [
@@ -116,6 +131,7 @@ class ElisConsumerCourtDecisionsSource extends ElisConsumerDefaultSource {
       'dateOfText',
       'referenceToFaolexDate',
     ]);
+
     return parent::prepareRow($row);
   }
 }

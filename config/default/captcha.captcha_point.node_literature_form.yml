@@ -1,0 +1,7 @@
+uuid: 8078e103-00f2-44e8-9766-492e1ba38583
+langcode: en
+status: false
+dependencies: {  }
+formId: node_literature_form
+captchaType: default
+label: null

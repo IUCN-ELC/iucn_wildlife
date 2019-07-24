@@ -178,3 +178,6 @@ $config['search_api.server.solr_server'] = [
 ];
 
 $config['google_analytics.settings']['account'] = 'UA-';
+
+$config['recaptcha.settings']['site_key'] = '';
+$config['recaptcha.settings']['secret_key'] = '';

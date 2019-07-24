@@ -1,0 +1,7 @@
+uuid: ed4bd12b-3d03-493c-b36b-5c7049eff087
+langcode: en
+status: false
+dependencies: {  }
+formId: node_court_decision_form
+captchaType: default
+label: null

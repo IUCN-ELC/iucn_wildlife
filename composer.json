@@ -33,6 +33,7 @@
         "drupal/migrate_plus": "^4.0",
         "drupal/migrate_tools": "^4.0",
         "drupal/pathauto": "^1.2",
+        "drupal/recaptcha": "^2.4",
         "drupal/search_api": "^1.9",
         "drupal/search_api_attachments": "^1.0@beta",
         "drupal/search_api_solr": "^2.4",

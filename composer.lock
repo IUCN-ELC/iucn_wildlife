@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7dd7ed76612d93d82d5393d2ed415d4",
+    "content-hash": "6a0ab1b2b8f2cdc0a20257903029923e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3684,16 +3684,16 @@
         },
         {
             "name": "eaudeweb/heavy-lifter",
-            "version": "1.2.3",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eaudeweb/heavy-lifter.git",
-                "reference": "c1c5af61e1a201b84efb1cea4d708a898962bfe1"
+                "reference": "2fe63dcd77fae35183ea478e342d47203df1ea9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eaudeweb/heavy-lifter/zipball/c1c5af61e1a201b84efb1cea4d708a898962bfe1",
-                "reference": "c1c5af61e1a201b84efb1cea4d708a898962bfe1",
+                "url": "https://api.github.com/repos/eaudeweb/heavy-lifter/zipball/2fe63dcd77fae35183ea478e342d47203df1ea9e",
+                "reference": "2fe63dcd77fae35183ea478e342d47203df1ea9e",
                 "shasum": ""
             },
             "require": {
@@ -3704,6 +3704,9 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "5.7"
+            },
+            "suggest": {
+                "calimanleontin/gdpr-dump": "1.0.1"
             },
             "type": "library",
             "autoload": {
@@ -3722,7 +3725,7 @@
                 }
             ],
             "description": "Common commands for your Drupal project to get you up to speed",
-            "time": "2019-04-05T09:53:44+00:00"
+            "time": "2019-08-21T11:44:15+00:00"
         },
         {
             "name": "eaudeweb/robo-curl",

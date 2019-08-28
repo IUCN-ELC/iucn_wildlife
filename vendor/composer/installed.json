@@ -2173,7 +2173,7 @@
         "version_normalized": "8.3.3.0",
         "source": {
             "type": "git",
-            "url": "https://git.drupal.org/project/coder.git",
+            "url": "https://git.drupalcode.org/project/coder.git",
             "reference": "a33d3388fb2e1d94bd2aee36a8ff79186e9d8f43"
         },
         "require": {
@@ -4123,17 +4123,17 @@
     },
     {
         "name": "eaudeweb/heavy-lifter",
-        "version": "1.2.3",
-        "version_normalized": "1.2.3.0",
+        "version": "1.3.1",
+        "version_normalized": "1.3.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/eaudeweb/heavy-lifter.git",
-            "reference": "c1c5af61e1a201b84efb1cea4d708a898962bfe1"
+            "reference": "2fe63dcd77fae35183ea478e342d47203df1ea9e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/eaudeweb/heavy-lifter/zipball/c1c5af61e1a201b84efb1cea4d708a898962bfe1",
-            "reference": "c1c5af61e1a201b84efb1cea4d708a898962bfe1",
+            "url": "https://api.github.com/repos/eaudeweb/heavy-lifter/zipball/2fe63dcd77fae35183ea478e342d47203df1ea9e",
+            "reference": "2fe63dcd77fae35183ea478e342d47203df1ea9e",
             "shasum": ""
         },
         "require": {
@@ -4145,7 +4145,10 @@
         "require-dev": {
             "phpunit/phpunit": "5.7"
         },
-        "time": "2019-04-05T09:53:44+00:00",
+        "suggest": {
+            "calimanleontin/gdpr-dump": "1.0.1"
+        },
+        "time": "2019-08-21T11:44:15+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

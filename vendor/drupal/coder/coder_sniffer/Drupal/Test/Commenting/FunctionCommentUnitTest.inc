@@ -441,3 +441,50 @@ function test34($a, $b) {
     yield $i;
   }
 }
+
+/**
+ * Using \stdClass as type hint is ok, but not in the documentation.
+ *
+ * @param object $name
+ *   Some description.
+ * @param \stdClass $param2
+ *   Some description.
+ */
+function test35(\stdClass $name, \stdClass $param2) {
+
+}
+
+/**
+ * Allow "object" as real type hint (PHP 7.2).
+ *
+ * @param \stdClass $arg
+ *   Something here.
+ * @param object $blarg
+ *   Another thing.
+ */
+function test36(object $arg, object $blarg) {
+  return $arg;
+}
+
+/**
+ * A class with a method that has the same name as the class.
+ */
+class Small {
+
+  /**
+   * Our small constructor.
+   */
+  public function __construct() {
+  }
+
+  /**
+   * Return tag should be allowed here.
+   *
+   * @return string
+   *   Something small.
+   */
+  public function small() {
+    return 'string';
+  }
+
+}

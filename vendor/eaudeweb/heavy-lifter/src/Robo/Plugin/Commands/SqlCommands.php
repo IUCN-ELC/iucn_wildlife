@@ -4,7 +4,9 @@ namespace EauDeWeb\Robo\Plugin\Commands;
 
 
 use EauDeWeb\Robo\Task\Curl\loadTasks;
+use machbarmacher\GdprDump\MysqldumpGdpr;
 use Robo\Exception\TaskException;
+use Symfony\Component\Yaml\Yaml;
 
 
 class SqlCommands extends CommandBase {
@@ -52,6 +54,8 @@ class SqlCommands extends CommandBase {
    * @throws \Robo\Exception\TaskException
    */
   public function sqlSync($options = ['anonymize' => FALSE]) {
+    $this->allowOnlyOnLinux();
+
     $url = $this->configSite('sql.sync.source');
     $this->validateHttpsUrl($url);
     $commands = [];
@@ -96,6 +100,7 @@ class SqlCommands extends CommandBase {
    *
    * @command sql:dump
    * @option gzip Create a gzipped archive dump. Default TRUE.
+   * @option anonymize Anonymize sensitive data according to your robo.yml configuration. Default FALSE.
    *
    * @param string $output Absolute path to the resulting archive
    * @param array $options Command line options
@@ -103,7 +108,7 @@ class SqlCommands extends CommandBase {
    * @return null|\Robo\Result
    * @throws \Robo\Exception\TaskException when output path is not absolute
    */
-  public function sqlDump($output = NULL, $options = ['gzip' => true]) {
+  public function sqlDump($output = NULL, $options = ['gzip' => true, 'anonymize' => false]) {
     if (empty($output)) {
       $output = $this->configSite('sql.dump.location');
       if (empty($output)) {
@@ -111,10 +116,26 @@ class SqlCommands extends CommandBase {
       }
     }
     $output = preg_replace('/.gz$/', '', $output);
-    if ($output[0] != '/') {
-      $output = getcwd() . '/' . $output;
+    $separator = $this->isLinuxServer() ? '/' : '\\';
+    if ($output[0] != $separator) {
+      $output = getcwd() . $separator . $output;
     }
+
     $drush = $this->drushExecutable();
+
+    if ($options['anonymize']) {
+      $anonSchema = $this->projectDir() . '/anonymize.schema.yml';
+      if (!file_exists($anonSchema)) {
+        throw new TaskException(get_class($this), 'The anonymize.schema.yml file is missing.');
+      }
+
+      if (!class_exists(MysqldumpGdpr::class)) {
+        throw new TaskException(get_class($this), 'You cannot anonymize data without package "calimanleontin/gdpr-dump" being installed! Please run "composer require calimanleontin/gdpr-dump:1.0.2" !');
+      }
+      $exportPath = 'export PATH=' . $this->projectDir() . '/vendor/bin:$PATH; ';
+      $drush = $exportPath . $drush;
+    }
+
     $execStack = $this->taskExecStack()->stopOnFail(TRUE);
     if ($this->isDrush9()) {
       $task = $this->taskExec($drush)
@@ -133,6 +154,12 @@ class SqlCommands extends CommandBase {
     if ($options['gzip']) {
       $task->arg('--gzip');
     }
+
+    if ($options['anonymize']) {
+      $anonArgs = json_encode(Yaml::parseFile($anonSchema));
+      $task->rawArg(" --extra-dump=\'--gdpr-replacements='{$anonArgs}'\'");
+    }
+
     return $task->run();
   }
 }

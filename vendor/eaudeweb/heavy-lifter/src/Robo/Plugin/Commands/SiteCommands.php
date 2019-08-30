@@ -31,8 +31,8 @@ class SiteCommands extends CommandBase {
    * @throws \Exception when cannot find the Drupal installation folder.
    */
   public function siteDevelop($newPassword = 'password') {
+    $this->allowOnlyOnLinux();
     $this->validateConfig();
-    $drush = $this->drushExecutable();
     $execStack = $this->taskExecStack()->stopOnFail(TRUE);
     $commands = [];
 
@@ -86,6 +86,7 @@ class SiteCommands extends CommandBase {
    * @throws \Robo\Exception\TaskException
    */
   public function siteInstall() {
+    $this->allowOnlyOnLinux();
     $url =  $this->configSite('sql.sync.source');
     $this->validateHttpsUrl($url);
 
@@ -123,7 +124,55 @@ class SiteCommands extends CommandBase {
       return $sync;
     }
     return $download;
+  }
 
+  /**
+   * Update Drupal core. Check that "drupal/core:^8.7" and
+   * "webflo/drupal-core-require-dev:^8.7" exist in composer.json declaration.
+   *
+   * @command core:update
+   */
+  public function coreUpdate() {
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("composer update drupal/core webflo/drupal-core-require-dev --with-dependencies")
+      ->run();
+  }
+  /**
+   * Setup for a new project
+   *
+   * @command project:create
+   */
+  public function createProject($name = 'name') {
+    // create name.conf
+    $docroot = $this->configSite('work.dir');
+    $conf = "<VirtualHost *:80" . "> \n"
+      . "     DocumentRoot ". $docroot . "/" . $name . ".local/web" . "/ \n"
+      . "     ServerName " . $name . ".local \n"
+      . "     <Directory  ". $docroot  . "/" . $name . ".local/web/> \n"
+      . "          AllowOverride All \n"
+      . "          Require all granted \n"
+      . "     </Directory" . "> \n"
+      . "</VirtualHost" . ">";
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("sudo  touch /etc/apache2/sites-available/" . $name . ".conf")
+      ->run();
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec('echo "' . $conf . '" | sudo tee /etc/apache2/sites-available/' . $name . '.conf')
+      ->run();
+    // modify hosts
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("cat /etc/hosts | sudo tee /etc/copy.txt")->run();
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec('sed "1 s/^/127.0.0.1   "' . $name . '".local \n/" /etc/copy.txt | sudo tee /etc/hosts')
+      ->run();
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec('sudo rm /etc/copy.txt')->run();
+    // enable name.conf
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("sudo a2ensite " . $name . ".conf")->run();
+    // restart apache2
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("systemctl restart apache2")->run();
   }
 
   /**
@@ -136,8 +185,8 @@ class SiteCommands extends CommandBase {
    * @throws \Robo\Exception\TaskException
    */
   public function siteUpdate() {
+    $this->allowOnlyOnLinux();
     $this->validateConfig();
-    $drush = $this->drushExecutable();
     $execStack = $this->taskExecStack()->stopOnFail(TRUE);
     $commands = [];
 
@@ -159,6 +208,10 @@ class SiteCommands extends CommandBase {
       if ($this->isModuleEnabled('locale')) {
         $commands[] = 'locale:check';
         $commands[] = 'locale:update';
+      }
+
+      if ($this->isModuleEnabled('pathauto') && floatval(substr(trim($this->getModuleInfo('pathauto')), -3)) >= 1.4) {
+        $commands[] = 'pathauto:aliases-generate create all';
       }
 
       $commands[] = 'cache:rebuild';

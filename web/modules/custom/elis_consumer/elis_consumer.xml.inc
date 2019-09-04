@@ -151,7 +151,8 @@ class ElisXMLConsumer {
                   }
                 }
               }
-              $doc->addChild('wildlifeSpeciesDOIMapping', json_encode($specieDOIMapping));
+              $content = '<![CDATA[$specieDOIMapping]]>';
+              $doc->addChild('wildlifeSpeciesDOIMapping', json_encode($content));
               $data[$id] = $doc;
               $i++;
             }

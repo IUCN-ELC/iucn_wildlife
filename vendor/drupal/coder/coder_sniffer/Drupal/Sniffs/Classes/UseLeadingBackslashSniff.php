@@ -31,7 +31,7 @@ class UseLeadingBackslashSniff implements Sniff
      */
     public function register()
     {
-        return [T_USE];
+        return array(T_USE);
 
     }//end register()
 

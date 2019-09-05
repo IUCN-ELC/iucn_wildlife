@@ -31,10 +31,10 @@ class TCheckPlainSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return [
-            't',
-            'watchdog',
-        ];
+        return array(
+                't',
+                'watchdog',
+               );
 
     }//end registerFunctionNames()
 

@@ -7,7 +7,6 @@ use Drupal\Test\CoderSniffUnitTest;
 class ElseIfUnitTest extends CoderSniffUnitTest
 {
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -16,12 +15,12 @@ class ElseIfUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [
-            6 => 1,
-            9 => 1,
-        ];
+        return array(
+                6 => 1,
+                9 => 1,
+               );
 
     }//end getErrorList()
 
@@ -34,9 +33,9 @@ class ElseIfUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getWarningList()
 

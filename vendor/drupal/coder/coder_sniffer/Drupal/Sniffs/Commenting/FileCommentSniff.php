@@ -35,10 +35,10 @@ class FileCommentSniff implements Sniff
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
+    public $supportedTokenizers = array(
+                                   'PHP',
+                                   'JS',
+                                  );
 
 
     /**
@@ -48,7 +48,7 @@ class FileCommentSniff implements Sniff
      */
     public function register()
     {
-        return [T_OPEN_TAG];
+        return array(T_OPEN_TAG);
 
     }//end register()
 
@@ -85,27 +85,23 @@ class FileCommentSniff implements Sniff
                 && $secondOopKeyword === false
                 && $namespace !== false
             ) {
-                if ($tokens[$commentStart]['code'] === T_COMMENT) {
-                    $phpcsFile->addError('Namespaced classes, interfaces and traits should not begin with a file doc comment', $commentStart, 'NamespaceNoFileDoc');
-                } else {
-                    $fix = $phpcsFile->addFixableError('Namespaced classes, interfaces and traits should not begin with a file doc comment', $commentStart, 'NamespaceNoFileDoc');
-                    if ($fix === true) {
-                        $phpcsFile->fixer->beginChangeset();
+                $fix = $phpcsFile->addFixableError('Namespaced classes, interfaces and traits should not begin with a file doc comment', $commentStart, 'NamespaceNoFileDoc');
+                if ($fix === true) {
+                    $phpcsFile->fixer->beginChangeset();
 
-                        for ($i = $commentStart; $i <= ($tokens[$commentStart]['comment_closer'] + 1); $i++) {
-                            $phpcsFile->fixer->replaceToken($i, '');
-                        }
-
-                        // If, after removing the comment, there are two new lines
-                        // remove them.
-                        if ($tokens[($commentStart - 1)]['content'] === "\n" && $tokens[$i]['content'] === "\n") {
-                            $phpcsFile->fixer->replaceToken($i, '');
-                        }
-
-                        $phpcsFile->fixer->endChangeset();
+                    for ($i = $commentStart; $i <= ($tokens[$commentStart]['comment_closer'] + 1); $i++) {
+                        $phpcsFile->fixer->replaceToken($i, '');
                     }
+
+                    // If, after removing the comment, there are two new lines
+                    // remove them.
+                    if ($tokens[($commentStart - 1)]['content'] === "\n" && $tokens[$i]['content'] === "\n") {
+                        $phpcsFile->fixer->replaceToken($i, '');
+                    }
+
+                    $phpcsFile->fixer->endChangeset();
                 }
-            }//end if
+            }
 
             if ($namespace !== false) {
                 return ($phpcsFile->numTokens + 1);
@@ -193,8 +189,8 @@ class FileCommentSniff implements Sniff
         }//end if
 
         if ($fileTag === false || $tokens[$fileTag]['line'] !== ($tokens[$commentStart]['line'] + 1)) {
-            $secondLine = $phpcsFile->findNext([T_DOC_COMMENT_STAR, T_DOC_COMMENT_CLOSE_TAG], ($commentStart + 1), $commentEnd);
-            $fix        = $phpcsFile->addFixableError('The second line in the file doc comment must be "@file"', $secondLine, 'FileTag');
+            $second_line = $phpcsFile->findNext(array(T_DOC_COMMENT_STAR, T_DOC_COMMENT_CLOSE_TAG), ($commentStart + 1), $commentEnd);
+            $fix         = $phpcsFile->addFixableError('The second line in the file doc comment must be "@file"', $second_line, 'FileTag');
             if ($fix === true) {
                 if ($fileTag === false) {
                     $phpcsFile->fixer->addContent($commentStart, "\n * @file");

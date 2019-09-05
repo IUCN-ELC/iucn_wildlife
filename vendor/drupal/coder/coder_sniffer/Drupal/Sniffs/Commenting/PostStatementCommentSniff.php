@@ -29,7 +29,7 @@ class PostStatementCommentSniff implements Sniff
      *
      * @var array
      */
-    public $supportedTokenizers = ['PHP'];
+    public $supportedTokenizers = array('PHP');
 
 
     /**
@@ -39,7 +39,7 @@ class PostStatementCommentSniff implements Sniff
      */
     public function register()
     {
-        return [T_COMMENT];
+        return array(T_COMMENT);
 
     }//end register()
 

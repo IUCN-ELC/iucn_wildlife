@@ -36,7 +36,7 @@ class MultiLineAssignmentSniff implements Sniff
      */
     public function register()
     {
-        return [T_EQUAL];
+        return array(T_EQUAL);
 
     }//end register()
 

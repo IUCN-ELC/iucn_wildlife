@@ -30,7 +30,7 @@ class DbSelectBracesSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return ['db_select'];
+        return array('db_select');
 
     }//end registerFunctionNames()
 

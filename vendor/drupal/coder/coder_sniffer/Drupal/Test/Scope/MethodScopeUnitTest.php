@@ -16,12 +16,12 @@ class MethodScopeUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [
-            8  => 1,
-            15 => 1,
-        ];
+        return array(
+                8 => 1,
+                15 => 1,
+               );
 
     }//end getErrorList()
 
@@ -34,9 +34,9 @@ class MethodScopeUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getWarningList()
 

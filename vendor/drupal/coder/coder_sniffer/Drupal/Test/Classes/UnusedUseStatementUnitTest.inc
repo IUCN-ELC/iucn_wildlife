@@ -18,9 +18,6 @@ use /* I like weird comment placements */ MyNamespace\Depth\AnotherUnusedSameNam
 use MyNamespace\Depth\SomeClass as CoreSomeClass;
 use Some\Data\VarName;
 use Some\Data\VarName2 as AliasVarName2;
-use Some\Data\SameAsAMethodName;
-use Some\Data\Test9;
-use Some\Data\Test10;
 
 /**
  * Bla.
@@ -100,27 +97,6 @@ class Pum {
    */
   protected function test7($x) {
     return $x['test'];
-  }
-
-  /**
-   * Call a method here that has the same name as a class name.
-   */
-  protected function test8() {
-    $this->sameAsAMethodName();
-  }
-
-  /**
-   * Method definition has same name as class name.
-   */
-  protected function test9() {
-
-  }
-
-  /**
-   * Static method calls should not be confused with class names.
-   */
-  protected function test10() {
-    Something::test10();
   }
 
 }

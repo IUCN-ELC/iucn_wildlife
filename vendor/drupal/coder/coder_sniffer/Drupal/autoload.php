@@ -12,6 +12,3 @@
 // Abstract base classes are not discovered by the autoloader.
 require_once 'Sniffs/Semantics/FunctionCall.php';
 require_once 'Sniffs/Semantics/FunctionDefinition.php';
-
-// Helper classes also need to be included manually.
-require_once __DIR__.'/../DrupalPractice/Project.php';

@@ -33,7 +33,7 @@ class ClassCreateInstanceSniff implements Sniff
      */
     public function register()
     {
-        return [T_NEW];
+        return array(T_NEW);
 
     }//end register()
 

@@ -26,7 +26,7 @@ class FunctionTSniff extends FunctionCall
     /**
      * We also want to catch $this->t() calls in Drupal 8.
      *
-     * @var boolean
+     * @var bool
      */
     protected $includeMethodCalls = true;
 
@@ -38,11 +38,11 @@ class FunctionTSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return [
-            't',
-            'TranslatableMarkup',
-            'TranslationWrapper',
-        ];
+        return array(
+                't',
+                'TranslatableMarkup',
+                'TranslationWrapper',
+               );
 
     }//end registerFunctionNames()
 
@@ -155,19 +155,19 @@ class FunctionTSniff extends FunctionCall
             return true;
         }
 
-        $allowedItems = [
-            '(',
-            ')',
-            '[',
-            ']',
-            '-',
-            '<',
-            '>',
-            '«',
-            '»',
-            '\n',
-        ];
-        foreach ($allowedItems as $item) {
+        $allowed_items = array(
+                          '(',
+                          ')',
+                          '[',
+                          ']',
+                          '-',
+                          '<',
+                          '>',
+                          '«',
+                          '»',
+                          '\n',
+                         );
+        foreach ($allowed_items as $item) {
             if ($item === $string) {
                 return true;
             }

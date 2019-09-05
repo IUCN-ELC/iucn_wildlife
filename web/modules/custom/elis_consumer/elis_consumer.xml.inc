@@ -151,8 +151,11 @@ class ElisXMLConsumer {
                   }
                 }
               }
-              $content = '<![CDATA[$specieDOIMapping]]>';
-              $doc->addChild('wildlifeSpeciesDOIMapping', json_encode($content));
+              $content = json_encode($specieDOIMapping);
+              $content = str_replace('"', '\"', $content);
+              $content = str_replace('&', '&amp;', $content);
+              $doc->addChild('wildlifeSpeciesDOIMapping', $content);
+
               $data[$id] = $doc;
               $i++;
             }
@@ -188,7 +191,7 @@ function elis_consumer_xml_http_request($url, $xml_encoding) {
           libxml_clear_errors();
           //remove all self closing tags like <head\>
           $data = preg_replace('/\<(\w)*\/\>/', '', $data);
-          $ret = simplexml_load_string($data);
+          $ret =  simplexml_load_string($data);
         }
       } else {
         $data = trim(utf8_decode($response));

@@ -177,7 +177,6 @@ class ElisXMLConsumer {
   }
 }
 
-
 function elis_consumer_xml_http_request($url, $xml_encoding) {
   elis_consumer_log($url);
   $ret = NULL;

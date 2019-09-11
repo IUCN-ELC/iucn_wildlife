@@ -34,6 +34,11 @@ dependencies:
     - taxonomy
     - search_api
     - search_api_attachments
+third_party_settings:
+  search_api_solr:
+    multilingual:
+      limit_to_content_language: false
+      include_language_independent: true
 id: default_node_index
 name: 'Default node index'
 description: ''
@@ -315,8 +320,3 @@ options:
   index_directly: true
   cron_limit: 1
 server: solr_server
-third_party_settings:
-  search_api_solr:
-    multilingual:
-      limit_to_content_language: false
-      include_language_independent: true

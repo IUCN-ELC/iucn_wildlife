@@ -39,22 +39,14 @@ class VariableCommentSniff extends AbstractVariableSniff
      */
     public function processMemberVar(File $phpcsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $ignore = [
-            T_PUBLIC,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_VAR,
-            T_STATIC,
-            T_WHITESPACE,
-        ];
+        $tokens       = $phpcsFile->getTokens();
+        $commentToken = array(
+                         T_COMMENT,
+                         T_DOC_COMMENT_CLOSE_TAG,
+                        );
 
-        $commentEnd = $phpcsFile->findPrevious($ignore, ($stackPtr - 1), null, true);
-        if ($commentEnd === false
-            || ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT_CLOSE_TAG
-            && $tokens[$commentEnd]['code'] !== T_COMMENT)
-        ) {
-            $phpcsFile->addError('Missing member variable doc comment', $stackPtr, 'Missing');
+        $commentEnd = $phpcsFile->findPrevious($commentToken, $stackPtr);
+        if ($commentEnd === false) {
             return;
         }
 
@@ -78,7 +70,7 @@ class VariableCommentSniff extends AbstractVariableSniff
             return;
         } else {
             // Make sure the comment we have found belongs to us.
-            $commentFor = $phpcsFile->findNext([T_VARIABLE, T_CLASS, T_INTERFACE], ($commentEnd + 1));
+            $commentFor = $phpcsFile->findNext(array(T_VARIABLE, T_CLASS, T_INTERFACE), ($commentEnd + 1));
             if ($commentFor !== $stackPtr) {
                 return;
             }
@@ -86,11 +78,8 @@ class VariableCommentSniff extends AbstractVariableSniff
 
         $commentStart = $tokens[$commentEnd]['comment_opener'];
 
-        // Ignore variable comments that use inheritdoc, allow both variants.
         $commentContent = $phpcsFile->getTokensAsString($commentStart, ($commentEnd - $commentStart));
-        if (strpos($commentContent, '{@inheritdoc}') !== false
-            || strpos($commentContent, '{@inheritDoc}') !== false
-        ) {
+        if (strpos($commentContent, '{@inheritdoc}') !== false) {
             return;
         }
 
@@ -137,7 +126,7 @@ class VariableCommentSniff extends AbstractVariableSniff
         $varType = $tokens[($foundVar + 2)]['content'];
 
         // There may be multiple types separated by pipes.
-        $suggestedTypes = [];
+        $suggestedTypes = array();
         foreach (explode('|', $varType) as $type) {
             $suggestedTypes[] = FunctionCommentSniff::suggestType($type);
         }
@@ -146,22 +135,22 @@ class VariableCommentSniff extends AbstractVariableSniff
 
         // Detect and auto-fix the common mistake that the variable name is
         // appended to the type declaration.
-        $matches = [];
+        $matches = array();
         if (preg_match('/^([^\s]+)(\s+\$.+)$/', $varType, $matches) === 1) {
             $error = 'Do not append variable name "%s" to the type declaration in a member variable comment';
-            $data  = [
-                trim($matches[2]),
-            ];
+            $data  = array(
+                      trim($matches[2]),
+                     );
             $fix   = $phpcsFile->addFixableError($error, ($foundVar + 2), 'InlineVariableName', $data);
             if ($fix === true) {
                 $phpcsFile->fixer->replaceToken(($foundVar + 2), $matches[1]);
             }
         } else if ($varType !== $suggestedType) {
             $error = 'Expected "%s" but found "%s" for @var tag in member variable comment';
-            $data  = [
-                $suggestedType,
-                $varType,
-            ];
+            $data  = array(
+                      $suggestedType,
+                      $varType,
+                     );
             $fix   = $phpcsFile->addFixableError($error, ($foundVar + 2), 'IncorrectVarType', $data);
             if ($fix === true) {
                 $phpcsFile->fixer->replaceToken(($foundVar + 2), $suggestedType);

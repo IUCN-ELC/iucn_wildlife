@@ -7,7 +7,6 @@ use Drupal\Test\CoderSniffUnitTest;
 class DataTypeNamespaceUnitTest extends CoderSniffUnitTest
 {
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -16,14 +15,13 @@ class DataTypeNamespaceUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [
-            15 => 1,
-            18 => 1,
-            21 => 1,
-            31 => 1,
-        ];
+        return array(
+                15 => 1,
+                18 => 1,
+                29 => 1,
+               );
 
     }//end getErrorList()
 
@@ -36,9 +34,9 @@ class DataTypeNamespaceUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getWarningList()
 

@@ -7,7 +7,6 @@ use Drupal\Test\CoderSniffUnitTest;
 class ScopeIndentUnitTest extends CoderSniffUnitTest
 {
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -16,15 +15,15 @@ class ScopeIndentUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [
-            6  => 1,
-            18 => 1,
-            20 => 1,
-            32 => 1,
-            34 => 1,
-        ];
+        return array(
+                6 => 1,
+                18 => 1,
+                20 => 1,
+                32 => 1,
+                34 => 1,
+               );
 
     }//end getErrorList()
 
@@ -37,9 +36,9 @@ class ScopeIndentUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getWarningList()
 

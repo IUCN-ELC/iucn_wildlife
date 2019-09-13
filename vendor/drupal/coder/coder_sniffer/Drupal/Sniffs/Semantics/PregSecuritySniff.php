@@ -31,15 +31,15 @@ class PregSecuritySniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return [
-            'preg_filter',
-            'preg_grep',
-            'preg_match',
-            'preg_match_all',
-            'preg_replace',
-            'preg_replace_callback',
-            'preg_split',
-        ];
+        return array(
+                'preg_filter',
+                'preg_grep',
+                'preg_match',
+                'preg_match_all',
+                'preg_replace',
+                'preg_replace_callback',
+                'preg_split',
+               );
 
     }//end registerFunctionNames()
 
@@ -89,7 +89,7 @@ class PregSecuritySniff extends FunctionCall
                     $warn,
                     $argument['start'],
                     'PregEFlag',
-                    [$tokens[$stackPtr]['content']]
+                    array($tokens[$stackPtr]['content'])
                 );
                 return;
             }

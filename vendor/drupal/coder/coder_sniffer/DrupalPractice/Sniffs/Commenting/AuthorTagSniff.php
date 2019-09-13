@@ -30,7 +30,7 @@ class AuthorTagSniff implements Sniff
      */
     public function register()
     {
-        return [T_DOC_COMMENT_TAG];
+        return array(T_DOC_COMMENT_TAG);
 
     }//end register()
 

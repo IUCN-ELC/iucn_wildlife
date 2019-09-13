@@ -33,21 +33,21 @@ abstract class FunctionCall implements Sniff
     /**
      * The token position of the function call.
      *
-     * @var integer
+     * @var int
      */
     protected $functionCall;
 
     /**
      * The token position of the opening bracket of the function call.
      *
-     * @var integer
+     * @var int
      */
     protected $openBracket;
 
     /**
      * The token position of the closing bracket of the function call.
      *
-     * @var integer
+     * @var int
      */
     protected $closeBracket;
 
@@ -62,7 +62,7 @@ abstract class FunctionCall implements Sniff
      * Whether method invocations with the same function name should be processed,
      * too.
      *
-     * @var boolean
+     * @var bool
      */
     protected $includeMethodCalls = false;
 
@@ -74,7 +74,7 @@ abstract class FunctionCall implements Sniff
      */
     public function register()
     {
-        return [T_STRING];
+        return array(T_STRING);
 
     }//end register()
 
@@ -108,7 +108,7 @@ abstract class FunctionCall implements Sniff
         $this->functionCall = $stackPtr;
         $this->openBracket  = $openBracket;
         $this->closeBracket = $tokens[$openBracket]['parenthesis_closer'];
-        $this->arguments    = [];
+        $this->arguments    = array();
 
         $this->processFunctionCall($phpcsFile, $stackPtr, $openBracket, $this->closeBracket);
 
@@ -204,10 +204,10 @@ abstract class FunctionCall implements Sniff
             // Update the end token of the current argument.
             $end = $this->phpcsFile->findPrevious(Tokens::$emptyTokens, ($nextSeperator - 1), null, true);
             // Save the calculated findings for the current argument.
-            $this->arguments[$counter] = [
-                'start' => $start,
-                'end'   => $end,
-            ];
+            $this->arguments[$counter] = array(
+                                          'start' => $start,
+                                          'end'   => $end,
+                                         );
             if ($counter === $number) {
                 break;
             }
@@ -222,10 +222,10 @@ abstract class FunctionCall implements Sniff
             return false;
         }
 
-        $this->arguments[$counter] = [
-            'start' => $start,
-            'end'   => $end,
-        ];
+        $this->arguments[$counter] = array(
+                                      'start' => $start,
+                                      'end'   => $end,
+                                     );
         return $this->arguments[$counter];
 
     }//end getArgument()

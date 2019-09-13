@@ -16,9 +16,9 @@ class UseLeadingBackslashUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [8 => 1];
+        return array(8 => 1);
 
     }//end getErrorList()
 
@@ -31,9 +31,9 @@ class UseLeadingBackslashUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getWarningList()
 

@@ -31,7 +31,7 @@ abstract class FunctionDefinition implements Sniff
      */
     public function register()
     {
-        return [T_STRING];
+        return array(T_STRING);
 
     }//end register()
 
@@ -73,7 +73,7 @@ abstract class FunctionDefinition implements Sniff
      *
      * @return void
      */
-    abstract public function processFunction(File $phpcsFile, $stackPtr, $functionPtr);
+    public abstract function processFunction(File $phpcsFile, $stackPtr, $functionPtr);
 
 
 }//end class

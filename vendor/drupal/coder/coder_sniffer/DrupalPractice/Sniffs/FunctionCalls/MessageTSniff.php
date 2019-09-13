@@ -30,7 +30,7 @@ class MessageTSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return ['drupal_set_message'];
+        return array('drupal_set_message');
 
     }//end registerFunctionNames()
 

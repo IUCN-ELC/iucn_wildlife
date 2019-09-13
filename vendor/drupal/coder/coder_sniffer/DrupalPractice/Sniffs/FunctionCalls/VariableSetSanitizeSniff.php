@@ -31,7 +31,7 @@ class VariableSetSanitizeSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return ['variable_set'];
+        return array('variable_set');
 
     }//end registerFunctionNames()
 
@@ -60,17 +60,17 @@ class VariableSetSanitizeSniff extends FunctionCall
         $argument = $this->getArgument(2);
         if ($argument !== false && in_array(
             $tokens[$argument['start']]['content'],
-            [
-                'check_markup',
-                'check_plain',
-                'check_url',
-                'filter_xss',
-                'filter_xss_admin',
-            ]
+            array(
+             'check_markup',
+             'check_plain',
+             'check_url',
+             'filter_xss',
+             'filter_xss_admin',
+            )
         ) === true
         ) {
             $warning = 'Do not use the %s() sanitization function when writing values to the database, use it on output to HTML instead';
-            $data    = [$tokens[$argument['start']]['content']];
+            $data    = array($tokens[$argument['start']]['content']);
             $phpcsFile->addWarning($warning, $argument['start'], 'VariableSet', $data);
         }
 

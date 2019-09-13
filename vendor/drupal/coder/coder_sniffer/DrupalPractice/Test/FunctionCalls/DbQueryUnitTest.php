@@ -25,9 +25,9 @@ class DbQueryUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    protected function getErrorList()
+    protected function getErrorList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getErrorList()
 
@@ -40,17 +40,19 @@ class DbQueryUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    protected function getWarningList()
+    protected function getWarningList($testFile = NULL)
     {
-        return [
-            3  => 1,
-            4  => 1,
-            5  => 1,
-            12 => 1,
-            18 => 1,
-        ];
+        return array(
+                    3 => 1,
+                    4 => 1,
+                    5 => 1,
+                    12 => 1,
+                    18 => 1,
+                    );
 
     }//end getWarningList()
 
 
 }//end class
+
+?>

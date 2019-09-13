@@ -25,9 +25,9 @@ class DbSelectBracesUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    protected function getErrorList()
+    protected function getErrorList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getErrorList()
 
@@ -40,9 +40,9 @@ class DbSelectBracesUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    protected function getWarningList()
+    protected function getWarningList($testFile = NULL)
     {
-        return [3 => 1];
+        return array(3 => 1);
 
     }//end getWarningList()
 

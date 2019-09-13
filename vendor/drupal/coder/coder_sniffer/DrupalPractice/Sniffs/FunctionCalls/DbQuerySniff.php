@@ -31,7 +31,7 @@ class DbQuerySniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return ['db_query'];
+        return array('db_query');
 
     }//end registerFunctionNames()
 
@@ -47,7 +47,7 @@ class DbQuerySniff extends FunctionCall
      * @param int                         $closeBracket The position of the closing
      *                                                  parenthesis in the stack.
      *
-     * @return void|int
+     * @return void
      */
     public function processFunctionCall(
         File $phpcsFile,
@@ -56,24 +56,24 @@ class DbQuerySniff extends FunctionCall
         $closeBracket
     ) {
         // This check only applies to Drupal 7, not Drupal 6.
-        if (Project::getCoreVersion($phpcsFile) !== 7) {
-            return ($phpcsFile->numTokens + 1);
+        if (Project::getCoreVersion($phpcsFile) !== '7.x') {
+            return;
         }
 
         $tokens   = $phpcsFile->getTokens();
         $argument = $this->getArgument(1);
 
-        $queryStart = '';
-        for ($start = $argument['start']; $tokens[$start]['code'] === T_CONSTANT_ENCAPSED_STRING && empty($queryStart) === true; $start++) {
+        $query_start = '';
+        for ($start = $argument['start']; $tokens[$start]['code'] === T_CONSTANT_ENCAPSED_STRING && empty($query_start) === true; $start++) {
             // Remove quote and white space from the beginning.
-            $queryStart = trim(substr($tokens[$start]['content'], 1));
+            $query_start = trim(substr($tokens[$start]['content'], 1));
             // Just look at the first word.
-            $parts      = explode(' ', $queryStart);
-            $queryStart = $parts[0];
+            $parts       = explode(' ', $query_start);
+            $query_start = $parts[0];
 
-            if (in_array(strtoupper($queryStart), ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE']) === true) {
+            if (in_array(strtoupper($query_start), array('INSERT', 'UPDATE', 'DELETE', 'TRUNCATE')) === true) {
                 $warning = 'Do not use %s queries with db_query(), use %s instead';
-                $phpcsFile->addWarning($warning, $start, 'DbQuery', [$queryStart, 'db_'.strtolower($queryStart).'()']);
+                $phpcsFile->addWarning($warning, $start, 'DbQuery', array($query_start, 'db_'.strtolower($query_start).'()'));
             }
         }
 

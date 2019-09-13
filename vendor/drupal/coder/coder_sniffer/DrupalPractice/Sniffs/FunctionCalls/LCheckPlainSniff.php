@@ -30,7 +30,7 @@ class LCheckPlainSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return ['l'];
+        return array('l');
 
     }//end registerFunctionNames()
 

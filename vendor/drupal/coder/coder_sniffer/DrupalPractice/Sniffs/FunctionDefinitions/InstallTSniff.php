@@ -34,14 +34,14 @@ class InstallTSniff extends FunctionDefinition
      * @param int                         $functionPtr The position of the function keyword
      *                                                 in the stack.
      *
-     * @return void|int
+     * @return void
      */
     public function processFunction(File $phpcsFile, $stackPtr, $functionPtr)
     {
         $fileExtension = strtolower(substr($phpcsFile->getFilename(), -7));
         // Only check in *.install files.
         if ($fileExtension !== 'install') {
-            return ($phpcsFile->numTokens + 1);
+            return;
         }
 
         $fileName = substr(basename($phpcsFile->getFilename()), 0, -8);
@@ -53,8 +53,8 @@ class InstallTSniff extends FunctionDefinition
         }
 
         // This check only applies to Drupal 7, not Drupal 8.
-        if (Project::getCoreVersion($phpcsFile) !== 7) {
-            return ($phpcsFile->numTokens + 1);
+        if (Project::getCoreVersion($phpcsFile) !== '7.x') {
+            return;
         }
 
         // Search in the function body for t() calls.

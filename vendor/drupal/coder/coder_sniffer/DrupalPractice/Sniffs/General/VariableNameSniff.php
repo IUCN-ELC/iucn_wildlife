@@ -32,7 +32,7 @@ class VariableNameSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return ['variable_get'];
+        return array('variable_get');
 
     }//end registerFunctionNames()
 
@@ -88,10 +88,10 @@ class VariableNameSniff extends FunctionCall
         $variableName = substr($tokens[$argument['start']]['content'], 1, -1);
         if (strpos($variableName, $moduleName) !== 0) {
             $warning = 'All variables defined by your module must be prefixed with your module\'s name to avoid name collisions with others. Expected start with "%s" but found "%s"';
-            $data    = [
-                $moduleName,
-                $variableName,
-            ];
+            $data    = array(
+                        $moduleName,
+                        $variableName,
+                       );
             $phpcsFile->addWarning($warning, $argument['start'], 'VariableName', $data);
         }
 

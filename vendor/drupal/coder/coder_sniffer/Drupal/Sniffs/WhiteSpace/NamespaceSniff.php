@@ -30,7 +30,7 @@ class NamespaceSniff implements Sniff
      */
     public function register()
     {
-        return [T_NAMESPACE];
+        return array(T_NAMESPACE);
 
     }//end register()
 

@@ -32,7 +32,7 @@ class RequiredSniff implements Sniff
      */
     public function register()
     {
-        return [T_INLINE_HTML];
+        return array(T_INLINE_HTML);
 
     }//end register()
 

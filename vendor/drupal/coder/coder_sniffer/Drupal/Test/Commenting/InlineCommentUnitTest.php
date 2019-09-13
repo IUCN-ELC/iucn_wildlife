@@ -7,7 +7,6 @@ use Drupal\Test\CoderSniffUnitTest;
 class InlineCommentUnitTest extends CoderSniffUnitTest
 {
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -16,21 +15,21 @@ class InlineCommentUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [
-            8  => 1,
-            10 => 1,
-            13 => 1,
-            15 => 1,
-            20 => 1,
-            24 => 1,
-            44 => 1,
-            47 => 1,
-            59 => 1,
-            81 => 1,
-            83 => 1,
-        ];
+        return array(
+                8 => 1,
+                10 => 1,
+                13 => 1,
+                15 => 1,
+                20 => 1,
+                24 => 1,
+                44 => 1,
+                47 => 1,
+                59 => 2,
+                81 => 1,
+                83 => 1,
+               );
 
     }//end getErrorList()
 
@@ -43,9 +42,11 @@ class InlineCommentUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [16 => 1];
+        return array(
+                16 => 1,
+               );
 
     }//end getWarningList()
 

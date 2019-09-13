@@ -16,9 +16,9 @@ class TxtFileLineLengthUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getErrorList()
 
@@ -31,9 +31,9 @@ class TxtFileLineLengthUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [1 => 1];
+        return array(1 => 1);
 
     }//end getWarningList()
 

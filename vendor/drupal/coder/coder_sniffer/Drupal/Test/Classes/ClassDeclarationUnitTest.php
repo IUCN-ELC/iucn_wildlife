@@ -16,13 +16,13 @@ class ClassDeclarationUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [
-            11 => 1,
-            19 => 1,
-            28 => 1,
-        ];
+        return array(
+                11 => 1,
+                19 => 1,
+                28 => 1,
+               );
 
     }//end getErrorList()
 
@@ -35,9 +35,9 @@ class ClassDeclarationUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getWarningList()
 

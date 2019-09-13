@@ -16,11 +16,11 @@ class GenderNeutralCommentUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile = NULL)
     {
-        return [
-            7  => 1,
-            8  => 1,
+        return array(
+            7 => 1,
+            8 => 1,
             12 => 1,
             13 => 1,
             14 => 1,
@@ -33,7 +33,7 @@ class GenderNeutralCommentUnitTest extends CoderSniffUnitTest
             26 => 1,
             27 => 1,
             31 => 1,
-        ];
+           );
 
     }//end getErrorList()
 
@@ -46,9 +46,10 @@ class GenderNeutralCommentUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile = NULL)
     {
-        return [];
+        return array(
+               );
 
     }//end getWarningList()
 

@@ -22,9 +22,9 @@ class DefaultValueSanitizeUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    protected function getErrorList()
+    protected function getErrorList($testFile = NULL)
     {
-        return [];
+        return array();
 
     }//end getErrorList()
 
@@ -37,9 +37,9 @@ class DefaultValueSanitizeUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    protected function getWarningList()
+    protected function getWarningList($testFile = NULL)
     {
-        return [6 => 1];
+        return array(6 => 1);
 
     }//end getWarningList()
 

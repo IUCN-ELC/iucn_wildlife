@@ -31,7 +31,7 @@ class FormStateInputSniff implements Sniff
      */
     public function register()
     {
-        return [T_VARIABLE];
+        return array(T_VARIABLE);
 
     }//end register()
 

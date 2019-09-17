@@ -11,7 +11,7 @@ _core:
 id: iucn_frontend_messages
 theme: iucn_frontend
 region: header
-weight: -6
+weight: -11
 provider: null
 plugin: system_messages_block
 settings:

@@ -1,0 +1,23 @@
+uuid: f24bbad4-c4fe-4c79-a184-910f54897c12
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.country_3
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: country_3
+theme: iucn_frontend
+region: sidebar
+weight: -6
+provider: null
+plugin: 'facet_block:country_3'
+settings:
+  id: 'facet_block:country_3'
+  label: Country
+  provider: facets
+  label_display: visible
+  block_id: country_3
+visibility: {  }

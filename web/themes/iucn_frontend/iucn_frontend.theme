@@ -4,9 +4,9 @@ function iucn_frontend_preprocess_page(array &$variables) {
 
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
-  $variables['q'] = !empty($_GET['q']) ? htmlspecialchars($_GET['q'], ENT_SUBSTITUTE, 'UTF-8') : '';
+  $variables['search_api_fulltext'] = !empty($_GET['search_api_fulltext']) ? htmlspecialchars($_GET['search_api_fulltext'], ENT_SUBSTITUTE, 'UTF-8') : '';
   $get = $_GET;
-  unset($get['q']);
+  unset($get['search_api_fulltext']);
   $variables['url_query'] = $get;
 
   if ($variables['is_front']) {
@@ -62,4 +62,35 @@ function iucn_frontend_preprocess_field(array &$variables) {
 
 function iucn_frontend_preprocess_item_list__file_formatter_list(array &$variables) {
   $variables['attributes']['class'][] = 'list-unstyled';
+}
+
+function iucn_frontend_preprocess_block(array &$variables) {
+  switch($variables['attributes']['id']){
+    case 'block-country-3':
+    case 'block-legislationcountry':
+    case 'block-country' : {
+      $variables['attributes']['data-placeholder'] = 'Add countries...';
+      break;
+    }
+    case 'block-literaturelanguage':
+    case 'block-language-2':
+    case 'block-language': {
+      $variables['attributes']['data-placeholder'] = 'Add languages...';
+      break;
+    }
+    case 'block-species': {
+      $variables['attributes']['data-placeholder'] = 'Add species...';
+      break;
+    }
+    case 'block-typeofcourt': {
+      $variables['attributes']['data-placeholder'] = 'Add types...';
+      break;
+    }
+    case 'block-territorialsubdivisions': {
+      $variables['attributes']['data-placeholder'] = 'Add territories...';
+      break;
+    }
+
+  }
+  $r = 2;
 }

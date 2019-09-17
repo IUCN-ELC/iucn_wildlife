@@ -11,7 +11,7 @@ _core:
 id: iucn_frontend_content
 theme: iucn_frontend
 region: content
-weight: -6
+weight: -13
 provider: null
 plugin: system_main_block
 settings:

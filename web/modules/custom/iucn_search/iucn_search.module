@@ -22,7 +22,6 @@ function iucn_search_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
-
 /**
  * Implements hook_edw_search_solr_facet_info().
  */
@@ -115,12 +114,10 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
       if (literature_is_article($entity)) {
         concat_fields_display($build, $entity, 'field_serial_title', 'field_volume_number', 'field_collation');
         hide($build['field_paper_title_of_text']);
-      }
-      elseif (literature_is_chapter($entity)) {
+      } elseif (literature_is_chapter($entity)) {
         concat_fields_display($build, $entity, 'field_paper_title_of_text', 'field_volume_number', 'field_collation');
         hide($build['field_serial_title']);
-      }
-      else {
+      } else {
         hide($build['field_paper_title_of_text']);
         hide($build['field_serial_title']);
       }
@@ -143,14 +140,12 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
         if ($scope instanceof \Drupal\taxonomy\TermInterface && $scope->label() == 'International') {
           $build['field_country'] = $build['field_scope'];
         }
-      }
-      else {
+      } else {
         $max = -1;
         for ($i = 0; $i < count($countries); $i++) {
           if ($i >= 3) {
             unset($build['field_country'][$i]);
-          }
-          else {
+          } else {
             $max++;
             $build['field_country'][$i]['#suffix'] = ',';
           }
@@ -158,8 +153,7 @@ function iucn_search_node_view(array &$build, \Drupal\node\NodeInterface $entity
 
         if (count($countries) > 3) {
           $build['field_country'][$max]['#suffix'] = '...';
-        }
-        else {
+        } else {
           $build['field_country'][$max]['#suffix'] = '';
         }
       }
@@ -308,8 +302,7 @@ function iucn_search_cron() {
         $executable = new \Drupal\migrate\MigrateExecutable($migration, new \Drupal\migrate\MigrateMessage());
         $executable->import();
         $migrate_last_imported_store->set($migration->id(), round(microtime(TRUE) * 1000));
-      }
-      else {
+      } else {
         \Drupal::logger('migrate')
           ->critical(t('Could\'t run migration @migration', ['@migration' => $migrationName]));
       }
@@ -319,8 +312,8 @@ function iucn_search_cron() {
 }
 
 function iucn_search_query_filter() {
-  if (!empty($_GET['q'])) {
-    $q = \Drupal\Component\Utility\Html::escape($_GET['q']);
+  if (!empty($_GET['search_api_fulltext'])) {
+    $q = \Drupal\Component\Utility\Html::escape($_GET['search_api_fulltext']);
   }
   return !empty($q) ? $q : '';
 }
@@ -345,3 +338,88 @@ function iucn_search_views_pre_build(ViewExecutable $view) {
     $view->setOffset($offset);
   }
 }
+
+function iucn_search_preprocess_views_view(array &$variables) {
+  $variables['attachment_before']['map'] = [
+
+    '#markup' => '<srtrong><a href="#" data-toggle="modal" data-target="#search_modal" class="search-modal-opener">' . t('Show on map') . '</a></srtrong>',
+    '#attached' => [
+      'library' => [
+        'iucn_search/iucn_search.map.js',
+        'wildlex_map/d3.js',
+        'wildlex_map/topojson.js',
+        'wildlex_map/datamaps.js',
+        'wildlex_map/wildlex.map.js'
+      ],
+    ],
+  ];
+  $view = $variables['view'];
+  if (empty($view) || !$view instanceof ViewExecutable) {
+    return;
+  }
+
+  switch ($view->id()) {
+    case 'search':
+      $viewAll = \Drupal\views\Views::getView($view->id());
+      $display_id = $view->current_display;
+      $viewAll->setDisplay($display_id);
+      $viewAll->setItemsPerPage(9999999);
+      $viewAll->execute();
+
+      $countries = [];
+      foreach ($viewAll->result as $resultRow) {
+        $node = $resultRow->_object->getEntity();
+        $country = $node->field_country;
+
+        if (empty($country->target_id)) {
+          continue;
+        }
+        foreach ($country as $data) {
+          /** @var \Drupal\taxonomy\TermInterface $countryEntity */
+          $countryEntity = $data->entity;
+
+          $id = $countryEntity->id();
+
+          if (empty($countries[$id])) {
+            $countries[$id] = [
+              0 => $countryEntity->field_iso->value,
+              1 => 0,
+              2 => $id,
+            ];
+          }
+          $countries[$id][1]++;
+        }
+      }
+      $countries = array_values($countries);
+      $variables['#attached']['drupalSettings']['series'] = $countries;
+
+
+      switch ($view->current_display) {
+        case 'page_1':
+          $contentType = [
+            'machine_name' => 'court_decision',
+            'singular' => 'court decision',
+            'plural' => 'court decisions',
+          ];
+          break;
+        case 'page_2':
+          $contentType = [
+            'machine_name' => 'legislation',
+            'singular' => 'legislation',
+            'plural' => 'legislations',
+          ];
+          break;
+        case 'page_3':
+          $contentType = [
+            'machine_name' => 'literature',
+            'singular' => 'literature',
+            'plural' => 'literatures',
+          ];
+          break;
+      }
+      $variables['attachment_before']['map']['#markup'] .= \Drupal::service('wildlex_map.countries_map')->modalMarkup($contentType, count($viewAll->result));
+      break;
+  }
+
+}
+

@@ -1,0 +1,23 @@
+uuid: 8ed7c662-0096-4834-9f33-100748ab9e0a
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.language_2
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: language_2
+theme: iucn_frontend
+region: sidebar
+weight: -2
+provider: null
+plugin: 'facet_block:language_2'
+settings:
+  id: 'facet_block:language_2'
+  label: Language
+  provider: facets
+  label_display: visible
+  block_id: language_2
+visibility: {  }

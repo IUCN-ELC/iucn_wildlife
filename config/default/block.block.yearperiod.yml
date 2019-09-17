@@ -1,0 +1,23 @@
+uuid: 968c7e2d-63e0-4298-9169-11db31a99688
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.year_period
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: yearperiod
+theme: iucn_frontend
+region: sidebar
+weight: -7
+provider: null
+plugin: 'facet_block:year_period'
+settings:
+  id: 'facet_block:year_period'
+  label: Year/Period
+  provider: facets
+  label_display: visible
+  block_id: yearperiod
+visibility: {  }

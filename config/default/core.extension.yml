@@ -1,6 +1,7 @@
 module:
   automated_cron: 0
   basic_auth: 0
+  better_exposed_filters: 0
   block: 0
   block_content: 0
   breakpoint: 0
@@ -18,6 +19,8 @@ module:
   editor_file: 0
   edw_healthcheck: 0
   elis_consumer: 0
+  facets: 0
+  facets_range_widget: 0
   field: 0
   field_ui: 0
   file: 0

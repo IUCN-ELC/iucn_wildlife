@@ -1,0 +1,23 @@
+uuid: 7331ef04-ccad-49a6-a11f-96a8f2d638af
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.country_2
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: legislationcountry
+theme: iucn_frontend
+region: sidebar
+weight: -3
+provider: null
+plugin: 'facet_block:country_2'
+settings:
+  id: 'facet_block:country_2'
+  label: Country
+  provider: facets
+  label_display: visible
+  block_id: legislationcountry
+visibility: {  }

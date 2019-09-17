@@ -2,6 +2,12 @@ uuid: 90f4aab9-177e-4087-ac91-f7159e987559
 langcode: en
 status: true
 dependencies:
+  module:
+    - search_api_solr
+    - node
+    - taxonomy
+    - search_api
+    - search_api_attachments
   config:
     - field.storage.node.field_abstract
     - field.storage.node.field_country
@@ -29,11 +35,11 @@ dependencies:
     - field.storage.node.field_original_id
     - field.storage.node.field_wildlife_legislation
     - search_api.server.solr_server
-  module:
-    - node
-    - taxonomy
-    - search_api
-    - search_api_attachments
+third_party_settings:
+  search_api_solr:
+    multilingual:
+      limit_to_content_language: false
+      include_language_independent: true
 id: default_node_index
 name: 'Default node index'
 description: ''
@@ -91,7 +97,7 @@ field_settings:
     label: 'Date of text'
     datasource_id: 'entity:node'
     property_path: field_date_of_text
-    type: date
+    type: integer
     dependencies:
       config:
         - field.storage.node.field_date_of_text
@@ -308,6 +314,7 @@ processor_settings:
     excluded_private: 1
     excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
   rendered_item: {  }
+  solr_date_range: {  }
 tracker_settings:
   default:
     indexing_order: fifo
@@ -315,8 +322,3 @@ options:
   index_directly: true
   cron_limit: 1
 server: solr_server
-third_party_settings:
-  search_api_solr:
-    multilingual:
-      limit_to_content_language: false
-      include_language_independent: true

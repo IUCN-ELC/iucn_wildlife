@@ -1,0 +1,23 @@
+uuid: e8db6f08-dcac-41c1-9b0c-8813ae9e06fc
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.species
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: species
+theme: iucn_frontend
+region: sidebar
+weight: -9
+provider: null
+plugin: 'facet_block:species'
+settings:
+  id: 'facet_block:species'
+  label: Species
+  provider: facets
+  label_display: visible
+  block_id: species
+visibility: {  }

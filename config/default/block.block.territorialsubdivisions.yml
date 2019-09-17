@@ -1,0 +1,23 @@
+uuid: 2daa06ae-ccd1-4a73-9787-2d38ad0c1639
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.territorial_subdivisions
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: territorialsubdivisions
+theme: iucn_frontend
+region: sidebar
+weight: -11
+provider: null
+plugin: 'facet_block:territorial_subdivisions'
+settings:
+  id: 'facet_block:territorial_subdivisions'
+  label: 'Territorial subdivisions'
+  provider: facets
+  label_display: visible
+  block_id: territorialsubdivisions
+visibility: {  }

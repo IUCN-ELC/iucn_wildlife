@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: country_3
 theme: iucn_frontend
-region: sidebar
-weight: -6
+region: sidebar_facets
+weight: -7
 provider: null
 plugin: 'facet_block:country_3'
 settings:

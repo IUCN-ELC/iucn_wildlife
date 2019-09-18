@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: language
 theme: iucn_frontend
-region: sidebar
-weight: -8
+region: sidebar_facets
+weight: -9
 provider: null
 plugin: 'facet_block:language'
 settings:

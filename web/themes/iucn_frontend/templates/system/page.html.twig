@@ -197,18 +197,15 @@
       {% if page.sidebar %}
         {% block sidebar %}
           <aside class="col-md-3" role="complementary">
-            {%  if is_front %}
-              {{ page.sidebar }}
-            {% else  %}
             <div class="search-filters panel panel-default" >
               <div class="panel-heading">
                 <div class="panel-title"> Search filters</div>
               </div>
               <div class="panel-body">
-                  {{ page.sidebar }}
+                  {{ page.sidebar_facets}}
               </div>
             </div>
-            {% endif %}
+            {{ page.sidebar }}
           </aside>
         {% endblock %}
       {% endif %}

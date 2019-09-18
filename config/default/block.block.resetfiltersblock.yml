@@ -1,0 +1,26 @@
+uuid: 97556980-be7c-42dd-b934-00dee7c4cfa8
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_search
+    - system
+  theme:
+    - iucn_frontend
+id: resetfiltersblock
+theme: iucn_frontend
+region: sidebar
+weight: -12
+provider: null
+plugin: reset_filters_block
+settings:
+  id: reset_filters_block
+  label: 'Reset filters block'
+  provider: iucn_search
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: "/search-test\r\n/literature-test\r\n/legislation-test"
+    negate: false
+    context_mapping: {  }

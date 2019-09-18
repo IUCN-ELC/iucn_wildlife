@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: territorialsubdivisions
 theme: iucn_frontend
-region: sidebar
-weight: -11
+region: sidebar_facets
+weight: -12
 provider: null
 plugin: 'facet_block:territorial_subdivisions'
 settings:

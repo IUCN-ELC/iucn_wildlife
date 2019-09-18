@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: literatureyearperiod
 theme: iucn_frontend
-region: sidebar
-weight: -4
+region: sidebar_facets
+weight: -5
 provider: null
 plugin: 'facet_block:literature_year_period'
 settings:

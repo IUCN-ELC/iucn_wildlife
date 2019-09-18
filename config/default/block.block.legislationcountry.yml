@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: legislationcountry
 theme: iucn_frontend
-region: sidebar
-weight: -3
+region: sidebar_facets
+weight: -4
 provider: null
 plugin: 'facet_block:country_2'
 settings:

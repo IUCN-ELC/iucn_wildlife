@@ -10,7 +10,7 @@ dependencies:
 id: year_period
 name: 'Court decision: Year/Period'
 url_alias: year_period
-weight: 0
+weight: 2
 min_count: 1
 show_only_one_result: true
 field_identifier: field_date_of_text

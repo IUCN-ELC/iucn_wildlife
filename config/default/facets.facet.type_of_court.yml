@@ -10,7 +10,7 @@ dependencies:
 id: type_of_court
 name: 'Court decision: Type of court'
 url_alias: type_of_court
-weight: 0
+weight: 1
 min_count: 1
 show_only_one_result: false
 field_identifier: field_court_jurisdiction
@@ -19,7 +19,7 @@ widget:
   type: dropdown
   config:
     show_numbers: false
-    default_option_label: ''
+    default_option_label: 'Add types...'
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false

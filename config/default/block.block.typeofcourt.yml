@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: typeofcourt
 theme: iucn_frontend
-region: sidebar
-weight: -10
+region: sidebar_facets
+weight: -11
 provider: null
 plugin: 'facet_block:type_of_court'
 settings:

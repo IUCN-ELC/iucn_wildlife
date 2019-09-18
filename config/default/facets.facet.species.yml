@@ -10,7 +10,7 @@ dependencies:
 id: species
 name: 'Court decision: Species'
 url_alias: species
-weight: 0
+weight: -2
 min_count: 1
 show_only_one_result: false
 field_identifier: field_species
@@ -19,7 +19,7 @@ widget:
   type: dropdown
   config:
     show_numbers: false
-    default_option_label: ''
+    default_option_label: 'Add species...'
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false

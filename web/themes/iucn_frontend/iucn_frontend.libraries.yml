@@ -68,3 +68,7 @@ select2:
     assets/vendor/select2/js/select2.min.js: { minified: true }
   dependencies:
     - core/jquery
+
+drupal.facets.dropdown-widget:
+  js:
+    js/dropdown-widget.js: {}

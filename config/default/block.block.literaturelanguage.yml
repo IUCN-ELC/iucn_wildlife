@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: literaturelanguage
 theme: iucn_frontend
-region: sidebar
-weight: -5
+region: sidebar_facets
+weight: -6
 provider: null
 plugin: 'facet_block:language_3'
 settings:

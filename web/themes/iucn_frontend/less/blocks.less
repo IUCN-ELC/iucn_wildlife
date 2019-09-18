@@ -67,7 +67,7 @@
 
 .facet-title {
   float: left;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   margin-bottom: 4px;
   margin-top: 4px;
@@ -89,6 +89,7 @@
 
 .select2-selection--multiple {
   min-height: auto;
+  width: fit-content;
 }
 
 .select2-search {
@@ -102,12 +103,14 @@
 .select2-search__field {
   cursor: pointer;
   margin-top: 0;
+  width: auto !important;
 }
 
 .select2-container--open {
   .select2-search {
     opacity: 1;
     position: static;
+    width: inherit;
   }
 
   .select2-search__field {

@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: yearperiod
 theme: iucn_frontend
-region: sidebar
-weight: -7
+region: sidebar_facets
+weight: -8
 provider: null
 plugin: 'facet_block:year_period'
 settings:

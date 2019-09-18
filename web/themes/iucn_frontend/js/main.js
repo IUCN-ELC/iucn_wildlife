@@ -42,8 +42,6 @@
       var $window = $(window);
 
       $('select.js-multiple-select', context).once('transformSelect2').each(function () {
-       // $(this).wrapAll("<div class='select-wrapper'>");
-        var placeholder =  $(this).closest('.block-facets').data('placeholder')? $(this).closest('.block-facets').data('placeholder'):Drupal.t('Choose');
         $(this).select2({
           dataAdapter: CustomData,
           matcher: function (term, text) {
@@ -59,7 +57,6 @@
 
             return text;
           },
-          placeholder: placeholder,
           templateResult: function (data) {
             var text = data.text;
 

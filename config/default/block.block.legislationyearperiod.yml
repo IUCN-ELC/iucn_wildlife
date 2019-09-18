@@ -10,8 +10,8 @@ dependencies:
     - iucn_frontend
 id: legislationyearperiod
 theme: iucn_frontend
-region: sidebar
-weight: 0
+region: sidebar_facets
+weight: -2
 provider: null
 plugin: 'facet_block:legislation_year_period'
 settings:

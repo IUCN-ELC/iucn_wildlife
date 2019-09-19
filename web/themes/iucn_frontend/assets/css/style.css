@@ -17,26 +17,26 @@
 #block-searchfilters {
   font-size: 14px;
 }
-.facet-container:before,
-.facet-container:after {
+.facet-container:not(:last-child):before,
+.facet-container:not(:last-child):after {
   content: " ";
   display: table;
 }
-.facet-container:after {
+.facet-container:not(:last-child):after {
   clear: both;
 }
-.facet-container .facet-title {
+.facet-container:not(:last-child) .facet-title {
   padding-left: 15px;
   position: relative;
 }
-.facet-container .facet-title:before {
+.facet-container:not(:last-child) .facet-title:before {
   color: #999;
   content: "+";
   display: inline-block;
   left: 0;
   position: absolute;
 }
-.facet-container:hover .facet-title:before {
+.facet-container:not(:last-child):hover .facet-title:before {
   color: #e67e22;
 }
 .checkbox {
@@ -51,10 +51,10 @@
 }
 .facet-title {
   float: left;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  margin-bottom: 4px;
-  margin-top: 4px;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 .select-wrapper {
   clear: both;
@@ -62,7 +62,7 @@
 .select-wrapper:after {
   content: none;
 }
-.select2-selection--multiple {
+.select2-container .select2-selection--multiple {
   min-height: auto;
   width: -webkit-fit-content;
   width:    -moz-fit-content;
@@ -722,13 +722,14 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .search-header strong {
   color: #212121;
 }
-#edit-year .facet-title {
+.region-sidebar-facets .facet-title {
   float: none;
 }
-#edit-year .clearfix {
+.region-sidebar-facets .clearfix {
   margin-top: 11px;
+  font-size: 14px;
 }
-#edit-year .form-control {
+.region-sidebar-facets .form-control {
   border-radius: 0;
   border-width: 0 0 1px;
   box-shadow: none;
@@ -738,13 +739,13 @@ fieldset[disabled] #search-form .btn-primary.focus {
   padding: 0;
   width: 4em;
 }
-#edit-year .btn-link {
+.region-sidebar-facets .btn-link {
   border: 0;
   font-size: inherit;
   line-height: 30px;
   padding: 0;
 }
-#edit-year .btn-link .glyphicon {
+.region-sidebar-facets .btn-link .glyphicon {
   vertical-align: middle;
 }
 .page-header:first-child h1 {
@@ -1533,21 +1534,13 @@ body.path-frontpage {
 .sort-map-group #edit-sort-by .form-group {
   padding: 0 5px 0 5px;
 }
-#block-country,
-#block-country-3,
-#block-legislationcountry,
-#block-literaturelanguage,
-#block-language-2,
-#block-language,
-#block-species,
-#block-typeofcourt,
-#block-territorialsubdivisions,
-#block-yearperiod,
-#block-legislationyearperiod,
-#block-literatureyearperiod {
-  margin: 0;
-  display: -ms-grid;
-  display:     grid;
+.sort-map-group .strong {
+  font-weight: 600;
+  color: black !important;
+}
+.sort-map-group .strong:hover {
+  text-decoration: none;
+  cursor: auto;
 }
 #block-country li,
 #block-country-3 li,

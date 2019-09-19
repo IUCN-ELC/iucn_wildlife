@@ -1,4 +1,4 @@
-(function($, Drupal) {
+(function($, Drupal, drupalSettings) {
   Drupal.behaviors.search_filters = {
     attach: function (context, settings) {
       $.fn.select2.amd.define('select2/data/custom', [
@@ -37,7 +37,7 @@
         return CustomData;
       });
 
-      var $searchFilters = $('.region-sidebar');
+      var $searchFilters = $('.region-sidebar-facets');
       var CustomData = $.fn.select2.amd.require(('select2/data/custom'));
       var $window = $(window);
 
@@ -158,35 +158,68 @@
         }
       });
 
-      var rangeSlider = $('.range-slider', $searchFilters).ionRangeSlider({
-        'force_edges': true,
-        'prettify_enabled': false,
-        grid: true,
-        type: 'double',
-        onChange: function (data) {
-          $('[name="yearmin"]', $searchFilters).val(data.from);
-          $('[name="yearmax"]', $searchFilters).val(data.to);
-        }
-      }).data('ionRangeSlider');
+      $('.bef-link-active').addClass('strong');
+      var currentUrl = window.location.href;
 
-      $('[type="number"]', $searchFilters).change(function () {
-        var $this = $(this);
+      var rangeSlider = $('.facets-widget-range_slider', $searchFilters).once('transformRangeslider').each(function () {
+        var facet_id = $(this).find('.item-list__range_slider').data('drupal-facet-id');
+        var generalUrl = drupalSettings.facets.sliders[facet_id].url;
+        var search = drupalSettings.facets.sliders[facet_id];
+        var url = generalUrl;
+        var from ='__range_slider_min__';
+        var to = '__range_slider_max__';
+        $('.form-control.min').attr('min', search['min']).attr('max',search['max']).attr('value', search['values']['0']);
+        $('.form-control.max').attr('min', search['min']).attr('max',search['max']).attr('value', search['values']['1']);
+        var slider = $(this).ionRangeSlider({
+          'force_edges': true,
+          'prettify_enabled': false,
+          grid: true,
+          type: 'double',
+          min:search['min'],
+          max:search['max'],
+          to:search['values']['1'],
+          from:search['values']['0'],
+          onChange: function (data) {
+            from = data.from;
+            to = data.to;
+            $('[name="year_period_min"]', $searchFilters).val(from);
+            $('[name="year_period_max"]', $searchFilters).val(to);
+          }
+        }).data('ionRangeSlider');
 
-        if ($this.attr('name') === 'yearmin') {
-          rangeSlider.update({
-            from: $this.val()
-          });
-        } else if ($this.attr('name') === 'yearmax') {
-          rangeSlider.update({
-            to: $this.val()
-          });
-        }
+         $('[type="number"]', $searchFilters).change(function () {
+             var $this = $(this);
+
+           if ($this.attr('name') === 'year_period_min') {
+             from = $this.val();
+             slider.update({
+               from: from
+             });
+           } else if ($this.attr('name') === 'year_period_max') {
+             to = $this.val();
+             slider.update({
+               to: to
+             });
+           }
+         });
+
+
+        $('.btn.btn-link').on('click', function() {
+          url = url.replace('__range_slider_min__',  from).replace('__range_slider_max__', to);
+          if(url.search('__range_slider_min__') && url.search('__range_slider_max__')==-1) {
+            url = url.replace('__range_slider_min__',  search['values']['0'])
+          }
+          if(url.search('__range_slider_min__')==-1 && url.search('__range_slider_max__')) {
+            url = url.replace('__range_slider_max__',  search['values']['1'])
+          }
+          window.location.href = (url==generalUrl)? currentUrl:url;
+        });
       });
 
       var $searchForm = $('#search-form');
 
       $('.close', $searchForm).click(function () {
-        $('select.js-multiple-select', $searchForm).val('');
+        $('.facets-widget-range_slider', $searchForm).val('');
 
         $searchForm.submit();
       });
@@ -196,4 +229,4 @@
       });
 
     }
-  }})(jQuery, Drupal);
+  }})(jQuery, Drupal, drupalSettings);

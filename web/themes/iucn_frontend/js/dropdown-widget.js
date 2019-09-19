@@ -7,13 +7,6 @@
 
   'use strict';
 
-  if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function(searchString, position) {
-      position = position || 0;
-      return this.indexOf(searchString, position) === position;
-    };
-  }
-
   Drupal.facets = Drupal.facets || {};
   Drupal.behaviors.facetsDropdownWidget = {
     attach: function (context, settings) {
@@ -30,16 +23,14 @@
    *   Settings.
    */
   Drupal.facets.makeDropdown = function (context, settings) {
-
-
     // Find all dropdown facet links and turn them into an option.
     $('.js-facets-dropdown-links').once('facets-dropdown-transform').each(function () {
       var $ul = $(this);
       var $links = $ul.find('.facet-item a');
       var $dropdown = $('<select />');
       // Preserve all attributes of the list.
-      $ul.each(function () {
-        $.each(this.attributes, function (idx, elem) {
+      $ul.each(function() {
+        $.each(this.attributes,function(idx, elem) {
           $dropdown.attr(elem.name, elem.value);
         });
       });
@@ -47,8 +38,8 @@
       $dropdown.removeClass('js-facets-dropdown-links');
 
       $dropdown.addClass('facets-dropdown');
+      $dropdown.addClass('js-facets-widget');
       $dropdown.addClass('js-facets-dropdown');
-
       if ($ul.hasClass('js-multiple-select')) {
         $dropdown.attr('multiple', 'multiple');
       }
@@ -63,23 +54,16 @@
       var $default_option = $('<option />')
         .attr('value', '')
         .text(default_option_label);
-      $dropdown.append($default_option);
 
       $ul.prepend('<li class="default-option"><a href=".">' + default_option_label + '</a></li>');
 
       var has_active = false;
       $links.each(function () {
         var $link = $(this);
-
         var active = $link.hasClass('is-active');
         var $option = $('<option />')
           .attr('value', $link.attr('href'))
           .data($link.data());
-
-        if ($link.attr('title')) {
-          $option.attr('title', $link.attr('title'));
-        }
-
         if (active) {
           has_active = true;
           // Set empty text value to this link to unselect facet.
@@ -88,41 +72,46 @@
           $option.attr('selected', 'selected');
           $link.find('.js-facet-deactivate').remove();
         }
-        $option.html($link.text());
+        $option.text($link.text());
         $dropdown.append($option);
+        $dropdown.data('facetsPreviousValue', $dropdown.val());
       });
 
       // Go to the selected option when it's clicked.
       $dropdown.on('change.facets', function () {
-        if ($(this).parent().find(".chosen-container").length !== 0) {
-          var chosen = $(this).chosen();
-
-          var value = chosen.val();
-          if (typeof value !== 'string') {
-            if (typeof value === 'object' && !$.isEmptyObject(value)) {
-              if (!value[0].startsWith('/')) {
-                value = value[1];
-              }
-              else {
-                value = value[0];
-              }
-            }
-            else {
-              value = $(this).find('option').first().val();
-            }
-          }
-          window.location.href = value;
+        // var anchor = $($ul).find("[data-drupal-facet-item-id='" + $(this).find(':selected').data('drupalFacetItemId') + "']");
+        var anchor = [];
+        var current = $(this).val();
+        if (typeof current === 'string') {
+          // Single select
+          anchor = $($ul).find("[data-drupal-facet-item-id='" + $(this).find(':selected').data('drupalFacetItemId') + "']");
         }
         else {
-          var anchor = $($ul).find("[data-drupal-facet-item-id='" + $(this).find(':selected').data('drupalFacetItemId') + "']");
-          if (anchor.length > 0) {
-            $(anchor)[0].click();
+          // Multiple select.
+          var previous = $(this).data('facetsPreviousValue');
+          var added = $(current).not(previous).get();
+          var removed = $(previous).not(current).get();
+          var symDiff = added.concat(removed);
+          var filteredSymDiff = symDiff.filter(String);
+          if (0 in filteredSymDiff) {
+            anchor = $($ul).find("[href='" + filteredSymDiff[0] + "']");
           }
           else {
-            $ul.find('.default-option a')[0].click();
+            // If not, at least keep our house clean.
+            // This may only happen if our empty-text value was toggled.
+            $(this).data('facetsPreviousValue', current);
           }
         }
+        var $linkElement = (anchor.length > 0) ? $(anchor) : $ul.find('.default-option a');
+        var url = $linkElement.attr('href');
+
+        $(this).trigger('facets_filter', [ url ]);
       });
+
+      // Append empty text option.
+      if (!has_active) {
+        $default_option.attr('selected', 'selected');
+      }
 
       // Replace links with dropdown.
       $ul.after($dropdown).hide();

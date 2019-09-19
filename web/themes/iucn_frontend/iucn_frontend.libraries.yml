@@ -2,6 +2,8 @@ application:
   version: 1.0.0
   js:
     assets/js/application.min.js: { minified: true }
+    js/main.js: {}
+
   dependencies:
     - iucn_frontend/bootstrap-switch
     - iucn_frontend/ion-rangeslider
@@ -70,5 +72,8 @@ select2:
     - core/jquery
 
 drupal.facets.dropdown-widget:
+  version: VERSION
   js:
     js/dropdown-widget.js: {}
+  dependencies:
+    - facets/widget

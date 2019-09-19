@@ -63,33 +63,3 @@ function iucn_frontend_preprocess_field(array &$variables) {
 function iucn_frontend_preprocess_item_list__file_formatter_list(array &$variables) {
   $variables['attributes']['class'][] = 'list-unstyled';
 }
-
-//function iucn_frontend_preprocess_block(array &$variables) {
-//  switch($variables['attributes']['id']){
-//    case 'block-country-3':
-//    case 'block-legislationcountry':
-//    case 'block-country' : {
-//      $variables['attributes']['data-placeholder'] = 'Add countries...';
-//      break;
-//    }
-//    case 'block-literaturelanguage':
-//    case 'block-language-2':
-//    case 'block-language': {
-//      $variables['attributes']['data-placeholder'] = 'Add languages...';
-//      break;
-//    }
-//    case 'block-species': {
-//      $variables['attributes']['data-placeholder'] = 'Add species...';
-//      break;
-//    }
-//    case 'block-typeofcourt': {
-//      $variables['attributes']['data-placeholder'] = 'Add types...';
-//      break;
-//    }
-//    case 'block-territorialsubdivisions': {
-//      $variables['attributes']['data-placeholder'] = 'Add species...';
-//      break;
-//    }
-//
-//  }
-//}

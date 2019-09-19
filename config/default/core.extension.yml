@@ -20,6 +20,7 @@ module:
   edw_healthcheck: 0
   elis_consumer: 0
   facets: 0
+  facets_range_input: 0
   facets_range_widget: 0
   field: 0
   field_ui: 0

@@ -664,6 +664,7 @@ display:
         filter_groups: false
         cache: false
         title: false
+        sorts: false
       filter_groups:
         operator: AND
         groups:
@@ -671,6 +672,31 @@ display:
       cache:
         type: none
       title: Search
+      sorts:
+        field_date_of_text:
+          id: field_date_of_text
+          table: search_api_index_default_node_index
+          field: field_date_of_text
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: true
+          expose:
+            label: 'Sort by most recent'
+          plugin_id: search_api
+        field_date_of_text_1:
+          id: field_date_of_text_1
+          table: search_api_index_default_node_index
+          field: field_date_of_text
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: 'Sort by least recent'
+          plugin_id: search_api
     cache_metadata:
       max-age: -1
       contexts:
@@ -779,6 +805,7 @@ display:
         filter_groups: false
         cache: false
         title: false
+        sorts: false
       filter_groups:
         operator: AND
         groups:
@@ -787,6 +814,31 @@ display:
       cache:
         type: none
       title: Search
+      sorts:
+        field_date_of_text:
+          id: field_date_of_text
+          table: search_api_index_default_node_index
+          field: field_date_of_text
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: true
+          expose:
+            label: 'Sort by most recent'
+          plugin_id: search_api
+        field_date_of_text_1:
+          id: field_date_of_text_1
+          table: search_api_index_default_node_index
+          field: field_date_of_text
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: 'Sort by least recent'
+          plugin_id: search_api
     cache_metadata:
       max-age: -1
       contexts:

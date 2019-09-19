@@ -176,6 +176,8 @@ class ElisXMLConsumer {
 
 function elis_consumer_xml_http_request($url, $xml_encoding) {
   elis_consumer_log($url);
+  $url = 'http://wildlex.local/text.xml';
+
   $ret = NULL;
   if ($response = elis_consumer_http_request($url, array('Accept' => 'application/xml'))) {
     try {

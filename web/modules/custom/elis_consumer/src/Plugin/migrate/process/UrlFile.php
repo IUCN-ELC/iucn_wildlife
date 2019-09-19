@@ -35,6 +35,12 @@ class UrlFile extends ProcessPluginBase {
     }
 
     $bundle = $row->getDestination()['type'];
+    if (!empty($this->configuration['destination_property'])) {
+      $destination_property = $this->configuration['destination_property'];
+    }
+    if (!empty($this->configuration['bundle'])) {
+      $bundle = $this->configuration['bundle'];
+    }
     $fi = FieldConfig::loadByName('node', $bundle, $destination_property);
 
     // Get the allowed file extensions.

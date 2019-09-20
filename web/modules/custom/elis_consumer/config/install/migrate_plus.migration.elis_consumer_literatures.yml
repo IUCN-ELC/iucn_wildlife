@@ -37,7 +37,13 @@ process:
     plugin: taxonomy_term
   field_files:
     source: linkToFullText
-    plugin: url_file
+    plugin: sub_process
+    process:
+      target_id:
+        plugin: url_file
+        source: uri
+        destination_property: field_files
+        bundle: literature
   field_publication_place:
     source: publPlace
     plugin: taxonomy_term

@@ -141,7 +141,14 @@ class UrlFile extends ProcessPluginBase {
     $ret = curl_exec($ch);
     $info = curl_getinfo($ch);
     if ($info['http_code'] != 200) {
-      $ret = null;
+      // Retry
+      $url = str_replace(' ', '%20', $url);
+      curl_setopt($ch, CURLOPT_URL, $url);
+      $ret = curl_exec($ch);
+      $info = curl_getinfo($ch);
+      if ($info['http_code'] != 200) {
+        $ret = null;
+      }
     }
     curl_close($ch);
     return $ret;

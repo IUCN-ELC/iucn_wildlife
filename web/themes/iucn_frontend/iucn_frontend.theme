@@ -29,6 +29,7 @@ function iucn_frontend_preprocess_page(array &$variables) {
     $route = 'iucn.search';
   }
   $variables['search_route'] = \Drupal\Core\Url::fromRoute($route);
+
 }
 
 function iucn_frontend_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {

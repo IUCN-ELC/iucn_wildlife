@@ -159,6 +159,11 @@
       });
 
       $('.bef-link-active').addClass('strong');
+      var sortText = $('.bef-link-active').text();
+      sortText = sortText.substr(0, sortText.length - sortText.lastIndexOf('Sort'));
+      sortText = sortText.replace('Sort', 'Sorted');
+      $('.bef-link-active').once('sortSelect').text(sortText);
+
       var currentUrl = window.location.href;
 
       var rangeSlider = $('.facets-widget-range_slider', $searchFilters).once('transformRangeslider').each(function () {

@@ -401,6 +401,7 @@ function iucn_search_preprocess_views_view(array &$variables) {
             'singular' => 'court decision',
             'plural' => 'court decisions',
           ];
+          $variables['exposed']['sort_by']['#value'] = 'search_api_relevance';
           break;
         case 'page_2':
           $contentType = [

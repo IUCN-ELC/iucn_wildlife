@@ -8,12 +8,12 @@ dependencies:
   module:
     - search_api
 id: type_of_court
-name: 'Court decision: Type of court'
+name: 'Type of text'
 url_alias: type_of_court
 weight: 1
 min_count: 1
 show_only_one_result: false
-field_identifier: field_court_jurisdiction
+field_identifier: field_type_of_text
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: dropdown

@@ -8,12 +8,12 @@ dependencies:
   module:
     - search_api
 id: language
-name: 'Court decision: Language'
+name: 'Court decisions: Language'
 url_alias: language
 weight: -3
 min_count: 1
 show_only_one_result: false
-field_identifier: langcode
+field_identifier: field_language_of_document
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: dropdown
@@ -34,6 +34,11 @@ processor_configs:
       sort: 40
     settings:
       sort: ASC
+  translate_entity:
+    processor_id: translate_entity
+    weights:
+      build: 5
+    settings: {  }
   url_processor_handler:
     processor_id: url_processor_handler
     weights:

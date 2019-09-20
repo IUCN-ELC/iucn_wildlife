@@ -28,6 +28,7 @@
 .facet-container:not(:last-child) .facet-title {
   padding-left: 15px;
   position: relative;
+  float: left;
 }
 .facet-container:not(:last-child) .facet-title:before {
   color: #999;

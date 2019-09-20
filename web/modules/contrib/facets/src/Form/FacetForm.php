@@ -412,6 +412,13 @@ class FacetForm extends EntityForm {
       '#description' => $this->t('AND filters are exclusive and narrow the result set. OR filters are inclusive and widen the result set.'),
       '#default_value' => $facet->getQueryOperator(),
     ];
+    $form['facet_settings']['exposed_operator'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Exposed operator'),
+      '#options' => ['yes' => $this->t('YES'), 'no' => $this->t('NO')],
+      '#description' => $this->t('Let user choose operator to apply between facet elements.'),
+      '#default_value' => $facet->getExposedOperator() ,
+    ];
 
     $hard_limit_options = [3, 5, 10, 15, 20, 30, 40, 50, 75, 100, 250, 500];
     $form['facet_settings']['hard_limit'] = [
@@ -707,6 +714,7 @@ class FacetForm extends EntityForm {
     $facet->setEmptyBehavior($empty_behavior_config);
 
     $facet->setQueryOperator($form_state->getValue(['facet_settings', 'query_operator']));
+    $facet->setExposedOperator($form_state->getValue(['facet_settings', 'exposed_operator']) == 'yes');
 
     $facet->setHardLimit($form_state->getValue(['facet_settings', 'hard_limit']));
 

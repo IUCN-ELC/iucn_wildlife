@@ -41,6 +41,9 @@ facets.facet.*:
     enable_parent_when_child_gets_disabled:
       type: boolean
       label: 'Enable parent when child gets disabled'
+    exposed_operator:
+      type: boolean
+      label: 'Let user choose operator to apply between facet elements.'
     widget:
       type: mapping
       label: 'Facet widget'

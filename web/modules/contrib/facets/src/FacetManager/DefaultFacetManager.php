@@ -318,6 +318,32 @@ class DefaultFacetManager {
     $widget = $facet->getWidgetInstance();
     $build = $widget->build($facet);
 
+    if ($facet->getExposedOperator() == 'yes') {
+      $exposedOperator = \Drupal::request()->query->get($facet->id() . '_op');
+
+      $content['exposed_operator'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => 'checkbox'
+        ],
+        'operator' => [
+          '#type' => 'html_tag',
+          '#tag' => 'input',
+          '#attributes' => [
+            'class' => [
+              'form-checkbox',
+              'facets-checkbox'
+            ],
+            'type' => 'checkbox',
+            'id' => $facet->id(),
+            'data-switcher' => $exposedOperator ? $exposedOperator : 'or',
+            'checked' => $exposedOperator ? ($exposedOperator == 'or' ? false : true) : false,
+          ]
+        ]
+      ];
+    }
+    $content['facet'] = $build;
+
     // No results behavior handling. Return a custom text or false depending on
     // settings.
     if (empty($facet->getResults())) {
@@ -325,7 +351,7 @@ class DefaultFacetManager {
       if ($empty_behavior['behavior'] == 'text') {
         return [
           [
-            $build,
+            $content,
             '#type' => 'container',
             '#attributes' => [
               'data-drupal-facet-id' => $facet->id(),
@@ -338,15 +364,14 @@ class DefaultFacetManager {
             ],
           ],
         ];
-      }
-      else {
+      } else {
         // If the facet has no results, but it is being rendered trough ajax we
         // should render a container (that is empty). This is because the
         // javascript needs to be able to find a div to replace with the new
         // content.
         return [
           [
-            $build,
+            $content,
             '#type' => 'container',
             '#attributes' => [
               'data-drupal-facet-id' => $facet->id(),
@@ -356,8 +381,9 @@ class DefaultFacetManager {
         ];
       }
     }
+    $content['#attached']['library'][] = 'facets/operator-switcher';
 
-    return [$build];
+    return [$content];
   }
 
   /**
@@ -417,8 +443,7 @@ class DefaultFacetManager {
         foreach ($child_ids as $child_id) {
           if (isset($keyed_results[$child_id])) {
             $child_keyed_results[$child_id] = $keyed_results[$child_id];
-          }
-          else {
+          } else {
             // Children could already be built by Facets Summary manager, if
             // they are, just loading them will suffice.
             $children = $keyed_results[$current_id]->getChildren();

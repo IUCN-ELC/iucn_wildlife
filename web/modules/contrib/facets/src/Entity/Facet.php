@@ -54,7 +54,8 @@ use Drupal\facets\FacetInterface;
  *     "only_visible_when_facet_source_is_visible",
  *     "processor_configs",
  *     "empty_behavior",
- *     "show_title"
+ *     "show_title",
+ *     "exposed_operator",
  *   },
  *   links = {
  *     "collection" = "/admin/config/search/facets",
@@ -130,6 +131,12 @@ class Facet extends ConfigEntityBase implements FacetInterface {
    * @var string
    */
   protected $query_operator;
+  /**
+   * The operator chosen by user.
+   *
+   * @var string
+   */
+  protected $exposed_operator;
 
   /**
    * Hard limit for the facet items.
@@ -523,7 +530,26 @@ class Facet extends ConfigEntityBase implements FacetInterface {
    * {@inheritdoc}
    */
   public function getQueryOperator() {
+    $op = \Drupal::request()->query->get($this->id() . '_op');
+    if ($op) {
+      return $op;
+    }
     return $this->query_operator ?: 'or';
+  }
+
+  /**
+   * @return string
+   */
+  public function getExposedOperator() {
+    return $this->exposed_operator? 'yes' : 'no';
+  }
+
+  /**
+   * @param string $exposed_operator
+   */
+  public function setExposedOperator($exposed_operator) {
+
+    $this->exposed_operator = $exposed_operator;
   }
 
   /**

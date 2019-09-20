@@ -80,3 +80,13 @@ drupal.facets.views-ajax:
     - facets/widget
     - core/drupalSettings
     - core/drupal.ajax
+
+operator-switcher:
+  version: VERSION
+  js:
+    js/operator-switcher.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings

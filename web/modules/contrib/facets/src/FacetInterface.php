@@ -296,7 +296,16 @@ interface FacetInterface extends ConfigEntityInterface {
    * @param string $operator
    *   The query operator being used.
    */
+
   public function setQueryOperator($operator);
+
+  /**
+   * Sets the exposed operator option.
+   *
+   * @param string $operator
+   *   The query operator being used.
+   */
+  public function setExposedOperator($exposed_operator);
 
   /**
    * Sets the hard limit of facet items.
@@ -329,6 +338,14 @@ interface FacetInterface extends ConfigEntityInterface {
    *   The plugin instance for the facet source.
    */
   public function getFacetSource();
+
+  /**
+   * Returns the exposed operator option.
+   *
+   * @param string $operator
+   *   The query operator being used.
+   */
+  public function getExposedOperator();
 
   /**
    * Returns the facet source configuration object.

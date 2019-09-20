@@ -19,7 +19,7 @@ widget:
   type: dropdown
   config:
     show_numbers: false
-    default_option_label: 'Add countries...'
+    default_option_label: Choose
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -48,3 +48,4 @@ processor_configs:
 empty_behavior:
   behavior: none
 show_title: false
+exposed_operator: false

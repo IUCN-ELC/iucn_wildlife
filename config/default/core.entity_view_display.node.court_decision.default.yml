@@ -91,7 +91,7 @@ content:
     type: boolean
     region: content
   field_charge_sheet:
-    weight: 32
+    weight: 31
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -143,13 +143,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
-  field_files:
-    type: file_list
-    weight: 30
-    label: above
-    settings: {  }
-    third_party_settings: {  }
     region: content
   field_held:
     weight: 10
@@ -270,7 +263,7 @@ content:
     type: string
     region: content
   field_reference_to_treaties_titl:
-    weight: 33
+    weight: 32
     label: above
     settings:
       link_to_entity: false
@@ -278,7 +271,7 @@ content:
     type: string
     region: content
   field_references:
-    weight: 35
+    weight: 34
     label: above
     settings:
       trim_length: 80
@@ -299,7 +292,7 @@ content:
     region: content
   field_related_website:
     type: link
-    weight: 34
+    weight: 33
     region: content
     label: above
     settings:
@@ -318,7 +311,7 @@ content:
     type: string
     region: content
   field_source:
-    weight: 36
+    weight: 35
     label: above
     settings:
       link_field: field_source_website
@@ -370,7 +363,7 @@ content:
     third_party_settings: {  }
   field_url:
     type: link
-    weight: 31
+    weight: 30
     region: content
     label: above
     settings:
@@ -389,6 +382,7 @@ hidden:
   field_date_of_modification: true
   field_decision_status: true
   field_ecolex_subjects: true
+  field_files: true
   field_instance: true
   field_internet_reference: true
   field_isis_number: true

@@ -23,7 +23,6 @@ dependencies:
     - node.type.legislation
   module:
     - datetime
-    - file
     - link
     - text
     - user
@@ -33,7 +32,7 @@ bundle: legislation
 mode: default
 content:
   field_abstract:
-    weight: 10
+    weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -56,16 +55,8 @@ content:
     third_party_settings: {  }
     type: datetime_custom
     region: content
-  field_files:
-    type: file_default
-    weight: 7
-    label: above
-    settings:
-      use_description_as_link_text: true
-    third_party_settings: {  }
-    region: content
   field_keywords:
-    weight: 9
+    weight: 8
     label: above
     settings:
       link: false
@@ -114,7 +105,7 @@ content:
     region: content
   field_url:
     type: link
-    weight: 8
+    weight: 7
     region: content
     label: above
     settings:
@@ -128,6 +119,7 @@ hidden:
   field_date_of_entry: true
   field_date_of_modification: true
   field_ecolex_subjects: true
+  field_files: true
   field_isis_number: true
   field_original_id: true
   field_original_title: true

@@ -14,7 +14,7 @@
 #block-otherresources dl > dd:last-child {
   margin-bottom: 0;
 }
-#block-searchfilters {
+.search-filters {
   font-size: 14px;
 }
 .facet-container:not(:last-child):before,
@@ -28,7 +28,6 @@
 .facet-container:not(:last-child) .facet-title {
   padding-left: 15px;
   position: relative;
-  float: left;
 }
 .facet-container:not(:last-child) .facet-title:before {
   color: #999;
@@ -45,6 +44,11 @@
   margin-bottom: 0;
   margin-top: 0;
   z-index: 1;
+}
+.checkbox .bootstrap-switch {
+  position: absolute;
+  top: -18px;
+  left: -50px;
 }
 .filter-label {
   display: block;

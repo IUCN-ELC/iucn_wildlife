@@ -7,7 +7,7 @@
       $('.bootstrap-switch-container').once('operatorSwitcher').on('click', function() {
         var url = window.location.href;
         var facetId = $(this).find('input').attr('id');
-        var connectElement = (url.search('/?/') == -1)? '?':'&';
+        var connectElement = (url.indexOf("?") == -1)? '?':'&';
 
         if($(this).find('input').attr('data-switcher') == 'or'){
           operator = facetId + '_op=and';

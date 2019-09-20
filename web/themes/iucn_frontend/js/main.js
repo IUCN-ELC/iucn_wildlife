@@ -165,10 +165,20 @@
       $('.bef-link-active').once('sortSelect').text(sortText);
 
       var currentUrl = window.location.href;
+      var deleteBetween = function(start, end, content) {
+        return content.substring(0, start) + content.substring(end+1);
+      };
 
       var rangeSlider = $('.facets-widget-range_slider', $searchFilters).once('transformRangeslider').each(function () {
         var facet_id = $(this).find('.item-list__range_slider').data('drupal-facet-id');
         var generalUrl = drupalSettings.facets.sliders[facet_id].url;
+        var start = generalUrl.indexOf('year_period');
+
+        // Check if the filter already exists and delete it.
+        if(start != generalUrl.lastIndexOf('year_period')) {
+          var last = generalUrl.indexOf('=', start);
+          generalUrl =  deleteBetween(start, last, generalUrl);
+        }
         var search = drupalSettings.facets.sliders[facet_id];
         var url = generalUrl;
         var from ='__range_slider_min__';

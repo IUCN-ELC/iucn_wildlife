@@ -731,7 +731,7 @@ fieldset[disabled] #search-form .btn-primary.focus {
   float: none;
 }
 .region-sidebar-facets .clearfix {
-  margin-top: 11px;
+  margin-top: 0;
   font-size: 14px;
 }
 .region-sidebar-facets .form-control {

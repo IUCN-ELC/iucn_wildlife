@@ -328,9 +328,15 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
   public function rebuildSpeciesTerm(Row $row) {
     $id = $row->getSourceProperty('id');
     // Transport data from XML parser to prepareRow, funny ... I know :-)
-    $wildlifeSpeciesDOIMapping = !empty($row->getSourceProperty('wildlifeSpeciesDOIMapping'))
-      ? json_decode($row->getSourceProperty('wildlifeSpeciesDOIMapping'), TRUE)
-      : [];
+    $wildlifeSpeciesDOIMapping = $row->getSourceProperty('wildlifeSpeciesDOIMapping');
+    if(!empty($wildlifeSpeciesDOIMapping)) {
+      $wildlifeSpeciesDOIMapping = str_replace('\"', '"', $wildlifeSpeciesDOIMapping);
+      $wildlifeSpeciesDOIMapping = str_replace('&amp;','&', $wildlifeSpeciesDOIMapping);
+      $wildlifeSpeciesDOIMapping =  json_decode($wildlifeSpeciesDOIMapping, TRUE);
+    }
+    else {
+      $wildlifeSpeciesDOIMapping = [];
+    }
     foreach ($wildlifeSpeciesDOIMapping as $speciesName => $doiURL) {
       $term = $this->findTerm($speciesName);
       $needSave = empty($term->id());

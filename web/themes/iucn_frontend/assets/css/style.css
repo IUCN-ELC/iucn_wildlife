@@ -765,6 +765,9 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .path-search .page-header {
   display: none;
 }
+.field--name-field-url .field--item {
+  display: inline;
+}
 html {
   min-height: 100vh;
   position: relative;

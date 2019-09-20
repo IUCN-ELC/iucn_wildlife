@@ -19,6 +19,7 @@ module:
   edw_healthcheck: 0
   elis_consumer: 0
   field: 0
+  field_delimiter: 0
   field_ui: 0
   file: 0
   file_list: 0

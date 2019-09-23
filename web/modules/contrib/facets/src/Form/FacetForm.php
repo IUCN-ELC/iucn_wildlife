@@ -385,7 +385,7 @@ class FacetForm extends EntityForm {
       '#type' => 'radios',
       '#title' => $this->t('Empty facet behavior'),
       '#default_value' => $empty_behavior_config['behavior'] ?: 'none',
-      '#options' => ['none' => $this->t('Do not display facet'), 'text' => $this->t('Display text')],
+      '#options' => ['none' => $this->t('Do not display facet'), 'text' => $this->t('Display text'), 'render' => 'Show empty facet'],
       '#description' => $this->t('Take this action if a facet has no items.'),
       '#required' => TRUE,
     ];

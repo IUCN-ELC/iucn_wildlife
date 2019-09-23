@@ -1,0 +1,37 @@
+diff --git a/src/FacetManager/DefaultFacetManager.php b/src/FacetManager/DefaultFacetManager.php
+index 699f2e6..35f8623 100644
+--- a/src/FacetManager/DefaultFacetManager.php
++++ b/src/FacetManager/DefaultFacetManager.php
+@@ -13,6 +13,7 @@
+ use Drupal\facets\Processor\ProcessorInterface;
+ use Drupal\facets\Processor\ProcessorPluginManager;
+ use Drupal\facets\QueryType\QueryTypePluginManager;
++use Drupal\facets\Result\Result;
+ 
+ /**
+  * The facet manager.
+@@ -333,6 +334,11 @@ public function build(FacetInterface $facet) {
+           ],
+         ];
+       }
++      elseif ($empty_behavior['behavior'] == 'render') {
++        if (empty($facet->getResults())) {
++          $facet->setResults([new Result($facet, '', '', 1)]);
++        }
++      }
+       else {
+         // If the facet has no results, but it is being rendered trough ajax we
+         // should render a container (that is empty). This is because the
+diff --git a/src/Form/FacetForm.php b/src/Form/FacetForm.php
+index a693503..8cf6223 100644
+--- a/src/Form/FacetForm.php
++++ b/src/Form/FacetForm.php
+@@ -385,7 +385,7 @@ public function form(array $form, FormStateInterface $form_state) {
+       '#type' => 'radios',
+       '#title' => $this->t('Empty facet behavior'),
+       '#default_value' => $empty_behavior_config['behavior'] ?: 'none',
+-      '#options' => ['none' => $this->t('Do not display facet'), 'text' => $this->t('Display text')],
++      '#options' => ['none' => $this->t('Do not display facet'), 'text' => $this->t('Display text'), 'render' => 'Show empty facet'],
+       '#description' => $this->t('Take this action if a facet has no items.'),
+       '#required' => TRUE,
+     ];

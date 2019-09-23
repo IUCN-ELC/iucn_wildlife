@@ -1,0 +1,318 @@
+diff --git a/config/schema/facets.facet.schema.yml b/config/schema/facets.facet.schema.yml
+index 9e13e4d..dc1686e 100644
+--- a/config/schema/facets.facet.schema.yml
++++ b/config/schema/facets.facet.schema.yml
+@@ -41,6 +41,9 @@ facets.facet.*:
+     enable_parent_when_child_gets_disabled:
+       type: boolean
+       label: 'Enable parent when child gets disabled'
++    exposed_operator:
++      type: boolean
++      label: 'Let user choose operator to apply between facet elements.'
+     widget:
+       type: mapping
+       label: 'Facet widget'
+diff --git a/facets.libraries.yml b/facets.libraries.yml
+index 04ce10c..716a599 100644
+--- a/facets.libraries.yml
++++ b/facets.libraries.yml
+@@ -80,3 +80,13 @@ drupal.facets.views-ajax:
+     - facets/widget
+     - core/drupalSettings
+     - core/drupal.ajax
++
++operator-switcher:
++  version: VERSION
++  js:
++    js/operator-switcher.js: {}
++  dependencies:
++    - core/jquery
++    - core/jquery.once
++    - core/drupal
++    - core/drupalSettings
+\ No newline at end of file
+diff --git a/facets.services.yml b/facets.services.yml
+index bd4c6fb..ac547f1 100644
+--- a/facets.services.yml
++++ b/facets.services.yml
+@@ -24,6 +24,7 @@ services:
+       - '@plugin.manager.facets.facet_source'
+       - '@plugin.manager.facets.processor'
+       - '@entity_type.manager'
++      - '@request_stack'
+   facets.utility.date_handler:
+     class: Drupal\facets\Utility\FacetsDateHandler
+     arguments:
+diff --git a/js/operator-switcher.js b/js/operator-switcher.js
+new file mode 100644
+index 0000000..25f45a1
+--- /dev/null
++++ b/js/operator-switcher.js
+@@ -0,0 +1,30 @@
++(function($, Drupal, drupalSettings) {
++  'use strict';
++
++  Drupal.behaviors.operator_switcher = {
++    attach: function (context, settings) {
++      var operator = '';
++      $('.bootstrap-switch-container').once('operatorSwitcher').on('click', function() {
++        var url = window.location.href;
++        var facetId = $(this).find('input').attr('id');
++        var connectElement = (url.indexOf("?") == -1)? '?':'&';
++
++        if($(this).find('input').attr('data-switcher') == 'or'){
++          operator = facetId + '_op=and';
++        }
++        else {
++          operator = facetId +'_op=or';
++        }
++        if (url.search(facetId + '_op') == -1) {
++          url += connectElement + operator;
++        } else if (url.search(facetId + '_op=or') != -1) {
++          url = url.replace(facetId + '_op=or', operator);
++        } else {
++          url = url.replace(facetId + '_op=and', operator);
++        }
++        window.location.href = url;
++      });
++    }
++  };
++
++})(jQuery, Drupal, drupalSettings);
+diff --git a/src/Entity/Facet.php b/src/Entity/Facet.php
+index d973e81..67e0c94 100644
+--- a/src/Entity/Facet.php
++++ b/src/Entity/Facet.php
+@@ -54,7 +54,8 @@ use Drupal\facets\FacetInterface;
+  *     "only_visible_when_facet_source_is_visible",
+  *     "processor_configs",
+  *     "empty_behavior",
+- *     "show_title"
++ *     "show_title",
++ *     "exposed_operator",
+  *   },
+  *   links = {
+  *     "collection" = "/admin/config/search/facets",
+@@ -130,6 +131,12 @@ class Facet extends ConfigEntityBase implements FacetInterface {
+    * @var string
+    */
+   protected $query_operator;
++  /**
++   * The operator chosen by user.
++   *
++   * @var string
++   */
++  protected $exposed_operator;
+ 
+   /**
+    * Hard limit for the facet items.
+@@ -523,9 +530,28 @@ class Facet extends ConfigEntityBase implements FacetInterface {
+    * {@inheritdoc}
+    */
+   public function getQueryOperator() {
++    $op = \Drupal::request()->query->get($this->id() . '_op');
++    if ($op) {
++      return $op;
++    }
+     return $this->query_operator ?: 'or';
+   }
+ 
++  /**
++   * @return string
++   */
++  public function getExposedOperator() {
++    return $this->exposed_operator? 'yes' : 'no';
++  }
++
++  /**
++   * @param string $exposed_operator
++   */
++  public function setExposedOperator($exposed_operator) {
++
++    $this->exposed_operator = $exposed_operator;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/src/FacetInterface.php b/src/FacetInterface.php
+index 856e476..d08ddfb 100644
+--- a/src/FacetInterface.php
++++ b/src/FacetInterface.php
+@@ -296,8 +296,17 @@ interface FacetInterface extends ConfigEntityInterface {
+    * @param string $operator
+    *   The query operator being used.
+    */
++
+   public function setQueryOperator($operator);
+ 
++  /**
++   * Sets the exposed operator option.
++   *
++   * @param string $operator
++   *   The query operator being used.
++   */
++  public function setExposedOperator($exposed_operator);
++
+   /**
+    * Sets the hard limit of facet items.
+    *
+@@ -330,6 +339,14 @@ interface FacetInterface extends ConfigEntityInterface {
+    */
+   public function getFacetSource();
+ 
++  /**
++   * Returns the exposed operator option.
++   *
++   * @param string $operator
++   *   The query operator being used.
++   */
++  public function getExposedOperator();
++
+   /**
+    * Returns the facet source configuration object.
+    *
+diff --git a/src/FacetManager/DefaultFacetManager.php b/src/FacetManager/DefaultFacetManager.php
+index 162b03d..6fe1a04 100644
+--- a/src/FacetManager/DefaultFacetManager.php
++++ b/src/FacetManager/DefaultFacetManager.php
+@@ -13,6 +13,8 @@ use Drupal\facets\Processor\PreQueryProcessorInterface;
+ use Drupal\facets\Processor\ProcessorInterface;
+ use Drupal\facets\Processor\ProcessorPluginManager;
+ use Drupal\facets\QueryType\QueryTypePluginManager;
++use Symfony\Component\BrowserKit\Request;
++use Symfony\Component\HttpFoundation\RequestStack;
+ 
+ /**
+  * The facet manager.
+@@ -78,6 +80,9 @@ class DefaultFacetManager {
+    */
+   protected $processedFacets;
+ 
++  /** @var \Symfony\Component\HttpFoundation\Request */
++  protected $request;
++
+   /**
+    * Constructs a new instance of the DefaultFacetManager.
+    *
+@@ -90,11 +95,12 @@ class DefaultFacetManager {
+    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+    *   The entity type plugin manager.
+    */
+-  public function __construct(QueryTypePluginManager $query_type_plugin_manager, FacetSourcePluginManager $facet_source_manager, ProcessorPluginManager $processor_plugin_manager, EntityTypeManagerInterface $entity_type_manager) {
++  public function __construct(QueryTypePluginManager $query_type_plugin_manager, FacetSourcePluginManager $facet_source_manager, ProcessorPluginManager $processor_plugin_manager, EntityTypeManagerInterface $entity_type_manager, RequestStack $request) {
+     $this->queryTypePluginManager = $query_type_plugin_manager;
+     $this->facetSourcePluginManager = $facet_source_manager;
+     $this->processorPluginManager = $processor_plugin_manager;
+     $this->facetStorage = $entity_type_manager->getStorage('facets_facet');
++    $this->request = $request->getCurrentRequest();
+   }
+ 
+   /**
+@@ -318,6 +324,32 @@ class DefaultFacetManager {
+     $widget = $facet->getWidgetInstance();
+     $build = $widget->build($facet);
+ 
++    if ($facet->getExposedOperator() == 'yes') {
++      $exposedOperator = $this->request->query->get($facet->id() . '_op');
++
++      $content['exposed_operator'] = [
++        '#type' => 'container',
++        '#attributes' => [
++          'class' => 'checkbox'
++        ],
++        'operator' => [
++          '#type' => 'html_tag',
++          '#tag' => 'input',
++          '#attributes' => [
++            'class' => [
++              'form-checkbox',
++              'facets-checkbox'
++            ],
++            'type' => 'checkbox',
++            'id' => $facet->id(),
++            'data-switcher' => $exposedOperator ? $exposedOperator : 'or',
++            'checked' => $exposedOperator ? ($exposedOperator == 'or' ? false : true) : false,
++          ]
++        ]
++      ];
++    }
++    $content['facet'] = $build;
++
+     // No results behavior handling. Return a custom text or false depending on
+     // settings.
+     if (empty($facet->getResults())) {
+@@ -325,7 +357,7 @@ class DefaultFacetManager {
+       if ($empty_behavior['behavior'] == 'text') {
+         return [
+           [
+-            $build,
++            $content,
+             '#type' => 'container',
+             '#attributes' => [
+               'data-drupal-facet-id' => $facet->id(),
+@@ -338,15 +370,14 @@ class DefaultFacetManager {
+             ],
+           ],
+         ];
+-      }
+-      else {
++      } else {
+         // If the facet has no results, but it is being rendered trough ajax we
+         // should render a container (that is empty). This is because the
+         // javascript needs to be able to find a div to replace with the new
+         // content.
+         return [
+           [
+-            $build,
++            $content,
+             '#type' => 'container',
+             '#attributes' => [
+               'data-drupal-facet-id' => $facet->id(),
+@@ -356,8 +387,9 @@ class DefaultFacetManager {
+         ];
+       }
+     }
++    $content['#attached']['library'][] = 'facets/operator-switcher';
+ 
+-    return [$build];
++    return [$content];
+   }
+ 
+   /**
+@@ -417,8 +449,7 @@ class DefaultFacetManager {
+         foreach ($child_ids as $child_id) {
+           if (isset($keyed_results[$child_id])) {
+             $child_keyed_results[$child_id] = $keyed_results[$child_id];
+-          }
+-          else {
++          } else {
+             // Children could already be built by Facets Summary manager, if
+             // they are, just loading them will suffice.
+             $children = $keyed_results[$current_id]->getChildren();
+diff --git a/src/Form/FacetForm.php b/src/Form/FacetForm.php
+index 93cb0f0..e35b563 100644
+--- a/src/Form/FacetForm.php
++++ b/src/Form/FacetForm.php
+@@ -412,6 +412,13 @@ class FacetForm extends EntityForm {
+       '#description' => $this->t('AND filters are exclusive and narrow the result set. OR filters are inclusive and widen the result set.'),
+       '#default_value' => $facet->getQueryOperator(),
+     ];
++    $form['facet_settings']['exposed_operator'] = [
++      '#type' => 'radios',
++      '#title' => $this->t('Exposed operator'),
++      '#options' => ['yes' => $this->t('YES'), 'no' => $this->t('NO')],
++      '#description' => $this->t('Let user choose operator to apply between facet elements.'),
++      '#default_value' => $facet->getExposedOperator() ,
++    ];
+ 
+     $hard_limit_options = [3, 5, 10, 15, 20, 30, 40, 50, 75, 100, 250, 500];
+     $form['facet_settings']['hard_limit'] = [
+@@ -707,6 +714,7 @@ class FacetForm extends EntityForm {
+     $facet->setEmptyBehavior($empty_behavior_config);
+ 
+     $facet->setQueryOperator($form_state->getValue(['facet_settings', 'query_operator']));
++    $facet->setExposedOperator($form_state->getValue(['facet_settings', 'exposed_operator']) == 'yes');
+ 
+     $facet->setHardLimit($form_state->getValue(['facet_settings', 'hard_limit']));
+ 

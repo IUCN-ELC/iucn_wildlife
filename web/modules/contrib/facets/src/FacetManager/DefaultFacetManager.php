@@ -13,6 +13,9 @@ use Drupal\facets\Processor\PreQueryProcessorInterface;
 use Drupal\facets\Processor\ProcessorInterface;
 use Drupal\facets\Processor\ProcessorPluginManager;
 use Drupal\facets\QueryType\QueryTypePluginManager;
+use Drupal\facets\Result\Result;
+use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * The facet manager.
@@ -78,6 +81,9 @@ class DefaultFacetManager {
    */
   protected $processedFacets;
 
+  /** @var \Symfony\Component\HttpFoundation\Request */
+  protected $request;
+
   /**
    * Constructs a new instance of the DefaultFacetManager.
    *
@@ -90,11 +96,12 @@ class DefaultFacetManager {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type plugin manager.
    */
-  public function __construct(QueryTypePluginManager $query_type_plugin_manager, FacetSourcePluginManager $facet_source_manager, ProcessorPluginManager $processor_plugin_manager, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(QueryTypePluginManager $query_type_plugin_manager, FacetSourcePluginManager $facet_source_manager, ProcessorPluginManager $processor_plugin_manager, EntityTypeManagerInterface $entity_type_manager, RequestStack $request) {
     $this->queryTypePluginManager = $query_type_plugin_manager;
     $this->facetSourcePluginManager = $facet_source_manager;
     $this->processorPluginManager = $processor_plugin_manager;
     $this->facetStorage = $entity_type_manager->getStorage('facets_facet');
+    $this->request = $request->getCurrentRequest();
   }
 
   /**
@@ -319,7 +326,7 @@ class DefaultFacetManager {
     $build = $widget->build($facet);
 
     if ($facet->getExposedOperator() == 'yes') {
-      $exposedOperator = \Drupal::request()->query->get($facet->id() . '_op');
+      $exposedOperator = $this->request->query->get($facet->id() . '_op');
 
       $content['exposed_operator'] = [
         '#type' => 'container',
@@ -364,7 +371,15 @@ class DefaultFacetManager {
             ],
           ],
         ];
-      } else {
+
+      }
+      elseif ($empty_behavior['behavior'] == 'render') {
+        if (empty($facet->getResults())) {
+          $facet->setResults([new Result($facet, '', '', 1)]);
+          $content = $widget->build($facet);
+        }
+       }
+       else {
         // If the facet has no results, but it is being rendered trough ajax we
         // should render a container (that is empty). This is because the
         // javascript needs to be able to find a div to replace with the new

@@ -46,6 +46,6 @@ processor_configs:
       build: 15
     settings: {  }
 empty_behavior:
-  behavior: none
+  behavior: render
 show_title: false
 exposed_operator: false

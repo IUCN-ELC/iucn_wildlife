@@ -1456,6 +1456,9 @@ body.path-frontpage {
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
   padding: 0;
 }
+.select2-container--default .select2-selection--multiple .select2-selection__rendered:last-child {
+  margin-bottom: 15px;
+}
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   background-color: #eee;
   border-color: #ddd;

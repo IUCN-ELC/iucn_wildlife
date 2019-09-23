@@ -183,15 +183,16 @@
         var url = generalUrl;
         var from ='__range_slider_min__';
         var to = '__range_slider_max__';
-        $('.form-control.min').attr('min', search['min']).attr('max',search['max']).attr('value', search['values']['0']);
-        $('.form-control.max').attr('min', search['min']).attr('max',search['max']).attr('value', search['values']['1']);
+        var today = new Date();
+        $('.form-control.min').attr('min', search['min']).attr('max',today.getFullYear()).attr('value', search['values']['0']);
+        $('.form-control.max').attr('min', search['min']).attr('max',today.getFullYear()).attr('value', (search['values']['1']== search['max'])?today.getFullYear():search['values']['1']);
         var slider = $(this).ionRangeSlider({
           'force_edges': true,
           'prettify_enabled': false,
           grid: true,
           type: 'double',
           min:search['min'],
-          max:search['max'],
+          max:today.getFullYear(),
           to:search['values']['1'],
           from:search['values']['0'],
           onChange: function (data) {

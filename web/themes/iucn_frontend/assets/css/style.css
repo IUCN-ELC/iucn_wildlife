@@ -1588,4 +1588,7 @@ body.path-frontpage {
 .path-search-test .page-header {
   display: none;
 }
+.path-search-test #edit-sort-by .form-group {
+  float: right;
+}
 /*# sourceMappingURL=style.css.map */

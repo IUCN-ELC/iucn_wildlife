@@ -402,7 +402,6 @@ function iucn_search_preprocess_views_view(array &$variables) {
             'singular' => 'court decision',
             'plural' => 'court decisions',
           ];
-          $variables['exposed']['sort_by']['#value'] = \Drupal::request()->query->get('sort_by')?:'search_api_relevance';
           break;
         case 'page_2':
           $content_type = [
@@ -422,7 +421,7 @@ function iucn_search_preprocess_views_view(array &$variables) {
       $variables['attachment_before']['map']['#markup'] .= \Drupal::service('wildlex_map.countries_map')->modalMarkup($content_type, $count);
       break;
   }
-  $view_all = \Drupal\views\Views::getView($view_all->id());
+  $view_all = \Drupal\views\Views::getView($view->id());
   $view_all->setDisplay($display_id);
   $view_all->pager = $pager;
   $view_all->execute();

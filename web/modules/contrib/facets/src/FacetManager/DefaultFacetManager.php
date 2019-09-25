@@ -376,7 +376,7 @@ class DefaultFacetManager {
       elseif ($empty_behavior['behavior'] == 'render') {
         if (empty($facet->getResults())) {
           $facet->setResults([new Result($facet, '', '', 1)]);
-          $content = $widget->build($facet);
+          $content['facet'] = $widget->build($facet);
         }
        }
        else {

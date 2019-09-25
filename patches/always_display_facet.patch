@@ -20,7 +20,7 @@ index 6fe1a04..a2605da 100644
 +      elseif ($empty_behavior['behavior'] == 'render') {
 +        if (empty($facet->getResults())) {
 +          $facet->setResults([new Result($facet, '', '', 1)]);
-+          $content = $widget->build($facet);
++          $content['facet'] = $widget->build($facet);
 +        }
 +       }
 +       else {

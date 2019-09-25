@@ -419,6 +419,30 @@ function iucn_search_preprocess_views_view(array &$variables) {
           break;
       }
       $variables['attachment_before']['map']['#markup'] .= \Drupal::service('wildlex_map.countries_map')->modalMarkup($content_type, $count);
+
+      if(empty($view_all->result)){
+        $variables['attachment_after'] = [
+          '#attributes' => ['class' => ['well', 'blankslate']],
+          '#type' => 'container',
+          [
+            '#attributes' => ['class' => ['ecolexicon', 'ecolexicon-' . str_replace('_', '-', $content_type['machine_name'])]],
+            '#tag' => 'span',
+            '#type' => 'html_tag'
+          ],
+          [
+            '#attributes' => ['class' => ['blankslate-title']],
+            '#tag' => 'h3',
+            '#type' => 'html_tag',
+            '#value' => t('No results found.')
+          ],
+          [
+            '#attributes' => ['class' => []],
+            '#tag' => 'p',
+            '#type' => 'html_tag',
+            '#value' => t('Use the links above to find what you&rsquo;re looking for, or try a new search query. The Search filters are also super helpful for quickly finding results most relevant to you.')
+          ]
+        ];
+      }
       break;
   }
   $view_all = \Drupal\views\Views::getView($view->id());

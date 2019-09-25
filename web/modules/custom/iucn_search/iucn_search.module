@@ -360,29 +360,31 @@ function iucn_search_preprocess_views_view(array &$variables) {
 
   switch ($view->id()) {
     case 'search':
-      $viewAll = \Drupal\views\Views::getView($view->id());
+      $view_all = \Drupal\views\Views::getView($view->id());
+      $pager = $view->pager;
       $display_id = $view->current_display;
-      $viewAll->setDisplay($display_id);
-      $viewAll->setItemsPerPage(9999999);
-      $viewAll->execute();
+      $view_all->setDisplay($display_id);
+      $view_all->setItemsPerPage(9999999);
+      $view_all->preview($display_id);
+      $count = count($view_all->result);
 
       $countries = [];
-      foreach ($viewAll->result as $resultRow) {
-        $node = $resultRow->_object->getEntity();
+      foreach ($view_all->result as $result_row) {
+        $node = $result_row->_object->getEntity();
         $country = $node->field_country;
 
         if (empty($country->target_id)) {
           continue;
         }
         foreach ($country as $data) {
-          /** @var \Drupal\taxonomy\TermInterface $countryEntity */
-          $countryEntity = $data->entity;
+          /** @var \Drupal\taxonomy\TermInterface $country_entity */
+          $country_entity = $data->entity;
 
-          $id = $countryEntity->id();
+          $id = $country_entity->id();
 
           if (empty($countries[$id])) {
             $countries[$id] = [
-              0 => $countryEntity->field_iso->value,
+              0 => $country_entity->field_iso->value,
               1 => 0,
               2 => $id,
             ];
@@ -393,34 +395,36 @@ function iucn_search_preprocess_views_view(array &$variables) {
       $countries = array_values($countries);
       $variables['#attached']['drupalSettings']['series'] = $countries;
 
-
       switch ($view->current_display) {
         case 'page_1':
-          $contentType = [
+          $content_type = [
             'machine_name' => 'court_decision',
             'singular' => 'court decision',
             'plural' => 'court decisions',
           ];
-          $variables['exposed']['sort_by']['#value'] = 'search_api_relevance';
+          $variables['exposed']['sort_by']['#value'] = \Drupal::request()->query->get('sort_by')?:'search_api_relevance';
           break;
         case 'page_2':
-          $contentType = [
+          $content_type = [
             'machine_name' => 'legislation',
             'singular' => 'legislation',
             'plural' => 'legislations',
           ];
           break;
         case 'page_3':
-          $contentType = [
+          $content_type = [
             'machine_name' => 'literature',
             'singular' => 'literature',
             'plural' => 'literatures',
           ];
           break;
       }
-      $variables['attachment_before']['map']['#markup'] .= \Drupal::service('wildlex_map.countries_map')->modalMarkup($contentType, count($viewAll->result));
+      $variables['attachment_before']['map']['#markup'] .= \Drupal::service('wildlex_map.countries_map')->modalMarkup($content_type, $count);
       break;
   }
+  $view_all = \Drupal\views\Views::getView($view_all->id());
+  $view_all->setDisplay($display_id);
+  $view_all->pager = $pager;
 
 }
 

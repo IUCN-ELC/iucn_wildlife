@@ -226,3 +226,4 @@ hidden:
   field_serial_status: true
   field_territorial_subdivisions: true
   links: true
+  search_api_excerpt: true

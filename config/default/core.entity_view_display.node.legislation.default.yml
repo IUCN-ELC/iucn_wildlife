@@ -124,3 +124,4 @@ hidden:
   field_original_id: true
   field_original_title: true
   links: true
+  search_api_excerpt: true

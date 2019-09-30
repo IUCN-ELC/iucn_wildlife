@@ -62,6 +62,7 @@ dependencies:
     - node.type.court_decision
   module:
     - datetime
+    - field_delimiter
     - file
     - file_list
     - link
@@ -172,7 +173,9 @@ content:
     label: above
     settings:
       link_to_entity: false
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
     type: string
     region: content
   field_money_value:
@@ -331,8 +334,10 @@ content:
     weight: 14
     label: above
     settings:
-      link: true
-    third_party_settings: {  }
+      link: '1'
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
     type: entity_reference_label_for_species
     region: content
   field_territorial_subdivisions:

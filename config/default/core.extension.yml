@@ -22,6 +22,7 @@ module:
   facets: 0
   facets_range_widget: 0
   field: 0
+  field_delimiter: 0
   field_ui: 0
   file: 0
   file_list: 0

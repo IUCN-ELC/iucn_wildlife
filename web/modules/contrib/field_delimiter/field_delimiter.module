@@ -1,0 +1,101 @@
+<?php
+
+/**
+ * @file
+ * Provides extra field formatter settings to specify delimiters for
+ * multi-value fields.
+ */
+
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
+use Drupal\Core\Field\FormatterInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ * Targets multivalued fields only.
+ *
+ * @param array $summary
+ * @param array $context
+ */
+function field_delimiter_field_formatter_settings_summary_alter(array &$summary, array $context) {
+
+  if (($context['field_definition'] instanceof FieldDefinitionInterface)
+    && $context['field_definition']->getFieldStorageDefinition()->isMultiple()) {
+
+    $setting = $context['formatter']->getThirdPartySetting('field_delimiter', 'delimiter');
+
+    // Sanitize delimiter, allow a few reasonable HTML elements.
+    $safe_delimiter = Xss::filter($setting, array('br', 'hr', 'span', 'img', 'wbr'));
+
+    if (!empty($safe_delimiter)) {
+      $summary[] = t('Delimited by: @delimiter', array('@delimiter' => $safe_delimiter));
+    }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_third_party_settings_form().
+ *
+ * @param \Drupal\Core\Field\FormatterInterface $plugin
+ * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+ * @param $view_mode
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *
+ * @return array
+ */
+function field_delimiter_field_formatter_third_party_settings_form(FormatterInterface $plugin, FieldDefinitionInterface $field_definition, $view_mode, $form, FormStateInterface $form_state) {
+  $element = [];
+
+  if ($field_definition->getFieldStorageDefinition()->isMultiple()) {
+    $setting = $plugin->getThirdPartySetting('field_delimiter', 'delimiter');
+    $element['delimiter'] = [
+      '#type' => 'textfield',
+      '#size' => 5,
+      '#title' => t('Field Delimiter'),
+      '#default_value' => Xss::filter($setting, ['br', 'hr', 'span', 'img', 'wbr']),
+    ];
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function field_delimiter_preprocess_field(&$variables) {
+
+  if (count($variables['items']) < 2) {
+    // No need for delimiter.
+    return;
+  }
+
+  // Get a few convenient handles.
+  $entity      = $variables['element']['#object'];
+  $field_name  = $variables['element']['#field_name'];
+  $view_mode   = $variables['element']['#view_mode'];
+
+  // Drill down to field formatter settings.
+  $render_display = EntityViewDisplay::collectRenderDisplay($entity, $view_mode);
+  $field_display = $render_display->getComponent($field_name);
+
+  if (!empty($delimiter = $field_display['third_party_settings']['field_delimiter']['delimiter'])) {
+
+    // Sanitize the delimiter, allow a few reasonable HTML elements.
+    $safe_delimiter = Xss::filter($delimiter, array('br', 'hr', 'span', 'img', 'wbr'));
+
+    // Modify the output if necessary.
+    if (!empty($safe_delimiter)) {
+      $item_keys = array_keys($variables['items']);
+      $last_item_delta = end($item_keys);
+
+      foreach ($variables['items'] as $delta => &$item) {
+        if ($delta != $last_item_delta) {
+          $item['content']['#suffix'] = $safe_delimiter;
+        }
+      }
+    }
+  }
+}

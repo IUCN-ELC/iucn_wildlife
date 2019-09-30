@@ -34,7 +34,20 @@ class UrlFile extends ProcessPluginBase {
       return null;
     }
 
-    $bundle = $row->getDestination()['type'];
+    if (!empty($this->configuration['destination_property'])) {
+      $destination_property = $this->configuration['destination_property'];
+    }
+
+    if (!empty($this->configuration['bundle'])) {
+      $bundle = $this->configuration['bundle'];
+    }
+    elseif (!empty($row->getDestination()['type'])) {
+      $bundle = $row->getDestination()['type'];
+    }
+    else {
+      throw new \Exception('Invalid destination bundle');
+    }
+
     $fi = FieldConfig::loadByName('node', $bundle, $destination_property);
 
     // Get the allowed file extensions.
@@ -135,7 +148,14 @@ class UrlFile extends ProcessPluginBase {
     $ret = curl_exec($ch);
     $info = curl_getinfo($ch);
     if ($info['http_code'] != 200) {
-      $ret = null;
+      // Retry
+      $url = str_replace(' ', '%20', $url);
+      curl_setopt($ch, CURLOPT_URL, $url);
+      $ret = curl_exec($ch);
+      $info = curl_getinfo($ch);
+      if ($info['http_code'] != 200) {
+        $ret = null;
+      }
     }
     curl_close($ch);
     return $ret;

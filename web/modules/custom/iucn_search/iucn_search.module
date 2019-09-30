@@ -339,6 +339,12 @@ function iucn_search_preprocess_views_view(array &$variables) {
           $countries[$id][1]++;
         }
       }
+
+      $view_all = Views::getView($view->id());
+      $view_all->setDisplay($display_id);
+      $view_all->pager = $pager;
+      $view_all->execute();
+
       $countries = array_values($countries);
       $variables['#attached']['drupalSettings']['series'] = $countries;
 

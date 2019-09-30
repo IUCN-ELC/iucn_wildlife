@@ -31,8 +31,14 @@ class IucnTaxonomyController {
         break;
       }
     }
-    $query = !empty($field) ? [$field => $taxonomy_term->id()] : [];
-    $url = Url::fromRoute('iucn.search', [], ['query' => $query])->toString();
+    $query = !empty($field) ? ["f[0]" => "{$taxonomy_term->bundle()}:{$taxonomy_term->id()}"] : [];
+    $url = Url::fromRoute(
+      'view.search.page_1',
+      [],
+      ['query' => $query]
+    )
+      ->toString();
     return new RedirectResponse($url);
   }
+
 }

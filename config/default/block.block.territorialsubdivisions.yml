@@ -16,7 +16,7 @@ provider: null
 plugin: 'facet_block:territorial_subdivisions'
 settings:
   id: 'facet_block:territorial_subdivisions'
-  label: 'Territorial subdivisions'
+  label: 'Territorial subdivision'
   provider: facets
   label_display: visible
   block_id: territorialsubdivisions

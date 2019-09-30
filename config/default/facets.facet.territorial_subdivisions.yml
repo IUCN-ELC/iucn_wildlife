@@ -8,7 +8,7 @@ dependencies:
   module:
     - search_api
 id: territorial_subdivisions
-name: 'Court decision: Territorial subdivisions'
+name: 'Court decision: Territorial subdivision'
 url_alias: territorial_subdivisions
 weight: 0
 min_count: 1
@@ -19,7 +19,7 @@ widget:
   type: dropdown
   config:
     show_numbers: true
-    default_option_label: 'Add species...'
+    default_option_label: ''
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false

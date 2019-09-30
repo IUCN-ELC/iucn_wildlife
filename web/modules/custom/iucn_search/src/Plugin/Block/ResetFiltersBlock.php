@@ -3,7 +3,11 @@
 namespace Drupal\iucn_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a 'Reset filters block' block.
@@ -13,7 +17,30 @@ use Drupal\Core\Url;
  *   admin_label = @Translation("Reset filters block"),
  * )
  */
-class ResetFiltersBlock extends BlockBase {
+class ResetFiltersBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /** @var \Drupal\Core\Routing\RouteMatchInterface */
+  protected $routeMatch;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $routeMatch) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->routeMatch = $routeMatch;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('current_route_match')
+    );
+  }
 
   public function build() {
     $form['actions']['reset'] = [
@@ -25,8 +52,7 @@ class ResetFiltersBlock extends BlockBase {
           'btn-block',
           'search-reset',
         ],
-        'href' => Url::fromRoute(\Drupal::request()
-          ->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_NAME))
+        'href' => Url::fromRoute($this->routeMatch->getRouteName())
           ->toString(),
       ],
       '#tag' => 'a',

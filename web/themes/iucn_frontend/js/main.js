@@ -89,29 +89,9 @@
           }
         });
       });
-      // .removeClass('select2-hidden-accessible').addClass('sr-only');
 
       $('.select2-selection').on('click', '.select2-selection__choice__remove', function (event) {
         event.stopPropagation();
-      });
-
-      $searchFilters.on({
-        reset: function (event) {
-          event.preventDefault();
-
-          var $this = $(this);
-
-          $('select.js-multiple-select', $this).val('').trigger('change.select2');
-          $('.form-checkbox', $this).bootstrapSwitch('state', false, true);
-
-          $this.get(0).reset();
-          $this.submit();
-        },
-        submit: function () {
-          var offset = $window.scrollTop();
-
-          window.sessionStorage.setItem('offset', offset);
-        }
       });
 
       $('input[type="checkbox"]', $searchFilters).bootstrapSwitch({
@@ -131,15 +111,14 @@
         $window.scrollTop(offset);
       }
 
-      var submit = function () {
-        $searchFilters.submit();
-      };
-
-      $('select', $searchFilters).change(submit);
-      $('input[type="checkbox"]', $searchFilters).on('switchChange.bootstrapSwitch', submit);
-
       var throttle = 200;
       var timer;
+      $('input[type="checkbox"]', $searchFilters).on('switchChange.bootstrapSwitch', function() {
+        setTimeout(function() {
+          $('.bootstrap-switch-container', $searchFilters).trigger('click');
+        },throttle
+        );
+      });
 
       $window.resize(function () {
         if (!timer) {

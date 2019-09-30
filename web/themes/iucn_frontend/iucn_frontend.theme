@@ -25,8 +25,8 @@ function iucn_frontend_preprocess_page(array &$variables) {
   $variables['page']['homepage_links'] = \Drupal::service('renderer')->render($menu);
 
   $route = \Drupal::request()->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_NAME);
-  if (!in_array($route, ['iucn.search.legislation', 'iucn.search.literature'])) {
-    $route = 'iucn.search';
+  if (!in_array($route, ['view.search.page_2', 'view.search.page_3'])) {
+    $route = 'view.search.page_1';
   }
   $variables['search_route'] = \Drupal\Core\Url::fromRoute($route);
 

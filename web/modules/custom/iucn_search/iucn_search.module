@@ -284,21 +284,6 @@ function iucn_search_views_pre_build(ViewExecutable $view) {
 }
 
 function iucn_search_preprocess_views_view(array &$variables) {
-  $variables['attachment_before']['map'] = [
-    '#markup' => '<strong>
-    <a href="#" data-toggle="modal" data-target="#search_modal" class="search-modal-opener">' . t('Show on map') . '</a>
-    </strong>',
-    '#attached' => [
-      'library' => [
-        'iucn_search/iucn_search.map.js',
-        'wildlex_map/d3.js',
-        'wildlex_map/topojson.js',
-        'wildlex_map/datamaps.js',
-        'wildlex_map/wildlex.map.js',
-      ],
-    ],
-  ];
-
   $view = $variables['view'];
   if (empty($view) || !$view instanceof ViewExecutable) {
     return;
@@ -306,7 +291,22 @@ function iucn_search_preprocess_views_view(array &$variables) {
 
   switch ($view->id()) {
     case 'search':
-      $view_all = \Drupal\views\Views::getView($view->id());
+      $variables['attachment_before']['map']['button'] = [
+        '#markup' => '
+    <a href="#" data-toggle="modal" data-target="#search_modal" class="search-modal-opener">' . t('Show on map') . '</a>
+    ',
+        '#attached' => [
+          'library' => [
+            'iucn_search/iucn_search.map.js',
+            'wildlex_map/d3.js',
+            'wildlex_map/topojson.js',
+            'wildlex_map/datamaps.js',
+            'wildlex_map/wildlex.map.js',
+          ],
+        ],
+      ];
+
+      $view_all = Views::getView($view->id());
       $pager = $view->pager;
       $display_id = $view->current_display;
       $view_all->setDisplay($display_id);
@@ -322,6 +322,7 @@ function iucn_search_preprocess_views_view(array &$variables) {
         if (empty($country->target_id)) {
           continue;
         }
+
         foreach ($country as $data) {
           /** @var \Drupal\taxonomy\TermInterface $country_entity */
           $country_entity = $data->entity;
@@ -345,7 +346,7 @@ function iucn_search_preprocess_views_view(array &$variables) {
         case 'page_1':
           $content_type = [
             'machine_name' => 'court_decision',
-            'singular' => 'court decision',
+            'singular' => 'court decisions',
             'plural' => 'court decisions',
           ];
           break;
@@ -363,9 +364,17 @@ function iucn_search_preprocess_views_view(array &$variables) {
             'plural' => 'literatures',
           ];
           break;
+        default:
+          return;
       }
-      $variables['attachment_before']['map']['#markup'] .= \Drupal::service('wildlex_map.countries_map')
-        ->modalMarkup($content_type, $count);
+
+      $variables['#attached']['drupalSettings']['content_type'] = t(ucfirst($content_type['singular']));
+
+      /** @var \Drupal\wildlex_map\CountriesMapService $countriesMapService */
+      $countriesMapService = \Drupal::service('wildlex_map.countries_map');
+
+      $variables['attachment_before']['map']['modal'] = $countriesMapService
+        ->getModalBuild($content_type, $count);
 
       if (empty($view_all->result)) {
         $variables['attachment_after'] = [
@@ -397,15 +406,5 @@ function iucn_search_preprocess_views_view(array &$variables) {
       }
       break;
   }
-
-  if (empty($display_id)) {
-    return;
-  }
-
-  $view_all = Views::getView($view->id());
-  $view_all->setDisplay($display_id);
-  $view_all->pager = $pager;
-  $view_all->execute();
-
 }
 

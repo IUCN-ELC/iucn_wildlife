@@ -445,6 +445,11 @@ function iucn_search_preprocess_views_view(array &$variables) {
       }
       break;
   }
+
+  if (empty($display_id)) {
+    return;
+  }
+
   $view_all = \Drupal\views\Views::getView($view->id());
   $view_all->setDisplay($display_id);
   $view_all->pager = $pager;

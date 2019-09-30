@@ -89,7 +89,9 @@ content:
     label: above
     settings:
       link: false
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
     region: content
   field_date_of_text:
     weight: 8

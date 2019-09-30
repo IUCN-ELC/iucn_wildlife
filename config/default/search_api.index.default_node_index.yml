@@ -31,6 +31,7 @@ dependencies:
     - field.storage.node.field_species
     - field.storage.node.field_subdivision
     - field.storage.node.field_territorial_subdivisions
+    - field.storage.node.field_type_of_case
     - field.storage.node.field_type_of_text
     - field.storage.node.field_original_id
     - field.storage.node.field_wildlife_legislation
@@ -232,6 +233,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_territorial_subdivisions
+  field_type_of_case:
+    label: 'Type of case'
+    datasource_id: 'entity:node'
+    property_path: field_type_of_case
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_type_of_case
   field_type_of_text:
     label: 'Type of text'
     datasource_id: 'entity:node'

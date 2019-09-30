@@ -455,7 +455,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: search-test
+      path: search
       display_description: ''
       cache:
         type: none
@@ -611,7 +611,7 @@ display:
     display_options:
       display_extenders: {  }
       display_description: ''
-      path: legislation-test
+      path: legislation
       filters:
         type:
           id: type
@@ -846,7 +846,7 @@ display:
         operator: AND
         groups:
           1: AND
-      path: literature-test
+      path: literature
       cache:
         type: none
       title: ''

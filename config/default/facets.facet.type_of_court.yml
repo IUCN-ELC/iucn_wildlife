@@ -9,7 +9,7 @@ dependencies:
     - search_api
 id: type_of_court
 name: 'Type of text'
-url_alias: type_of_court
+url_alias: document_types
 weight: 1
 min_count: 1
 show_only_one_result: false

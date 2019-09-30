@@ -1,4 +1,4 @@
-uuid: 2117e346-7ab1-489f-8308-914c8d7cf02e
+uuid: 92ee0c4c-3132-4b3d-9bee-076a40aaf1bf
 langcode: en
 status: true
 dependencies:
@@ -7,19 +7,25 @@ dependencies:
     - views.view.search
   module:
     - search_api
-id: country
-name: 'Court decision:Country'
-url_alias: countries
-weight: -4
+id: court_jurisdiction
+name: 'Court jurisdiction'
+url_alias: court_jurisdictions
+weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: field_country
+field_identifier: field_court_jurisdiction
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: dropdown
+  type: links
   config:
-    show_numbers: true
-    default_option_label: Choose
+    show_numbers: false
+    soft_limit: 0
+    soft_limit_settings:
+      show_less_label: 'Show less'
+      show_more_label: 'Show more'
+    show_reset_link: false
+    reset_text: 'Show all'
+    hide_reset_when_no_selection: false
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -28,6 +34,25 @@ hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
+  active_widget_order:
+    processor_id: active_widget_order
+    weights:
+      sort: 20
+    settings:
+      sort: ASC
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: 50
+    settings:
+      minimum_items: null
+      maximum_items: 5
+  count_widget_order:
+    processor_id: count_widget_order
+    weights:
+      sort: 30
+    settings:
+      sort: ASC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
@@ -46,6 +71,6 @@ processor_configs:
       build: 15
     settings: {  }
 empty_behavior:
-  behavior: render
-show_title: false
+  behavior: none
+show_title: true
 exposed_operator: false

@@ -11,7 +11,7 @@ dependencies:
 id: literatureyearperiod
 theme: iucn_frontend
 region: sidebar_facets
-weight: -5
+weight: -4
 provider: null
 plugin: 'facet_block:literature_year_period'
 settings:

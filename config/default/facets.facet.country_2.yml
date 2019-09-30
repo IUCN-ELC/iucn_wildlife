@@ -9,7 +9,7 @@ dependencies:
     - search_api
 id: country_2
 name: 'Legislation: Country'
-url_alias: country
+url_alias: countries
 weight: 0
 min_count: 1
 show_only_one_result: false

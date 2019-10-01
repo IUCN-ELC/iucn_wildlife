@@ -3,7 +3,6 @@
 namespace Drupal\iucn_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;

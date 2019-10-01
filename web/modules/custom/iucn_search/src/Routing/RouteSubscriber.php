@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\iucn_search\Routing\RouteSubscriber.
- */
 
 namespace Drupal\iucn_search\Routing;
 

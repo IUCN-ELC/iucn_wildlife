@@ -3,8 +3,6 @@
 use Drupal\Core\Database\Database;
 use Drupal\Core\Url;
 use Drupal\views\ViewExecutable;
-use Drupal\search_api\Entity\Index;
-use Drupal\search_api\IndexBatchHelper;
 use Drupal\views\Views;
 
 /**
@@ -256,13 +254,6 @@ function iucn_search_cron() {
 
 }
 
-function iucn_search_query_filter() {
-  if (!empty($_GET['search_api_fulltext'])) {
-    $q = \Drupal\Component\Utility\Html::escape($_GET['search_api_fulltext']);
-  }
-  return !empty($q) ? $q : '';
-}
-
 /**
  * Implements hook_form_alter().
  */
@@ -321,6 +312,7 @@ function iucn_search_preprocess_views_view(array &$variables) {
       $view_all = Views::getView($view->id());
       $pager = $view->pager;
       $display_id = $view->current_display;
+      $view_all->setCurrentPage(0);
       $view_all->setDisplay($display_id);
       $view_all->setItemsPerPage(9999999);
       $view_all->preview($display_id);
@@ -335,21 +327,19 @@ function iucn_search_preprocess_views_view(array &$variables) {
           continue;
         }
 
-        foreach ($country as $data) {
-          /** @var \Drupal\taxonomy\TermInterface $country_entity */
-          $country_entity = $data->entity;
+        /** @var \Drupal\taxonomy\TermInterface $country_entity */
+        $country_entity = $country->entity;
 
-          $id = $country_entity->id();
+        $id = $country_entity->id();
 
-          if (empty($countries[$id])) {
-            $countries[$id] = [
-              0 => $country_entity->field_iso->value,
-              1 => 0,
-              2 => $id,
-            ];
-          }
-          $countries[$id][1]++;
+        if (empty($countries[$id])) {
+          $countries[$id] = [
+            0 => $country_entity->get('field_iso')->value,
+            1 => 0,
+            2 => $id,
+          ];
         }
+        $countries[$id][1]++;
       }
 
       $view_all = Views::getView($view->id());

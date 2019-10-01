@@ -27,55 +27,6 @@ class CountriesMapService {
     $this->request = $requestStack->getCurrentRequest();
   }
 
-  public function getFilters() {
-    if (empty($this->request->query->get('f'))) {
-      return [];
-    }
-
-    $filters = [];
-    foreach ($this->request->query->get('f') as $item) {
-      list($type, $value) = explode(':', $item);
-      if ($type == 'year_period') {
-        continue;
-      }
-
-      $filters[$type][] = $value;
-    }
-
-    return $filters;
-  }
-
-  protected function getYearFilters() {
-    if (empty($this->request->query->get('f'))) {
-      return [NULL, NULL];
-    }
-
-    foreach ($this->request->query->get('f') as $item) {
-      list($type,) = explode(':', $item);
-      if ($type != 'year_period') {
-        continue;
-      }
-
-      preg_match('/.*((\d){4}).*((\d){4}).*/', $item, $matches);
-      return [$matches[1], $matches[3]];
-    }
-
-    return [NULL, NULL];
-  }
-
-  protected function getTermNames($tids) {
-    if (is_numeric($tids)) {
-      $tids = (array) $tids;
-    }
-
-    $terms = [];
-    foreach ($tids as $tid) {
-      $term = Term::load($tid);
-      $terms[] = $term->label();
-    }
-    return $terms;
-  }
-
   public function getModalBuild($content_type, $items_count = 0) {
     $fields = [];
     foreach ($this->getFilters() as $filterName => $filterValue) {
@@ -130,6 +81,56 @@ class CountriesMapService {
         '#value' => $modal_title,
       ],
     ];
+  }
+
+
+  protected function getFilters() {
+    if (empty($this->request->query->get('f'))) {
+      return [];
+    }
+
+    $filters = [];
+    foreach ($this->request->query->get('f') as $item) {
+      list($type, $value) = explode(':', $item);
+      if ($type == 'year_period') {
+        continue;
+      }
+
+      $filters[$type][] = $value;
+    }
+
+    return $filters;
+  }
+
+  protected function getYearFilters() {
+    if (empty($this->request->query->get('f'))) {
+      return [NULL, NULL];
+    }
+
+    foreach ($this->request->query->get('f') as $item) {
+      list($type,) = explode(':', $item);
+      if ($type != 'year_period') {
+        continue;
+      }
+
+      preg_match('/.*((\d){4}).*((\d){4}).*/', $item, $matches);
+      return [$matches[1], $matches[3]];
+    }
+
+    return [NULL, NULL];
+  }
+
+  protected function getTermNames($tids) {
+    if (is_numeric($tids)) {
+      $tids = (array) $tids;
+    }
+
+    $terms = [];
+    foreach ($tids as $tid) {
+      $term = Term::load($tid);
+      $terms[] = $term->label();
+    }
+    return $terms;
   }
 
 }

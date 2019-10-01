@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class IucnTaxonomyController {
+
   public function redirect(Request $request, TermInterface $taxonomy_term) {
     $vocid = $taxonomy_term->getVocabularyId();
     $field = NULL;

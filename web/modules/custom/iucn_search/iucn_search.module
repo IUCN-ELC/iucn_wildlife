@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Url;
 use Drupal\views\ViewExecutable;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\IndexBatchHelper;
@@ -269,6 +270,12 @@ function iucn_search_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
   if ($form_id == 'contact_message_feedback_form') {
     $form['actions']['preview']['#access'] = FALSE;
   }
+
+  if ($form_id == 'views_exposed_form') {
+    if (empty(\Drupal::request()->query->get('sort_by'))) {
+      $form['sort_by']['#value'] = 'search_api_relevance';
+    }
+  }
 }
 
 /**
@@ -292,9 +299,14 @@ function iucn_search_preprocess_views_view(array &$variables) {
   switch ($view->id()) {
     case 'search':
       $variables['attachment_before']['map']['button'] = [
-        '#markup' => '
-    <a href="#" data-toggle="modal" data-target="#search_modal" class="search-modal-opener">' . t('Show on map') . '</a>
-    ',
+        '#type' => 'link',
+        '#url' => Url::fromUserInput('#'),
+        '#title' => t('Show on map'),
+        '#attributes' => [
+          'data-toggle' => 'modal',
+          'data-target' => '#search_modal',
+          'class' => ['search-modal-opener'],
+        ],
         '#attached' => [
           'library' => [
             'iucn_search/iucn_search.map.js',
@@ -413,4 +425,3 @@ function iucn_search_preprocess_views_view(array &$variables) {
       break;
   }
 }
-

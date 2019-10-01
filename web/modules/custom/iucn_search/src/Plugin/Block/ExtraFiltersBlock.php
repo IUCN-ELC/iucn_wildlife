@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
 use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,22 +83,25 @@ class ExtraFiltersBlock extends BlockBase implements ContainerFactoryPluginInter
 
     $links = [];
     foreach ($terms as $term) {
-      $closeLink = Link::createFromRoute(
-        '×',
-        $this->routeMatch->getRouteName(),
-        [],
-        [
-          'query' => ['f' => $filters],
-        ]
-      );
-
-      $close['#attributes']['class'] = ['close'];
+      $closeLink = [
+        '#type' => 'link',
+        '#url' => Url::fromRoute(
+          $this->routeMatch->getRouteName(),
+          [],
+          [
+            'query' => ['f' => $filters],
+          ]),
+        '#title' => '×',
+        '#attributes' => [
+          'class' => ['close'],
+        ],
+      ];
 
       $link = [
         '#type' => 'html_tag',
         '#tag' => 'span',
-        '#value' => $term->label(),
-        'close' => $closeLink->toRenderable(),
+        '#value' => "{$term->label()} ",
+        'close' => $closeLink,
         '#attributes' => [
           'class' => ['label', 'label-primary'],
         ],

@@ -46,6 +46,12 @@ class CountriesMapService {
         case 'language':
           $label = t('Language');
           break;
+      case 'court_levels':
+          $label = t('Court level');
+          break;
+      case 'court_jurisdictions':
+          $label = t('Court jurisdiction');
+          break;
         default:
           continue 2;
       }

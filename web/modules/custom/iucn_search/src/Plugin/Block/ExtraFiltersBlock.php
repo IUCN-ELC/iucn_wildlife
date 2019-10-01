@@ -53,6 +53,7 @@ class ExtraFiltersBlock extends BlockBase implements ContainerFactoryPluginInter
 
     $allowedExtraFilterTypes = [
       'court_jurisdictions',
+      'court_levels',
     ];
 
     if (empty($filters)) {

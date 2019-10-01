@@ -97,7 +97,7 @@ class MigrationFormBase extends EntityForm {
     foreach ($groups as $group) {
       $group_options[$group->id()] = $group->label();
     }
-    if (!$migration->get('migration_group') && isset($group_options['default'])) {
+    if (!$migration->migration_group && isset($group_options['default'])) {
       $migration->set('migration_group', 'default');
     }
 
@@ -105,7 +105,7 @@ class MigrationFormBase extends EntityForm {
       '#type' => 'select',
       '#title' => $this->t('Migration Group'),
       '#empty_value' => '',
-      '#default_value' => $migration->get('migration_group'),
+      '#default_value' => $migration->migration_group,
       '#options' => $group_options,
       '#description' => $this->t('Assign this migration to an existing group.'),
     ];
@@ -150,7 +150,7 @@ class MigrationFormBase extends EntityForm {
    *   An array of supported actions for the current entity form.
    */
   protected function actions(array $form, FormStateInterface $form_state) {
-    // Get the basic actins from the base class.
+    // Get the basic actions from the base class.
     $actions = parent::actions($form, $form_state);
 
     // Change the submit button text.
@@ -169,11 +169,11 @@ class MigrationFormBase extends EntityForm {
 
     if ($status == SAVED_UPDATED) {
       // If we edited an existing entity...
-      drupal_set_message($this->t('Migration %label has been updated.', ['%label' => $migration->label()]));
+      $this->messenger()->addStatus($this->t('Migration %label has been updated.', ['%label' => $migration->label()]));
     }
     else {
       // If we created a new entity...
-      drupal_set_message($this->t('Migration %label has been added.', ['%label' => $migration->label()]));
+      $this->messenger()->addStatus($this->t('Migration %label has been added.', ['%label' => $migration->label()]));
     }
 
     // Redirect the user back to the listing route after the save operation.

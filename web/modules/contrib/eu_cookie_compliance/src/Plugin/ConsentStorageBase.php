@@ -94,8 +94,14 @@ abstract class ConsentStorageBase extends PluginBase implements ConsentStorageIn
     $cookie_policy_drupal_path = \Drupal::service('path.alias_manager')->getPathByAlias($cookie_policy_link, \Drupal::languageManager()->getCurrentLanguage()->getId());
     if (substr($cookie_policy_drupal_path, 0, 6) == '/node/') {
       $node_id = explode('/', $cookie_policy_drupal_path)[2];
-      /* @var \Drupal\node\Entity\Node $node */
+      /** @var \Drupal\node\Entity\Node $node */
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($node_id);
+
+      // Ensure the node has been loaded before accessing any properties.
+      if (!$node) {
+        return FALSE;
+      }
+
       return $node->getRevisionId();
     }
     else {

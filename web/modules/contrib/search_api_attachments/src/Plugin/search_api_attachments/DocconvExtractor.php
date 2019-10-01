@@ -21,6 +21,7 @@ class DocconvExtractor extends TextExtractorPluginBase {
    * {@inheritdoc}
    */
   public function extract(File $file) {
+    $output = '';
     $docconv_path = $this->configuration['docconv_path'];
     $filepath = $this->getRealpath($file->getFileUri());
     $cmd = escapeshellarg($docconv_path) . ' -input ' . escapeshellarg($filepath);
@@ -35,7 +36,11 @@ class DocconvExtractor extends TextExtractorPluginBase {
     // @see http://www.php.net/manual/en/function.shell-exec.php#85095
     shell_exec("LANG=en_US.utf-8");
 
-    return shell_exec($cmd);
+    $output = shell_exec($cmd);
+    if (is_null($output)) {
+      throw new \Exception('Docconv Exctractor is not available.');
+    }
+    return $output;
   }
 
   /**
@@ -56,12 +61,10 @@ class DocconvExtractor extends TextExtractorPluginBase {
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $docconv_path = $form_state->getValue([
-      'text_extractor_config',
-      'docconv_path',
-    ]);
-    if (!file_exists($docconv_path) && isset($form['text_extractor_config']['docconv_path'])) {
-      $form_state->setError($form['text_extractor_config']['docconv_path'], $this->t('The file %path does not exist.', ['%path' => $docconv_path]));
+    $values = $form_state->getValue(['text_extractor_config']);
+
+    if (!file_exists($values['docconv_path'])) {
+      $form_state->setError($form['text_extractor_config']['docconv_path'], $this->t('The file %path does not exist.', ['%path' => $values['docconv_path']]));
     }
   }
 

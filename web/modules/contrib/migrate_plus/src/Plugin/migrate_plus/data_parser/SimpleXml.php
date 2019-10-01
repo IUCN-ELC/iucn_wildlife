@@ -45,14 +45,14 @@ class SimpleXml extends DataParserPluginBase {
     libxml_clear_errors();
 
     $xml_data = $this->getDataFetcherPlugin()->getResponseContent($url);
-    $xml = simplexml_load_string($xml_data);
-    $this->registerNamespaces($xml);
-    $xpath = $this->configuration['item_selector'];
-    $this->matches = $xml->xpath($xpath);
+    $xml = simplexml_load_string(trim($xml_data));
     foreach (libxml_get_errors() as $error) {
       $error_string = self::parseLibXmlError($error);
       throw new MigrateException($error_string);
     }
+    $this->registerNamespaces($xml);
+    $xpath = $this->configuration['item_selector'];
+    $this->matches = $xml->xpath($xpath);
     return TRUE;
   }
 
@@ -77,7 +77,7 @@ class SimpleXml extends DataParserPluginBase {
       }
       // Reduce single-value results to scalars.
       foreach ($this->currentItem as $field_name => $values) {
-        if (count($values) == 1) {
+        if (is_array($values) && count($values) == 1) {
           $this->currentItem[$field_name] = reset($values);
         }
       }

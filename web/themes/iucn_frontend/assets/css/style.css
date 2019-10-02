@@ -774,6 +774,13 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .field--name-field-url .field--item {
   display: inline;
 }
+#search-header .view-filters.form-group {
+  padding-bottom: 0;
+  margin-bottom: 10px;
+}
+.view.view-search .field--item p {
+  margin: 0;
+}
 html {
   min-height: 100vh;
   position: relative;

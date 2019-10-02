@@ -556,18 +556,6 @@ display:
         groups:
           1: AND
       sorts:
-        search_api_relevance:
-          id: search_api_relevance
-          table: search_api_index_default_node_index
-          field: search_api_relevance
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: true
-          expose:
-            label: 'Sort by relevance'
-          plugin_id: search_api
         field_date_of_text:
           id: field_date_of_text
           table: search_api_index_default_node_index
@@ -591,6 +579,18 @@ display:
           exposed: true
           expose:
             label: 'Sort by least recent'
+          plugin_id: search_api
+        search_api_relevance:
+          id: search_api_relevance
+          table: search_api_index_default_node_index
+          field: search_api_relevance
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: true
+          expose:
+            label: 'Sort by relevance'
           plugin_id: search_api
     cache_metadata:
       max-age: -1

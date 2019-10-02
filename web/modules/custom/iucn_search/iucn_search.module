@@ -262,9 +262,16 @@ function iucn_search_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
     $form['actions']['preview']['#access'] = FALSE;
   }
 
-  if ($form_id == 'views_exposed_form') {
-    if (empty(\Drupal::request()->query->get('sort_by'))) {
-      $form['sort_by']['#value'] = 'search_api_relevance';
+  if ($form_id == 'views_exposed_form' && empty(\Drupal::request()->query->get('sort_by'))) {
+    switch ($form['#id']) {
+      case 'views-exposed-form-search-page-1':
+        $form['sort_by']['#value'] = 'search_api_relevance';
+        break;
+
+      case 'views-exposed-form-search-page-2':
+      case 'views-exposed-form-search-page-3':
+        $form['sort_by']['#value'] = 'field_date_of_text';
+        break;
     }
   }
 }

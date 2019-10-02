@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\migrate_tools\Functional;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Tests\BrowserTestBase;
 
@@ -11,6 +12,7 @@ use Drupal\Tests\BrowserTestBase;
  * @group migrate_tools
  */
 class MigrateExecutionFormTest extends BrowserTestBase {
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -77,21 +79,21 @@ class MigrateExecutionFormTest extends BrowserTestBase {
     $edit = [
       'operation' => 'import',
     ];
-    $this->drupalPostForm($urlPath, $edit, t('Execute'));
+    $this->drupalPostForm($urlPath, $edit, $this->t('Execute'));
     $real_count = $this->vocabularyQuery->count()->execute();
     $expected_count = 3;
     $this->assertEquals($expected_count, $real_count);
     $edit = [
       'operation' => 'rollback',
     ];
-    $this->drupalPostForm($urlPath, $edit, t('Execute'));
+    $this->drupalPostForm($urlPath, $edit, $this->t('Execute'));
     $real_count = $this->vocabularyQuery->count()->execute();
     $expected_count = 0;
     $this->assertEquals($expected_count, $real_count);
     $edit = [
       'operation' => 'import',
     ];
-    $this->drupalPostForm($urlPath, $edit, t('Execute'));
+    $this->drupalPostForm($urlPath, $edit, $this->t('Execute'));
     $real_count = $this->vocabularyQuery->count()->execute();
     $expected_count = 3;
     $this->assertEquals($expected_count, $real_count);

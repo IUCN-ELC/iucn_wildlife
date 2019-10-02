@@ -28,3 +28,31 @@ function migrate_tools_entity_type_build(array &$entity_types) {
     ->setLinkTemplate('edit-form', '/admin/structure/migrate/manage/{migration_group}')
     ->setLinkTemplate('delete-form', '/admin/structure/migrate/manage/{migration_group}/delete');
 }
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function migrate_tools_migration_plugins_alter(array &$migrations) {
+  /** @var \Drupal\Core\TempStore\PrivateTempStoreFactory $store */
+  $tempStoreFactory = \Drupal::service('tempstore.private');
+  $store = $tempStoreFactory->get('migrate_tools');
+  // TODO: remove work-around after
+  // https://www.drupal.org/project/drupal/issues/2860341 is fixed.
+  if (!\Drupal::request()->hasSession()) {
+    $session = \Drupal::service('session');
+    \Drupal::request()->setSession($session);
+    $session->start();
+  }
+  // Get the list of changed migrations.
+  $migrationsChanged = $store->get('migrations_changed');
+  if (isset($store) && (is_array($migrationsChanged))) {
+    // Alter the source column names for each changed migration.
+    foreach ($migrationsChanged as $id) {
+      $data = $store->get($id);
+      if (isset($data['changed'])) {
+        $migrations[$id]['source']['column_names'] = $data['changed'];
+      }
+    }
+  }
+
+}

@@ -60,7 +60,7 @@ class MigrationGroupDeleteForm extends EntityConfirmFormBase {
     $this->entity->delete();
 
     // Set a message that the entity was deleted.
-    drupal_set_message(t('Migration group %label was deleted.', [
+    $this->messenger()->addStatus($this->t('Migration group %label was deleted.', [
       '%label' => $this->entity->label(),
     ]));
 

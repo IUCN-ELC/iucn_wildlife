@@ -6,6 +6,7 @@ use DrupalCodeGenerator\Command\BaseGenerator;
 use DrupalCodeGenerator\Utils;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -21,13 +22,17 @@ class TwigExtension extends BaseGenerator {
    * {@inheritdoc}
    */
   protected function interact(InputInterface $input, OutputInterface $output) {
-    $questions = Utils::defaultQuestions();
+    $questions = Utils::moduleQuestions();
     $default_class = function ($vars) {
-      return Utils::camelize($vars['name'] . 'TwigExtension');
+      return Utils::camelize($vars['machine_name']) . 'TwigExtension';
     };
     $questions['class'] = new Question('Class', $default_class);
-
     $this->collectVars($input, $output, $questions);
+
+    $di_question = new ConfirmationQuestion('Would you like to inject dependencies?');
+    if ($this->ask($input, $output, $di_question)) {
+      $this->collectServices($input, $output);
+    }
 
     $this->addFile()
       ->path('src/{class}.php')

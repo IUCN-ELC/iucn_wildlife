@@ -1,0 +1,26 @@
+uuid: ea507297-34f9-4b2e-a01f-36de05945e1e
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_search
+    - system
+  theme:
+    - iucn_frontend
+id: extrafiltersblock
+theme: iucn_frontend
+region: sidebar_facets
+weight: -13
+provider: null
+plugin: extra_filters_block
+settings:
+  id: extra_filters_block
+  label: 'Extra filters block'
+  provider: iucn_search
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: "/search\r\n/literature\r\n/legislation"
+    negate: false
+    context_mapping: {  }

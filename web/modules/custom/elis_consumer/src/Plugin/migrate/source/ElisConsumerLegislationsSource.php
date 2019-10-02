@@ -60,8 +60,6 @@ class ElisConsumerLegislationsSource extends ElisConsumerDefaultSource {
 
   public function prepareRow(Row $row) {
     // Used str_replace('server2.php/', '', ...) because there is a bug in the urls from ELIS
-    $linkToFullText = str_replace('server2.php/', '', $row->getSourceProperty('linkToFullText'));
-    $row->setSourceProperty('linkToFullText', $linkToFullText);
     $this->fixDateFields($row, [
       'dateOfEntry',
       'dateOfModification',

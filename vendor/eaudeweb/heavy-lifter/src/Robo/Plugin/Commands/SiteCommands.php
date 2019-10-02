@@ -28,20 +28,23 @@ class SiteCommands extends CommandBase {
    * @command site:develop
    *
    * @param string $newPassword
+   * @param array $options
+   *  Command options.
    * @throws \Exception when cannot find the Drupal installation folder.
    */
-  public function siteDevelop($newPassword = 'password') {
+  public function siteDevelop($newPassword = 'password', $options = ['site' => 'default']) {
     $this->allowOnlyOnLinux();
+    $site = $options['site'];
     $this->validateConfig();
     $execStack = $this->taskExecStack()->stopOnFail(TRUE);
     $commands = [];
 
     // Reset admin password if available.
-    $username = $this->configSite('site.develop.admin_username');
+    $username = $this->configSite('site.develop.admin_username', $site);
     if (empty($username)) {
       $this->yell('sites.default.site.develop.admin_username not set, password will not be reset');
     }
-    $modules = $this->configSite('site.develop.modules');
+    $modules = $this->configSite('site.develop.modules', $site);
     if ($this->isDrush9()) {
       if (!empty($username)) {
         $commands[] = 'user:password ' . $username . ' ' . $newPassword;
@@ -73,30 +76,33 @@ class SiteCommands extends CommandBase {
       }
     }
 
-    $excludedCommandsArray = $this->configSite('site.develop.excluded_commands');
-    $extraCommandsArray = $this->configSite('site.develop.extra_commands');
+    $excludedCommandsArray = $this->configSite('site.develop.excluded_commands', $site);
+    $extraCommandsArray = $this->configSite('site.develop.extra_commands', $site);
 
-    $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray);
+    $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray, $site);
     $this->addDrushScriptsToExecStack($execStack, 'develop');
     $execStack->run();
   }
 
   /**
+   * @param array $options
+   *  Command options.
    * @return \Robo\Result
    * @throws \Robo\Exception\TaskException
    */
-  public function siteInstall() {
+  public function siteInstall($options = ['site' => 'default']) {
     $this->allowOnlyOnLinux();
-    $url =  $this->configSite('sql.sync.source');
+    $site = $options['site'];
+    $url =  $this->configSite('sql.sync.source', $site);
     $this->validateHttpsUrl($url);
 
     $dir = $this->taskTmpDir('heavy-lifter')->run();
     $dest = $dir->getData()['path'] . '/database.sql';
     $dest_gz = $dest . '.gz';
 
-    $url =  $this->configSite('sql.sync.source');
-    $username = $this->configSite('sync.username');
-    $password = $this->configSite('sync.password');
+    $url =  $this->configSite('sql.sync.source', $site);
+    $username = $this->configSite('sync.username', $site);
+    $password = $this->configSite('sync.password', $site);
     $this->validateHttpsUrl($url);
     $download = $this->taskCurl($url)
       ->followRedirects()
@@ -112,14 +118,14 @@ class SiteCommands extends CommandBase {
       $build->addTask(
         $this->taskExec('gzip')->option('-d')->arg($dest_gz)
       );
-      $drush = $this->drushExecutable();
+      $drush = $this->drushExecutable($site);
       $drush = $this->taskDrushStack($drush)
         ->drush('sql:drop')
         ->drush(['sql:query','--file', $dest]);
       $build->addTask($drush);
       $sync = $build->run();
       if ($sync->wasSuccessful()) {
-        return $this->siteUpdate();
+        return $this->siteUpdate($site);
       }
       return $sync;
     }
@@ -181,11 +187,15 @@ class SiteCommands extends CommandBase {
    *
    * @command site:update
    *
+   * @param array $options
+   *  Command options.
+   *
    * @return null|\Robo\Result
    * @throws \Robo\Exception\TaskException
    */
-  public function siteUpdate() {
+  public function siteUpdate($options = ['site' => 'default']) {
     $this->allowOnlyOnLinux();
+    $site = $options['site'];
     $this->validateConfig();
     $execStack = $this->taskExecStack()->stopOnFail(TRUE);
     $commands = [];
@@ -232,10 +242,10 @@ class SiteCommands extends CommandBase {
       $commands[] = 'vset maintenance_mode 0';
     }
 
-    $excludedCommandsArray = $this->configSite('site.update.excluded_commands');
-    $extraCommandsArray = $this->configSite('site.update.extra_commands');
+    $excludedCommandsArray = $this->configSite('site.update.excluded_commands', $site);
+    $extraCommandsArray = $this->configSite('site.update.extra_commands', $site);
 
-    $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray);
+    $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray, $site);
 
     return $execStack->run();
   }

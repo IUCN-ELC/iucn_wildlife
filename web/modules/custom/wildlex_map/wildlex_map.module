@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Implements hook_theme().
  */
@@ -8,7 +7,8 @@ function wildlex_map_theme($existing, $type, $theme, $path) {
   return [
     'wildlex_map_block' => [
       'variables' => [
-      ]
+        'title' => NULL,
+      ],
     ],
   ];
 }

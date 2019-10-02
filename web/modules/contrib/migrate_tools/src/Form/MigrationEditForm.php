@@ -29,7 +29,7 @@ class MigrationEditForm extends MigrationFormBase {
    */
   public function actions(array $form, FormStateInterface $form_state) {
     $actions = parent::actions($form, $form_state);
-    $actions['submit']['#value'] = t('Update Migration');
+    $actions['submit']['#value'] = $this->t('Update Migration');
 
     return $actions;
   }

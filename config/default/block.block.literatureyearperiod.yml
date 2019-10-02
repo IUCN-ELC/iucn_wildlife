@@ -1,0 +1,23 @@
+uuid: 1cd905cd-bd04-4a16-b52b-1bac3d1791b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.literature_year_period
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: literatureyearperiod
+theme: iucn_frontend
+region: sidebar_facets
+weight: -4
+provider: null
+plugin: 'facet_block:literature_year_period'
+settings:
+  id: 'facet_block:literature_year_period'
+  label: Year/Period
+  provider: facets
+  label_display: visible
+  block_id: literatureyearperiod
+visibility: {  }

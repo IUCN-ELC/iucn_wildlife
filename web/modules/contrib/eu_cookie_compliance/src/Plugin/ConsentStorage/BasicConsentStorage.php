@@ -3,7 +3,6 @@
 namespace Drupal\eu_cookie_compliance\Plugin\ConsentStorage;
 
 use Drupal\eu_cookie_compliance\Plugin\ConsentStorageBase;
-use Drupal\Core\Config\ConfigFactoryInterface;
 
 /**
  * Provides a database storage for cookie consents.
@@ -15,13 +14,6 @@ use Drupal\Core\Config\ConfigFactoryInterface;
  * )
  */
 class BasicConsentStorage extends ConsentStorageBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(array $configuration, $plugin_id = NULL, $plugin_definition = NULL, ConfigFactoryInterface $config_factory = NULL) {
-
-  }
 
   /**
    * {@inheritdoc}

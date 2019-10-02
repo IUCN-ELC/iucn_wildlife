@@ -11,7 +11,7 @@ _core:
 id: iucn_frontend_breadcrumbs
 theme: iucn_frontend
 region: header
-weight: -6
+weight: -13
 provider: null
 plugin: system_breadcrumb_block
 settings:

@@ -116,7 +116,7 @@
           {% if site_slogan %}
             <p class="text-primary">{{ site_slogan }}</p>
           {% endif %}
-          <form id="search-form" action="{{ search_route }}" autocomplete="off">
+          <form id="search-form" {#action="{{ search_route }}"#} autocomplete="off">
             {% for key, value in url_query %}
               {% if value is iterable %}
                 {% for val in value %}
@@ -127,7 +127,7 @@
               {% endif %}
             {% endfor %}
             <div class="form-group has-feedback">
-              <input type="text" class="form-control" name="q" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ q }}" {% if is_front %} autofocus {% endif %}>
+              <input type="text" class="form-control" name="search_api_fulltext" placeholder="{{ 'Search in record and full text&hellip;'|t }}" value="{{ search_api_fulltext }}" {% if is_front %} autofocus {% endif %}>
               <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
               <button type="submit" class="btn btn-primary">{{ 'Search'|t }}</button>
               {% if q %}
@@ -197,6 +197,14 @@
       {% if page.sidebar %}
         {% block sidebar %}
           <aside class="col-md-3" role="complementary">
+            <div class="search-filters panel panel-default" >
+              <div class="panel-heading">
+                <div class="panel-title"> Search filters</div>
+              </div>
+              <div class="panel-body">
+                  {{ page.sidebar_facets}}
+              </div>
+            </div>
             {{ page.sidebar }}
           </aside>
         {% endblock %}

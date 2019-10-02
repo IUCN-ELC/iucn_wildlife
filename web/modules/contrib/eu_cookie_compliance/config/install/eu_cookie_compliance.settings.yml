@@ -1,3 +1,4 @@
+uuid: ''
 cookie_lifetime: 100
 domain: ''
 domains_option: 1
@@ -10,7 +11,7 @@ langcode: en
 popup_agreed:
   value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
   format: 'restricted_html'
-popup_agree_button_message: 'OK, I agree'
+popup_agree_button_message: 'Accept'
 popup_agreed_enabled: false
 popup_bg_hex: '0779bf'
 popup_clicking_confirmation: true
@@ -24,10 +25,10 @@ popup_height: 0
 popup_hide_agreed: false
 popup_hide_button_message: 'Hide'
 popup_info:
-  value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By clicking any link on this page you are giving your consent for us to set cookies.</p>'
+  value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By clicking the Accept button, you agree to us doing so.</p>'
   format: 'restricted_html'
 mobile_popup_info:
-  value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By tapping any link on this page you are giving your consent for us to set cookies.</p>'
+  value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By tapping the Accept button, you agree to us doing so.</p>'
   format: 'restricted_html'
 popup_info_template: 'new'
 mobile_breakpoint: 768
@@ -55,3 +56,11 @@ withdraw_message:
 withdraw_action_button_label: 'Withdraw consent'
 withdraw_tab_button_label: 'Privacy settings'
 withdraw_enabled: false
+cookie_categories: ''
+enable_save_preferences_button: true
+save_preferences_button_label: 'Save preferences'
+accept_all_categories_button_label: 'Accept all cookies'
+fix_first_cookie_category: true
+select_all_categories_by_default: false
+withdraw_button_on_info_popup: false
+domain_all_sites: false

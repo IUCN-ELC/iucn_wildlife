@@ -74,6 +74,7 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
     $parties = array();
     $abstract = '';
     foreach ($data as $field_name => $value) {
+      $value = trim($value);
       $value = (string) $value;
 
       if (mb_detect_encoding($value) != 'UTF-8') {
@@ -250,6 +251,27 @@ abstract class ElisConsumerDefaultSource extends SourcePluginBase {
    * @throws \Exception
    */
   public function prepareRow(Row $row) {
+    $linkToFullText = [];
+    foreach (['English', 'French', 'Spanish'] as $language) {
+      if ($language == 'English') {
+        $lang = '';
+      }
+      else {
+        $lang = $language == 'French' ? 'Fr' : 'Sp';
+      }
+      $languageLinks = $row->getSourceProperty("linkToFullText$lang");
+      if (!is_array($languageLinks)) {
+        // Used str_replace('server2.php/', '', ...) because there is a bug in the urls from ELIS
+        $linkToFullText[] = ['uri' => str_replace('server2.php/', '', $languageLinks), 'title' => $language];
+      }
+      elseif (!empty($languageLinks)) {
+        foreach ($languageLinks as $languageLink) {
+          $linkToFullText[] = ['uri' => str_replace('server2.php/', '', $languageLink), 'title' => $language];
+        }
+      }
+    }
+    $row->setSourceProperty('linkToFullText', $linkToFullText);
+
     $titleOfText = $this->getTitle($row);
     if (empty($titleOfText)) {
       return FALSE;

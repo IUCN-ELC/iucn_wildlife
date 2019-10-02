@@ -1,9 +1,20 @@
-<div id="wildlex_map">
-  <div class="wildlex_map-buttons">
-    <!--<a href="#" class="btn btn-primary zoom-button" data-zoom="reset">reset</a>-->
-    <a href="#" class="btn btn-primary zoom-button" data-zoom="out">zoom out</a>
-    <a href="#" class="btn btn-primary zoom-button" data-zoom="in">zoom in</a>
-    <!--<div id="zoom-info"></div>-->
+<div class="modal fade" id="search_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"> {{ title }} </h5>
+      </div>
+      <div class="modal-body">
+        <div id="wildlex_map"></div>
+      </div>
+      <div class="modal-footer">
+        <div class="wildlex_map_legend" id="legend1"></div>
+        <a href="#" class="btn btn-primary zoom-button" data-zoom="in">Zoom in</a>
+        <a href="#" class="btn btn-primary zoom-button" data-zoom="out">Zoom out</a>
+        <a href="#" class="btn btn-primary zoom-button" data-zoom="reset">Reset zoom</a>
+        <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+      </div>
+    </div>
   </div>
 </div>
-

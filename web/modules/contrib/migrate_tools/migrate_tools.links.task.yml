@@ -39,3 +39,15 @@ entity.migration.delete_form:
   base_route:  entity.migration.overview
   title: Delete
   weight: 10
+
+
+entity.migration.overview_general_edit:
+  title: Overview
+  route_name: entity.migration.edit_form
+  parent_id: entity.migration.edit_form
+
+entity.migration.overview_source_edit:
+  title: Source
+  route_name: migrate_tools.source_csv
+  parent_id: entity.migration.edit_form
+  weight: 1

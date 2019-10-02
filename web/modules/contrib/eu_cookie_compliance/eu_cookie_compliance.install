@@ -87,6 +87,7 @@ function eu_cookie_compliance_install() {
     \Drupal::configFactory()
       ->getEditable('eu_cookie_compliance.settings')
       ->set('popup_link', $cookie_policy)
+      ->set('uuid', \Drupal::service('uuid')->generate())
       ->save();
   }
 
@@ -248,8 +249,9 @@ function eu_cookie_compliance_update_8107() {
       'uid' => ['users' => 'uid'],
     ],
   ];
-
-  Database::getConnection()->schema()->createTable('eu_cookie_compliance_basic_consent', $schema['eu_cookie_compliance_basic_consent']);
+  if (!Database::getConnection()->schema()->tableExists('eu_cookie_compliance_basic_consent')) {
+    Database::getConnection()->schema()->createTable('eu_cookie_compliance_basic_consent', $schema['eu_cookie_compliance_basic_consent']);
+  }
   \Drupal::configFactory()
     ->getEditable('eu_cookie_compliance.settings')
     ->set('consent_storage_method', 'do_not_store')
@@ -282,7 +284,7 @@ function eu_cookie_compliance_update_8109() {
     ])
     ->set('withdraw_action_button_label', 'Withdraw consent')
     ->set('withdraw_tab_button_label', 'Privacy settings')
-    ->set('withdraw_enabled', TRUE)
+    ->set('withdraw_enabled', FALSE)
     ->set('popup_info_template', 'legacy')
     ->save();
 }
@@ -307,7 +309,7 @@ function eu_cookie_compliance_update_8110() {
 }
 
 /**
- * Adding config variable for the withdraw banner.
+ * Adding config variable for the popup info template.
  */
 function eu_cookie_compliance_update_8111() {
   $popup_info_template = \Drupal::configFactory()
@@ -315,9 +317,51 @@ function eu_cookie_compliance_update_8111() {
     ->get('popup_info_template');
 
   if ($popup_info_template === NULL) {
+    $method = \Drupal::configFactory()
+      ->get('eu_cookie_compliance.settings')
+      ->get('method');
+    // Set popup_info_template value to 'new' if method is not 'consent by
+    // default'.
+    $popup_info_template = $method == 'default' ? 'legacy' : 'new';
     \Drupal::configFactory()
       ->getEditable('eu_cookie_compliance.settings')
-      ->set('popup_info_template', 'legacy')
+      ->set('popup_info_template', $popup_info_template)
       ->save();
   }
+}
+
+/**
+ * Add config variables for the "Opt-in with categories" feature.
+ */
+function eu_cookie_compliance_update_8112() {
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('cookie_categories', '')
+    ->set('enable_save_preferences_button', TRUE)
+    ->set('save_preferences_button_label', 'Save preferences')
+    ->set('accept_all_categories_button_label', 'Accept all cookies')
+    ->set('fix_first_cookie_category', TRUE)
+    ->set('select_all_categories_by_default', FALSE)
+    ->set('withdraw_button_on_info_popup', FALSE)
+    ->save();
+}
+
+/**
+ * Add config variables for the "Allow cookie for all sites on same domain" feature.
+ */
+function eu_cookie_compliance_update_8113() {
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('domain_all_sites', FALSE)
+    ->save();
+}
+
+/**
+ * Add uuid to the config.
+ */
+function eu_cookie_compliance_update_8114() {
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('uuid', \Drupal::service('uuid')->generate())
+    ->save();
 }

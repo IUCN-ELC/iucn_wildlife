@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
+class ComposerStaticInitca8d6c701498edcb5c94e29c5b481c88
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -12,6 +12,7 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         '92c8763cd6170fce6fcfe7e26b4e8c10' => __DIR__ . '/..' . '/symfony/phpunit-bridge/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
+        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
@@ -59,10 +60,6 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
             'Webmozart\\PathUtil\\' => 19,
             'Webmozart\\Assert\\' => 17,
         ),
-        'U' => 
-        array (
-            'Unish\\' => 6,
-        ),
         'T' => 
         array (
             'Twig\\' => 5,
@@ -70,6 +67,7 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Php72\\' => 23,
             'Symfony\\Polyfill\\Php70\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Iconv\\' => 23,
@@ -103,6 +101,7 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
             'Symfony\\Bridge\\PhpUnit\\' => 23,
             'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 49,
             'Solarium\\' => 9,
+            'SelfUpdate\\' => 11,
         ),
         'R' => 
         array (
@@ -130,6 +129,8 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         'J' => 
         array (
             'JsonSchema\\' => 11,
+            'JakubOnderka\\PhpConsoleHighlighter\\' => 35,
+            'JakubOnderka\\PhpConsoleColor\\' => 29,
         ),
         'I' => 
         array (
@@ -173,8 +174,11 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         ),
         'C' => 
         array (
+            'Consolidation\\SiteProcess\\' => 26,
+            'Consolidation\\SiteAlias\\' => 24,
             'Consolidation\\OutputFormatters\\' => 31,
             'Consolidation\\Log\\' => 18,
+            'Consolidation\\Filter\\' => 21,
             'Consolidation\\Config\\' => 21,
             'Consolidation\\AnnotatedCommand\\' => 31,
             'Composer\\Semver\\' => 16,
@@ -245,10 +249,6 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
-        'Unish\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/drush/drush/tests',
-        ),
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
@@ -256,6 +256,10 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         'TYPO3\\PharStreamWrapper\\' => 
         array (
             0 => __DIR__ . '/..' . '/typo3/phar-stream-wrapper/src',
+        ),
+        'Symfony\\Polyfill\\Php72\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php72',
         ),
         'Symfony\\Polyfill\\Php70\\' => 
         array (
@@ -389,6 +393,10 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         array (
             0 => __DIR__ . '/..' . '/solarium/solarium/src',
         ),
+        'SelfUpdate\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/consolidation/self-update/src',
+        ),
         'Robo\\' => 
         array (
             0 => __DIR__ . '/..' . '/consolidation/robo/src',
@@ -437,6 +445,14 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         array (
             0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
         ),
+        'JakubOnderka\\PhpConsoleHighlighter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src',
+        ),
+        'JakubOnderka\\PhpConsoleColor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
+        ),
         'Interop\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
@@ -479,7 +495,7 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         ),
         'Drush\\Internal\\' => 
         array (
-            0 => __DIR__ . '/..' . '/drush/drush/internal-copy',
+            0 => __DIR__ . '/..' . '/drush/drush/src/internal-forks',
         ),
         'Drush\\' => 
         array (
@@ -552,6 +568,14 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
+        'Consolidation\\SiteProcess\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/consolidation/site-process/src',
+        ),
+        'Consolidation\\SiteAlias\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/consolidation/site-alias/src',
+        ),
         'Consolidation\\OutputFormatters\\' => 
         array (
             0 => __DIR__ . '/..' . '/consolidation/output-formatters/src',
@@ -559,6 +583,10 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
         'Consolidation\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/consolidation/log/src',
+        ),
+        'Consolidation\\Filter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/consolidation/filter-via-dot-access-data/src',
         ),
         'Consolidation\\Config\\' => 
         array (
@@ -638,17 +666,6 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
             'PEAR' => 
             array (
                 0 => __DIR__ . '/..' . '/pear/pear_exception',
-            ),
-        ),
-        'J' => 
-        array (
-            'JakubOnderka\\PhpConsoleHighlighter' => 
-            array (
-                0 => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src',
-            ),
-            'JakubOnderka\\PhpConsoleColor' => 
-            array (
-                0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
             ),
         ),
         'E' => 
@@ -1265,11 +1282,11 @@ class ComposerStaticInitf73848a543f1b59d918ccab2262e10ca
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf73848a543f1b59d918ccab2262e10ca::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf73848a543f1b59d918ccab2262e10ca::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitf73848a543f1b59d918ccab2262e10ca::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInitf73848a543f1b59d918ccab2262e10ca::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInitf73848a543f1b59d918ccab2262e10ca::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitca8d6c701498edcb5c94e29c5b481c88::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitca8d6c701498edcb5c94e29c5b481c88::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitca8d6c701498edcb5c94e29c5b481c88::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitca8d6c701498edcb5c94e29c5b481c88::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInitca8d6c701498edcb5c94e29c5b481c88::$classMap;
 
         }, null, ClassLoader::class);
     }

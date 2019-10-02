@@ -193,10 +193,74 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#options' => [
         'default' => $this->t("Consent by default. Don't provide any option to opt out."),
         'opt_in' => $this->t("Opt-in. Don't track visitors unless they specifically give consent. (GDPR compliant)"),
+        'categories' => $this->t('Opt-in with categories. Let visitors choose which cookie categories they want to opt-in for (GDPR compliant).'),
         'opt_out' => $this->t('Opt-out. Track visitors by default, unless they choose to opt out.'),
         'auto' => $this->t('Automatic. Respect the DNT (Do not track) setting in the browser, if present. Uses opt-in when DNT is 1 or not set, and consent by default when DNT is 0.'),
       ],
       '#default_value' => $config->get('method'),
+    ];
+    $form['consent_per_category'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Cookie categories'),
+      '#open' => TRUE,
+      '#states' => [
+        'visible' => [
+          "input[name='method']" => ['value' => 'categories'],
+        ],
+      ],
+    ];
+    $form['consent_per_category']['cookie_categories'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Cookie categories with separate consent'),
+      '#description' => $this->t('List of cookie categories that require separate consent. E.g. Functional cookies, Advertisement cookies, …') .
+      '<br />' . $this->t('Enter one value per line, in the following format: "key|label" or "key|label|description". Description is optional.'),
+      '#default_value' => $config->get('cookie_categories'),
+    ];
+
+    $form['consent_per_category']['enable_save_preferences_button'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Replace the Agree button with "Save preferences" and "Accept all categories" buttons.'),
+      '#default_value' => $config->get('enable_save_preferences_button'),
+    ];
+
+    $form['consent_per_category']['save_preferences_button_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('"Save preferences" button label'),
+      '#default_value' => $config->get('save_preferences_button_label'),
+      '#states' => [
+        'visible' => [
+          "input[name='enable_save_preferences_button']" => ['checked' => TRUE],
+        ],
+        'required' => [
+          "input[name='enable_save_preferences_button']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['consent_per_category']['accept_all_categories_button_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('"Accept all categories" button label'),
+      '#default_value' => $config->get('accept_all_categories_button_label'),
+      '#states' => [
+        'visible' => [
+          "input[name='enable_save_preferences_button']" => ['checked' => TRUE],
+        ],
+        'required' => [
+          "input[name='enable_save_preferences_button']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['consent_per_category']['fix_first_cookie_category'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Tick the first checkbox and mark it read only.'),
+      '#default_value' => $config->get('fix_first_cookie_category'),
+    ];
+
+    $form['consent_per_category']['select_all_categories_by_default'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Tick all category checkboxes by default.'),
+      '#default_value' => $config->get('select_all_categories_by_default'),
     ];
 
     $form['popup_info_template'] = [
@@ -236,7 +300,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Disable JavaScripts'),
       '#default_value' => $config->get('disabled_javascripts'),
-      '#description' => $this->t("Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn't given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, you can use public://path/to/file.js and private://path/to/file.js, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://</strong>. Note that after the user gives consent, the scripts will be executed in the order you enter here."),
+      '#description' => $this->t("<span class='eu-cookie-compliance-word-break'>Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn't given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, you can use public://path/to/file.js and private://path/to/file.js, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://</strong>. Note that after the user gives consent, the scripts will be executed in the order you enter here.<br /><br />Libraries and scripts that attach to Drupal.behaviors are supported. To indicate a behavior that needs to be loaded on consent, append the behavior name after the script with a | (vertical bar). If you also want to conditionally load a library, place that as the third parameter, following another | (vertical bar). <strong>Example: modules/custom/custom_module/js/custom.js|customModule|custom_module/custom_module</strong>.<br />If your script file does not attach to Drupal.attributes, you may skip the second parameter. <strong>Example: modules/custom/custom_module/js/custom.js||custom_module/custom_module</strong><br /><strong>Note that Drupal behavior name and library parameters are both optional</strong>, but may be required to achieve your objective.</span>") .
+      '<br /><br />' . $this->t('When using the consent method "Opt-in with categories", you can link the script to a specific category by using the format: "category:path/to/the/script.js".'),
     ];
 
     $form['cookies'] = [
@@ -254,7 +319,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Whitelisted cookies'),
       '#default_value' => $config->get('whitelisted_cookies'),
-      '#description' => $this->t("Include the name of cookies, each on a separate line. When using the opt-in or opt-out consent options, this module will <strong>prevent cookies that are not on the whitelist</strong> from being stored in the browser when consent isn't given. PHP session cookies and the cookie for this module are always whitelisted."),
+      '#description' => $this->t("Include the name of cookies, each on a separate line. When using the opt-in or opt-out consent options, this module will <strong>delete cookies from your domain that are not on the whitelist</strong> every few seconds when consent isn't given. PHP session cookies and the cookie for this module are always whitelisted.") .
+      '<br /><br />' . t('When using the consent method "Opt-in with categories", you can link the cookie to a specific consent category by using the format: "category:cookie_name".  Only when consent is given for the given category, will the cookie be whitelisted.'),
     ];
 
     $form['consent_storage'] = [
@@ -363,6 +429,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('popup_agree_button_message'),
       '#size' => 30,
       '#required' => TRUE,
+      '#states' => [
+        'visible' => [
+          "input[name='enable_save_preferences_button']" => ['!checked' => TRUE],
+        ],
+      ],
     ];
 
     $form['popup_message']['disagree_button'] = [
@@ -431,6 +502,12 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('withdraw_enabled'),
     ];
 
+    $form['withdraw_consent']['withdraw_button_on_info_popup'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Put the "Withdraw consent" button on the cookie information banner.'),
+      '#default_value' => $config->get('withdraw_button_on_info_popup'),
+    ];
+
     $config_format = $config->get('popup_info.format');
     if (!empty($config_format)) {
       $filter_format = FilterFormat::load($config_format);
@@ -445,6 +522,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => isset($config->get('withdraw_message')['value']) ? $config->get('withdraw_message')['value'] : '',
       '#description' => t('Text that will be displayed in the banner that appears when the privacy settings tab is clicked.'),
       '#format' => $config_format,
+      '#states' => [
+        'visible' => [
+          "input[name='withdraw_button_on_info_popup']" => ['checked' => FALSE],
+        ],
+      ],
     ];
 
     $form['withdraw_consent']['withdraw_tab_button_label'] = [
@@ -456,7 +538,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['withdraw_consent']['withdraw_action_button_label'] = [
       '#type' => 'textfield',
-      '#title' => t('Withdraw consent action button label'),
+      '#title' => t('Withdraw consent button label'),
       '#default_value' => $config->get('withdraw_action_button_label'),
       '#description' => t('This button will withdraw consent when clicked.'),
     ];
@@ -764,6 +846,13 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Enable this if you want to place the banner as the first HTML element on the page. This will make it possible for screen readers to close the banner without tabbing through all links on the page.'),
     ];
 
+    $form['advanced']['cookie_session'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Prompt for consent (from the same user) at every new browser session.'),
+      '#description' => $this->t("This sets cookie lifetime to 0, invalidating the cookie at the end of the browser session. To set a cookie lifetime greater than 0, uncheck this option. Note that some users will find this behavior highly annoying, and it's recommended to double-check with the legal advisor whether you really need this option enabled."),
+      '#default_value' => $config->get('cookie_session'),
+    ];
+
     $form['advanced']['domain'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Domain'),
@@ -771,11 +860,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Sets the domain of the cookie to a specific url. Used when you need consistency across domains. This is language independent. Note: Make sure you actually enter a domain that the browser can make use of. For example if your site is accessible at both www.domain.com and domain.com, you will not be able to hide the banner at domain.com if your value for this field is www.domain.com.'),
     ];
 
-    $form['advanced']['cookie_session'] = [
+    $form['advanced']['domain_all_sites'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Prompt for consent (from the same user) at every new browser session.'),
-      '#description' => $this->t("This sets cookie lifetime to 0, invalidating the cookie at the end of the browser session. To set a cookie lifetime greater than 0, uncheck this option. Note that some users will find this behavior highly annoying, and it's recommended to double-check with the legal advisor whether you really need this option enabled."),
-      '#default_value' => $config->get('cookie_session'),
+      '#title' => $this->t('Allow the cookie to be set for all sites on the same domain.'),
+      '#default_value' => !empty($config->get('domain_all_sites')) ? $config->get('domain_all_sites') : 0,
+      '#description' => $this->t("Sets the path of the cookie to '/' so that the cookie works across all sites on the domain."),
     ];
 
     $form['advanced']['cookie_lifetime'] = [
@@ -793,6 +882,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
         ],
       ],
     ];
+
+    $form['#attached']['library'][] = 'eu_cookie_compliance/admin';
 
     return parent::buildForm($form, $form_state);
   }
@@ -832,7 +923,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     }
 
     if ($form_state->getValue('popup_link') == '<front>' && $form_state->getValue('disagree_button')) {
-      drupal_set_message($this->t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'), 'error');
+      $this->messenger()->addError($this->t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'));
     }
 
     // Save permissions.
@@ -869,6 +960,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     else {
       $form_state->setValue('whitelisted_cookies', '');
       $form_state->setValue('disabled_javascripts', '');
+      $form_state->setValue('withdraw_enabled', FALSE);
     }
 
     // Clear cached javascript.
@@ -914,6 +1006,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('use_bare_css', $form_state->getValue('use_bare_css'))
       ->set('disagree_do_not_show_popup', $form_state->getValue('disagree_do_not_show_popup'))
       ->set('reload_page', $form_state->getValue('reload_page'))
+      ->set('domain_all_sites', $form_state->getValue('domain_all_sites'))
       ->set('cookie_name', $form_state->getValue('cookie_name'))
       ->set('exclude_uid_1', $form_state->getValue('exclude_uid_1'))
       ->set('better_support_for_screen_readers', $form_state->getValue('better_support_for_screen_readers'))
@@ -927,6 +1020,13 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('withdraw_action_button_label', $form_state->getValue('withdraw_action_button_label'))
       ->set('withdraw_tab_button_label', $form_state->getValue('withdraw_tab_button_label'))
       ->set('withdraw_enabled', $form_state->getValue('withdraw_enabled'))
+      ->set('withdraw_button_on_info_popup', $form_state->getValue('withdraw_button_on_info_popup'))
+      ->set('cookie_categories', $form_state->getValue('cookie_categories'))
+      ->set('enable_save_preferences_button', $form_state->getValue('enable_save_preferences_button'))
+      ->set('save_preferences_button_label', $form_state->getValue('save_preferences_button_label'))
+      ->set('accept_all_categories_button_label', $form_state->getValue('accept_all_categories_button_label'))
+      ->set('fix_first_cookie_category', $form_state->getValue('fix_first_cookie_category'))
+      ->set('select_all_categories_by_default', $form_state->getValue('select_all_categories_by_default'))
       ->save();
 
     parent::submitForm($form, $form_state);

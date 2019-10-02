@@ -1,19 +1,29 @@
+{% import 'lib/di.twig' as di %}
 <?php
 
 namespace Drupal\{{ machine_name }};
 
+{% if services %}
+{{ di.use(services) }}
+{% endif %}
 /**
  * Twig extension.
  */
 class {{ class }} extends \Twig_Extension {
 
+{% if services %}
+{{ di.properties(services) }}
+
   /**
-   * {@inheritdoc}
+   * Constructs a new {{ class }} object.
+   *
+{{ di.annotation(services) }}
    */
-  public function getName() {
-    return '{{ machine_name }}';
+  public function __construct({{ di.signature(services) }}) {
+{{ di.assignment(services) }}
   }
 
+{% endif %}
   /**
    * {@inheritdoc}
    */

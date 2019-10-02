@@ -1,72 +1,9 @@
 <?php
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Url;
 use Drupal\views\ViewExecutable;
-use Drupal\search_api\Entity\Index;
-use Drupal\search_api\IndexBatchHelper;
-
-/**
- * Implements hook_theme().
- */
-function iucn_search_theme($existing, $type, $theme, $path) {
-  return [
-    'range_slider' => [
-      'render element' => 'element',
-      'variables' => [
-        'from' => NULL,
-        'max' => NULL,
-        'min' => NULL,
-        'title' => NULL,
-        'to' => NULL,
-      ],
-    ],
-  ];
-}
-
-/**
- * Implements hook_edw_search_solr_facet_info().
- */
-function iucn_search_edw_search_solr_facet_info(\Drupal\iucn_search\edw\solr\SolrSearchServer $server) {
-  $ret = [];
-
-  $facets = [
-    'field_country' => [
-      'title' => t('Country'),
-      'placeholder' => t('Add countries…'),
-      'bundle' => 'country',
-    ],
-    'field_territorial_subdivisions' => [
-      'title' => t('Territorial subdivision'),
-      'placeholder' => t('Add territories…'),
-      'bundle' => 'territorial_subdivisions',
-    ],
-    'field_type_of_text' => [
-      'title' => t('Type of court'),
-      'placeholder' => t('Add types…'),
-      'bundle' => 'document_types',
-    ],
-    'field_species' => [
-      'title' => t('Species'),
-      'placeholder' => t('Add species…'),
-      'bundle' => 'species',
-      'exposeOperator' => TRUE,
-    ],
-    'field_language_of_document' => [
-      'title' => t('Language'),
-      'placeholder' => t('Add languages…'),
-      'bundle' => 'document_types',
-    ],
-  ];
-
-  $mappings = $server->getSolrFieldsMappings();
-
-  foreach ($facets as $id => $config) {
-    $solr_field_name = $mappings[$id];
-    $ret[$id] = new \Drupal\iucn_search\edw\solr\SolrFacet($id, $config['bundle'], $solr_field_name, $config);
-  }
-
-  return $ret;
-}
+use Drupal\views\Views;
 
 /**
  * @param array $build
@@ -278,7 +215,6 @@ function iucn_search_cron() {
     $run_interval = 0;
   }
 
-
   // First, set all migration status to "Idle".
   foreach ($migrations as $migrationName) {
     $last_run = \Drupal::state()
@@ -318,19 +254,25 @@ function iucn_search_cron() {
 
 }
 
-function iucn_search_query_filter() {
-  if (!empty($_GET['q'])) {
-    $q = \Drupal\Component\Utility\Html::escape($_GET['q']);
-  }
-  return !empty($q) ? $q : '';
-}
-
 /**
  * Implements hook_form_alter().
  */
 function iucn_search_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == 'contact_message_feedback_form') {
     $form['actions']['preview']['#access'] = FALSE;
+  }
+
+  if ($form_id == 'views_exposed_form' && empty(\Drupal::request()->query->get('sort_by'))) {
+    switch ($form['#id']) {
+      case 'views-exposed-form-search-page-1':
+        $form['sort_by']['#value'] = 'search_api_relevance';
+        break;
+
+      case 'views-exposed-form-search-page-2':
+      case 'views-exposed-form-search-page-3':
+        $form['sort_by']['#value'] = 'field_date_of_text';
+        break;
+    }
   }
 }
 
@@ -343,5 +285,140 @@ function iucn_search_views_pre_build(ViewExecutable $view) {
     $offset = \Drupal::request()->get('offset') ?: 0;
     $view->setItemsPerPage($items_per_page);
     $view->setOffset($offset);
+  }
+}
+
+function iucn_search_preprocess_views_view(array &$variables) {
+  $view = $variables['view'];
+  if (empty($view) || !$view instanceof ViewExecutable) {
+    return;
+  }
+
+  switch ($view->id()) {
+    case 'search':
+      $variables['attachment_before']['map']['button'] = [
+        '#type' => 'link',
+        '#url' => Url::fromUserInput('#'),
+        '#title' => t('Show on map'),
+        '#attributes' => [
+          'data-toggle' => 'modal',
+          'data-target' => '#search_modal',
+          'class' => ['search-modal-opener'],
+        ],
+        '#attached' => [
+          'library' => [
+            'iucn_search/iucn_search.map.js',
+            'wildlex_map/d3.js',
+            'wildlex_map/topojson.js',
+            'wildlex_map/datamaps.js',
+            'wildlex_map/wildlex.map.js',
+          ],
+        ],
+      ];
+
+      $view_all = Views::getView($view->id());
+      $pager = $view->pager;
+      $display_id = $view->current_display;
+      $view_all->setCurrentPage(0);
+      $view_all->setDisplay($display_id);
+      $view_all->setItemsPerPage(9999999);
+      $view_all->preview($display_id);
+      $count = count($view_all->result);
+
+      $countries = [];
+      foreach ($view_all->result as $result_row) {
+        $node = $result_row->_object->getEntity();
+        $country = $node->field_country;
+
+        if (empty($country->target_id)) {
+          continue;
+        }
+
+        /** @var \Drupal\taxonomy\TermInterface $country_entity */
+        $country_entity = $country->entity;
+
+        $id = $country_entity->id();
+
+        if (empty($countries[$id])) {
+          $countries[$id] = [
+            0 => $country_entity->get('field_iso')->value,
+            1 => 0,
+            2 => $id,
+          ];
+        }
+        $countries[$id][1]++;
+      }
+
+      $view_all = Views::getView($view->id());
+      $view_all->setDisplay($display_id);
+      $view_all->pager = $pager;
+      $view_all->execute();
+
+      $countries = array_values($countries);
+      $variables['#attached']['drupalSettings']['series'] = $countries;
+
+      switch ($view->current_display) {
+        case 'page_1':
+          $content_type = [
+            'machine_name' => 'court_decision',
+            'singular' => 'court decisions',
+            'plural' => 'court decisions',
+          ];
+          break;
+        case 'page_2':
+          $content_type = [
+            'machine_name' => 'legislation',
+            'singular' => 'legislation',
+            'plural' => 'legislations',
+          ];
+          break;
+        case 'page_3':
+          $content_type = [
+            'machine_name' => 'literature',
+            'singular' => 'literature',
+            'plural' => 'literatures',
+          ];
+          break;
+        default:
+          return;
+      }
+
+      $variables['#attached']['drupalSettings']['content_type'] = t(ucfirst($content_type['singular']));
+
+      /** @var \Drupal\wildlex_map\CountriesMapService $countriesMapService */
+      $countriesMapService = \Drupal::service('wildlex_map.countries_map');
+
+      $variables['attachment_before']['map']['modal'] = $countriesMapService
+        ->getModalBuild($content_type, $count);
+
+      if (empty($view_all->result)) {
+        $variables['attachment_after'] = [
+          '#attributes' => ['class' => ['well', 'blankslate']],
+          '#type' => 'container',
+          [
+            '#attributes' => [
+              'class' => [
+                'ecolexicon',
+                'ecolexicon-' . str_replace('_', '-', $content_type['machine_name']),
+              ],
+            ],
+            '#tag' => 'span',
+            '#type' => 'html_tag',
+          ],
+          [
+            '#attributes' => ['class' => ['blankslate-title']],
+            '#tag' => 'h3',
+            '#type' => 'html_tag',
+            '#value' => t('No results found.'),
+          ],
+          [
+            '#attributes' => ['class' => []],
+            '#tag' => 'p',
+            '#type' => 'html_tag',
+            '#value' => t('Use the links above to find what you&rsquo;re looking for, or try a new search query. The Search filters are also super helpful for quickly finding results most relevant to you.'),
+          ],
+        ];
+      }
+      break;
   }
 }

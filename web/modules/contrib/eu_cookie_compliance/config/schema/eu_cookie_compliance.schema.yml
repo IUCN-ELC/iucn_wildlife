@@ -4,6 +4,9 @@ eu_cookie_compliance.settings:
   type: config_object
   label: 'EU Cookie Compliance Settings'
   mapping:
+    uuid:
+      type: uuid
+      label: 'UUID'
     popup_enabled:
       type: boolean
       label: 'Enable banner'
@@ -179,3 +182,27 @@ eu_cookie_compliance.settings:
     withdraw_enabled:
       type: boolean
       label: 'Enable floating privacy settings tab and withdraw consent banner'
+    withdraw_button_on_info_popup:
+      type: boolean
+      label: 'Put the withdraw consent action button on the cookie information banner'
+    cookie_categories:
+      type: text
+      label: 'List of cookie categories with separate consent'
+    save_preferences_button_label:
+      type: label
+      label: 'Save preferences action button label'
+    accept_all_categories_button_label:
+      type: label
+      label: 'Accept all categories action button label'
+    enable_save_preferences_button:
+      type: boolean
+      label: 'Replace the Agree button by a Save preferences and an Accept all categories button'
+    select_all_categories_by_default:
+      type: boolean
+      label: 'Check all checkboxes by default'
+    fix_first_cookie_category:
+      type: boolean
+      label: 'Check the first checkbox and mark it read only'
+    domain_all_sites:
+      type: boolean
+      label: 'Allow the cookie to be set for all sites on the same domain'

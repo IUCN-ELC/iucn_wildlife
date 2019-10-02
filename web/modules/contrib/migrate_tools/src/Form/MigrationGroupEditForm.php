@@ -28,7 +28,7 @@ class MigrationGroupEditForm extends MigrationGroupFormBase {
    */
   public function actions(array $form, FormStateInterface $form_state) {
     $actions = parent::actions($form, $form_state);
-    $actions['submit']['#value'] = t('Update Migration Group');
+    $actions['submit']['#value'] = $this->t('Update Migration Group');
     return $actions;
   }
 

@@ -16,6 +16,8 @@
  * @ingroup themeable
  */
 #}
+{% if title is not iterable %}
   <div class="page-header">
     <h1{{ title_attributes }}>{{ title }}</h1>
   </div>
+{% endif %}

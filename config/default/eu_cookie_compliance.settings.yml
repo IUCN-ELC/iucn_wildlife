@@ -60,3 +60,12 @@ withdraw_tab_button_label: 'Privacy settings'
 withdraw_enabled: false
 popup_info_template: legacy
 cookie_session: 0
+cookie_categories: ''
+enable_save_preferences_button: true
+save_preferences_button_label: 'Save preferences'
+accept_all_categories_button_label: 'Accept all cookies'
+fix_first_cookie_category: true
+select_all_categories_by_default: false
+withdraw_button_on_info_popup: false
+domain_all_sites: false
+uuid: c5016164-0aa2-4e6f-bf81-ee06e2f9ecac

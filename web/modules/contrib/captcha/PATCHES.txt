@@ -5,3 +5,7 @@ Undefined variable type in CAPTCHA examples
 Source: https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch
 
 
+Captcha Session ID broken with cacheable captcha backends
+Source: https://www.drupal.org/files/issues/2019-10-30/3089263-8.patch
+
+

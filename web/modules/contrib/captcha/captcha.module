@@ -476,18 +476,10 @@ function captcha_validate($element, FormStateInterface &$form_state) {
     return FALSE;
   }
 
-  // @todo: what is the result when there is no entry for
-  // the captcha_session? in D6 it was FALSE, what in D7?
-  if ($solution === FALSE) {
-    // Unknown challenge_id.
-    // TODO: this probably never happens anymore now that there is detection
-    // for CAPTCHA session reuse attacks in _captcha_get_posted_captcha_info().
-    $form_state->setErrorByName('captcha', t('CAPTCHA validation error: unknown CAPTCHA session ID. Contact the site administrator if this problem persists.'));
-    \Drupal::logger('CAPTCHA')->error(
-      'CAPTCHA validation error: unknown CAPTCHA session ID (%csid).',
-      ['%csid' => var_export($csid, TRUE)]);
-  }
-  else {
+  // If the form is cacheable where all solution validation is handed off or if
+  // we found a session with a solution then continue with validation.
+  $is_cacheable = (bool) $form_state->getValue('captcha_cacheable', FALSE);
+  if ($is_cacheable || $solution !== FALSE) {
     // Get CAPTCHA validate function or fall back on strict equality.
     $captcha_validate = $element['#captcha_validate'];
     if (!function_exists($captcha_validate)) {
@@ -535,6 +527,16 @@ function captcha_validate($element, FormStateInterface &$form_state) {
           ]);
       }
     }
+  }
+  else {
+    // If the session is gone and we can't confirm a solution error.
+    // Note: _captcha_get_posted_captcha_info() validates and triggers session
+    // rebuilds for re-use attacks during element processing so this should be
+    // rare if it ever happens.
+    $form_state->setErrorByName('captcha', t('CAPTCHA validation error: unknown CAPTCHA session ID. Contact the site administrator if this problem persists.'));
+    \Drupal::logger('CAPTCHA')->error(
+      'CAPTCHA validation error: unknown CAPTCHA session ID (%csid).',
+      ['%csid' => var_export($csid, TRUE)]);
   }
 }
 

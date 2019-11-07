@@ -2662,7 +2662,8 @@
                 }
             },
             "patches_applied": {
-                "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch"
+                "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch",
+                "Captcha Session ID broken with cacheable captcha backends": "https://www.drupal.org/files/issues/2019-10-30/3089263-8.patch"
             }
         },
         "installation-source": "dist",

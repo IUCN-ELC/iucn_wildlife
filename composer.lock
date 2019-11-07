@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ceeca92727d1907ff66a51d247b58267",
+    "content-hash": "2a91c0224900db8ce3edb2d36588284d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2303,7 +2303,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch"
+                    "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch",
+                    "Captcha Session ID broken with cacheable captcha backends": "https://www.drupal.org/files/issues/2019-10-30/3089263-8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

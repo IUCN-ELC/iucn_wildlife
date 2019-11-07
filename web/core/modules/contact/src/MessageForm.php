@@ -199,10 +199,10 @@ class MessageForm extends ContentEntityForm {
       $interval = $this->config('contact.settings')->get('flood.interval');
 
       if (!$this->flood->isAllowed('contact', $limit, $interval)) {
-        $form_state->setErrorByName('', $this->t('You cannot send more than %limit messages in @interval. Try again later.', [
-          '%limit' => $limit,
-          '@interval' => $this->dateFormatter->formatInterval($interval),
-        ]));
+//        $form_state->setErrorByName('', $this->t('You cannot send more than %limit messages in @interval. Try again later.', [
+//          '%limit' => $limit,
+//          '@interval' => $this->dateFormatter->formatInterval($interval),
+//        ]));
       }
     }
 

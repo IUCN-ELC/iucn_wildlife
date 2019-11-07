@@ -2660,6 +2660,9 @@
                     "status": "not-covered",
                     "message": "Beta releases are not covered by Drupal security advisories."
                 }
+            },
+            "patches_applied": {
+                "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch"
             }
         },
         "installation-source": "dist",
@@ -7980,7 +7983,9 @@
         "version_normalized": "1.11.3.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/simeydotme/jQuery-ui-Slider-Pips/archive/v1.11.3.zip"
+            "url": "https://github.com/simeydotme/jQuery-ui-Slider-Pips/archive/v1.11.3.zip",
+            "reference": null,
+            "shasum": null
         },
         "require": {
             "composer/installers": "^1.2.0"

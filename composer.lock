@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6fdc2dc6904dcde62ee544bbe0d7d8b",
+    "content-hash": "ceeca92727d1907ff66a51d247b58267",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2301,6 +2301,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5756,7 +5759,9 @@
             "version": "1.11.3",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/simeydotme/jQuery-ui-Slider-Pips/archive/v1.11.3.zip"
+                "url": "https://github.com/simeydotme/jQuery-ui-Slider-Pips/archive/v1.11.3.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "composer/installers": "^1.2.0"

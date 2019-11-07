@@ -110,6 +110,9 @@
                 "Create a multiple select dropdown widget": "https://www.drupal.org/files/issues/2019-05-09/facets-2811331-24-multiple-dropdown-widget-32.patch",
                 "No option for the user to choose from interface which operator AND/OR to apply between facet elements": "https://www.drupal.org/files/issues/2019-09-23/patch_exposed_operator.patch",
                 "Always display facet": "patches/always_display_facet.patch"
+            },
+            "drupal/captcha": {
+                "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch"
             }
         }
     }

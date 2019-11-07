@@ -384,7 +384,8 @@ function iucn_search_preprocess_views_view(array &$variables) {
       }
 
       $variables['#attached']['drupalSettings']['content_type'] = t(ucfirst($content_type['singular']));
-      $variables['#attached']['drupalSettings']['search_base_url'] = $view->getUrl()->toString();
+      $variables['#attached']['drupalSettings']['search_base_url'] = \Drupal::request()->getUri();
+      $variables['#attached']['drupalSettings']['search_base_url'] .= empty(\Drupal::request()->query->all()) ? '?' : '&';
 
       /** @var \Drupal\wildlex_map\CountriesMapService $countriesMapService */
       $countriesMapService = \Drupal::service('wildlex_map.countries_map');

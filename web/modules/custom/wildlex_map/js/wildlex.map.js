@@ -237,7 +237,7 @@
           datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
             if (typeof dataset[geography.properties.iso] != "undefined") {
               var obj = dataset[geography.properties.iso];
-              var url = drupalSettings.search_base_url + "?f[0]=countries%3A" + obj.countryId;
+              var url = drupalSettings.search_base_url + "f[0]=countries%3A" + obj.countryId;
               $(location).attr("href", url);
             }
             return false;

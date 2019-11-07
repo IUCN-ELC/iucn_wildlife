@@ -14,82 +14,87 @@
 #block-otherresources dl > dd:last-child {
   margin-bottom: 0;
 }
-#block-searchfilters {
+.search-filters {
   font-size: 14px;
 }
-#block-searchfilters .facet-container:before,
-#block-searchfilters .facet-container:after {
+.facet-container:not(:last-child):before,
+.facet-container:not(:last-child):after {
   content: " ";
   display: table;
 }
-#block-searchfilters .facet-container:after {
+.facet-container:not(:last-child):after {
   clear: both;
 }
-#block-searchfilters .facet-container .facet-title {
+.facet-container:not(:last-child) .facet-title {
   padding-left: 15px;
   position: relative;
 }
-#block-searchfilters .facet-container .facet-title:before {
+.facet-container:not(:last-child) .facet-title:before {
   color: #999;
   content: "+";
   display: inline-block;
   left: 0;
   position: absolute;
 }
-#block-searchfilters .facet-container:hover .facet-title:before {
+.facet-container:not(:last-child):hover .facet-title:before {
   color: #e67e22;
 }
-#block-searchfilters .checkbox {
+.checkbox {
   float: right;
   margin-bottom: 0;
   margin-top: 0;
   z-index: 1;
 }
-#block-searchfilters .filter-label {
+.checkbox .bootstrap-switch {
+  position: absolute;
+  top: -18px;
+  left: -50px;
+}
+.filter-label {
   display: block;
   margin-bottom: 4px;
 }
-#block-searchfilters .facet-title {
+.facet-title {
   float: left;
   font-size: 14px;
   font-weight: 700;
-  margin-bottom: 4px;
-  margin-top: 4px;
+  margin-bottom: 3px;
+  margin-top: 0;
 }
-#block-searchfilters .select-wrapper {
+.select-wrapper {
   clear: both;
 }
-#block-searchfilters .select-wrapper:after {
+.select-wrapper:after {
   content: none;
 }
-#block-searchfilters .select-wrapper,
-#block-searchfilters .select2-container,
-#block-searchfilters .select2-selection__rendered {
-  display: block;
-}
-#block-searchfilters .select2-selection--multiple {
+.select2-container .select2-selection--multiple {
   min-height: auto;
+  width: -webkit-fit-content;
+  width:    -moz-fit-content;
+  width:         fit-content;
 }
-#block-searchfilters .select2-search {
+.select2-search {
   left: 0;
   opacity: 0;
   position: absolute;
   right: 0;
   top: -23px;
 }
-#block-searchfilters .select2-search__field {
+.select2-search__field {
   cursor: pointer;
   margin-top: 0;
+  width: auto !important;
 }
-#block-searchfilters .select2-container--open .select2-search {
+.select2-container--open .select2-search {
   opacity: 1;
   position: static;
+  width: inherit;
 }
-#block-searchfilters .select2-container--open .select2-search__field {
+.select2-container--open .select2-search__field {
   cursor: text;
   margin-top: 5px;
 }
-#block-searchfilters .search-submit {
+.search-submit {
   display: none;
 }
 #block-usefullinks {
@@ -722,13 +727,14 @@ fieldset[disabled] #search-form .btn-primary.focus {
 .search-header strong {
   color: #212121;
 }
-#edit-year .facet-title {
+.region-sidebar-facets .facet-title {
   float: none;
 }
-#edit-year .clearfix {
-  margin-top: 11px;
+.region-sidebar-facets .clearfix {
+  margin-top: 0;
+  font-size: 14px;
 }
-#edit-year .form-control {
+.region-sidebar-facets .form-control {
   border-radius: 0;
   border-width: 0 0 1px;
   box-shadow: none;
@@ -738,13 +744,13 @@ fieldset[disabled] #search-form .btn-primary.focus {
   padding: 0;
   width: 4em;
 }
-#edit-year .btn-link {
+.region-sidebar-facets .btn-link {
   border: 0;
   font-size: inherit;
   line-height: 30px;
   padding: 0;
 }
-#edit-year .btn-link .glyphicon {
+.region-sidebar-facets .btn-link .glyphicon {
   vertical-align: middle;
 }
 .page-header:first-child h1 {
@@ -764,6 +770,16 @@ fieldset[disabled] #search-form .btn-primary.focus {
 }
 .path-search .page-header {
   display: none;
+}
+.field--name-field-url .field--item {
+  display: inline;
+}
+#search-header .view-filters.form-group {
+  padding-bottom: 0;
+  margin-bottom: 10px;
+}
+.view.view-search .field--item p {
+  margin: 0;
 }
 html {
   min-height: 100vh;
@@ -850,6 +866,14 @@ body.path-frontpage {
   line-height: 1;
   vertical-align: super;
   width: auto;
+}
+#views-exposed-form-search-page-1 #edit-search-api-fulltext,
+#views-exposed-form-search-page-2 #edit-search-api-fulltext,
+#views-exposed-form-search-page-3 #edit-search-api-fulltext,
+#views-exposed-form-search-page-1 label,
+#views-exposed-form-search-page-2 label,
+#views-exposed-form-search-page-3 label {
+  display: none;
 }
 @font-face {
   font-family: "ecolex-icons";
@@ -1434,12 +1458,16 @@ body.path-frontpage {
   box-shadow: 0 0 3px rgba(0, 0, 0, .05);
   color: #333;
   z-index: 1000;
+  width: 230px !important;
 }
 .select2-container--default .select2-selection--multiple {
   border: none;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
   padding: 0;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered:last-child {
+  margin-bottom: 15px;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   background-color: #eee;
@@ -1500,5 +1528,77 @@ body.path-frontpage {
 .select2-results__option .counter {
   float: right;
   margin-left: 10px;
+}
+.select2-selection__choice .option:empty {
+  color: red;
+}
+.sort-map-group {
+  display: inline-block;
+  width: 100%;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.sort-map-group .view-header,
+.sort-map-group .attachment-before {
+  float: left;
+  margin-top: 3px;
+}
+.sort-map-group .attachment-before {
+  margin-left: 5px;
+}
+.sort-map-group .view-filters {
+  float: right;
+  padding-bottom: 11px;
+}
+.sort-map-group .view-filters .form--inline.form-inline.clearfix {
+  float: right !important;
+}
+.sort-map-group .view-filters .form-item-sort-by {
+  float: none;
+}
+.sort-map-group #edit-sort-by .form-group {
+  padding: 0 5px 0 5px;
+}
+.sort-map-group .strong {
+  font-weight: 600;
+  color: black !important;
+}
+.sort-map-group .strong:hover {
+  text-decoration: none;
+  cursor: auto;
+}
+#block-country li,
+#block-country-3 li,
+#block-legislationcountry li,
+#block-literaturelanguage li,
+#block-language-2 li,
+#block-language li,
+#block-species li,
+#block-typeofcourt li,
+#block-territorialsubdivisions li,
+#block-yearperiod li,
+#block-legislationyearperiod li,
+#block-literatureyearperiod li {
+  list-style: none;
+}
+#block-country .facet-slider,
+#block-country-3 .facet-slider,
+#block-legislationcountry .facet-slider,
+#block-literaturelanguage .facet-slider,
+#block-language-2 .facet-slider,
+#block-language .facet-slider,
+#block-species .facet-slider,
+#block-typeofcourt .facet-slider,
+#block-territorialsubdivisions .facet-slider,
+#block-yearperiod .facet-slider,
+#block-legislationyearperiod .facet-slider,
+#block-literatureyearperiod .facet-slider {
+  width: 180px !important;
+}
+.path-search-test .page-header {
+  display: none;
+}
+.path-search-test #edit-sort-by .form-group {
+  float: right;
 }
 /*# sourceMappingURL=style.css.map */

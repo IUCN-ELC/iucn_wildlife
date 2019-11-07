@@ -4,10 +4,10 @@ namespace Drush\Preflight;
 
 use Drush\Config\Environment;
 use Drush\Preflight\PreflightArgsInterface;
-use Drush\SiteAlias\AliasRecord;
-use Drush\SiteAlias\SiteAliasManager;
-use Drush\SiteAlias\SiteAliasName;
-use Drush\SiteAlias\SiteSpecParser;
+use Consolidation\SiteAlias\SiteAlias;
+use Consolidation\SiteAlias\SiteAliasManager;
+use Consolidation\SiteAlias\SiteAliasName;
+use Consolidation\SiteAlias\SiteSpecParser;
 
 class PreflightSiteLocator
 {
@@ -25,21 +25,27 @@ class PreflightSiteLocator
      * During bootstrap, finds the currently selected site from the parameters
      * provided on the commandline.
      *
+     * If 'false' is returned, that indicates that there was an alias name
+     * provided on the commandline that is either missing or invalid.
+     *
      * @param PreflightArgsInterface $preflightArgs An alias name or site specification
      * @param \Drush\Config\Environment $environment
      * @param string $root The default Drupal root (from site:set, --root or cwd)
      *
-     * @return \Drush\SiteAlias\AliasRecord
-     * @throws \Exception
+     * @return \Consolidation\SiteAlias\SiteAlias|false
      */
     public function findSite(PreflightArgsInterface $preflightArgs, Environment $environment, $root)
     {
         $aliasName = $preflightArgs->alias();
-        $selfAliasRecord = $this->determineSelf($preflightArgs, $environment, $root);
-        if (!$selfAliasRecord) {
-            throw new \Exception("The alias $aliasName could not be found.");
+        $self = $this->determineSelf($preflightArgs, $environment, $root);
+
+        // If the user provided a uri on the commandline, inject it
+        // into the alias that we found.
+        if ($preflightArgs->hasUri()) {
+            $self->setUri($preflightArgs->uri());
         }
-        return $selfAliasRecord;
+
+        return $self;
     }
 
     /**
@@ -51,7 +57,7 @@ class PreflightSiteLocator
      * @param \Drush\Config\Environment $environment
      * @param $root
      *
-     * @return \Drush\SiteAlias\AliasRecord
+     * @return \Consolidation\SiteAlias\SiteAlias
      */
     protected function determineSelf(PreflightArgsInterface $preflightArgs, Environment $environment, $root)
     {
@@ -67,7 +73,7 @@ class PreflightSiteLocator
         // Ditto for a site spec (/path/to/drupal#uri)
         $specParser = new SiteSpecParser();
         if ($specParser->validSiteSpec($aliasName)) {
-            return new AliasRecord($specParser->parse($aliasName, $root), $aliasName);
+            return new SiteAlias($specParser->parse($aliasName, $root), $aliasName);
         }
 
         // If the user provides the --root parameter then we don't want to use
@@ -92,13 +98,13 @@ class PreflightSiteLocator
      * @param \Drush\Preflight\PreflightArgsInterface $preflightArgs
      * @param $root
      *
-     * @return \Drush\SiteAlias\AliasRecord
+     * @return \Consolidation\SiteAlias\SiteAlias
      */
     protected function buildSelf(PreflightArgsInterface $preflightArgs, $root)
     {
         // If there is no root, then return '@none'
         if (!$root) {
-            return new AliasRecord([], '@none');
+            return new SiteAlias([], '@none');
         }
 
         // If there is no URI specified, we will allow it to
@@ -121,6 +127,6 @@ class PreflightSiteLocator
             $data['uri'] = $uri;
         }
 
-        return new AliasRecord($data, '@self');
+        return new SiteAlias($data, '@self');
     }
 }

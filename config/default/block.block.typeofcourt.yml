@@ -1,0 +1,23 @@
+uuid: 536829ab-3e17-4c09-bca8-3efc12e13ee3
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.type_of_court
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: typeofcourt
+theme: iucn_frontend
+region: sidebar_facets
+weight: -10
+provider: null
+plugin: 'facet_block:type_of_court'
+settings:
+  id: 'facet_block:type_of_court'
+  label: 'Type of court'
+  provider: facets
+  label_display: visible
+  block_id: typeofcourt
+visibility: {  }

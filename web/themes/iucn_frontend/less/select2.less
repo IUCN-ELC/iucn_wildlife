@@ -7,6 +7,7 @@
     box-shadow: 0 0px 3px rgba(0, 0, 0, .05);
     color: #333;
     z-index: 1000;
+    width:230px !important;
   }
 }
 
@@ -18,6 +19,9 @@
       padding: 0;
     }
 
+    .select2-selection__rendered:last-child {
+      margin-bottom: 15px;
+    }
     .select2-selection__choice {
       background-color: #eee;
       border-color: #ddd;
@@ -95,4 +99,8 @@
     float: right;
     margin-left: 10px;
   }
+}
+
+.select2-selection__choice .option:empty {
+  color:red;
 }

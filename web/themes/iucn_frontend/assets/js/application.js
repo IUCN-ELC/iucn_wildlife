@@ -38,8 +38,9 @@
   var $searchFilters = $('#iucn-search-filters');
   var CustomData = $.fn.select2.amd.require(('select2/data/custom'));
   var $window = $(window);
-
-  $('.form-select', $searchFilters).select2({
+  // $('.js-multiple-select.item-list__dropdown.facets-dropdown.js-facets-widget.js-facets-dropdown').select2();
+  // $('.facets-dropdown').select2();
+  $('.js-multiple-select').select2({
     dataAdapter: CustomData,
     matcher: function (term, text) {
       if (text.selected === true) {

@@ -52,9 +52,6 @@ Installation.
    strategies). The JavaScript based variant also works for visitors that bypass
    Varnish.
 
-NOTICE: The module does not audit your cookies nor does it prevent cookies from
-being set.
-
 For developers.
 ===============
 

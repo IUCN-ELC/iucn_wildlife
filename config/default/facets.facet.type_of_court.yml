@@ -1,0 +1,51 @@
+uuid: 5c0ebe99-85d6-4f86-aa38-9d798479c1b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.default_node_index
+    - views.view.search
+  module:
+    - search_api
+id: type_of_court
+name: 'Type of text'
+url_alias: document_types
+weight: 1
+min_count: 1
+show_only_one_result: false
+field_identifier: field_type_of_text
+facet_source_id: 'search_api:views_page__search__page_1'
+widget:
+  type: dropdown
+  config:
+    show_numbers: true
+    default_option_label: 'Add types...'
+query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: 0
+exclude: false
+only_visible_when_facet_source_is_visible: true
+processor_configs:
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: 40
+    settings:
+      sort: ASC
+  translate_entity:
+    processor_id: translate_entity
+    weights:
+      build: 5
+    settings: {  }
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: 50
+      build: 15
+    settings: {  }
+empty_behavior:
+  behavior: render
+show_title: false
+exposed_operator: false

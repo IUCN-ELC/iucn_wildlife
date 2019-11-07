@@ -22,7 +22,7 @@ class DrushLogMigrateMessage implements MigrateMessageInterface {
    * @see drush_log()
    */
   public function display($message, $type = 'status') {
-    drush_log($message, $type);
+    \Drupal::service(('logger.channel.migrate_tools'))->log($type, $message);
   }
 
 }

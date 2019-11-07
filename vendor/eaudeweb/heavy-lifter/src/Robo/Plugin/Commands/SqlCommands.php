@@ -21,15 +21,17 @@ class SqlCommands extends CommandBase {
    *
    * @param string $destination
    *   Destination path to save the SQL database dump.
-   *
+   * @param array $options
+   *  Command options.
    * @return null|\Robo\Result
    * @throws \Robo\Exception\TaskException
    *
    */
-  public function sqlDownload($destination) {
-    $url =  $this->configSite('sql.sync.source');
-    $username = $this->configSite('sync.username');
-    $password = $this->configSite('sync.password');
+  public function sqlDownload($destination, $options = ['site' => 'default']) {
+    $site = $options['site'];
+    $url =  $this->configSite('sql.sync.source', $site);
+    $username = $this->configSite('sync.username', $site);
+    $password = $this->configSite('sync.password', $site);
     $this->validateHttpsUrl($url);
     return $this->taskCurl($url)
       ->followRedirects()
@@ -53,19 +55,20 @@ class SqlCommands extends CommandBase {
    * @return null|\Robo\Result
    * @throws \Robo\Exception\TaskException
    */
-  public function sqlSync($options = ['anonymize' => FALSE]) {
+  public function sqlSync($options = ['anonymize' => FALSE, 'site' => 'default']) {
     $this->allowOnlyOnLinux();
+    $site = $options['site'];
 
-    $url = $this->configSite('sql.sync.source');
+    $url = $this->configSite('sql.sync.source', $site);
     $this->validateHttpsUrl($url);
     $commands = [];
 
     $dir = $this->taskTmpDir('heavy-lifter')->run();
     $dest = $dir->getData()['path'] . '/database.sql';
     $dest_gz = $dest . '.gz';
-    $download = $this->sqlDownload($dest_gz);
+    $download = $this->sqlDownload($dest_gz, ['site' => $site]);
     if ($download->wasSuccessful()) {
-      $drush = $this->drushExecutable();
+      $drush = $this->drushExecutable($site);
       $execStack = $this->taskExecStack()->stopOnFail(TRUE);
       $execStack->exec("gzip -d $dest_gz");
 
@@ -85,10 +88,10 @@ class SqlCommands extends CommandBase {
         $commands[] = 'project:anonymize -y';
       }
 
-      $excludedCommandsArray = $this->configSite('sql.sync.excluded_commands');
-      $extraCommandsArray = $this->configSite('sql.sync.extra_commands');
+      $excludedCommandsArray = $this->configSite('sql.sync.excluded_commands', $site);
+      $extraCommandsArray = $this->configSite('sql.sync.extra_commands', $site);
 
-      $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray);
+      $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray, $site);
 
       $execStack->run();
     }
@@ -108,9 +111,10 @@ class SqlCommands extends CommandBase {
    * @return null|\Robo\Result
    * @throws \Robo\Exception\TaskException when output path is not absolute
    */
-  public function sqlDump($output = NULL, $options = ['gzip' => true, 'anonymize' => false]) {
+  public function sqlDump($output = NULL, $options = ['gzip' => true, 'anonymize' => false, 'site' => 'default']) {
+    $site = $options['site'];
     if (empty($output)) {
-      $output = $this->configSite('sql.dump.location');
+      $output = $this->configSite('sql.dump.location', $site);
       if (empty($output)) {
         throw new TaskException(get_class($this), 'Dump location was not set. Please add the path parameter or add default_dump_location in your robo.yml.');
       }
@@ -121,7 +125,7 @@ class SqlCommands extends CommandBase {
       $output = getcwd() . $separator . $output;
     }
 
-    $drush = $this->drushExecutable();
+    $drush = $this->drushExecutable($site);
 
     if ($options['anonymize']) {
       $anonSchema = $this->projectDir() . '/anonymize.schema.yml';
@@ -130,7 +134,7 @@ class SqlCommands extends CommandBase {
       }
 
       if (!class_exists(MysqldumpGdpr::class)) {
-        throw new TaskException(get_class($this), 'You cannot anonymize data without package "calimanleontin/gdpr-dump" being installed! Please run "composer require calimanleontin/gdpr-dump:1.0.2" !');
+        throw new TaskException(get_class($this), 'You cannot anonymize data without package "eaudeweb/gdpr-dump" being installed! Please run "composer require eaudeweb/gdpr-dump:1.0.6" !');
       }
       $exportPath = 'export PATH=' . $this->projectDir() . '/vendor/bin:$PATH; ';
       $drush = $exportPath . $drush;

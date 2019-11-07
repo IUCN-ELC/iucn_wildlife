@@ -1,0 +1,23 @@
+uuid: f2645687-7c50-43c0-a6a9-a0ec601f1e12
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.language_3
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: literaturelanguage
+theme: iucn_frontend
+region: sidebar_facets
+weight: -5
+provider: null
+plugin: 'facet_block:language_3'
+settings:
+  id: 'facet_block:language_3'
+  label: Language
+  provider: facets
+  label_display: visible
+  block_id: literaturelanguage
+visibility: {  }

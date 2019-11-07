@@ -1,0 +1,23 @@
+uuid: 089c365d-b885-461b-90d0-62879d244cd9
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.legislation_year_period
+  module:
+    - facets
+  theme:
+    - iucn_frontend
+id: legislationyearperiod
+theme: iucn_frontend
+region: sidebar_facets
+weight: -1
+provider: null
+plugin: 'facet_block:legislation_year_period'
+settings:
+  id: 'facet_block:legislation_year_period'
+  label: Year/Period
+  provider: facets
+  label_display: visible
+  block_id: legislationyearperiod
+visibility: {  }

@@ -2,13 +2,13 @@
 
 namespace Drupal\pathauto;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
@@ -21,6 +21,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  */
 class PathautoGenerator implements PathautoGeneratorInterface {
 
+  use MessengerTrait;
   use StringTranslationTrait;
 
   /**
@@ -49,14 +50,14 @@ class PathautoGenerator implements PathautoGeneratorInterface {
    *
    * @var array
    */
-  protected $patterns = array();
+  protected $patterns = [];
 
   /**
    * Available patterns per entity type ID.
    *
    * @var array
    */
-  protected $patternsByEntityType = array();
+  protected $patternsByEntityType = [];
 
   /**
    * The alias cleaner.
@@ -84,17 +85,28 @@ class PathautoGenerator implements PathautoGeneratorInterface {
    *
    * @var \Drupal\pathauto\MessengerInterface
    */
-  protected $messenger;
+  protected $pathautoMessenger;
 
   /**
+   * The token entity mapper.
+   *
    * @var \Drupal\token\TokenEntityMapperInterface
    */
   protected $tokenEntityMapper;
 
   /**
-   * @var Drupal\Core\Entity\EntityTypeManagerInterface
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
+
+  /**
+   * Manages pathauto alias type plugins.
+   *
+   * @var \Drupal\pathauto\AliasTypeManager
+   */
+  protected $aliasTypeManager;
 
   /**
    * Creates a new Pathauto manager.
@@ -111,24 +123,29 @@ class PathautoGenerator implements PathautoGeneratorInterface {
    *   The alias storage helper.
    * @param AliasUniquifierInterface $alias_uniquifier
    *   The alias uniquifier.
-   * @param MessengerInterface $messenger
+   * @param \Drupal\pathauto\MessengerInterface $pathauto_messenger
    *   The messenger service.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation service.
-   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager
+   * @param \Drupal\token\TokenEntityMapperInterface $token_entity_mapper
+   *   The token entity mapper.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   * @param \Drupal\pathauto\AliasTypeManager $alias_type_manager
+   *   Manages pathauto alias type plugins.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, Token $token, AliasCleanerInterface $alias_cleaner, AliasStorageHelperInterface $alias_storage_helper, AliasUniquifierInterface $alias_uniquifier, MessengerInterface $messenger, TranslationInterface $string_translation, TokenEntityMapperInterface $token_entity_mappper, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, Token $token, AliasCleanerInterface $alias_cleaner, AliasStorageHelperInterface $alias_storage_helper, AliasUniquifierInterface $alias_uniquifier, MessengerInterface $pathauto_messenger, TranslationInterface $string_translation, TokenEntityMapperInterface $token_entity_mapper, EntityTypeManagerInterface $entity_type_manager, AliasTypeManager $alias_type_manager) {
     $this->configFactory = $config_factory;
     $this->moduleHandler = $module_handler;
     $this->token = $token;
     $this->aliasCleaner = $alias_cleaner;
     $this->aliasStorageHelper = $alias_storage_helper;
     $this->aliasUniquifier = $alias_uniquifier;
-    $this->messenger = $messenger;
+    $this->pathautoMessenger = $pathauto_messenger;
     $this->stringTranslation = $string_translation;
-    $this->tokenEntityMapper = $token_entity_mappper;
+    $this->tokenEntityMapper = $token_entity_mapper;
     $this->entityTypeManager = $entity_type_manager;
+    $this->aliasTypeManager = $alias_type_manager;
   }
 
   /**
@@ -157,16 +174,17 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     ];
 
     // Allow other modules to alter the pattern.
-    $context = array(
+    $context = [
       'module' => $entity->getEntityType()->getProvider(),
       'op' => $op,
       'source' => $source,
       'data' => $data,
       'bundle' => $entity->bundle(),
       'language' => &$langcode,
-    );
-    // @todo Is still hook still useful?
+    ];
+    $pattern_original = $pattern->getPattern();
     $this->moduleHandler->alter('pathauto_pattern', $pattern, $context);
+    $pattern_altered = $pattern->getPattern();
 
     // Special handling when updating an item which is already aliased.
     $existing_alias = NULL;
@@ -186,12 +204,12 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     // Uses callback option to clean replacements. No sanitization.
     // Pass empty BubbleableMetadata object to explicitly ignore cacheablity,
     // as the result is never rendered.
-    $alias = $this->token->replace($pattern->getPattern(), $data, array(
+    $alias = $this->token->replace($pattern->getPattern(), $data, [
       'clear' => TRUE,
-      'callback' => array($this->aliasCleaner, 'cleanTokenValues'),
+      'callback' => [$this->aliasCleaner, 'cleanTokenValues'],
       'langcode' => $langcode,
       'pathauto' => TRUE,
-    ), new BubbleableMetadata());
+    ], new BubbleableMetadata());
 
     // Check if the token replacement has not actually replaced any values. If
     // that is the case, then stop because we should not generate an alias.
@@ -209,7 +227,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     $this->moduleHandler->alter('pathauto_alias', $alias, $context);
 
     // If we have arrived at an empty string, discontinue.
-    if (!Unicode::strlen($alias)) {
+    if (!mb_strlen($alias)) {
       return NULL;
     }
 
@@ -218,10 +236,10 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     $this->aliasUniquifier->uniquify($alias, $source, $langcode);
     if ($original_alias != $alias) {
       // Alert the user why this happened.
-      $this->messenger->addMessage($this->t('The automatically generated alias %original_alias conflicted with an existing alias. Alias changed to %alias.', array(
+      $this->pathautoMessenger->addMessage($this->t('The automatically generated alias %original_alias conflicted with an existing alias. Alias changed to %alias.', [
         '%original_alias' => $original_alias,
         '%alias' => $alias,
-      )), $op);
+      ]), $op);
     }
 
     // Return the generated alias if requested.
@@ -230,17 +248,25 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     }
 
     // Build the new path alias array and send it off to be created.
-    $path = array(
+    $path = [
       'source' => $source,
       'alias' => $alias,
       'language' => $langcode,
-    );
+    ];
 
-    return $this->aliasStorageHelper->save($path, $existing_alias, $op);
+    $return = $this->aliasStorageHelper->save($path, $existing_alias, $op);
+
+    // Because there is no way to set an altered pattern to not be cached,
+    // change it back to the original value.
+    if ($pattern_altered !== $pattern_original) {
+      $pattern->setPattern($pattern_original);
+    }
+
+    return $return;
   }
 
   /**
-   * Loads pathauto patterns for a given entity type ID
+   * Loads pathauto patterns for a given entity type ID.
    *
    * @param string $entity_type_id
    *   An entity type ID.
@@ -250,14 +276,17 @@ class PathautoGenerator implements PathautoGeneratorInterface {
    */
   protected function getPatternByEntityType($entity_type_id) {
     if (!isset($this->patternsByEntityType[$entity_type_id])) {
-      $ids = \Drupal::entityQuery('pathauto_pattern')
-        ->condition('type', array_keys(\Drupal::service('plugin.manager.alias_type')
-          ->getPluginDefinitionByType($this->tokenEntityMapper->getTokenTypeForEntityType($entity_type_id))))
+
+      $ids = $this->entityTypeManager->getStorage('pathauto_pattern')
+        ->getQuery()
+        ->condition('type', array_keys(
+          $this->aliasTypeManager
+            ->getPluginDefinitionByType($this->tokenEntityMapper->getTokenTypeForEntityType($entity_type_id))))
         ->condition('status', 1)
         ->sort('weight')
         ->execute();
 
-      $this->patternsByEntityType[$entity_type_id] = \Drupal::entityTypeManager()
+      $this->patternsByEntityType[$entity_type_id] = $this->entityTypeManager
         ->getStorage('pathauto_pattern')
         ->loadMultiple($ids);
     }
@@ -297,7 +326,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function updateEntityAlias(EntityInterface $entity, $op, array $options = array()) {
+  public function updateEntityAlias(EntityInterface $entity, $op, array $options = []) {
     // Skip if the entity does not have the path field.
     if (!($entity instanceof ContentEntityInterface) || !$entity->hasField('path')) {
       return NULL;
@@ -313,7 +342,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
       return NULL;
     }
 
-    $options += array('language' => $entity->language()->getId());
+    $options += ['language' => $entity->language()->getId()];
     $type = $entity->getEntityTypeId();
 
     // Skip processing if the entity has no pattern.
@@ -326,7 +355,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     if ($type == 'taxonomy_term') {
 
       $config_forum = $this->configFactory->get('forum.settings');
-      if ($entity->getVocabularyId() == $config_forum->get('vocabulary')) {
+      if ($entity->bundle() == $config_forum->get('vocabulary')) {
         $type = 'forum';
       }
     }
@@ -335,7 +364,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
       $result = $this->createEntityAlias($entity, $op);
     }
     catch (\InvalidArgumentException $e) {
-      drupal_set_message($e->getMessage(), 'error');
+      $this->messenger()->addError($e->getMessage());
       return NULL;
     }
 

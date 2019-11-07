@@ -81,7 +81,9 @@ content:
     label: hidden
     settings:
       link: false
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
     region: content
   field_date_of_text:
     weight: 4
@@ -143,3 +145,4 @@ hidden:
   field_url: true
   field_volume_number: true
   links: true
+  search_api_excerpt: true

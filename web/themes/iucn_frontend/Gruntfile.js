@@ -84,7 +84,7 @@ module.exports = function (grunt) {
         src: [
           'js/main.js'
         ],
-        dest: 'assets/js/application.js'
+        dest: 'assets/js/application.min.js'
       }
     },
     uglify: {
@@ -155,7 +155,7 @@ module.exports = function (grunt) {
   grunt.registerTask('assets', 'copy');
   grunt.registerTask('css', ['less', 'postcss', 'csscomb', 'csslint', 'cssmin']);
   grunt.registerTask('js', ['eslint', 'jscs', 'concat', 'uglify']);
-
+  grunt.registerTask('js:dev', ['concat']);
   grunt.registerTask('build', ['assets', 'css', 'js']);
 
   grunt.registerTask('default', 'build');

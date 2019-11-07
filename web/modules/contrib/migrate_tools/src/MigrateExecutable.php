@@ -2,19 +2,19 @@
 
 namespace Drupal\migrate_tools;
 
+use Drupal\migrate\Event\MigrateEvents;
+use Drupal\migrate\Event\MigrateImportEvent;
+use Drupal\migrate\Event\MigrateMapDeleteEvent;
+use Drupal\migrate\Event\MigrateMapSaveEvent;
 use Drupal\migrate\Event\MigratePreRowSaveEvent;
 use Drupal\migrate\Event\MigrateRollbackEvent;
 use Drupal\migrate\Event\MigrateRowDeleteEvent;
 use Drupal\migrate\MigrateExecutable as MigrateExecutableBase;
 use Drupal\migrate\MigrateMessageInterface;
-use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
-use Drupal\migrate\Event\MigrateEvents;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_plus\Event\MigrateEvents as MigratePlusEvents;
-use Drupal\migrate\Event\MigrateMapSaveEvent;
-use Drupal\migrate\Event\MigrateMapDeleteEvent;
-use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate_plus\Event\MigratePrepareRowEvent;
 
 /**
@@ -34,6 +34,13 @@ class MigrateExecutable extends MigrateExecutableBase {
     MigrateIdMapInterface::STATUS_IMPORTED => 0,
     MigrateIdMapInterface::STATUS_NEEDS_UPDATE => 0,
   ];
+
+  /**
+   * Counter of map saves, used to detect the item limit threshold.
+   *
+   * @var int
+   */
+  protected $itemLimitCounter = 0;
 
   /**
    * Counter of map deletions.
@@ -97,14 +104,7 @@ class MigrateExecutable extends MigrateExecutableBase {
     if (isset($options['feedback'])) {
       $this->feedback = $options['feedback'];
     }
-    if (isset($options['idlist'])) {
-      if (is_string($options['idlist'])) {
-        $this->idlist = explode(',', $options['idlist']);
-        array_walk($this->idlist, function (&$value, $key) {
-          $value = explode(':', $value);
-        });
-      }
-    }
+    $this->idlist = MigrateTools::buildIdList($options);
 
     $this->listeners[MigrateEvents::MAP_SAVE] = [$this, 'onMapSave'];
     $this->listeners[MigrateEvents::MAP_DELETE] = [$this, 'onMapDelete'];
@@ -128,6 +128,7 @@ class MigrateExecutable extends MigrateExecutableBase {
     // Only count saves for this migration.
     if ($event->getMap()->getQualifiedMapTableName() == $this->migration->getIdMap()->getQualifiedMapTableName()) {
       $fields = $event->getFields();
+      $this->itemLimitCounter++;
       // Distinguish between creation and update.
       if ($fields['source_row_status'] == MigrateIdMapInterface::STATUS_IMPORTED &&
         $this->preExistingItem
@@ -286,6 +287,8 @@ class MigrateExecutable extends MigrateExecutableBase {
    *   The map event.
    */
   public function onPostRollback(MigrateRollbackEvent $event) {
+    $migrate_last_imported_store = \Drupal::keyValue('migrate_last_imported');
+    $migrate_last_imported_store->set($event->getMigration()->id(), FALSE);
     $this->rollbackMessage();
     $this->removeListeners();
   }
@@ -355,6 +358,8 @@ class MigrateExecutable extends MigrateExecutableBase {
    * @throws \Drupal\migrate\MigrateSkipRowException
    */
   public function onPrepareRow(MigratePrepareRowEvent $event) {
+    // TODO: remove after 8.6 suppor is sunset.
+    // @see https://www.drupal.org/project/migrate_tools/issues/3008316
     if (!empty($this->idlist)) {
       $row = $event->getRow();
       // TODO: replace for $source_id = $row->getSourceIdValues();
@@ -370,7 +375,7 @@ class MigrateExecutable extends MigrateExecutableBase {
         }
       }
       if ($skip) {
-        throw new MigrateSkipRowException(NULL, FALSE);
+        throw new MigrateSkipRowException('Skipped due to idlist.', FALSE);
       }
     }
     if ($this->feedback && ($this->counter) && $this->counter % $this->feedback == 0) {
@@ -378,10 +383,23 @@ class MigrateExecutable extends MigrateExecutableBase {
       $this->resetCounters();
     }
     $this->counter++;
-    if ($this->itemLimit && ($this->getProcessedCount() + 1) >= $this->itemLimit) {
+    if ($this->itemLimit && ($this->itemLimitCounter + 1) >= $this->itemLimit) {
       $event->getMigration()->interruptMigration(MigrationInterface::RESULT_COMPLETED);
     }
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function getSource() {
+    return new SourceFilter(parent::getSource(), $this->idlist);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getIdMap() {
+    return new IdMapFilter(parent::getIdMap(), $this->idlist);
   }
 
 }

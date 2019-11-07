@@ -13,6 +13,21 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "simeydotme/jquery-ui-slider-pips",
+                "version": "1.11.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/simeydotme/jQuery-ui-Slider-Pips/archive/v1.11.3.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2.0"
+                }
+            }
         }
     ],
     "require": {
@@ -20,13 +35,16 @@
         "consolidation/annotated-command": "2.12",
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
-        "drupal/bootstrap": "^3.17",
+        "drupal/better_exposed_filters": "^3.0@alpha",
+        "drupal/bootstrap": "^3.20",
         "drupal/console": "^1.0.2",
         "drupal/core": "~8.6",
         "drupal/ctools": "^3.0",
         "drupal/editor_file": "^1.2",
         "drupal/edw_healthcheck": "^1.6",
-        "drupal/eu_cookie_compliance": "^1.3",
+        "drupal/eu_cookie_compliance": "^1.8",
+        "drupal/facets": "^1.4",
+        "drupal/field_delimiter": "^1.0",
         "drupal/google_analytics": "^2.2",
         "drupal/linkit": "~5.0",
         "drupal/mailsystem": "^4.1",
@@ -43,6 +61,7 @@
         "drupal/xmlsitemap": "^1.0@alpha",
         "drush/drush": "^9.0.0",
         "eaudeweb/heavy-lifter": "^1.3",
+        "simeydotme/jquery-ui-slider-pips": "^1.11",
         "webflo/drupal-finder": "^1.0.0",
         "webmozart/path-util": "^2.3"
     },
@@ -87,13 +106,11 @@
             "drush/contrib/{$name}": ["type:drupal-drush"]
         },
         "patches": {
-            "drupal/bootstrap": {
-                "Error: Unsupported operand types during providers JSON discovery": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
-            },
-            "drupal/eu_cookie_compliance": {
-              "8-x-1.3 Update crashes site with WSOD": "https://www.drupal.org/files/issues/2019-03-07/missing-config-crashes-site-3038107-12.patch"
+            "drupal/facets": {
+                "Create a multiple select dropdown widget": "https://www.drupal.org/files/issues/2019-05-09/facets-2811331-24-multiple-dropdown-widget-32.patch",
+                "No option for the user to choose from interface which operator AND/OR to apply between facet elements": "https://www.drupal.org/files/issues/2019-09-23/patch_exposed_operator.patch",
+                "Always display facet": "patches/always_display_facet.patch"
             }
         }
-
     }
 }

@@ -24,3 +24,8 @@ eu_cookie_compliance_bare:
     - core/drupalSettings
     - core/jquery.once
     - core/jquery.cookie
+admin:
+  version: 1.0
+  css:
+    state:
+      css/eu_cookie_compliance_admin.css: {}

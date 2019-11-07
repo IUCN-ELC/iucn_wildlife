@@ -5,13 +5,13 @@
  * Command-line tools to aid performing and developing migrations.
  */
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\migrate\Exception\RequirementsException;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\RequirementsInterface;
 use Drupal\migrate_plus\Entity\MigrationGroup;
 use Drupal\migrate_tools\DrushLogMigrateMessage;
 use Drupal\migrate_tools\MigrateExecutable;
+use Drupal\migrate_tools\MigrateTools;
 
 /**
  * Implements hook_drush_command().
@@ -47,6 +47,7 @@ function migrate_tools_drush_command() {
       'limit' => 'Limit on the number of items to process in each migration',
       'feedback' => 'Frequency of progress messages, in items processed',
       'idlist' => 'Comma-separated list of IDs to import',
+      'idlist-delimiter' => 'The delimiter for records, defaults to \':\'',
       'update' => ' In addition to processing unprocessed items from the source, update previously-imported items with the current data',
       'force' => 'Force an operation to run, even if all dependencies are not satisfied',
       'execute-dependencies' => 'Execute all dependent migrations first.',
@@ -62,6 +63,7 @@ function migrate_tools_drush_command() {
       'migrate-import beer_term,beer_node' => 'Import new terms and nodes',
       'migrate-import beer_user --limit=2' => 'Import no more than 2 users',
       'migrate-import beer_user --idlist=5' => 'Import the user record with source ID 5',
+      'migrate-import beer_node_revision --idlist=1:2,2:3,3:5' => "Import the node revision record with source IDs [1,2], [2,3], and [3,5]",
     ],
     'drupal dependencies' => ['migrate_tools'],
     'aliases' => ['mi', 'mim'],
@@ -74,9 +76,12 @@ function migrate_tools_drush_command() {
       'group' => 'A comma-separated list of migration groups to rollback',
       'tag' => 'ID of the migration tag to rollback',
       'feedback' => 'Frequency of progress messages, in items processed',
+      'idlist' => 'Comma-separated list of IDs to import',
+      'idlist-delimiter' => 'The delimiter for records, defaults to \':\'',
     ],
     'arguments' => [
       'migration' => 'Name of migration(s) to rollback. Delimit multiple using commas.',
+      'idlist' => 'Comma-separated list of IDs to import',
     ],
     'examples' => [
       'migrate-rollback --all' => 'Perform all migrations',
@@ -84,6 +89,7 @@ function migrate_tools_drush_command() {
       'migrate-rollback --tag=user' => 'Rollback all migrations with the user tag',
       'migrate-rollback --group=beer --tag=user' => 'Rollback all migrations in the beer group and with the user tag',
       'migrate-rollback beer_term,beer_node' => 'Rollback imported terms and nodes',
+      'migrate-rollback  beer_user --idlist=5' => 'Rollback imported user record with source ID 5',
     ],
     'drupal dependencies' => ['migrate_tools'],
     'aliases' => ['mr'],
@@ -251,7 +257,15 @@ function drush_migrate_tools_migrate_import($migration_names = '') {
     return;
   }
 
-  foreach (['limit', 'feedback', 'idlist', 'update', 'force'] as $option) {
+  $options = [
+    'limit',
+    'feedback',
+    'idlist',
+    'idlist-delimiter',
+    'update',
+    'force',
+  ];
+  foreach ($options as $option) {
     if (drush_get_option($option)) {
       $options[$option] = drush_get_option($option);
     }
@@ -296,7 +310,16 @@ function _drush_migrate_tools_execute_migration(MigrationInterface $migration, $
     $migration->set('requirements', []);
   }
   if (!empty($options['update'])) {
-    $migration->getIdMap()->prepareUpdate();
+    if (empty($options['idlist'])) {
+      $migration->getIdMap()->prepareUpdate();
+    }
+    else {
+      $source_id_values_list = MigrateTools::buildIdList($options);
+      $keys = array_keys($migration->getSourcePlugin()->getIds());
+      foreach ($source_id_values_list as $source_id_values) {
+        $migration->getIdMap()->setUpdate(array_combine($keys, $source_id_values));
+      }
+    }
   }
   $executable = new MigrateExecutable($migration, $log, $options);
   // Function drush_op() provides --simulate support.
@@ -326,8 +349,10 @@ function drush_migrate_tools_migrate_rollback($migration_names = '') {
     return;
   }
 
-  if (drush_get_option('feedback')) {
-    $options['feedback'] = drush_get_option('feedback');
+  foreach (['feedback', 'idlist', 'idlist-delimiter'] as $option) {
+    if (drush_get_option($option)) {
+      $options[$option] = drush_get_option($option);
+    }
   }
 
   $log = new DrushLogMigrateMessage();
@@ -365,12 +390,15 @@ function drush_migrate_tools_migrate_stop($migration_id = '') {
       case MigrationInterface::STATUS_IDLE:
         drush_log(dt('Migration @id is idle', ['@id' => $migration_id]), 'warning');
         break;
+
       case MigrationInterface::STATUS_DISABLED:
         drush_log(dt('Migration @id is disabled', ['@id' => $migration_id]), 'warning');
         break;
+
       case MigrationInterface::STATUS_STOPPING:
         drush_log(dt('Migration @id is already stopping', ['@id' => $migration_id]), 'warning');
         break;
+
       default:
         $migration->interruptMigration(MigrationInterface::RESULT_STOPPED);
         drush_log(dt('Migration @id requested to stop', ['@id' => $migration_id]), 'success');
@@ -505,9 +533,9 @@ function drush_migrate_tools_migration_list($migration_ids = '') {
   }
   else {
     // Get the requested migrations.
-    $migration_ids = explode(',', Unicode::strtolower($migration_ids));
+    $migration_ids = explode(',', mb_strtolower($migration_ids));
     foreach ($plugins as $id => $migration) {
-      if (in_array(Unicode::strtolower($id), $migration_ids)) {
+      if (in_array(mb_strtolower($id), $migration_ids)) {
         $matched_migrations[$id] = $migration;
       }
     }
@@ -539,7 +567,7 @@ function drush_migrate_tools_migration_list($migration_ids = '') {
             $configured_values = (array) $migration->get($property);
             $configured_id = (in_array($search_value, $configured_values)) ? $search_value : 'default';
             if (empty($search_value) || $search_value == $configured_id) {
-              if (empty($migration_ids) || in_array(Unicode::strtolower($id), $migration_ids)) {
+              if (empty($migration_ids) || in_array(mb_strtolower($id), $migration_ids)) {
                 $filtered_migrations[$id] = $migration;
               }
             }
@@ -553,7 +581,7 @@ function drush_migrate_tools_migration_list($migration_ids = '') {
   // Sort the matched migrations by group.
   if (!empty($matched_migrations)) {
     foreach ($matched_migrations as $id => $migration) {
-      $configured_group_id = empty($migration->get('migration_group')) ? 'default' : $migration->get('migration_group');
+      $configured_group_id = empty($migration->migration_group) ? 'default' : $migration->migration_group;
       $migrations[$configured_group_id][$id] = $migration;
     }
   }

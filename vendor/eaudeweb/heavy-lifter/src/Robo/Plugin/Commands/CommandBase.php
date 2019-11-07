@@ -102,15 +102,23 @@ class CommandBase extends \Robo\Tasks {
   /**
    * Return absolute path to drush executable.
    *
+   * @param string $site
+   * @param string $useSite
    * @return string
    * @throws \Robo\Exception\TaskException
    */
-  protected function drushExecutable() {
+  protected function drushExecutable($site = 'default') {
     /** @TODO Windows / Windows+BASH / WinBash / Cygwind not tested */
     if (realpath(getcwd() . '/vendor/bin/drush') && $this->isLinuxServer()) {
+      if ($site != 'default') {
+        return realpath(getcwd() . '/vendor/bin/drush') . ' -l ' . $site;
+      }
       return realpath(getcwd() . '/vendor/bin/drush');
     }
     else if (realpath(getcwd() . '/vendor/drush/drush/drush')) {
+      if ($site != 'default') {
+        return realpath(getcwd() . '/vendor/drush/drush/drush') . ' -l ' . $site;
+      }
       return realpath(getcwd() . '/vendor/drush/drush/drush');
     }
     throw new TaskException($this, 'Cannot find Drush executable inside this project');
@@ -135,6 +143,7 @@ class CommandBase extends \Robo\Tasks {
   /**
    * Detect drush version.
    *
+   * @param string $site
    * @throws \Robo\Exception\TaskException
    */
   protected function getDrushVersion() {
@@ -159,6 +168,7 @@ class CommandBase extends \Robo\Tasks {
   }
 
   /**
+   * @param string $site
    * @return bool
    * @throws \Robo\Exception\TaskException
    */
@@ -218,8 +228,8 @@ class CommandBase extends \Robo\Tasks {
   /**
    * Update the drush execution stack according to robo.yml specifications.
    */
-  protected function updateDrushCommandStack($execStack, $commands, $excludedCommandsArray = [], $extraCommandsArray = []) {
-    $drush = $this->drushExecutable();
+  protected function updateDrushCommandStack($execStack, $commands, $excludedCommandsArray = [], $extraCommandsArray = [], $site = 'default') {
+    $drush = $this->drushExecutable($site);
     if (!empty($excludedCommandsArray)) {
       $excludedCommands = implode("|", $excludedCommandsArray);
       foreach ($commands as $command) {

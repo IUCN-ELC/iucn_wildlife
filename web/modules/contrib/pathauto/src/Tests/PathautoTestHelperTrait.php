@@ -2,7 +2,6 @@
 
 namespace Drupal\pathauto\Tests;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -34,7 +33,7 @@ trait PathautoTestHelperTrait {
     $type = ($entity_type_id == 'forum') ? 'forum' : 'canonical_entities:' . $entity_type_id;
 
     $pattern = PathautoPattern::create([
-      'id' => Unicode::strtolower($this->randomMachineName()),
+      'id' => mb_strtolower($this->randomMachineName()),
       'type' => $type,
       'pattern' => $pattern,
       'weight' => $weight,
@@ -51,7 +50,7 @@ trait PathautoTestHelperTrait {
    * @param string $entity_type
    *   The entity type ID.
    * @param string $bundle
-   *   The bundle
+   *   The bundle.
    */
   protected function addBundleCondition(PathautoPatternInterface $pattern, $entity_type, $bundle) {
     $plugin_id = $entity_type == 'node' ? 'node_type' : 'entity_bundle:' . $entity_type;
@@ -72,13 +71,13 @@ trait PathautoTestHelperTrait {
 
   public function assertToken($type, $object, $token, $expected) {
     $bubbleable_metadata = new BubbleableMetadata();
-    $tokens = \Drupal::token()->generate($type, array($token => $token), array($type => $object), [], $bubbleable_metadata);
-    $tokens += array($token => '');
-    $this->assertIdentical($tokens[$token], $expected, t("Token value for [@type:@token] was '@actual', expected value '@expected'.", array('@type' => $type, '@token' => $token, '@actual' => $tokens[$token], '@expected' => $expected)));
+    $tokens = \Drupal::token()->generate($type, [$token => $token], [$type => $object], [], $bubbleable_metadata);
+    $tokens += [$token => ''];
+    $this->assertIdentical($tokens[$token], $expected, t("Token value for [@type:@token] was '@actual', expected value '@expected'.", ['@type' => $type, '@token' => $token, '@actual' => $tokens[$token], '@expected' => $expected]));
   }
 
   public function saveAlias($source, $alias, $langcode = Language::LANGCODE_NOT_SPECIFIED) {
-    \Drupal::service('path.alias_storage')->delete(array('source' => $source, 'language', 'langcode' => $langcode));
+    \Drupal::service('path.alias_storage')->delete(['source' => $source, 'language', 'langcode' => $langcode]);
     return \Drupal::service('path.alias_storage')->save($source, $alias, $langcode);
   }
 
@@ -99,7 +98,7 @@ trait PathautoTestHelperTrait {
   }
 
   public function assertEntityAliasExists(EntityInterface $entity) {
-    return $this->assertAliasExists(array('source' => '/' . $entity->toUrl()->getInternalPath()));
+    return $this->assertAliasExists(['source' => '/' . $entity->toUrl()->getInternalPath()]);
   }
 
   public function assertNoEntityAlias(EntityInterface $entity, $langcode = NULL) {
@@ -111,7 +110,7 @@ trait PathautoTestHelperTrait {
   }
 
   public function assertNoEntityAliasExists(EntityInterface $entity, $alias = NULL) {
-    $path = array('source' => '/' . $entity->toUrl()->getInternalPath());
+    $path = ['source' => '/' . $entity->toUrl()->getInternalPath()];
     if (!empty($alias)) {
       $path['alias'] = $alias;
     }
@@ -121,18 +120,18 @@ trait PathautoTestHelperTrait {
   public function assertAlias($source, $expected_alias, $langcode = Language::LANGCODE_NOT_SPECIFIED) {
     \Drupal::service('path.alias_manager')->cacheClear($source);
     $this->assertEqual($expected_alias, \Drupal::service('path.alias_manager')->getAliasByPath($source, $langcode), t("Alias for %source with language '@language' is correct.",
-      array('%source' => $source, '@language' => $langcode)));
+      ['%source' => $source, '@language' => $langcode]));
   }
 
   public function assertAliasExists($conditions) {
     $path = \Drupal::service('path.alias_storage')->load($conditions);
-    $this->assertTrue($path, t('Alias with conditions @conditions found.', array('@conditions' => var_export($conditions, TRUE))));
+    $this->assertTrue($path, t('Alias with conditions @conditions found.', ['@conditions' => var_export($conditions, TRUE)]));
     return $path;
   }
 
   public function assertNoAliasExists($conditions) {
     $alias = \Drupal::service('path.alias_storage')->load($conditions);
-    $this->assertFalse($alias, t('Alias with conditions @conditions not found.', array('@conditions' => var_export($conditions, TRUE))));
+    $this->assertFalse($alias, t('Alias with conditions @conditions not found.', ['@conditions' => var_export($conditions, TRUE)]));
   }
 
   public function deleteAllAliases() {
@@ -142,25 +141,26 @@ trait PathautoTestHelperTrait {
 
   /**
    * @param array $values
+   *
    * @return \Drupal\taxonomy\VocabularyInterface
    */
-  public function addVocabulary(array $values = array()) {
-    $name = Unicode::strtolower($this->randomMachineName(5));
-    $values += array(
+  public function addVocabulary(array $values = []) {
+    $name = mb_strtolower($this->randomMachineName(5));
+    $values += [
       'name' => $name,
       'vid' => $name,
-    );
+    ];
     $vocabulary = Vocabulary::create($values);
     $vocabulary->save();
 
     return $vocabulary;
   }
 
-  public function addTerm(VocabularyInterface $vocabulary, array $values = array()) {
-    $values += array(
-      'name' => Unicode::strtolower($this->randomMachineName(5)),
+  public function addTerm(VocabularyInterface $vocabulary, array $values = []) {
+    $values += [
+      'name' => mb_strtolower($this->randomMachineName(5)),
       'vid' => $vocabulary->id(),
-    );
+    ];
 
     $term = Term::create($values);
     $term->save();
@@ -183,7 +183,7 @@ trait PathautoTestHelperTrait {
     if ($reset) {
       // @todo - implement cache reset.
     }
-    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(array('name' => $name));
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $name]);
     return !empty($terms) ? reset($terms) : FALSE;
   }
 

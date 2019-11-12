@@ -130,6 +130,10 @@ $settings['rebuild_access'] = TRUE;
  */
 $settings['skip_permissions_hardening'] = TRUE;
 
+//search cron lasts only 15 seconds, is not enough to index all nodes imported from migrations
+$config['search_api.settings']['cron_worker_runtime'] = 120;
+$config['migrate_cron']['run_interval'] = 86400; // 24 hours
+
 /** Configure database connection */
 $databases['default']['default'] = array (
   'database' => 'widllex',
@@ -158,12 +162,7 @@ $config['system.file']['path']['temporary'] = '/tmp';
 $config['views.settings']['ui']['show']['sql_query']['enabled'] = TRUE;
 $config['views.settings']['ui']['show']['performance_statistics'] = TRUE;
 
-$config['migrate_cron']['run_interval'] = 86400; // 24 hours
-
 $config_directories['sync'] = '../config/default';
-
-//search cron lasts only 15 seconds, is not enough to index all nodes imported from migrations
-$config['search_api.settings']['cron_worker_runtime'] = 120;
 
 $config['search_api.server.solr_server'] = [
   'backend_config' => [

@@ -36,6 +36,11 @@ dependencies:
     - field.storage.node.field_original_id
     - field.storage.node.field_wildlife_legislation
     - search_api.server.solr_server
+  module:
+    - node
+    - taxonomy
+    - search_api
+    - search_api_attachments
 third_party_settings:
   search_api_solr:
     multilingual:

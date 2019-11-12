@@ -28,7 +28,7 @@ function iucn_frontend_preprocess_page(array &$variables) {
   if (!in_array($route, ['view.search.page_2', 'view.search.page_3'])) {
     $route = 'view.search.page_1';
   }
-  $variables['search_route'] = \Drupal\Core\Url::fromRoute($route);
+  $variables['search_route'] = \Drupal\Core\Url::fromRoute($route)->toString();
 
 }
 

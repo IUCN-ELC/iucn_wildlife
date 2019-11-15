@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6fdc2dc6904dcde62ee544bbe0d7d8b",
+    "content-hash": "202b5438852e319609a8bfe855a89a83",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3234,6 +3234,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Notice: Undefined index: field_delimiter": "https://www.drupal.org/files/issues/field-deleimiter-undefined-2926377.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

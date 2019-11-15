@@ -3654,6 +3654,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Notice: Undefined index: field_delimiter": "https://www.drupal.org/files/issues/field-deleimiter-undefined-2926377.patch"
             }
         },
         "installation-source": "dist",

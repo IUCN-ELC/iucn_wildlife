@@ -64,7 +64,7 @@ class ResetFiltersBlock extends BlockBase implements ContainerFactoryPluginInter
 
   public function getCacheContexts() {
     //Every new route this block will rebuild
-    return Cache::mergeContexts(parent::getCacheContexts(), array('route'));
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }

@@ -3018,17 +3018,17 @@
     },
     {
         "name": "drupal/core",
-        "version": "8.7.9",
-        "version_normalized": "8.7.9.0",
+        "version": "8.7.10",
+        "version_normalized": "8.7.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core.git",
-            "reference": "881e60062ea86a8f6809a298f09f56afd20b3cf3"
+            "reference": "02400f3ac4970b218dc63064895b3cbbe8576ad9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drupal/core/zipball/881e60062ea86a8f6809a298f09f56afd20b3cf3",
-            "reference": "881e60062ea86a8f6809a298f09f56afd20b3cf3",
+            "url": "https://api.github.com/repos/drupal/core/zipball/02400f3ac4970b218dc63064895b3cbbe8576ad9",
+            "reference": "02400f3ac4970b218dc63064895b3cbbe8576ad9",
             "shasum": ""
         },
         "require": {
@@ -3206,7 +3206,7 @@
             "symfony/debug": "^3.4.0",
             "symfony/phpunit-bridge": "^3.4.3"
         },
-        "time": "2019-11-06T18:00:38+00:00",
+        "time": "2019-11-13T23:20:55+00:00",
         "type": "drupal-core",
         "extra": {
             "merge-plugin": {
@@ -3658,6 +3658,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Notice: Undefined index: field_delimiter": "https://www.drupal.org/files/issues/field-deleimiter-undefined-2926377.patch"
             }
         },
         "installation-source": "dist",
@@ -10576,17 +10579,17 @@
     },
     {
         "name": "webflo/drupal-core-require-dev",
-        "version": "8.7.9",
-        "version_normalized": "8.7.9.0",
+        "version": "8.7.10",
+        "version_normalized": "8.7.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/webflo/drupal-core-require-dev.git",
-            "reference": "712de55c6f8220cd1cabb6cf88df1e40595b187e"
+            "reference": "8bdafc28da6866612a3d2274200cd74812cba3b1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/webflo/drupal-core-require-dev/zipball/712de55c6f8220cd1cabb6cf88df1e40595b187e",
-            "reference": "712de55c6f8220cd1cabb6cf88df1e40595b187e",
+            "url": "https://api.github.com/repos/webflo/drupal-core-require-dev/zipball/8bdafc28da6866612a3d2274200cd74812cba3b1",
+            "reference": "8bdafc28da6866612a3d2274200cd74812cba3b1",
             "shasum": ""
         },
         "require": {
@@ -10594,7 +10597,7 @@
             "behat/mink-goutte-driver": "^1.2",
             "behat/mink-selenium2-driver": "1.3.x-dev",
             "drupal/coder": "^8.3.1",
-            "drupal/core": "8.7.9",
+            "drupal/core": "8.7.10",
             "jcalderonzumba/gastonjs": "^1.0.2",
             "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
             "justinrainbow/json-schema": "^5.2",
@@ -10605,7 +10608,7 @@
             "symfony/debug": "^3.4.0",
             "symfony/phpunit-bridge": "^3.4.3"
         },
-        "time": "2019-11-06T18:31:43+00:00",
+        "time": "2019-11-13T23:31:44+00:00",
         "type": "metapackage",
         "notification-url": "https://packagist.org/downloads/",
         "license": [

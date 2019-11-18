@@ -3,6 +3,7 @@
 namespace Drupal\iucn_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -59,6 +60,11 @@ class ResetFiltersBlock extends BlockBase implements ContainerFactoryPluginInter
       '#value' => $this->t('Reset all filters'),
     ];
     return $form;
+  }
+
+  public function getCacheContexts() {
+    //Every new route this block will rebuild
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }

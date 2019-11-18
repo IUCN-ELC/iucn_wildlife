@@ -81,7 +81,8 @@ function field_delimiter_preprocess_field(&$variables) {
   $render_display = EntityViewDisplay::collectRenderDisplay($entity, $view_mode);
   $field_display = $render_display->getComponent($field_name);
 
-  if (!empty($delimiter = $field_display['third_party_settings']['field_delimiter']['delimiter'])) {
+  if (!empty($field_display['third_party_settings']['field_delimiter'])
+    && !empty($delimiter = $field_display['third_party_settings']['field_delimiter']['delimiter'])) {
 
     // Sanitize the delimiter, allow a few reasonable HTML elements.
     $safe_delimiter = Xss::filter($delimiter, array('br', 'hr', 'span', 'img', 'wbr'));

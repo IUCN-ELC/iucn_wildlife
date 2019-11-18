@@ -114,6 +114,9 @@
             "drupal/captcha": {
                 "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch",
                 "Captcha Session ID broken with cacheable captcha backends": "https://www.drupal.org/files/issues/2019-10-30/3089263-8.patch"
+            },
+            "drupal/field_delimiter": {
+                "Notice: Undefined index: field_delimiter": "https://www.drupal.org/files/issues/field-deleimiter-undefined-2926377.patch"
             }
         }
     }

@@ -29,6 +29,12 @@ class UrlFile extends ProcessPluginBase {
                             Row $row,
                             $destination_property
   ) {
+    if (is_array($url)) {
+      if (array_key_exists('uri', $url) && is_string($url['uri'])) {
+        $url = $url['uri'];
+      }
+    }
+
     $url = trim($url);
     if (empty($url)) {
       return null;

@@ -9,7 +9,6 @@
 
 namespace Drupal\Sniffs\Semantics;
 
-use Drupal\Sniffs\Semantics\FunctionCall;
 use PHP_CodeSniffer\Files\File;
 
 /**
@@ -30,7 +29,7 @@ class FunctionWatchdogSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return array('watchdog');
+        return ['watchdog'];
 
     }//end registerFunctionNames()
 

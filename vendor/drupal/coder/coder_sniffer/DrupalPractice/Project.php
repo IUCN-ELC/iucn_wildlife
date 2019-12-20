@@ -12,6 +12,7 @@ namespace DrupalPractice;
 use PHP_CodeSniffer\Files\File;
 use \Drupal\Sniffs\InfoFiles\ClassFilesSniff;
 use Symfony\Component\Yaml\Yaml;
+use PHP_CodeSniffer\Config;
 
 /**
  * Helper class to retrieve project information like module/theme name for a file.
@@ -44,7 +45,7 @@ class Project
         $pathParts = pathinfo($phpcsFile->getFilename());
         // Module and install files are easy: they contain the project name in the
         // file name.
-        if (isset($pathParts['extension']) === true && ($pathParts['extension'] === 'module' || $pathParts['extension'] === 'install')) {
+        if (isset($pathParts['extension']) === true && in_array($pathParts['extension'], ['install', 'module', 'profile', 'theme']) === true) {
             $cache[$phpcsFile->getFilename()] = $pathParts['filename'];
             return $pathParts['filename'];
         }
@@ -55,8 +56,13 @@ class Project
         }
 
         $pathParts = pathinfo($infoFile);
-        $cache[$phpcsFile->getFilename()] = $pathParts['filename'];
-        return $pathParts['filename'];
+
+        // Info files end in *.info.yml on Drupal 8 and *.info on Drupal 7.
+        $filename = $pathParts['filename'];
+        $filename = preg_replace('/\.info$/', '', $filename);
+
+        $cache[$phpcsFile->getFilename()] = $filename;
+        return $filename;
 
     }//end getName()
 
@@ -88,6 +94,9 @@ class Project
                 $infoFiles = glob("$dir/*.info");
             }
 
+            // Filter out directories.
+            $infoFiles = array_filter($infoFiles, 'is_file');
+
             // Go one directory up if we do not find an info file here.
             $dir = dirname($dir);
         } while (empty($infoFiles) === true && $dir !== dirname($dir));
@@ -99,7 +108,7 @@ class Project
         }
 
         // Sort the info file names and take the shortest info file.
-        usort($infoFiles, array(__NAMESPACE__.'\Project', 'compareLength'));
+        usort($infoFiles, [__NAMESPACE__.'\Project', 'compareLength']);
         $infoFile = $infoFiles[0];
         $cache[$phpcsFile->getFilename()] = $infoFile;
         return $infoFile;
@@ -142,7 +151,7 @@ class Project
         }
 
         // Sort the YML file names and take the shortest info file.
-        usort($ymlFiles, array(__NAMESPACE__.'\Project', 'compareLength'));
+        usort($ymlFiles, [__NAMESPACE__.'\Project', 'compareLength']);
         $ymlFile = $ymlFiles[0];
         $cache[$phpcsFile->getFilename()] = $ymlFile;
         return $ymlFile;
@@ -189,9 +198,9 @@ class Project
 
         $nsEnd           = $phpcsFile->findNext(
             [
-             T_NS_SEPARATOR,
-             T_STRING,
-             T_WHITESPACE,
+                T_NS_SEPARATOR,
+                T_STRING,
+                T_WHITESPACE,
             ],
             ($namespacePtr + 1),
             null,
@@ -234,30 +243,42 @@ class Project
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      *
-     * @return string|false The core version string or false if it could not
-     *   be derived.
+     * @return int The core version number. Returns 8 by default.
      */
     public static function getCoreVersion(File $phpcsFile)
     {
+        // First check if a config option was passed.
+        $coreVersion = Config::getConfigData('drupal_core_version');
+        if (empty($coreVersion) === false) {
+            return (int) $coreVersion;
+        }
+
+        // Try to guess the core version from info files in the file path.
         $infoFile = static::getInfoFile($phpcsFile);
         if ($infoFile === false) {
-            return false;
+            // Default to Drupal 8.
+            return 8;
         }
 
         $pathParts = pathinfo($infoFile);
 
         // Drupal 6 and 7 use the .info file extension.
         if ($pathParts['extension'] === 'info') {
-            $info_settings = ClassFilesSniff::drupalParseInfoFormat(file_get_contents($infoFile));
-            if (isset($info_settings['core']) === true) {
-                return $info_settings['core'];
+            $infoSettings = ClassFilesSniff::drupalParseInfoFormat(file_get_contents($infoFile));
+            if (isset($infoSettings['core']) === true
+                && is_string($infoSettings['core']) === true
+            ) {
+                return (int) $infoSettings['core'][0];
             }
-        } else {
-            // Drupal 8 uses the .yml file extension.
-            // @todo Revisit for Drupal 9, but I don't want to do YAML parsing
-            // for now.
-            return '8.x';
+
+            // Default to Drupal 7 if there is an info file.
+            return 7;
         }
+
+        // Drupal 8 uses the .yml file extension.
+        // @todo Revisit for Drupal 9, but I don't want to do YAML parsing
+        // for now.
+        return 8;
 
     }//end getCoreVersion()
 

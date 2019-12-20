@@ -16,7 +16,6 @@ description: ''
 tag: ''
 base_table: search_api_index_default_node_index
 base_field: search_api_id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -323,6 +322,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -365,6 +366,8 @@ display:
               content_manager: '0'
               edw_healthcheck_role: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -493,6 +496,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -535,6 +540,8 @@ display:
               content_manager: '0'
               edw_healthcheck_role: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -638,6 +645,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -680,6 +689,8 @@ display:
               content_manager: '0'
               edw_healthcheck_role: '0'
             placeholder: 'Search in record and full text…'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -778,6 +789,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -820,6 +833,8 @@ display:
               content_manager: '0'
               edw_healthcheck_role: '0'
             placeholder: 'Search in record and full text…'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

@@ -9,7 +9,6 @@
 
 namespace Drupal\Sniffs\Semantics;
 
-use Drupal\Sniffs\Semantics\FunctionCall;
 use PHP_CodeSniffer\Files\File;
 
 /**
@@ -31,7 +30,7 @@ class ConstantNameSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return array('define');
+        return ['define'];
 
     }//end registerFunctionNames()
 
@@ -75,10 +74,10 @@ class ConstantNameSniff extends FunctionCall
         $constant = substr($tokens[$argument['start']]['content'], 1, -1);
         if (strpos($constant, $expectedStart) !== 0) {
             $warning = 'All constants defined by a module must be prefixed with the module\'s name, expected "%s" but found "%s"';
-            $data    = array(
-                        $expectedStart."_$constant",
-                        $constant,
-                       );
+            $data    = [
+                $expectedStart."_$constant",
+                $constant,
+            ];
             $phpcsFile->addWarning($warning, $stackPtr, 'ConstantStart', $data);
         }
 

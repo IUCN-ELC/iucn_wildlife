@@ -7,6 +7,7 @@ use Drupal\Test\CoderSniffUnitTest;
 class ValidVariableNameUnitTest extends CoderSniffUnitTest
 {
 
+
     /**
      * Returns the lines where errors should occur.
      *
@@ -15,11 +16,13 @@ class ValidVariableNameUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getErrorList($testFile = NULL)
+    public function getErrorList()
     {
-        return array(
-                3 => 1,
-               );
+        return [
+            3  => 1,
+            46 => 1,
+            57 => 1,
+        ];
 
     }//end getErrorList()
 
@@ -32,9 +35,9 @@ class ValidVariableNameUnitTest extends CoderSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList($testFile = NULL)
+    public function getWarningList()
     {
-        return array();
+        return [];
 
     }//end getWarningList()
 

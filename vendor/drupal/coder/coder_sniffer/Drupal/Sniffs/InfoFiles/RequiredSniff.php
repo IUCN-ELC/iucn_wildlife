@@ -9,7 +9,6 @@
 
 namespace Drupal\Sniffs\InfoFiles;
 
-use Drupal\Sniffs\InfoFiles\ClassFilesSniff;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
@@ -32,7 +31,7 @@ class RequiredSniff implements Sniff
      */
     public function register()
     {
-        return array(T_INLINE_HTML);
+        return [T_INLINE_HTML];
 
     }//end register()
 

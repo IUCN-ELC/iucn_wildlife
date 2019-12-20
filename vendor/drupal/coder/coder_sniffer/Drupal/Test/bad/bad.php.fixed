@@ -15,7 +15,7 @@
 //   - should be only 2 additional spaces.
 //   - this one is correct.
 // Blank comments are not allowed outside of a comment block.
-// PHP Constants should be written in CAPITAL letters
+// PHP Constants should be written in CAPITAL letters.
 // Comments should be on a separate line.
 TRUE;
 FALSE;
@@ -364,7 +364,7 @@ $var = foo(
  * Only multiline comments with /** should be used to comment classes
  * Curly brace has to be on the same line.
  */
-class Bar {
+class bad {
   /**
    * Private properties must not have a prefix.
    */

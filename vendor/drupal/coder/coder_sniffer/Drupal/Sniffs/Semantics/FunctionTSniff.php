@@ -26,7 +26,7 @@ class FunctionTSniff extends FunctionCall
     /**
      * We also want to catch $this->t() calls in Drupal 8.
      *
-     * @var bool
+     * @var boolean
      */
     protected $includeMethodCalls = true;
 
@@ -38,11 +38,11 @@ class FunctionTSniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return array(
-                't',
-                'TranslatableMarkup',
-                'TranslationWrapper',
-               );
+        return [
+            't',
+            'TranslatableMarkup',
+            'TranslationWrapper',
+        ];
 
     }//end registerFunctionNames()
 
@@ -118,7 +118,7 @@ class FunctionTSniff extends FunctionCall
 
         // Check if there is a backslash escaped single quote in the string and
         // if the string makes use of double quotes.
-        if ($string{0} === "'" && strpos($string, "\'") !== false
+        if ($string[0] === "'" && strpos($string, "\'") !== false
             && strpos($string, '"') === false
         ) {
             $warn = 'Avoid backslash escaping in translatable strings when possible, use "" quotes instead';
@@ -126,7 +126,7 @@ class FunctionTSniff extends FunctionCall
             return;
         }
 
-        if ($string{0} === '"' && strpos($string, '\"') !== false
+        if ($string[0] === '"' && strpos($string, '\"') !== false
             && strpos($string, "'") === false
         ) {
             $warn = "Avoid backslash escaping in translatable strings when possible, use '' quotes instead";
@@ -155,19 +155,19 @@ class FunctionTSniff extends FunctionCall
             return true;
         }
 
-        $allowed_items = array(
-                          '(',
-                          ')',
-                          '[',
-                          ']',
-                          '-',
-                          '<',
-                          '>',
-                          '«',
-                          '»',
-                          '\n',
-                         );
-        foreach ($allowed_items as $item) {
+        $allowedItems = [
+            '(',
+            ')',
+            '[',
+            ']',
+            '-',
+            '<',
+            '>',
+            '«',
+            '»',
+            '\n',
+        ];
+        foreach ($allowedItems as $item) {
             if ($item === $string) {
                 return true;
             }

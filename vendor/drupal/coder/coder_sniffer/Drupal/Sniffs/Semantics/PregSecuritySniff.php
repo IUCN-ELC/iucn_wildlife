@@ -9,7 +9,6 @@
 
 namespace Drupal\Sniffs\Semantics;
 
-use Drupal\Sniffs\Semantics\FunctionCall;
 use PHP_CodeSniffer\Files\File;
 
 /**
@@ -31,15 +30,15 @@ class PregSecuritySniff extends FunctionCall
      */
     public function registerFunctionNames()
     {
-        return array(
-                'preg_filter',
-                'preg_grep',
-                'preg_match',
-                'preg_match_all',
-                'preg_replace',
-                'preg_replace_callback',
-                'preg_split',
-               );
+        return [
+            'preg_filter',
+            'preg_grep',
+            'preg_match',
+            'preg_match_all',
+            'preg_replace',
+            'preg_replace_callback',
+            'preg_split',
+        ];
 
     }//end registerFunctionNames()
 
@@ -89,7 +88,7 @@ class PregSecuritySniff extends FunctionCall
                     $warn,
                     $argument['start'],
                     'PregEFlag',
-                    array($tokens[$stackPtr]['content'])
+                    [$tokens[$stackPtr]['content']]
                 );
                 return;
             }

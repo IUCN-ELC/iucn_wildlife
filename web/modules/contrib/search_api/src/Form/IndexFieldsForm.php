@@ -300,7 +300,7 @@ class IndexFieldsForm extends EntityForm {
 
       $build['fields'][$key]['title'] = [
         '#type' => 'textfield',
-        '#default_value' => $field->getLabel() ? $field->getLabel() : $key,
+        '#default_value' => $field->getLabel() ?: $key,
         '#required' => TRUE,
         '#size' => 40,
       ];
@@ -464,13 +464,24 @@ class IndexFieldsForm extends EntityForm {
     $new_fields = [];
     foreach ($field_values as $field_id => $new_settings) {
       if (!isset($fields[$field_id])) {
-        $args['%field_id'] = $field_id;
+        $args = [
+          '%field_id' => $field_id,
+        ];
         $this->messenger->addWarning($this->t('The field with ID %field_id does not exist anymore.', $args));
         continue;
       }
       $field = $fields[$field_id];
       $field->setLabel($new_settings['title']);
-      $field->setType($new_settings['type']);
+      try {
+        $field->setType($new_settings['type']);
+      }
+      catch (SearchApiException $e) {
+        $args = [
+          '%field_id' => $field_id,
+          '%field' => $field->getLabel(),
+        ];
+        $this->messenger->addWarning($this->t('The type of field %field (%field_id) cannot be changed.', $args));
+      }
       $field->setBoost($new_settings['boost']);
       $field->setFieldIdentifier($new_settings['id']);
 

@@ -304,7 +304,7 @@ class Index extends ConfigEntityBase implements IndexInterface {
    * {@inheritdoc}
    */
   public function getOption($name, $default = NULL) {
-    return isset($this->options[$name]) ? $this->options[$name] : $default;
+    return $this->options[$name] ?? $default;
   }
 
   /**
@@ -773,7 +773,7 @@ class Index extends ConfigEntityBase implements IndexInterface {
    */
   public function getField($field_id) {
     $fields = $this->getFields();
-    return isset($fields[$field_id]) ? $fields[$field_id] : NULL;
+    return $fields[$field_id] ?? NULL;
   }
 
   /**
@@ -1404,7 +1404,8 @@ class Index extends ConfigEntityBase implements IndexInterface {
         if (!$use_batch || Utility::isRunningInCli()) {
           $index_task_manager->addItemsAll($this);
         }
-        else {
+        elseif (!defined('MAINTENANCE_MODE')
+            || (!in_array(MAINTENANCE_MODE, ['install', 'update']))) {
           $index_task_manager->addItemsBatch($this);
         }
       }
@@ -1542,7 +1543,7 @@ class Index extends ConfigEntityBase implements IndexInterface {
       // Loop over all original settings and check if one of them has been
       // removed or changed.
       foreach ($old_processors as $key => $old_processor) {
-        $new_processor = isset($new_processors[$key]) ? $new_processors[$key] : NULL;
+        $new_processor = $new_processors[$key] ?? NULL;
         $old_config = $old_processor->getConfiguration();
         $new_config = $new_processor ? $new_processor->getConfiguration() : NULL;
         if (!$new_processor || $old_config != $new_config) {

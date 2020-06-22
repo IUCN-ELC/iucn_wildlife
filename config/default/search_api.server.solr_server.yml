@@ -17,9 +17,9 @@ backend_config:
   connector_config:
     scheme: http
     host: localhost
-    port: 8983
-    path: /solr
-    core: wildlex
+    port: '8983'
+    path: /
+    core: wildlex-new
     timeout: 25
     index_timeout: 20
     optimize_timeout: 10
@@ -37,3 +37,4 @@ backend_config:
   optimize: false
   disabled_field_types: {  }
   rows: 10
+  environment: default

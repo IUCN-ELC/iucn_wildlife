@@ -54,15 +54,18 @@ class SolariumRequestLogger implements EventSubscriberInterface {
    */
   public function preExecuteRequest(PreExecuteRequest $event) {
     $request = $event->getRequest();
+    $parsedRequestParams = Utility::parseRequestParams($request);
 
     $this->develDumperManager->message(
       $request->getUri(),
       $this->t('Try to send Solr request')
     );
     $this->develDumperManager->message(
-      Utility::parseRequestParams($request),
+      $parsedRequestParams,
       $request->getMethod()
     );
+
+    $this->getLogger()->debug($request->getQueryString());
   }
 
   /**
@@ -79,7 +82,10 @@ class SolariumRequestLogger implements EventSubscriberInterface {
       $this->t('Received Solr response')
     );
 
-    $this->getLogger()->debug(print_r($response->getBody(), TRUE));
+    $this->getLogger()->debug(
+      '@solr_request_body',
+      ['@solr_request_body' => $response->getBody()]
+    );
     $this->showLoggerHint();
   }
 

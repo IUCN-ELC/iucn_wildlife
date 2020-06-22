@@ -27,7 +27,7 @@ class EntityProcessorProperty extends EntityDataDefinition implements ProcessorP
    * {@inheritdoc}
    */
   public function isList() {
-    return !empty($this->definition['is_list']) || parent::isList();
+    return (bool) ($this->definition['is_list'] ?? parent::isList());
   }
 
 }

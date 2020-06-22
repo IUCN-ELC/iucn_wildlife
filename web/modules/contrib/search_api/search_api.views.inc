@@ -5,6 +5,7 @@
  * Views hook implementations for the Search API module.
  */
 
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\TypedData\FieldItemDataDefinition;
 use Drupal\Core\TypedData\DataDefinitionInterface;
@@ -123,14 +124,16 @@ function search_api_views_plugins_cache_alter(array &$plugins) {
   foreach (Index::loadMultiple() as $index) {
     $bases[] = 'search_api_index_' . $index->id();
   }
-  if ($bases) {
-    $plugins['search_api_tag']['base'] = $bases;
-    $plugins['search_api_time']['base'] = $bases;
+
+  // If no search indexes are defined yet, declare a dummy index as the base
+  // table. This will make sure our plugins do not become available for Views
+  // that are not based on search indexes.
+  if (!$bases) {
+    $bases = ['search_api_index_dummy'];
   }
-  else {
-    unset($plugins['search_api_tag']);
-    unset($plugins['search_api_time']);
-  }
+
+  $plugins['search_api_tag']['base'] = $bases;
+  $plugins['search_api_time']['base'] = $bases;
 }
 
 /**
@@ -143,12 +146,15 @@ function search_api_views_plugins_row_alter(array &$plugins) {
   foreach (Index::loadMultiple() as $index) {
     $bases[] = 'search_api_index_' . $index->id();
   }
-  if ($bases) {
-    $plugins['search_api']['base'] = $bases;
+
+  // If no search indexes are defined yet, declare a dummy index as the base
+  // table. This will make sure our plugins do not become available for Views
+  // that are not based on search indexes.
+  if (!$bases) {
+    $bases = ['search_api_index_dummy'];
   }
-  else {
-    unset($plugins['search_api']);
-  }
+
+  $plugins['search_api']['base'] = $bases;
 }
 
 /**
@@ -187,9 +193,24 @@ function _search_api_views_get_handlers(FieldInterface $field) {
     $types = [];
 
     $definition = $field->getDataDefinition();
-    if ($definition->getSetting('target_type')) {
-      $types[] = 'entity:' . $definition->getSetting('target_type');
-      $types[] = 'entity';
+    $entity_type_id = $definition->getSetting('target_type');
+    if ($entity_type_id) {
+      $entity_type = \Drupal::entityTypeManager()
+        ->getDefinition($entity_type_id);
+      $bundle_of = $entity_type->getBundleOf();
+      if ($bundle_of) {
+        $types[] = "bundle_of:$bundle_of";
+        $types[] = ['bundle_of', $bundle_of];
+      }
+
+      $types[] = "entity:$entity_type_id";
+      $types[] = ['entity', $entity_type_id];
+    }
+
+    // Special treatment for languages (as we have no specific Search API data
+    // type for those).
+    if ($definition->getSetting('views_type') === 'language') {
+      $types[] = 'language';
     }
 
     if ($definition->getSetting('allowed_values')) {
@@ -204,13 +225,23 @@ function _search_api_views_get_handlers(FieldInterface $field) {
     }
 
     foreach ($types as $type) {
+      $sub_type = NULL;
+      if (is_array($type)) {
+        list($type, $sub_type) = $type;
+      }
       if (isset($mapping[$type])) {
-        _search_api_views_handler_adjustments($type, $field, $mapping[$type]);
+        _search_api_views_handler_adjustments($type, $field, $mapping[$type], $sub_type);
         return $mapping[$type];
       }
     }
   }
+  // @todo Replace with multi-catch once we depend on PHP 7.1+.
   catch (SearchApiException $e) {
+    $vars['%index'] = $field->getIndex()->label();
+    $vars['%field'] = $field->getPrefixedLabel();
+    watchdog_exception('search_api', $e, '%type while adding Views handlers for field %field on index %index: @message in %function (line %line of %file).', $vars);
+  }
+  catch (PluginNotFoundException $e) {
     $vars['%index'] = $field->getIndex()->label();
     $vars['%field'] = $field->getPrefixedLabel();
     watchdog_exception('search_api', $e, '%type while adding Views handlers for field %field on index %index: @message in %function (line %line of %file).', $vars);
@@ -304,6 +335,18 @@ function _search_api_views_handler_mapping() {
           'id' => 'search_api',
         ],
       ],
+      'language' => [
+        'argument' => [
+          'id' => 'search_api',
+          ],
+        'filter' => [
+          'id' => 'search_api_language',
+          'allow empty' => FALSE,
+          ],
+        'sort' => [
+          'id' => 'search_api',
+          ],
+        ],
       'options' => [
         'argument' => [
           'id' => 'search_api',
@@ -338,13 +381,12 @@ function _search_api_views_handler_mapping() {
           'id' => 'search_api',
         ],
       ],
-      'entity:node_type' => [
+      'bundle_of' => [
         'argument' => [
           'id' => 'search_api',
         ],
         'filter' => [
           'id' => 'search_api_options',
-          'options callback' => 'node_type_get_names',
         ],
         'sort' => [
           'id' => 'search_api',
@@ -374,8 +416,13 @@ function _search_api_views_handler_mapping() {
  *   The field whose handler definitions are being created.
  * @param array $definitions
  *   The handler definitions for the field, as a reference.
+ * @param string|null $sub_type
+ *   (optional) If applicable, the field's sub-type.
+ *
+ * @throws \Drupal\search_api\SearchApiException
+ *   Thrown if the field's data definition could not be retrieved.
  */
-function _search_api_views_handler_adjustments($type, FieldInterface $field, array &$definitions) {
+function _search_api_views_handler_adjustments($type, FieldInterface $field, array &$definitions, string $sub_type = NULL) {
   // By default, all fields can be empty (or at least have to be treated that
   // way by the Search API).
   if (!isset($definitions['filter']['allow empty'])) {
@@ -414,6 +461,10 @@ function _search_api_views_handler_adjustments($type, FieldInterface $field, arr
         $definitions['filter']['options arguments'] = [$options];
       }
     }
+  }
+  elseif ($type === 'bundle_of' && $sub_type) {
+    $definitions['filter']['options callback'] = '_search_api_views_get_bundle_names';
+    $definitions['filter']['options arguments'] = [$sub_type];
   }
 }
 
@@ -551,8 +602,7 @@ function _search_api_views_data_special_fields(array &$table, IndexInterface $in
       continue;
     }
     $settings = $property->getSettings();
-    if (!isset($settings['target_type'])
-        || $settings['target_type'] !== 'taxonomy_term') {
+    if (($settings['target_type'] ?? '') !== 'taxonomy_term') {
       continue;
     }
     $entity_type_id = $datasource->getEntityTypeId();
@@ -597,6 +647,15 @@ function _search_api_views_data_special_fields(array &$table, IndexInterface $in
       $table[$all_terms_field]['real field'] = 'search_api_all_terms';
     }
   }
+
+  $bulk_form_field = _search_api_views_find_field_alias('search_api_bulk_form', $table);
+  $table[$bulk_form_field] = [
+    'title' => t('Bulk update'),
+    'help' => t('Allows users to apply an action to one or more items.'),
+    'field' => [
+      'id' => 'search_api_bulk_form',
+    ],
+  ];
 }
 
 /**
@@ -634,7 +693,7 @@ function _search_api_views_datasource_table(DatasourceInterface $datasource, arr
       continue;
     }
 
-    $real_field = isset($definition['real field']) ? $definition['real field'] : $key;
+    $real_field = $definition['real field'] ?? $key;
     $table[$key]['real field'] = Utility::createCombinedId($datasource_id, $real_field);
 
     // Relationships sometimes have different real fields set, since they might
@@ -801,9 +860,9 @@ function _search_api_views_get_field_handler_for_property(DataDefinitionInterfac
     // Then check all the patterns defined by regular expressions, defaulting to
     // the "default" definition.
     $definition = $mappings['default'];
-    foreach (array_keys($mappings['regex']) as $regex) {
+    foreach ($mappings['regex'] as $regex => $mapping_definition) {
       if (preg_match($regex, $data_type)) {
-        $definition = $mappings['regex'][$regex];
+        $definition = $mapping_definition;
       }
     }
   }
@@ -900,6 +959,11 @@ function _search_api_views_get_field_handler_mapping() {
     ];
     $plain_mapping['boolean'] = $bool_mapping;
     $plain_mapping['field_item:boolean'] = $bool_mapping;
+
+    $language_mapping = [
+      'id' => 'language',
+    ];
+    $plain_mapping['language'] = $language_mapping;
 
     $ref_mapping = [
       'id' => 'search_api_entity',

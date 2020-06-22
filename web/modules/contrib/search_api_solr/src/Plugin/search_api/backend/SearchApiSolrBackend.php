@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\Config;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TypedData\EntityDataDefinitionInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -14,6 +15,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Plugin\PluginDependencyTrait;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
@@ -84,14 +86,9 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     submitConfigurationForm as traitSubmitConfigurationForm;
   }
 
-  use SolrCommitTrait;
+  use PluginDependencyTrait;
 
-  /**
-   * Metadata describing fields on the Solr/Lucene index.
-   *
-   * @var string[][]
-   */
-  protected $fieldNames = [];
+  use SolrCommitTrait;
 
   /**
    * The module handler.
@@ -150,11 +147,16 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
   protected $queryHelper;
 
   /**
+   * The entity type manager.
+   *
+   * @var EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ModuleHandlerInterface $module_handler, Config $search_api_solr_settings, LanguageManagerInterface $language_manager, SolrConnectorPluginManager $solr_connector_plugin_manager, FieldsHelperInterface $fields_helper, DataTypeHelperInterface $dataTypeHelper, Helper $query_helper) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ModuleHandlerInterface $module_handler, Config $search_api_solr_settings, LanguageManagerInterface $language_manager, SolrConnectorPluginManager $solr_connector_plugin_manager, FieldsHelperInterface $fields_helper, DataTypeHelperInterface $dataTypeHelper, Helper $query_helper, EntityTypeManagerInterface $entityTypeManager) {
     $this->moduleHandler = $module_handler;
     $this->searchApiSolrSettings = $search_api_solr_settings;
     $this->languageManager = $language_manager;
@@ -162,6 +164,9 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $this->fieldsHelper = $fields_helper;
     $this->dataTypeHelper = $dataTypeHelper;
     $this->queryHelper = $query_helper;
+    $this->entityTypeManager = $entityTypeManager;
+
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
@@ -178,7 +183,8 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       $container->get('plugin.manager.search_api_solr.connector'),
       $container->get('search_api.fields_helper'),
       $container->get('search_api.data_type_helper'),
-      $container->get('solarium.query_helper')
+      $container->get('solarium.query_helper'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -193,15 +199,47 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       'site_hash' => FALSE,
       'server_prefix' => '',
       'domain' => 'generic',
+      'environment' => 'default',
       // Set the default for new servers to NULL to force "safe" un-selected
       // radios. @see https://www.drupal.org/node/2820244
       'connector' => NULL,
       'connector_config' => [],
       'optimize' => FALSE,
-      'disabled_field_types' => [],
       // 10 is Solr's default limit if rows is not set.
       'rows' => 10,
     ];
+  }
+
+  /**
+   * Add the default configuration for config-set generation.
+   *
+   * defaultConfiguration() is called on any search. Loading the defaults only
+   * required for config-set generation is an overhead that isn't required.
+   */
+  protected function addDefaultConfigurationForConfigGeneration() {
+    if (!isset($this->configuration['disabled_field_types'])) {
+      /** @var \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder $solr_field_type_list_builder */
+      $solr_field_type_list_builder = $this->entityTypeManager->getListBuilder('solr_field_type');
+      $this->configuration['disabled_field_types'] = array_keys($solr_field_type_list_builder->getAllNotRecommendedEntities());
+    }
+
+    if (!isset($this->configuration['disabled_caches'])) {
+      /** @var \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder $solr_cache_list_builder */
+      $solr_cache_list_builder = $this->entityTypeManager->getListBuilder('solr_cache');
+      $this->configuration['disabled_caches'] = array_keys($solr_cache_list_builder->getAllNotRecommendedEntities());
+    }
+
+    if (!isset($this->configuration['disabled_request_handlers'])) {
+      /** @var \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder $solr_request_handler_list_builder */
+      $solr_request_handler_list_builder = $this->entityTypeManager->getListBuilder('solr_request_handler');
+      $this->configuration['disabled_request_handlers'] = array_keys($solr_request_handler_list_builder->getAllNotRecommendedEntities());
+    }
+
+    if (!isset($this->configuration['disabled_request_dispatchers'])) {
+      /** @var \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder $solr_request_dispatcher_list_builder */
+      $solr_request_dispatcher_list_builder = $this->entityTypeManager->getListBuilder('solr_request_dispatcher');
+      $this->configuration['disabled_request_dispatchers'] = array_keys($solr_request_dispatcher_list_builder->getAllNotRecommendedEntities());
+    }
   }
 
   /**
@@ -213,7 +251,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $configuration['skip_schema_check'] = (bool) $configuration['skip_schema_check'];
     $configuration['site_hash'] = (bool) $configuration['site_hash'];
     $configuration['optimize'] = (bool) $configuration['optimize'];
-    $configuration['rows'] = (int) $configuration['rows'];
+    $configuration['rows'] = (int) ($configuration['rows'] ?? 10);
 
     parent::setConfiguration($configuration);
 
@@ -300,6 +338,15 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       '#default_value' => isset($this->configuration['domain']) ? $this->configuration['domain'] : 'generic',
     ];
 
+    $environments = Utility::getAvailableEnvironments();
+    $form['advanced']['environment'] = [
+      '#type' => 'select',
+      '#options' => array_combine($environments, $environments),
+      '#title' => $this->t('Targeted environment'),
+      '#description' => $this->t('For example "dev", "stage" or "prod".'),
+      '#default_value' => isset($this->configuration['environment']) ? $this->configuration['environment'] : 'default',
+    ];
+
     $form['advanced']['i_know_what_i_do'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Optimize the Solr index'),
@@ -331,7 +378,22 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
 
     $form['disabled_field_types'] = [
       '#type' => 'value',
-      '#value' => $this->configuration['disabled_field_types'],
+      '#value' => $this->getDisabledFieldTypes(),
+    ];
+
+    $form['disabled_caches'] = [
+      '#type' => 'value',
+      '#value' => $this->getDisabledCaches(),
+    ];
+
+    $form['disabled_request_handlers'] = [
+      '#type' => 'value',
+      '#value' => $this->getDisabledRequestHandlers(),
+    ];
+
+    $form['disabled_request_dispatchers'] = [
+      '#type' => 'value',
+      '#value' => $this->getDisabledRequestDispatchers(),
     ];
 
     return $form;
@@ -548,7 +610,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     static $custom_codes = [];
 
     if (strpos($type, 'solr_text_custom') === 0) {
-      list(, $custom_code) = explode(':', $type);
+      [, $custom_code] = explode(':', $type);
       if (empty($custom_codes)) {
         $custom_codes = SolrFieldType::getAvailableCustomCodes();
       }
@@ -740,7 +802,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
                 ];
 
                 $status = 'ok';
-                if (empty($this->configuration['skip_schema_check'])) {
+                if (!$this->isNonDrupalOrOutdatedConfigSetAllowed()) {
                   $variables[':url'] = Url::fromUri('internal:/' . drupal_get_path('module', 'search_api_solr') . '/INSTALL.md')->toString();
                   if (
                     strpos($stats_summary['@schema_version'],'search-api') === 0 ||
@@ -835,6 +897,21 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       $info[] = [
         'label' => $this->t('Disabled Solr Field Types'),
         'info' => implode(', ', $this->configuration['disabled_field_types']),
+      ];
+    }
+
+    $info[] = [
+      'label' => $this->t('Targeted environment'),
+      'info' => $this->getEnvironment(),
+    ];
+
+    if (!empty($this->configuration['disabled_caches'])) {
+      \Drupal::messenger()
+        ->addWarning($this->t('You disabled some Solr Caches for this server.'));
+
+      $info[] = [
+        'label' => $this->t('Disabled Solr Caches'),
+        'info' => implode(', ', $this->configuration['disabled_caches']),
       ];
     }
 
@@ -1093,14 +1170,23 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     // Since the index ID we use for indexing can contain arbitrary
     // prefixes, we have to escape it for use in the query.
     $connector = $this->getSolrConnector();
-    $query = '+index_id:' . $this->queryHelper->escapeTerm($this->getTargetedIndexId($index));
-    $query .= ' +hash:' . $this->queryHelper->escapeTerm($this->getTargetedSiteHash($index));
+    $index_id = $this->queryHelper->escapeTerm($this->getTargetedIndexId($index));
+    $site_hash = $this->queryHelper->escapeTerm($this->getTargetedSiteHash($index));
+    $query = '+index_id:' . $index_id;
+    $query .= ' +hash:' . $site_hash;
     if ($datasource_id) {
       $query .= ' +' . $this->getSolrFieldNames($index)['search_api_datasource'] . ':' . $this->queryHelper->escapeTerm($datasource_id);
     }
     $update_query = $connector->getUpdateQuery();
     $update_query->addDeleteQuery($query);
     $connector->update($update_query, $this->getCollectionEndpoint($index));
+
+    // Delete corresponding checkpoints.
+    if ($connector->isCloud()) {
+      /** @var SolrCloudConnectorInterface $connector */
+      $connector->deleteCheckpoints($index_id, $site_hash);
+    }
+
     \Drupal::state()->set('search_api_solr.' . $index->id() . '.last_update', \Drupal::time()->getCurrentTime());
   }
 
@@ -1430,7 +1516,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
             $flatten_keys = 'direct' === $parse_mode_id ? $keys : Utility::flattenKeys($keys, [], 'keys');
           }
           else {
-            $flatten_keys = Utility::flattenKeys($keys, explode(' ', $query_fields_boosted), $parse_mode_id);
+            $flatten_keys = Utility::flattenKeys($keys, ($query_fields_boosted ? explode(' ', $query_fields_boosted) : []), $parse_mode_id);
           }
 
           if ('direct' !== $parse_mode_id && strpos($flatten_keys, '-(') === 0) {
@@ -1440,22 +1526,21 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
             $flatten_keys = '*:* ' . $flatten_keys;
           }
 
-          $solarium_query->setQuery(
-            ((!Utility::hasIndexJustSolrDocumentDatasource($index) && (!isset($params['defType']) || 'edismax' !== $params['defType'])) ? '{!boost b=boost_document}' : '') .
-            ($flatten_keys ?: '*:*')
-          );
-
-          // Apply term boosts if configured via a Search API processor and no
-          // sort is present.
-          if (
-            !$solarium_query->getSorts() &&
-            !Utility::hasIndexJustSolrDocumentDatasource($index) &&
-            $payload_score = Utility::flattenKeysToPayloadScore($keys, $parse_mode_id)
-          ) {
-            /** @var \Solarium\Component\ReRankQuery $rerank */
-            $rerank = $solarium_query->getReRankQuery();
-            $rerank->setQuery("'" . $payload_score . "'");
+          $flatten_query = [];
+          if (!Utility::hasIndexJustSolrDocumentDatasource($index) && (!isset($params['defType']) || 'edismax' !== $params['defType'])) {
+            // Apply term boosts if configured via a Search API processor if
+            // sort by search_api_relevance is present.
+            $sorts = $solarium_query->getSorts();
+            $relevance_field = reset($field_names['search_api_relevance']);
+            if (isset($sorts[$relevance_field])) {
+              $flatten_query[] = '{!boost b=boost_document}';
+              $flatten_query[] = Utility::flattenKeysToPayloadScore($keys, $parse_mode_id);
+            }
           }
+
+          $flatten_query[] = trim($flatten_keys ?: '*:*');
+
+          $solarium_query->setQuery(implode(' ', $flatten_query));
 
           if (!isset($params['defType']) || 'edismax' !== $params['defType']) {
             $solarium_query->removeComponent(ComponentAwareQueryInterface::COMPONENT_EDISMAX);
@@ -2082,7 +2167,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    *   The cardinality.
    */
   protected function getPropertyPathCardinality($property_path, array $properties, $cardinality = 1) {
-    list($key, $nested_path) = SearchApiUtility::splitPropertyPath($property_path, FALSE);
+    [$key, $nested_path] = SearchApiUtility::splitPropertyPath($property_path, FALSE);
     if (isset($properties[$key])) {
       $property = $properties[$key];
       if ($property instanceof FieldDefinitionInterface) {
@@ -2257,13 +2342,11 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
                   }
                   $boost = $token->getBoost();
                   if (0.0 != $boost && 1.0 != $boost) {
-                    // @todo These regexes are a first approach to isolate the
-                    //   terms to be boosted. We should consider to re-use the
-                    //   logic of the tokenizer processor. But this might
-                    //   require to turn some methods to public.
-                    $doc->addField('boost_term', preg_replace('/(\w{3,})/', '$1|' . $boost,
-                      preg_replace('/\W+/', ' ', $value)
-                    ));
+                    // @todo This regex is a first approach to isolate the terms
+                    //   to be boosted. We should consider to re-use the logic
+                    //   of the tokenizer processor. But this might require to
+                    //   turn some methods to public.
+                    $doc->addField('boost_term', preg_replace('/([^\s]{2,})/', '$1|' . sprintf('%.1f', $boost), str_replace('|', ' ', $value)));
                   }
                 }
               }
@@ -2743,6 +2826,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
               // @see https://www.drupal.org/project/search_api/issues/2991134
               case 'terms':
               case 'phrase':
+              case 'sloppy_phrase':
               case 'edismax':
                 if (is_array($value)) {
                   $keys += $value;
@@ -3041,7 +3125,12 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    *   The formatted date as string or FALSE in case of invalid input.
    */
   public function formatDate($input) {
-    $input = is_numeric($input) ? (int) $input : new \DateTime($input, timezone_open(DateTimeItemInterface::STORAGE_TIMEZONE));
+    try {
+      $input = is_numeric($input) ? (int) $input : new \DateTime($input, timezone_open(DateTimeItemInterface::STORAGE_TIMEZONE));
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
     return $this->queryHelper->formatDate($input);
   }
 
@@ -3579,13 +3668,44 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $connector = $this->getSolrConnector();
     $this->calculatePluginDependencies($connector);
 
+    $entity_type_manager = \Drupal::entityTypeManager();
     /** @var \Drupal\search_api_solr\Controller\SolrFieldTypeListBuilder $list_builder */
-    $list_builder = \Drupal::entityTypeManager()->getListBuilder('solr_field_type');
-    $list_builder->setBackend($this);
-    $solr_field_types = $list_builder->load();
+    $field_type_list_builder = $entity_type_manager->getListBuilder('solr_field_type');
+    $field_type_list_builder->setBackend($this);
+    $solr_field_types = $field_type_list_builder->getEnabledEntities();
     /** @var \Drupal\search_api_solr\Entity\SolrFieldType $solr_field_type */
     foreach ($solr_field_types as $solr_field_type) {
       $this->addDependency('config', $solr_field_type->getConfigDependencyName());
+    }
+
+    /** @var \Drupal\search_api_solr\Controller\SolrCacheListBuilder $cache_list_builder */
+    $cache_list_builder = $entity_type_manager->getListBuilder('solr_cache');
+    $cache_list_builder->setBackend($this);
+    $solr_caches = $cache_list_builder->load();
+    foreach ($solr_caches as $solr_cache) {
+      if (!$solr_cache->disabledOnServer) {
+        $this->addDependency('config', $solr_cache->getConfigDependencyName());
+      }
+    }
+
+    /** @var \Drupal\search_api_solr\Controller\SolrCacheListBuilder $request_handler_list_builder */
+    $request_handler_list_builder = $entity_type_manager->getListBuilder('solr_request_handler');
+    $request_handler_list_builder->setBackend($this);
+    $solr_request_handlers = $request_handler_list_builder->load();
+    foreach ($solr_request_handlers as $request_handler) {
+      if (!$request_handler->disabledOnServer) {
+        $this->addDependency('config', $request_handler->getConfigDependencyName());
+      }
+    }
+
+    /** @var \Drupal\search_api_solr\Controller\SolrCacheListBuilder $request_dispatcher_list_builder */
+    $request_dispatcher_list_builder = $entity_type_manager->getListBuilder('solr_request_dispatcher');
+    $request_dispatcher_list_builder->setBackend($this);
+    $solr_request_dispatchers = $request_dispatcher_list_builder->load();
+    foreach ($solr_request_dispatchers as $request_dispatcher) {
+      if (!$request_dispatcher->disabledOnServer) {
+        $this->addDependency('config', $request_dispatcher->getConfigDependencyName());
+      }
     }
 
     return $this->dependencies;
@@ -4126,6 +4246,13 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
   /**
    * {@inheritdoc}
    */
+  public function getEnvironment() {
+    return (isset($this->configuration['environment']) && !empty($this->configuration['environment'])) ? $this->configuration['environment'] : 'default';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function isManagedSchema() {
     return FALSE;
   }
@@ -4160,7 +4287,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $available = $this->getSolrConnector()->pingCore();
     $stats = [];
     foreach (\Drupal::languageManager()->getLanguages() as $language) {
-      $solr_field_type_name = Utility::encodeSolrName('text' . '_' . $language->getId());
+      $solr_field_type_name = 'text' . '_' . $language->getId();
       $stats[$language->getId()] = $available ? $this->isPartOfSchema('fieldTypes', $solr_field_type_name) : FALSE;
     }
     return $stats;
@@ -4463,11 +4590,14 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
           foreach ($site_hash_bucket->getFacetSet()->getFacet('indexes') as $index_bucket) {
             $index = $index_bucket->getValue();
             /** @var \Solarium\Component\Result\Facet\Bucket $datasource_bucket */
-            foreach ($index_bucket->getFacetSet()->getFacet('dataSources') as $datasource_bucket) {
-              $datasource = $datasource_bucket->getValue();
-              /** @var \Solarium\Component\Result\Facet\Aggregation $maxVersionPerDataSource */
-              if ($maxVersionPerDataSource = $datasource_bucket->getFacetSet()->getFacet('maxVersionPerDataSource')) {
-                $document_versions[$site_hash][$index][$datasource] = $maxVersionPerDataSource->getValue();
+            if ($datsources_facet = $index_bucket->getFacetSet()->getFacet('dataSources')) {
+              foreach ($datsources_facet as $datasource_bucket) {
+                $datasource = $datasource_bucket->getValue();
+                /** @var \Solarium\Component\Result\Facet\Aggregation $maxVersionPerDataSource */
+                if ($maxVersionPerDataSource = $datasource_bucket->getFacetSet()
+                  ->getFacet('maxVersionPerDataSource')) {
+                  $document_versions[$site_hash][$index][$datasource] = $maxVersionPerDataSource->getValue();
+                }
               }
             }
           }
@@ -4482,6 +4612,38 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    * {@inheritdoc}
    */
   public function getDisabledFieldTypes(): array {
+    $this->addDefaultConfigurationForConfigGeneration();
     return $this->configuration['disabled_field_types'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDisabledCaches(): array {
+    $this->addDefaultConfigurationForConfigGeneration();
+    return $this->configuration['disabled_caches'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDisabledRequestHandlers(): array {
+    $this->addDefaultConfigurationForConfigGeneration();
+    return $this->configuration['disabled_request_handlers'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDisabledRequestDispatchers(): array {
+    $this->addDefaultConfigurationForConfigGeneration();
+    return $this->configuration['disabled_request_dispatchers'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isNonDrupalOrOutdatedConfigSetAllowed(): bool {
+    return (bool) $this->configuration['skip_schema_check'];
   }
 }

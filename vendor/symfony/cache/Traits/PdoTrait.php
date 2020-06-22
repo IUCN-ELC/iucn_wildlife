@@ -159,6 +159,8 @@ trait PdoTrait
             $delete = $this->getConnection()->prepare($deleteSql);
         } catch (TableNotFoundException $e) {
             return true;
+        } catch (\PDOException $e) {
+            return true;
         }
         $delete->bindValue(':time', time(), \PDO::PARAM_INT);
 
@@ -168,6 +170,8 @@ trait PdoTrait
         try {
             return $delete->execute();
         } catch (TableNotFoundException $e) {
+            return true;
+        } catch (\PDOException $e) {
             return true;
         }
     }
@@ -244,6 +248,7 @@ trait PdoTrait
         try {
             $conn->exec($sql);
         } catch (TableNotFoundException $e) {
+        } catch (\PDOException $e) {
         }
 
         return true;
@@ -260,6 +265,7 @@ trait PdoTrait
             $stmt = $this->getConnection()->prepare($sql);
             $stmt->execute(array_values($ids));
         } catch (TableNotFoundException $e) {
+        } catch (\PDOException $e) {
         }
 
         return true;
@@ -316,6 +322,11 @@ trait PdoTrait
                 $this->createTable();
             }
             $stmt = $conn->prepare($sql);
+        } catch (\PDOException $e) {
+            if (!$conn->inTransaction() || \in_array($this->driver, ['pgsql', 'sqlite', 'sqlsrv'], true)) {
+                $this->createTable();
+            }
+            $stmt = $conn->prepare($sql);
         }
 
         if ('sqlsrv' === $driver || 'oci' === $driver) {
@@ -350,6 +361,11 @@ trait PdoTrait
                     $this->createTable();
                 }
                 $stmt->execute();
+            } catch (\PDOException $e) {
+                if (!$conn->inTransaction() || \in_array($this->driver, ['pgsql', 'sqlite', 'sqlsrv'], true)) {
+                    $this->createTable();
+                }
+                $stmt->execute();
             }
             if (null === $driver && !$stmt->rowCount()) {
                 try {
@@ -379,6 +395,7 @@ trait PdoTrait
             } else {
                 switch ($this->driver = $this->conn->getDriver()->getName()) {
                     case 'mysqli':
+                        throw new \LogicException(sprintf('The adapter "%s" does not support the mysqli driver, use pdo_mysql instead.', \get_class($this)));
                     case 'pdo_mysql':
                     case 'drizzle_pdo_mysql':
                         $this->driver = 'mysql';

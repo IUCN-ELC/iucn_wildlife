@@ -2,6 +2,7 @@
 
 namespace Drupal\search_api_solr\Utility;
 
+use Drupal\search_api_solr\Controller\SolrConfigSetController;
 use ZipStream\Option\Archive;
 
 /**
@@ -31,9 +32,7 @@ class CommandHelper extends \Drupal\search_api\Utility\CommandHelper {
    * @throws \ZipStream\Exception\FileNotReadableException
    * @throws \ZipStream\Exception\OverflowException
    */
-  public function getServerConfigCommand($server_id, $file_name, $solr_version = NULL) {
-    /** @var \Drupal\search_api_solr\Controller\SolrFieldTypeListBuilder $list_builder */
-    $list_builder = $this->entityTypeManager->getListBuilder('solr_field_type');
+  public function getServerConfigCommand($server_id, $file_name = NULL, $solr_version = NULL) {
     $servers = $this->loadServers([$server_id]);
     $server = reset($servers);
     if ($solr_version) {
@@ -42,16 +41,23 @@ class CommandHelper extends \Drupal\search_api\Utility\CommandHelper {
       $config['connector_config']['solr_version'] = $solr_version;
       $server->setBackendConfig($config);
     }
-    $list_builder->setServer($server);
+    $solr_configset_controller = new SolrConfigSetController();
+    $solr_configset_controller->setServer($server);
 
-    $stream = fopen($file_name, 'w+b');
     $archive_options = new Archive();
-    $archive_options->setOutputStream($stream);
+    $stream = FALSE;
+    if ($file_name != NULL) {
+      // If no filename is provided, output stream is standard output.
+      $stream = fopen($file_name, 'w+b');
+      $archive_options->setOutputStream($stream);
+    }
 
-    $zip = $list_builder->getConfigZip($archive_options);
+    $zip = $solr_configset_controller->getConfigZip($archive_options);
     $zip->finish();
 
-    fclose($stream);
+    if ($stream) {
+      fclose($stream);
+    }
   }
 
   /**

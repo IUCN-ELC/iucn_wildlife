@@ -4,14 +4,13 @@ status: true
 dependencies:
   module:
     - search_api_solr
-    - node
     - taxonomy
+    - node
     - search_api
     - search_api_attachments
   config:
     - field.storage.node.field_abstract
     - field.storage.node.field_country
-    - field.storage.taxonomy_term.field_iso
     - field.storage.node.field_court
     - field.storage.node.field_court_jurisdiction
     - field.storage.node.field_date_of_entry
@@ -21,10 +20,12 @@ dependencies:
     - field.storage.node.field_ecolex_subjects
     - field.storage.node.field_files
     - field.storage.node.field_instance
+    - field.storage.taxonomy_term.field_iso
     - field.storage.node.field_justices
     - field.storage.node.field_keywords
     - field.storage.node.field_language_of_document
     - field.storage.node.field_offences
+    - field.storage.node.field_original_id
     - field.storage.node.field_original_title
     - field.storage.node.field_region
     - field.storage.node.field_source
@@ -33,7 +34,6 @@ dependencies:
     - field.storage.node.field_territorial_subdivisions
     - field.storage.node.field_type_of_case
     - field.storage.node.field_type_of_text
-    - field.storage.node.field_original_id
     - field.storage.node.field_wildlife_legislation
     - search_api.server.solr_server
 third_party_settings:
@@ -314,15 +314,16 @@ datasource_settings:
       selected:
         - en
 processor_settings:
-  add_url: {  }
+  rendered_item: {  }
   aggregated_field: {  }
+  language_with_fallback: {  }
+  add_url: {  }
   file_attachments:
     excluded_extensions: 'aif art avi bmp gif ico mov oga ogv png psd ra ram rgb flv'
     number_indexed: 0
     max_filesize: '0'
     excluded_private: 1
     excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
-  rendered_item: {  }
   solr_date_range: {  }
 tracker_settings:
   default:

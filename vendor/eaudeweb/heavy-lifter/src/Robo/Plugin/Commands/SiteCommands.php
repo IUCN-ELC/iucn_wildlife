@@ -2,6 +2,7 @@
 
 namespace EauDeWeb\Robo\Plugin\Commands;
 
+use Robo\Exception\TaskException;
 use Robo\Robo;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -65,7 +66,8 @@ class SiteCommands extends CommandBase {
       }
     }
     else {
-      $execStack->dir('docroot');
+      $drupalRoot = $this->drupalRoot();
+      $execStack->dir($drupalRoot);
       if (!empty($username)) {
         $commands[] = 'user-password ' . $username . ' --password=' . $newPassword;
       }
@@ -125,7 +127,7 @@ class SiteCommands extends CommandBase {
       $build->addTask($drush);
       $sync = $build->run();
       if ($sync->wasSuccessful()) {
-        return $this->siteUpdate($site);
+        return $this->siteUpdate($options);
       }
       return $sync;
     }
@@ -150,11 +152,11 @@ class SiteCommands extends CommandBase {
    */
   public function createProject($name = 'name') {
     // create name.conf
-    $docroot = $this->configSite('work.dir');
+    $projectRoot = $this->configSite('work.dir');
     $conf = "<VirtualHost *:80" . "> \n"
-      . "     DocumentRoot ". $docroot . "/" . $name . ".local/web" . "/ \n"
+      . "     DocumentRoot ". $projectRoot . "/" . $name . ".local/web" . "/ \n"
       . "     ServerName " . $name . ".local \n"
-      . "     <Directory  ". $docroot  . "/" . $name . ".local/web/> \n"
+      . "     <Directory  ". $projectRoot  . "/" . $name . ".local/web/> \n"
       . "          AllowOverride All \n"
       . "          Require all granted \n"
       . "     </Directory" . "> \n"
@@ -198,13 +200,14 @@ class SiteCommands extends CommandBase {
     $site = $options['site'];
     $this->validateConfig();
     $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $drush = $this->drushExecutable($site);
     $commands = [];
-
     if ($this->isDrush9()) {
-      $commands[] = "state-set system.maintenance_mode TRUE";
+      $out = $this->taskExec("{$drush} state-set system.maintenance_mode TRUE")->run();
+      $this->handleFailure($out, 'Setting maintenance mode cannot fail ...');
 
-      // Allow updatedb to fail once and execute it again after config:import.
-      $commands[] = "updatedb -y";
+      $out = $this->taskExec("{$drush} updatedb -y")->run();
+      $this->handleFailure($out, 'updatedb may fail once in first phase ...', true);
 
       $commands[] = 'cache:rebuild';
       if ($this->configSite('site.develop.config_split') === TRUE) {
@@ -220,9 +223,9 @@ class SiteCommands extends CommandBase {
         $commands[] = 'locale:update';
       }
 
-      if ($this->isModuleEnabled('pathauto') && floatval(substr(trim($this->getModuleInfo('pathauto')), -3)) >= 1.4) {
-        $commands[] = 'pathauto:aliases-generate create all';
-      }
+//      if ($this->isModuleEnabled('pathauto') && floatval(substr(trim($this->getModuleInfo('pathauto')), -3)) >= 1.4) {
+//        $commands[] = 'pathauto:aliases-generate create all';
+//      }
 
       $commands[] = 'cache:rebuild';
       $commands[] = 'state-set system.maintenance_mode FALSE';
@@ -230,10 +233,14 @@ class SiteCommands extends CommandBase {
     }
     else {
       // Drupal 7
-      $execStack->dir('docroot');
-      $commands[] = 'vset maintenance_mode 1';
-      // Execute the update commands
-      $commands[] = 'updatedb -y';
+      $drupalRoot = $this->drupalRoot();
+      $execStack->dir($drupalRoot);
+
+      $out = $this->taskExec("{$drush} vset maintenance_mode 1")->run();
+      $this->handleFailure($out, 'Setting maintenance mode cannot fail ...');
+
+      $out = $this->taskExec("{$drush} updatedb -y")->run();
+      $this->handleFailure($out, 'updatedb may fail once in first phase ...', true);
 
       // The 'drush locale:check' and 'drush locale:update' don't have equivalents in Drupal 7
 

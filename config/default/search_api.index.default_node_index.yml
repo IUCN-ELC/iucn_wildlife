@@ -314,16 +314,16 @@ datasource_settings:
       selected:
         - en
 processor_settings:
-  rendered_item: {  }
-  aggregated_field: {  }
-  language_with_fallback: {  }
   add_url: {  }
+  aggregated_field: {  }
   file_attachments:
     excluded_extensions: 'aif art avi bmp gif ico mov oga ogv png psd ra ram rgb flv'
     number_indexed: 0
     max_filesize: '0'
     excluded_private: 1
     excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
+  language_with_fallback: {  }
+  rendered_item: {  }
   solr_date_range: {  }
 tracker_settings:
   default:

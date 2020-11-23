@@ -17,7 +17,7 @@ backend_config:
   connector_config:
     scheme: http
     host: localhost
-    port: '8983'
+    port: 8983
     path: /
     core: wildlex-new
     timeout: 25

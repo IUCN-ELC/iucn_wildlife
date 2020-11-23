@@ -1,4 +1,5 @@
 <?php
+
 namespace Robo\Common;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -18,6 +19,8 @@ trait IO
 
     /**
      * Provide access to SymfonyStyle object.
+     *
+     * @deprecated Use a style injector instead
      *
      * @return \Symfony\Component\Console\Style\SymfonyStyle
      *

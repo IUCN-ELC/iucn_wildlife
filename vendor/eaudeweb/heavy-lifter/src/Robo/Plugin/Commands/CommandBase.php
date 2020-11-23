@@ -127,6 +127,27 @@ class CommandBase extends \Robo\Tasks {
   /**
    * Find Drupal root installation.
    *
+   * For this function (and inherently DrupalFinder to work correctly) you need
+   * to properly configure project's root composer.json:
+   *
+   * <pre>
+   *    ...
+   *   "require": {
+   *     ...
+   *     "composer/installers": "^1.2",
+   *     ...
+   *   "extra": {
+   *     "installer-paths": {
+   *     "docroot/": ["type:drupal-core"],
+   *     "docroot/profiles/{$name}/": ["type:drupal-profile"],
+   *     "docroot/sites/all/drush/{$name}/": ["type:drupal-drush"],
+   *     "docroot/sites/all/libraries/{$name}/": ["type:drupal-library"],
+   *     "docroot/sites/all/modules/contrib/{$name}/": ["type:drupal-module"],
+   *     "docroot/sites/all/themes/{$name}/": ["type:drupal-theme"],
+   *   },
+   *   ...
+   * </pre>
+   *
    * @return string
    * @throws \Robo\Exception\TaskException
    */
@@ -245,16 +266,7 @@ class CommandBase extends \Robo\Tasks {
       $extraCommandsArray = [];
     }
     $commands = array_merge($commands, $extraCommandsArray);
-    $commandsAllowedToFailOnce = [
-      'updatedb -y'
-    ];
     foreach ($commands as $command) {
-      if (in_array($command, $commandsAllowedToFailOnce)) {
-        $this->taskExec("{$drush} {$command}")->run();
-        $index = array_search($command, $commandsAllowedToFailOnce);
-        unset($commandsAllowedToFailOnce[$index]);
-        continue;
-      }
       $execStack->exec("{$drush} " . $command);
     }
     return $execStack;
@@ -270,6 +282,20 @@ class CommandBase extends \Robo\Tasks {
   protected function allowOnlyOnLinux() {
     if (!$this->isLinuxServer()) {
       throw new TaskException(static::class, "This command is only supported by Unix environments!");
+    }
+  }
+
+  /**
+   * @param \Robo\Result $out
+   * @param string $message
+   * @param bool $allowFail
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function handleFailure($out, $message, $allowFail = false) {
+    if ($out->getExitCode() != 0) {
+      if (!$allowFail) {
+          throw new TaskException($this, $message);
+      }
     }
   }
 }

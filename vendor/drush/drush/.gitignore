@@ -2,11 +2,15 @@ tests/phpunit.xml
 vendor
 box.phar
 drush.phar
-#The mkdocs output directory.
+#The mkdocs output directory and generated file.
 site
-#The sami output directories
+gh-pages
+mkdocs.yml
+#The Commands site output directory.
+docs/commands
+#The Doctum output directories
 api
-.sami-cache
+.doctum-cache
 # IDE config
 .idea/
 sut/*

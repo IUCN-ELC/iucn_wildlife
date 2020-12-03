@@ -148,7 +148,7 @@ $settings['skip_permissions_hardening'] = TRUE;
  * anymore.
  *
  * This is an advanced feature and using it means opting out of some of the
- * guarantees the configuration synchronisation provides. It is not recommended
+ * guarantees the configuration synchronization provides. It is not recommended
  * to use this feature with modules that affect Drupal in a major way such as
  * the language or field module.
  */

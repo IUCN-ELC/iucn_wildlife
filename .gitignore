@@ -12,6 +12,11 @@ web/MAINTAINERS.txt
 web/README.txt
 web/UPGRADE.txt
 web/web.config
+web/example.gitignore
+web/modules/README.txt
+web/profiles/README.txt
+web/sites/README.txt
+web/themes/README.txt
 
 .docker/solr-data/
 .docker/conf-nginx/basic-auth.passwords

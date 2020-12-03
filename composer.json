@@ -33,10 +33,10 @@
     "require": {
         "composer/installers": "1.9.0",
         "cweagans/composer-patches": "1.7.0",
-        "drupal-composer/drupal-scaffold": "2.6.1",
         "drupal/better_exposed_filters": "3.0.0-alpha6",
         "drupal/bootstrap": "3.20.0",
         "drupal/core": "8.9.9",
+        "drupal/core-composer-scaffold": "8.9.9",
         "drupal/ctools": "3.2.0",
         "drupal/editor_file": "1.4.0",
         "drupal/edw_healthcheck": "1.8.0",
@@ -101,6 +101,11 @@
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
             "drush/contrib/{$name}": ["type:drupal-drush"]
+        },
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "web/"
+            }
         },
         "patches": {
             "drupal/facets": {

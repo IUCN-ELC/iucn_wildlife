@@ -32,7 +32,6 @@
     ],
     "require": {
         "composer/installers": "^1.2",
-        "consolidation/annotated-command": "2.12",
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/better_exposed_filters": "^3.0@alpha",

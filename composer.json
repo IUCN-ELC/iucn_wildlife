@@ -35,8 +35,8 @@
         "cweagans/composer-patches": "1.7.0",
         "drupal/better_exposed_filters": "3.0.0-alpha6",
         "drupal/bootstrap": "3.20.0",
-        "drupal/core": "8.9.9",
-        "drupal/core-composer-scaffold": "8.9.9",
+        "drupal/core-composer-scaffold": "^8.9.9",
+        "drupal/core-recommended": "^8.9.11",
         "drupal/ctools": "3.2.0",
         "drupal/editor_file": "1.4.0",
         "drupal/edw_healthcheck": "1.8.0",
@@ -57,8 +57,8 @@
         "drupal/smtp": "1.0.0-beta4",
         "drupal/token": "1.5.0",
         "drupal/xmlsitemap": "1.0.0-alpha3",
-        "drush/drush": "9.7.1",
-        "eaudeweb/heavy-lifter": "1.3.8",
+        "drush/drush": "10.3.6",
+        "eaudeweb/heavy-lifter": "^1.3",
         "simeydotme/jquery-ui-slider-pips": "1.11.3",
         "webflo/drupal-finder": "1.2.0",
         "webmozart/path-util": "2.3.0"
@@ -114,7 +114,6 @@
                 "Always display facet": "patches/always_display_facet.patch"
             },
             "drupal/captcha": {
-                "Undefined variable type in CAPTCHA examples": "https://www.drupal.org/files/issues/2019-10-30/3091082-2.patch",
                 "Captcha Session ID broken with cacheable captcha backends": "https://www.drupal.org/files/issues/2019-10-30/3089263-8.patch"
             },
             "drupal/field_delimiter": {

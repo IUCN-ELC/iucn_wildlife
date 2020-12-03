@@ -16,17 +16,17 @@ class SanitizeCommands extends DrushCommands implements CustomEventAwareInterfac
      * Sanitize the database by removing or obfuscating user data.
      *
      * Commandfiles may add custom operations by implementing:
-     * - @hook_on-event sql-sanitize-message
-     *     Display summary to user before confirmation.
-     * - @hook post-command sql-sanitize
-     *     Run queries or call APIs to perform sanitizing
+     *
+     *     - `@hook_on-event sql-sanitize-message`. Display summary to user before confirmation.
+     *     - `@hook post-command sql-sanitize`. Run queries or call APIs to perform sanitizing
      *
      * @command sql:sanitize
      * @aliases sqlsan,sql-sanitize
      * @usage drush sql:sanitize --sanitize-password=no
      *   Sanitize database without modifying any passwords.
-     * @usage drush sql:sanitize --whitelist-fields=field_biography,field_phone_number
+     * @usage drush sql:sanitize --allowlist-fields=field_biography,field_phone_number
      *   Sanitizes database but exempts two user fields from modification.
+     * @topics docs:hooks
      */
     public function sanitize()
     {

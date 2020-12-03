@@ -56,10 +56,7 @@ class DrupalCommands extends DrushCommands
      */
     public function cron()
     {
-        $result = $this->getCron()->run();
-        if (!$result) {
-            throw new \Exception(dt('Cron run failed.'));
-        }
+        $this->getCron()->run();
     }
 
     /**
@@ -120,7 +117,7 @@ class DrupalCommands extends DrushCommands
             $severity = array_key_exists('severity', $info) ? $info['severity'] : -1;
             $rows[$i] = [
                 'title' => (string) $info['title'],
-                'value' => (string) $info['value'],
+                'value' => DrupalUtil::drushRender($info['value']),
                 'description' => DrupalUtil::drushRender($info['description']),
                 'sid' => $severity,
                 'severity' => @$severities[$severity]

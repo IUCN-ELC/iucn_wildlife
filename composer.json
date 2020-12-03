@@ -36,7 +36,6 @@
         "drupal-composer/drupal-scaffold": "2.6.1",
         "drupal/better_exposed_filters": "3.0.0-alpha6",
         "drupal/bootstrap": "3.20.0",
-        "drupal/console": "1.9.3",
         "drupal/core": "8.9.9",
         "drupal/ctools": "3.2.0",
         "drupal/editor_file": "1.4.0",
